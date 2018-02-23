@@ -11,6 +11,7 @@ if (!$conn) {
 }
 
 header("http://localhost/AdminLTEMerve/ogrenci_ekle.php");
+
 /*
 $studentName = $_POST['studentName'];
 $studentSurname = $_POST['studentSurname'];
@@ -79,7 +80,7 @@ function saveStudent(){
 	if(mysql_query("INSERT INTO student (tc_no,name,surname,term_start_date) VALUES ('$TCNumber','$studentName','$studentSurname','$donemBaslangicTarihi')")){
 		echo "Successfully Inserted";
 		echo $donemBaslangicTarihi;
-		header("http://localhost/AdminLTEMerve/ogrenci_ekle.php");
+		//header("http://localhost/Albatros/ogrenci_ekle.php");
 	}
 	else
 		echo "Insertion Failed";
