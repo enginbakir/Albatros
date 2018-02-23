@@ -1,7 +1,24 @@
+<?php 
+echo "Merge Deneme"; ?>
 <!DOCTYPE html>
 <html>
 <head>
 
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+  <title>AdminLTE 2 | Dashboard</title>
+  <!-- Tell the browser to be responsive to screen width -->
+  <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+  <!-- Bootstrap 3.3.7 -->
+  <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="bower_components/bootstrap/dist/css/myCss.css">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="bower_components/font-awesome/css/font-awesome.min.css">
+  <!-- Ionicons -->
+  <link rel="stylesheet" href="bower_components/Ionicons/css/ionicons.min.css">
+  <!-- Theme style -->
+  <link rel="stylesheet" href="dist/css/AdminLTE.min.css">
   <!-- AdminLTE Skins. Choose a skin from the css/skins
   	folder instead of downloading all of them to reduce the load. -->
   	<link rel="stylesheet" href="dist/css/skins/_all-skins.min.css">
@@ -605,7 +622,7 @@
         // it doesn't need to have a start or end
         var eventObject = {
           title: $.trim($(this).text()) // use the element's text as the event title
-      }
+        }
 
         // store the Event Object in the DOM element so we can get to it later
         $(this).data('eventObject', eventObject)
@@ -615,9 +632,9 @@
         	zIndex        : 1070,
           revert        : true, // will cause the event to go back to its
           revertDuration: 0  //  original position after the drag
-      })
+        })
 
-    })
+      })
     }
 
     init_events($('#external-events div.external-event'))
@@ -648,47 +665,47 @@
       	start          : new Date(y, m, 1),
           backgroundColor: '#f56954', //red
           borderColor    : '#f56954' //red
-      },
-      {
-      	title          : 'Long Event',
-      	start          : new Date(y, m, d - 5),
-      	end            : new Date(y, m, d - 2),
+        },
+        {
+         title          : 'Long Event',
+         start          : new Date(y, m, d - 5),
+         end            : new Date(y, m, d - 2),
           backgroundColor: '#f39c12', //yellow
           borderColor    : '#f39c12' //yellow
-      },
-      {
-      	title          : 'Meeting',
-      	start          : new Date(y, m, d, 10, 30),
-      	allDay         : false,
+        },
+        {
+         title          : 'Meeting',
+         start          : new Date(y, m, d, 10, 30),
+         allDay         : false,
           backgroundColor: '#0073b7', //Blue
           borderColor    : '#0073b7' //Blue
-      },
-      {
-      	title          : 'Lunch',
-      	start          : new Date(y, m, d, 12, 0),
-      	end            : new Date(y, m, d, 14, 0),
-      	allDay         : false,
+        },
+        {
+         title          : 'Lunch',
+         start          : new Date(y, m, d, 12, 0),
+         end            : new Date(y, m, d, 14, 0),
+         allDay         : false,
           backgroundColor: '#00c0ef', //Info (aqua)
           borderColor    : '#00c0ef' //Info (aqua)
-      },
-      {
-      	title          : 'Birthday Party',
-      	start          : new Date(y, m, d + 1, 19, 0),
-      	end            : new Date(y, m, d + 1, 22, 30),
-      	allDay         : false,
+        },
+        {
+         title          : 'Birthday Party',
+         start          : new Date(y, m, d + 1, 19, 0),
+         end            : new Date(y, m, d + 1, 22, 30),
+         allDay         : false,
           backgroundColor: '#00a65a', //Success (green)
           borderColor    : '#00a65a' //Success (green)
-      },
-      {
-      	title          : 'Click for Google',
-      	start          : new Date(y, m, 28),
-      	end            : new Date(y, m, 29),
-      	url            : 'http://google.com/',
+        },
+        {
+         title          : 'Click for Google',
+         start          : new Date(y, m, 28),
+         end            : new Date(y, m, 29),
+         url            : 'http://google.com/',
           backgroundColor: '#3c8dbc', //Primary (light-blue)
           borderColor    : '#3c8dbc' //Primary (light-blue)
-      }
-      ],
-      editable  : true,
+        }
+        ],
+        editable  : true,
       droppable : true, // this allows things to be dropped onto the calendar !!!
       drop      : function (date, allDay) { // this function is called when something is dropped
 
@@ -712,10 +729,10 @@
         if ($('#drop-remove').is(':checked')) {
           // if so, remove the element from the "Draggable Events" list
           $(this).remove()
-      }
+        }
 
-  }
-})
+      }
+    })
 
     /* ADDING EVENTS */
     var currColor = '#3c8dbc' //Red by default
@@ -727,7 +744,7 @@
       currColor = $(this).css('color')
       //Add color effect to button
       $('#add-new-event').css({ 'background-color': currColor, 'border-color': currColor })
-  })
+    })
     $('#add-new-event').click(function (e) {
     	e.preventDefault()
       //Get value and make sure it is not null
@@ -751,8 +768,8 @@
 
       //Remove event from text input
       $('#new-event').val('')
+    })
   })
-})
 </script>
 <!--
 <script type="text/javascript">
@@ -771,7 +788,7 @@ $("#silButton").click(function(){})
 		isim = $('.isim',this).text();
 		soyisim = $('.soyisim',this).text();
    // alert(id +','+ isim+','+ soyisim);
-});
+ });
 
 	$("#silButton").on("click",function(){
     //
