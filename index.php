@@ -1,5 +1,3 @@
-<?php 
-echo "Merge Deneme"; ?>
 <!DOCTYPE html>
 <html>
 <head>
