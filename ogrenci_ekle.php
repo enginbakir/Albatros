@@ -2,49 +2,59 @@
 <?php 
 session_start();
 
+
+foreach ($_POST as $key => $value)
+	echo $key.'='.$value.'<br />';
+/*
 $conn = mysql_connect('localhost','root','12345678');
 $db = mysql_select_db('albatros');
 
 
 $nameErr = $surnameErr = $genderErr = $TCNumberErr = $studentPhoneNumberErr = "";
 $studentName = $studentSurname = $gender = $TCNumber = $parentPhoneNumber = $class = $educationalDiagnosis = "";
-$parentName = $parentSurname = $parentTCNumber = $parentProximity= $parentMobilePhone = $parentPhone = $parentAdress;
+$parentName = $parentSurname = $parentTCNumber = $parentProximity = $parentMobilePhone = $parentPhone = $parentAdress;
 $errorMessage;
 $bool = true;
+
 
 if ($_SERVER["REQUEST_METHOD"] == "POST"){
 
 	if (empty($_POST["studentName"])) {
-		$_SESSION["nameErr"] = "Name is required";
+		$_SESSION["nameErr"] = "İsim Gereklidir";
 		$bool = false;
 	} 
 	else{
 		$studentName = test_input($_POST["studentName"]);
-      // check if name only contains letters and whitespace
 		if (!preg_match("/^[a-zA-Z ]*$/",$studentName)) {
-			$_SESSION["nameErr"] = "Only letters and white space allowed"; 
+			$_SESSION["nameErr"] = "Sadece Harf ve Boşluk Giriniz"; 
 			$bool = false;
 		}
 	}
-
 	if(empty($_POST['studentSurname'])){
-		$_SESSION["surNameErr"] = "Surname is Required";
+		$_SESSION["surNameErr"] = "Soyisim Gereklidir";
 		$bool = false;
 	}
 	else{
 		$studentSurname = test_input($_POST['studentSurname']);
 		if(!preg_match("/^[a-zA-Z]*$/",$studentSurname)){
-			$_SESSION["surNameErr"] = "Only letters and while space allowed";
+			$_SESSION["surNameErr"] = "Sadece Harf ve Boşluk Giriniz";
 			$bool = false;
 		}
 	}
 	if(empty($_POST["TCNumber"]))
-		$_SESSION["TCNumberErr"] = "TC Number is Required";
+		$_SESSION["TCNumberErr"] = "TC ";
 	else{
 		$TCNumber = test_input($_POST['TCNumber']);
 		if(preg_match("/^[0-9]{11}$/", $TCNumber)){
-			if(isTcKimlik($TCNumber) == false)
+			
+			if(isTcKimlik($TCNumber) == false){
+				$_SESSION["TCNumberErr"] = "TC Kimlik Numarası Yanlıştır";
 				$bool = false;
+			}
+		}
+		else
+		{
+			$_SESSION["TCNumberErr"] = "TC Kimlik Numarası Yanlıştır";
 		}
 	}
 
@@ -67,6 +77,21 @@ function test_input($data) {
 	$data = htmlspecialchars($data);
 	return $data;
 }
+
+
+
+
+function saveStudent(){
+	global $TCNumber,$studentName,$studentSurname,$donemBaslangicTarihi;
+	global $errorMessage;
+	if(mysql_query("INSERT INTO student (tc_no,name,surname,term_start_date) VALUES ('$TCNumber','$studentName','$studentSurname','$donemBaslangicTarihi')")){
+		$errorMessage = "Ekleme Başarı ile Tamamlandı.";
+	}
+	else
+		$errorMessage = "Insert Into gerçekleştirilemedi.";
+}
+
+
 function isTcKimlik($tc)  
 {  
 	if(strlen($tc) < 11){ return false; }  
@@ -81,22 +106,10 @@ function isTcKimlik($tc)
 
 	return true;  
 }  
-
-
-
-function saveStudent(){
-	global $TCNumber,$studentName,$studentSurname,$donemBaslangicTarihi;
-
-	if(mysql_query("INSERT INTO student (tc_no,name,surname,term_start_date) VALUES ('$TCNumber','$studentName','$studentSurname','$donemBaslangicTarihi')")){
-		echo "Successfully Inserted";
-	}
-	else
-		echo "Insertion Failed";
-}
-
+*/
 ?>
 
-<!-- PHP CHECKING INPUTS -->
+<!-- PHP CHECKING INPUTS ENDS -->
 
 <!DOCTYPE html>
 <html>
@@ -191,8 +204,8 @@ function saveStudent(){
 							<div class="col-md-12">
 
 								<!-- FORM -->
-
-								<form id="addStudentForm" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" method="post">
+								<!--<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>-->
+								<form id="addStudentForm" action="addNewStudent.php" method="post" enctype="multipart/form-data">
 
 									<!-- FORM -->
 
@@ -280,7 +293,6 @@ function saveStudent(){
                      				<select name="gender" id="Cinsiyet" class="fancy-select form-control fancified" >
                      					<option value="Erkek">Erkek</option>
                      					<option value="Kız">Kız</option> 
-
                      				</select>
                      				<!-- <div class="trigger">Erkek</div>
                      				<ul class="options">
@@ -378,6 +390,17 @@ function saveStudent(){
                  </div>
              </div>--> 
              <!-- End .form-group 5 -->
+
+             <!---- FOTOĞRAF -->
+             
+             <div class="form-group">
+             	<div class="col-md-12">
+             		<label class="col-md-2 control-label" for="">Fotoğraf Seç:</label>
+             		<input type="file" name="fileToUpload" id="fileToUpload" class="btn btn-info mr5 mb10">
+             	</div>
+             </div>
+
+             <!---- FOTOĞRAF -->
 
              <!-- Start .form-group 6 -->
              <div class="form-group">
@@ -523,19 +546,18 @@ function saveStudent(){
 
 			<!--<button type="submit" id="sub" class="btn btn-success mr5 mb10">Kaydet Button</button> -->
 			<input type="submit" id="sub" value="Kaydet" class="btn btn-success mr5 mb10">  
-			<span class="error" "><?php echo $errorMessage; ?></span>
-			<h1><span id="result" style="color:blue"></span></h1>
+			<span class="error" "><?php echo $_SESSION["errorMessage"]; ?></span>
+			<h1><span id="result" style="color:blue"></span></h1></div>
+
+			<i class="renk">* ile işaretli alanların doldurulması zorunludur!</i> 
 
 		</div>
-		<i class="renk">* ile işaretli alanların doldurulması zorunludur!</i> 
-		
+
+
+		<!-- End of Panel -->
+
 	</div>
-
-
-	<!-- End of Panel -->
-
-</div>
-<!-- End of col-lg-16 -->
+	<!-- End of col-lg-16 -->
 
 <!--<a id="ContentPlaceHolder1_btnKaydet" class="btn btn-success mr5 mb10" title="Kaydet" href='javascript:WebForm_DoPostBackWithOptions(new WebForm_PostBackOptions("ctl00$ContentPlaceHolder1$btnKaydet", "", true, "", "", false, true))'><i class="glyphicon glyphicon-ok">&nbsp;<span class="spanfont">Kaydet</span></i></a>
 	<a id="ContentPlaceHolder1_btnIptal" class="btn btn-success mr5 mb10" title="İptal" href='javascript:WebForm_DoPostBackWithOptions(new WebForm_PostBackOptions("ctl00$ContentPlaceHolder1$btnIptal", "", true, "", "", false, true))'><i class="glyphicon glyphicon-remove">&nbsp;<span class="spanfont">İptal</span>&nbsp;</i></a> -->
@@ -554,6 +576,9 @@ function saveStudent(){
 <?php include 'footer.php'; ?>
 </div>
 <!-- ./wrapper -->
+
+
+
 
 <div>
 	<!-- jQuery 3 -->
