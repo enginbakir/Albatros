@@ -3,8 +3,7 @@
 session_start();
 
 
-foreach ($_POST as $key => $value)
-	echo $key.'='.$value.'<br />';
+echo $_SESSION["imageName"];
 /*
 $conn = mysql_connect('localhost','root','12345678');
 $db = mysql_select_db('albatros');
@@ -363,12 +362,7 @@ function isTcKimlik($tc)
                      		</div>
                      	</div>
                      </div>
-                     <div class="form-group">
-                     	<label class="col-md-2 control-label" for="">Ev Adresi:</label>
-                     	<div class="col-md-10">
-                     		<input name="ctl00$ContentPlaceHolder1$txtEvAdresi" type="text" maxlength="256" id="EvAdresi" class="form-control">
-                     	</div>
-                     </div>
+
                      <!-- End .form-group  -->   
                      <!-- End .form-group 4 -->
 
@@ -392,11 +386,25 @@ function isTcKimlik($tc)
              <!-- End .form-group 5 -->
 
              <!---- FOTOĞRAF -->
-             
+
              <div class="form-group">
-             	<div class="col-md-12">
-             		<label class="col-md-2 control-label" for="">Fotoğraf Seç:</label>
+             	<label class="col-md-2 control-label" for="">Fotoğraf Seç:</label>
+             	<div class="col-md-3">
+             		<span class="error">
+             			<?php 
+             			for($temp; $temp < 5;$temp++){
+             				if(!empty($_SESSION["errors"][$temp]))
+             					echo $_SESSION["errors"][$temp]." "; 
+             			}
+             			?>
+             		</span>
+             		
              		<input type="file" name="fileToUpload" id="fileToUpload" class="btn btn-info mr5 mb10">
+             	</div>
+             	<label class="col-md-2 control-label" for="">Ulaşım:</label>
+             	<div class="col-md-3">
+
+             		<input name="transportation" type="text" maxlength="64" class="form-control" placeholder="Ulaşım">
              	</div>
              </div>
 
@@ -405,7 +413,7 @@ function isTcKimlik($tc)
              <!-- Start .form-group 6 -->
              <div class="form-group">
              	<label class="col-md-2 control-label" for="">Reh. Araş. Merkezi:</label>
-             	<div class="col-md-4">
+             	<div class="col-md-3">
 
              		<input name="rehberlikMerkezi" type="text" maxlength="64" id="ContentPlaceHolder1_txtMerkezi" class="form-control" placeholder="Rehberlik Araştırma Merkezi">
 
@@ -425,32 +433,35 @@ function isTcKimlik($tc)
              				</ul>
              			</div>
              		</div>
-                    <!--<select size="4" name="ctl00$ContentPlaceHolder1$ddlTani" multiple="multiple" id="ContentPlaceHolder1_ddlTani" class="form-control select2" tabindex="-1" style="display: none;">
-                      <option value="Hafif Düzey Zihinsel Yetersizlik">Hafif Düzey Zihinsel Yetersizlik</option>
-                      <option value="Orta Düzey Zihinsel Yetersizlik (ODZY)">Orta Düzey Zihinsel Yetersizlik (ODZY)</option>
-                      <option value="Ağır Düzey Zihinsel Yetersizlik (ADZY)">Ağır Düzey Zihinsel Yetersizlik (ADZY)</option>
-                      <option value="Çok Ağır Düzey Zihinsel Yetersizlik (CADZY)">Çok Ağır Düzey Zihinsel Yetersizlik (CADZY)</option>
-                      <option value="Bedensel Yetersizlik">Bedensel Yetersizlik</option>
-                      <option value="Görme Yetersizliği">Görme Yetersizliği</option>
-                      <option value="Duygusal Davranış Bozukluğu (DDB)">Duygusal Davranış Bozukluğu (DDB)</option>
-                      <option value="Yaygın Gelişimsel Bozukluk (OTİZM)">Yaygın Gelişimsel Bozukluk (OTİZM)</option>
-                      <option value="Özel Öğrenme Güçlüğü (ÖÖG)">Özel Öğrenme Güçlüğü (ÖÖG)</option>
-                      <option value="Dikkat Eksikliği ve Hiperaktivite Bozukluğu (DEHB)">Dikkat Eksikliği ve Hiperaktivite Bozukluğu (DEHB)</option>
-                      <option value="Dil Konuşma Güçlüğü (DKG)">Dil Konuşma Güçlüğü (DKG)</option>
-                      <option value="Üstün Yetenekli Birey (ÜYB)">Üstün Yetenekli Birey (ÜYB)</option>
-                      <option value="İşitme Yetersizliği">İşitme Yetersizliği</option>
-                      <option value="Normal">Normal</option>
+             		<div class="fancy-select">
+             			<select size="4" name="Tani" multiple id="EgitselTani" class="form-control select2">
+             				<option value="Hafif Düzey Zihinsel Yetersizlik">Hafif D&#252;zey Zihinsel Yetersizlik</option>
+             				<option value="Orta Düzey Zihinsel Yetersizlik (ODZY)">Orta D&#252;zey Zihinsel Yetersizlik (ODZY)</option>
+             				<option value="Ağır Düzey Zihinsel Yetersizlik (ADZY)">Ağır D&#252;zey Zihinsel Yetersizlik (ADZY)</option>
+             				<option value="Çok Ağır Düzey Zihinsel Yetersizlik (CADZY)">&#199;ok Ağır D&#252;zey Zihinsel Yetersizlik (CADZY)</option>
+             				<option value="Bedensel Yetersizlik">Bedensel Yetersizlik</option>
+             				<option value="Görme Yetersizliği">G&#246;rme Yetersizliği</option>
+             				<option value="Duygusal Davranış Bozukluğu (DDB)">Duygusal Davranış Bozukluğu (DDB)</option>
+             				<option value="Yaygın Gelişimsel Bozukluk (OTİZM)">Yaygın Gelişimsel Bozukluk (OTİZM)</option>
+             				<option value="Özel Öğrenme Güçlüğü (ÖÖG)">&#214;zel &#214;ğrenme G&#252;&#231;l&#252;ğ&#252;(&#214;&#214;G)</option>
+             				<option value="Dikkat Eksikliği ve Hiperaktivite Bozukluğu (DEHB)">Dikkat Eksikliği ve Hiperaktivite Bozukluğu (DEHB)</option>
+             				<option value="Dil Konuşma Güçlüğü (DKG)">Dil Konuşma G&#252;&#231;l&#252;ğ&#252; (DKG)</option>
+             				<option value="Üstün Yetenekli Birey (ÜYB)">&#220;st&#252;n Yetenekli Birey (&#220;YB)</option>
+             				<option value="İşitme Yetersizliği">İşitme Yetersizliği</option>
+             				<option value="Normal">Normal</option>
 
-                  </select>-->
-                  <span id="ContentPlaceHolder1_lblTani" style="color:Red;font-weight:bold;"></span>
-              </div>
-          </div>
-          <!-- End .form-group 6 -->
+             			</select>
 
-      </div>
-  </div>
-</div>
-<!-- End .panel -->
+             		</div>
+             		<span id="ContentPlaceHolder1_lblTani" style="color:Red;font-weight:bold;"></span>
+             	</div>
+             </div>
+             <!-- End .form-group 6 -->
+
+         </div>
+     </div>
+ </div>
+ <!-- End .panel -->
 
 </div>
 </div>
@@ -473,13 +484,13 @@ function isTcKimlik($tc)
 					<div class="row">
 						<label class="col-md-2 control-label" for=""><i class="renk">*&nbsp;</i>Veli Adı:</label>
 						<div class="col-md-3">
-							<input name="ctl00$ContentPlaceHolder1$txtVeliAdi" type="text" maxlength="64" id="parentName" class="form-control" placeholder="Velinin Adı">
+							<input name="VeliAdi" type="text" maxlength="64" id="parentName" class="form-control" placeholder="Velinin Adı">
 							<span class="error"></span>
 						</div>
 
 						<label class="col-md-2 control-label" for=""><i class="renk">*&nbsp;</i>Veli Soyadı:</label>
 						<div class="col-md-3">
-							<input name="ctl00$ContentPlaceHolder1$txtVeliSoyadi" type="text" maxlength="64" id="parentSurname" class="form-control" placeholder="Velinin Soyadı">
+							<input name="VeliSoyadi" type="text" maxlength="64" id="parentSurname" class="form-control" placeholder="Velinin Soyadı">
 							<span class="error"></span>
 						</div>
 					</div>
@@ -490,7 +501,7 @@ function isTcKimlik($tc)
 					<div class="row">
 						<label class="col-md-2 control-label">T.C. No:</label>
 						<div class="col-md-3">
-							<input name="ctl00$ContentPlaceHolder1$txtTCVeli" type="text" maxlength="11" id="ContentPlaceHolder1_txtTCVeli" class="form-control" placeholder="TC Kimlik No">
+							<input name="parentTCNumber" type="text" maxlength="11" id="parentTCNumber" class="form-control" placeholder="TC Kimlik No">
 							<span class="error"></span>
 						</div>
 						<label class="col-md-2 control-label" for="">Yakınlık Derecesi:</label>
@@ -505,6 +516,9 @@ function isTcKimlik($tc)
 						</div>
 					</div>
 				</div>
+
+				
+
 				<!-- End .form-group  -->
 
 				<div class="form-group">
@@ -512,33 +526,45 @@ function isTcKimlik($tc)
 
 						<label class="col-md-2 control-label">Sabit Telefon:</label>
 						<div class="col-md-3">
-
-							<input name="ctl00$ContentPlaceHolder1$txtSabitTel" type="text" maxlength="16" id="SabitTel" class="form-control" placeholder="Sabit Telefon">
+							<input name="parentPhoneNumber" type="text" maxlength="16" id="SabitTel" class="form-control" placeholder="Sabit Telefon">
 							<span class="error"></span>
 						</div>
 						<label class="col-md-2 control-label">Cep Telefonu:</label>
 						<div class="col-md-3">
 
-							<input name="ctl00$ContentPlaceHolder1$txtCepTel" type="text" maxlength="16" id="CepTel" class="form-control" placeholder="Cep Telefonu">
+							<input name="parentMobilePhone" type="text" maxlength="16" id="CepTel" class="form-control" placeholder="Cep Telefonu">
 							<span class="error"></span>
 						</div>
 
 					</div>
 				</div>
 
+				<div class="form-group">
+					<label class="col-md-2 control-label" for="">Email Adresi:</label>
+					<div class="col-md-8">
+						<input name="emailAdresi" type="text" maxlength="256" id="emailAdresi" class="form-control" placeholder="Ev Adresi">
+					</div>
+				</div>
+
+				<div class="form-group">
+					<label class="col-md-2 control-label" for="">Ev Adresi:</label>
+					<div class="col-md-8">
+						<input name="EvAdresi" type="text" maxlength="256" id="EvAdresi" class="form-control" placeholder="Ev Adresi">
+					</div>
+				</div>
 				<!-- End .form-group  -->
 				
 				<div class="form-group">
 					<label class="col-md-2 control-label" for="">İş Adresi:</label>
 					<div class=" col-md-8">
-						<input name="ctl00$ContentPlaceHolder1$txtIsAdresi" type="text" maxlength="256" id="IsAdresi" class="form-control">
+						<input name="parentIsAdresi" type="text" maxlength="256" id="IsAdresi" class="form-control">
 					</div>
 				</div>
 				<!-- End .form-group  -->
 				<div class="form-group">
 					<label class="col-md-2 control-label" for="">Açıklama:</label>
 					<div class="col-md-8">
-						<textarea name="ctl00$ContentPlaceHolder1$txtAciklama" rows="2" cols="20" id="Aciklama" class="form-control"></textarea>
+						<textarea name="Aciklama" rows="2" cols="20" id="Aciklama" class="form-control"></textarea>
 					</div>
 				</div>
 				<!-- End .form-group  -->
@@ -576,8 +602,6 @@ function isTcKimlik($tc)
 <?php include 'footer.php'; ?>
 </div>
 <!-- ./wrapper -->
-
-
 
 
 <div>
@@ -785,8 +809,21 @@ function isTcKimlik($tc)
 })
 </script>
 
+<script>
+	
+	$(document).ready(function(){
+		$('#EgitselTani').multiselect({
+			nonSelectedText: 'Select Framework',
+			enableFiltering: true,
+			enableCaseInsensitiveFiltering: true,
+			buttonWidth:'400px'
+		}); 
+	});
+
+</script>
 
 </div>
+
 
 <?php 
 session_unset(); ?>
