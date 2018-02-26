@@ -246,7 +246,7 @@
                    </div> 
                    <div class="btn-group btn-group-justified" style="padding-bottom: 10px">
                     <div class="btn-group">
-                      <a href="ogrenci_ekle.php" class="btn btn-primary" role="button">&nbsp;&nbsp;Ekle&nbsp;&nbsp;</a>
+                      <a href="ogrenciEkle.php" class="btn btn-primary" role="button">&nbsp;&nbsp;Ekle&nbsp;&nbsp;</a>
                     </div>
                     <div class="btn-group">
                       <button id="silButton" type="button" class="btn btn-primary">&nbsp;&nbsp;Sil&nbsp;&nbsp;</button>

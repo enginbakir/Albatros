@@ -116,26 +116,37 @@ function isTcKimlik($tc)
 
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>AdminLTE 2 | Dashboard</title>
-	<!-- Tell the browser to be responsive to screen width -->
 	<meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
-	<!-- Mervenin ekledikleri-->
-	<!-- Import google fonts - Heading first/ text second -->
-	<link href="http://fonts.googleapis.com/css?family=Droid+Sans:400,700" rel="stylesheet" type="text/css">
-	<link href="http://fonts.googleapis.com/css?family=Open+Sans:400,700" rel="stylesheet" type="text/css">
-	<link rel="stylesheet" href="dist/css/icons.css">
-	<link rel="stylesheet" href="dist/css/main.css">
-	<link rel="stylesheet" href="dist/css/plugins.css">
-	<link rel="stylesheet" href="dist/css/custom.css">
-	<link rel="stylesheet" href="dist/css/bootstrap.css">
-	<!-- Bootstrap 3.3.7 -->
-	<link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css">
-	<!-- Font Awesome -->
-	<link rel="stylesheet" href="bower_components/font-awesome/css/font-awesome.min.css">
-	<!-- Ionicons -->
-	<link rel="stylesheet" href="bower_components/Ionicons/css/ionicons.min.css">
-	<!-- Theme style -->
-	<link rel="stylesheet" href="dist/css/AdminLTE.min.css">
+	<title>AdminLTE 2 | Dashboard</title>
+
+	<!-- Tell the browser to be responsive to screen width -->
+	
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-3-typeahead/4.0.2/bootstrap3-typeahead.min.js"></script>  
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" />
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/0.9.13/css/bootstrap-multiselect.css" />
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/0.9.13/js/bootstrap-multiselect.js"></script>
+<!-- Mervenin ekledikleri-->
+<!-- Import google fonts - Heading first/ text second -->
+<link href="http://fonts.googleapis.com/css?family=Droid+Sans:400,700" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=Open+Sans:400,700" rel="stylesheet" type="text/css">
+<link rel="stylesheet" href="dist/css/icons.css">
+<link rel="stylesheet" href="dist/css/main.css">
+<link rel="stylesheet" href="dist/css/plugins.css">
+<link rel="stylesheet" href="dist/css/custom.css">
+<link rel="stylesheet" href="dist/css/bootstrap.css">
+<!-- Bootstrap 3.3.7 -->
+<link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css">
+<!-- Font Awesome -->
+<link rel="stylesheet" href="bower_components/font-awesome/css/font-awesome.min.css">
+<!-- Ionicons -->
+<link rel="stylesheet" href="bower_components/Ionicons/css/ionicons.min.css">
+<!-- Theme style -->
+<link rel="stylesheet" href="dist/css/AdminLTE.min.css">
   <!-- AdminLTE Skins. Choose a skin from the css/skins
   	folder instead of downloading all of them to reduce the load. -->
   	<link rel="stylesheet" href="dist/css/skins/_all-skins.min.css">
@@ -172,9 +183,7 @@ function isTcKimlik($tc)
 
 
 </head>
-<body class="hold-transition skin-blue sidebar-mini">
-
-	
+<body class="hold-transition skin-blue sidebar-mini">	
 	<div class="wrapper">
 
 		<?php include 'header.php'; ?>
@@ -433,26 +442,25 @@ function isTcKimlik($tc)
              				</ul>
              			</div>
              		</div>
-             		<div class="fancy-select">
-             			<select size="4" name="Tani" multiple id="EgitselTani" class="form-control select2">
-             				<option value="Hafif Düzey Zihinsel Yetersizlik">Hafif D&#252;zey Zihinsel Yetersizlik</option>
-             				<option value="Orta Düzey Zihinsel Yetersizlik (ODZY)">Orta D&#252;zey Zihinsel Yetersizlik (ODZY)</option>
-             				<option value="Ağır Düzey Zihinsel Yetersizlik (ADZY)">Ağır D&#252;zey Zihinsel Yetersizlik (ADZY)</option>
-             				<option value="Çok Ağır Düzey Zihinsel Yetersizlik (CADZY)">&#199;ok Ağır D&#252;zey Zihinsel Yetersizlik (CADZY)</option>
-             				<option value="Bedensel Yetersizlik">Bedensel Yetersizlik</option>
-             				<option value="Görme Yetersizliği">G&#246;rme Yetersizliği</option>
-             				<option value="Duygusal Davranış Bozukluğu (DDB)">Duygusal Davranış Bozukluğu (DDB)</option>
-             				<option value="Yaygın Gelişimsel Bozukluk (OTİZM)">Yaygın Gelişimsel Bozukluk (OTİZM)</option>
-             				<option value="Özel Öğrenme Güçlüğü (ÖÖG)">&#214;zel &#214;ğrenme G&#252;&#231;l&#252;ğ&#252;(&#214;&#214;G)</option>
-             				<option value="Dikkat Eksikliği ve Hiperaktivite Bozukluğu (DEHB)">Dikkat Eksikliği ve Hiperaktivite Bozukluğu (DEHB)</option>
-             				<option value="Dil Konuşma Güçlüğü (DKG)">Dil Konuşma G&#252;&#231;l&#252;ğ&#252; (DKG)</option>
-             				<option value="Üstün Yetenekli Birey (ÜYB)">&#220;st&#252;n Yetenekli Birey (&#220;YB)</option>
-             				<option value="İşitme Yetersizliği">İşitme Yetersizliği</option>
-             				<option value="Normal">Normal</option>
+             		
+             		<select size="4" name="Tani" multiple id="tanilar" class="form-control">
+             			<option value="Hafif Düzey Zihinsel Yetersizlik">Hafif D&#252;zey Zihinsel Yetersizlik</option>
+             			<option value="Orta Düzey Zihinsel Yetersizlik (ODZY)">Orta D&#252;zey Zihinsel Yetersizlik (ODZY)</option>
+             			<option value="Ağır Düzey Zihinsel Yetersizlik (ADZY)">Ağır D&#252;zey Zihinsel Yetersizlik (ADZY)</option>
+             			<option value="Çok Ağır Düzey Zihinsel Yetersizlik (CADZY)">&#199;ok Ağır D&#252;zey Zihinsel Yetersizlik (CADZY)</option>
+             			<option value="Bedensel Yetersizlik">Bedensel Yetersizlik</option>
+             			<option value="Görme Yetersizliği">G&#246;rme Yetersizliği</option>
+             			<option value="Duygusal Davranış Bozukluğu (DDB)">Duygusal Davranış Bozukluğu (DDB)</option>
+             			<option value="Yaygın Gelişimsel Bozukluk (OTİZM)">Yaygın Gelişimsel Bozukluk (OTİZM)</option>
+             			<option value="Özel Öğrenme Güçlüğü (ÖÖG)">&#214;zel &#214;ğrenme G&#252;&#231;l&#252;ğ&#252;(&#214;&#214;G)</option>
+             			<option value="Dikkat Eksikliği ve Hiperaktivite Bozukluğu (DEHB)">Dikkat Eksikliği ve Hiperaktivite Bozukluğu (DEHB)</option>
+             			<option value="Dil Konuşma Güçlüğü (DKG)">Dil Konuşma G&#252;&#231;l&#252;ğ&#252; (DKG)</option>
+             			<option value="Üstün Yetenekli Birey (ÜYB)">&#220;st&#252;n Yetenekli Birey (&#220;YB)</option>
+             			<option value="İşitme Yetersizliği">İşitme Yetersizliği</option>
+             			<option value="Normal">Normal</option>
+             		</select> 
+             		
 
-             			</select>
-
-             		</div>
              		<span id="ContentPlaceHolder1_lblTani" style="color:Red;font-weight:bold;"></span>
              	</div>
              </div>
@@ -567,11 +575,12 @@ function isTcKimlik($tc)
 						<textarea name="Aciklama" rows="2" cols="20" id="Aciklama" class="form-control"></textarea>
 					</div>
 				</div>
+				
 				<!-- End .form-group  -->
 			</div>
 
 			<!--<button type="submit" id="sub" class="btn btn-success mr5 mb10">Kaydet Button</button> -->
-			<input type="submit" id="sub" value="Kaydet" class="btn btn-success mr5 mb10">  
+			<input type="submit" id="sub" value="Kaydet" class="btn btn-success">  
 			<span class="error" "><?php echo $_SESSION["errorMessage"]; ?></span>
 			<h1><span id="result" style="color:blue"></span></h1></div>
 
@@ -600,7 +609,9 @@ function isTcKimlik($tc)
 </section>
 </div>
 <?php include 'footer.php'; ?>
-</div>
+</div> 
+
+
 <!-- ./wrapper -->
 
 
@@ -809,18 +820,7 @@ function isTcKimlik($tc)
 })
 </script>
 
-<script>
-	
-	$(document).ready(function(){
-		$('#EgitselTani').multiselect({
-			nonSelectedText: 'Select Framework',
-			enableFiltering: true,
-			enableCaseInsensitiveFiltering: true,
-			buttonWidth:'400px'
-		}); 
-	});
 
-</script>
 
 </div>
 
@@ -830,3 +830,17 @@ session_unset(); ?>
 
 </body>
 </html>
+<script>
+
+	$(document).ready(function(){
+		
+		$('#framework').multiselect({
+			nonSelectedText: 'Select Framework',
+			enableFiltering: true,
+			enableCaseInsensitiveFiltering: true,
+			buttonWidth:'400px'
+		});
+
+	});
+
+</script>

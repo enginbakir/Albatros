@@ -12,7 +12,7 @@ if (!$conn) {
 //$conn = mysql_connect('localhost','root','12345678');
 //$db = mysql_select_db('albatros');
 
-var_dump($_POST);
+
 
 $conn = mysqli_connect('localhost','root','12345678','albatros');
 
@@ -116,19 +116,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
 	$uploadOk = 0;
 }
 
-// Check if $uploadOk is set to 0 by an error
-/*
-if ($uploadOk == 0) {
-	$error[] "Sorry, your file was not uploaded.";
-// if everything is ok, try to upload file
-} else {
-	if (move_uploaded_file($_FILES["fileToUpload"]["tmp_name"], $target_file)) {
-		echo "The file ". basename( $_FILES["fileToUpload"]["name"]). " has been uploaded.";
-	} else {
-		echo "Sorry, there was an error uploading your file.";
-	}
-}*/
-
 if(empty($fileErrors) == true && $bool == true) {
 	if (move_uploaded_file($_FILES["fileToUpload"]["tmp_name"], $target_file)) {
 		echo "The file ". basename( $_FILES["fileToUpload"]["name"]). " has been uploaded.";
@@ -157,25 +144,29 @@ if(empty($fileErrors) == true && $bool == true) {
 $sqlQuery = "INSERT INTO student (tc_no,name,surname,address,educational_diagnosis,birthday,photo,username,password, ,term_start_date,term_finish_date,gender_FK,parent_FK) VALUES 
 ('$TCNumber','$studentName','$studentSurname','$donemBaslangicTarihi')";
 
+$sqlQuery = "INSERT INTO student (tc_no,name,surname,term_start_date) VALUES 
+('$TCNumber','$studentName','$studentSurname','$donemBaslangicTarihi')";
+
 if($bool == true)
 	saveStudent($sqlQuery);
 else{		
 	$_SESSION["errorMessage"] = "Insert Into gerçekleştirilemedi.";
-	//header("Location: http://localhost/Albatros/ogrenci_ekle.php");
+
+	header("Location: http://localhost/Albatros/ogrenciEkle.php");
 }
 }
 
 
 
 function saveStudent($sqlQuery){
-
+	global $conn;
 	if(mysqli_query($conn,$sqlQuery)){
 		$_SESSION["errorMessage"] = "Ekleme Başarı ile Tamamlandı.";
-		//header("Location: http://localhost/Albatros/ogrenci_ekle.php");
+		header("Location: http://localhost/Albatros/ogrenciEkle.php");
 	}
 	else{
 		$_SESSION["errorMessage"] = "Insert Into gerçekleştirilemedi.";
-		//header("Location: http://localhost/Albatros/ogrenci_ekle.php");
+		header("Location: http://localhost/Albatros/ogrenciEkle.php");
 	}
 }
 
