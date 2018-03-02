@@ -154,11 +154,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
 	
 
 
-	$sqlStudentQuery = "INSERT INTO student (tc_no,name,surname,class,rapor_no,birthday,photo,registration_date,rehberlik_merkezi, ,term_start_date,term_finish_date,gender_FK,parent_FK) VALUES 
-	('$TCNumber','$studentName','$studentSurname','$class','$rapor_no','$birthday','$target_file','$currentDate','$rehberlikMerkezi','$donemBaslangicTarihi','$donemBitisTarihi','$gender',$parentLastID)";
 
-$sqlStudentQuery = "INSERT INTO `student`(`tc_no`, `name`, `surname`, `class`, `rapor_no`, `birthday`, `photo`, `registration_date`, `rehberlik_merkezi`,`term_start_date`, `term_finish_date`, `gender_FK`, `parent_FK`) VALUES  
-	('$TCNumber','$studentName','$studentSurname','$class','$rapor_no','$birthday','$target_file','$currentDate','$rehberlikMerkezi','$donemBaslangicTarihi','$donemBitisTarihi','$gender','$parentLastID')";
+	$sqlStudentQuery = "INSERT INTO `student`(`tc_no`, `name`, `surname`, `class`, `rapor_no`, `birthday`, `photo`, `registration_date`, `rehberlik_merkezi`,`term_start_date`, `term_finish_date`, `gender_FK`, `parent_FK`) VALUES  
+	('$TCNumber','$studentName','$studentSurname','$class','$rapor_no','$birthday','$target_file','$currentDate','$rehberlikMerkezi','$donemBaslangicTarihi','$donemBitisTarihi','$gender','".$parentLastID."')";
 
 	////// VELİ KONTROLLERİ BURADAN AŞAĞIYA ///////
 
@@ -250,7 +248,7 @@ function runParentQuery($sqlQuery){
 	else{
 
 		$_SESSION["errorMessage"] = "Ekleme Gerçekleştirilemedi. Veli Bilgilerini Kontrol Ediniz!!! <br> Error: " . $sqlQuery . "<br>" . mysqli_error($conn);
-		header("Location: ogrenciEkle.php");
+		//header("Location: ogrenciEkle.php");
 		$bool = false;
 		echo "<br>runParentQuery else<br>";
 	}
@@ -264,12 +262,18 @@ function runStudentQuery($sqlQuery){
 	global $educationalDiagnosis;
 	global $bool;
 	global $parentLastID;
- 	echo $bool;
+	global $class,$donemBitisTarihi,$donemBaslangicTarihi,$rapor_no,$studentSurname,$studentName,$TCNumber,$currentDate,$rehberlikMerkezi,$gender,$parentLastID,$birthday;$target_file;
+	echo $bool;
+	echo "<br>Parent Last ID : ".$parentLastID."<br>";
 
 
-	if(mysqli_query($conn,$sqlQuery) && $bool == true){
+
+	$sqlStudentQuery = "INSERT INTO `student`(`tc_no`, `name`, `surname`, `class`, `rapor_no`, `birthday`, `photo`, `registration_date`, `rehberlik_merkezi`,`term_start_date`, `term_finish_date`, `gender_FK`, `parent_FK`) VALUES  
+	('$TCNumber','$studentName','$studentSurname','$class','$rapor_no','$birthday','$target_file','$currentDate','$rehberlikMerkezi','$donemBaslangicTarihi','$donemBitisTarihi','$gender','$parentLastID')";
+
+	if(mysqli_query($conn,$sqlStudentQuery) && $bool == true){
 		$_SESSION["errorMessage"] = "Ekleme Başarı ile Tamamlandı.";
-		header("Location: http://localhost/Albatros/ogrenciEkle.php");
+		//header("Location: http://localhost/Albatros/ogrenciEkle.php");
 		$studentLastID = mysqli_insert_id($conn);		
 		//$_SESSION["lastStudentID"] = $studentLastID;
 		//$columns = implode(", ",array_keys($educationalDiagnosis));
@@ -288,13 +292,13 @@ function runStudentQuery($sqlQuery){
 			//if(mysqli_query($conn,"INSERT INTO `users`(`username`, `password`) VALUES ([value-2],[value-3])"))
 			$_SESSION["errorMessage"] = "Ekleme Başarı ile Tamamlandı.";
 		}
-		header("Location: ogrenciEkle.php");
+		//header("Location: ogrenciEkle.php");
 		echo "<br>runStudentQuery if<br>";
 
 	}
 	else{
 		$_SESSION["errorMessage"] = "Student Bilgilerini Kontrol Ediniz!!!<br> Error: <br>". mysqli_error($conn);
-		header("Location: ogrenciEkle.php");
+		//header("Location: ogrenciEkle.php");
 		echo "Student Bilgilerini Kontrol Ediniz!!!<br> Error: <br>". mysqli_error($conn);
 		echo "<br>runStudentQuery else<br>";
 	}
