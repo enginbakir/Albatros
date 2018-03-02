@@ -68,7 +68,7 @@
 
 <style>
 .error {color: #FF0000; font-weight:bold;}
-
+.bigfont {font-size: 20px;}
 </style>
 
 
@@ -91,7 +91,7 @@
         </h1>
         <ol class="breadcrumb">
           <li><a href="#"><i class="fa fa-dashboard"></i>Ana Sayfa</a></li>
-          <li><a href="#">Öğrenci</a></li>
+          <li><a href="index.php">Öğrenci</a></li>
           <li class="active">Ekle</li>
         </ol>
       </section>
@@ -121,7 +121,9 @@
                           <!-- Start .panel -->
                           <div class="panel-heading">
 
-                            <h4 class="panel-title">Öğrenci Bilgileri</h4>
+                            <h4 class="panel-title">Öğrenci Bilgileri   </h4>
+                            <span class="error bigfont"><?php echo $_SESSION["errorMessage"]; 
+                            echo "<br>".$_SESSION["lastParentID"]; ?></span>
                           </div>
 
                           <div class="panel-body pt0 pb0">
@@ -164,19 +166,19 @@
 
                             <div class="row">
 
-                              <label class="col-md-2 control-label"><i class="renk">*&nbsp;</i>Adı:</label>
+                              <label class="col-md-2 control-label"><i class="renk">&nbsp;</i>Adı:</label>
 
                               <div class="col-md-3">
                                 <input name="studentName" type="text" maxlength="64" id="ContentPlaceHolder1_txtAdi" class="form-control" placeholder="Öğrenci Adı">
                                 <span class="error">* <?php echo $_SESSION["nameErr"];?></span>
-                                <span id="ContentPlaceHolder1_lblAdi" style="color:Red;font-weight:bold;"></span>
+
                               </div>
 
-                              <label class="col-md-2 control-label"><i class="renk">*&nbsp;</i>Soyadı:</label>
+                              <label class="col-md-2 control-label"><i class="renk">&nbsp;</i>Soyadı:</label>
                               <div class="col-md-3">
                                 <input name="studentSurname" type="text" maxlength="64" id="ContentPlaceHolder1_txtSoyadi" class="form-control" placeholder="Öğrenci Soyadı">
                                 <span class="error">* <?php echo $_SESSION["surNameErr"];?></span>
-                                <span id="ContentPlaceHolder1_lblSoyadi" style="color:Red;font-weight:bold;"></span>
+                                
                               </div>
 
                             </div>
@@ -206,9 +208,9 @@
                         <div class="col-md-3">
 
                           <input name="TCNumber" type="text" maxlength="11" id="ContentPlaceHolder1_txtTC" class="form-control" placeholder="T.C. Kimlik No">
-                          <span class="error">* <?php echo $_SESSION["TCNumberErr"];?></span>
+                          <span class="error"><?php echo $_SESSION["TCNumberErr"];?></span>
                           <!-- <span id="ContentPlaceHolder1_RegularExpressionValidator1" style="color:Red;font-weight:bold;visibility:hidden;">Lütfen Geçerli Bir Numara Giriniz</span> -->
-                          <span id="ContentPlaceHolder1_lblTC" style="color:Red;font-weight:bold;"></span>
+                          
                         </div>                          
                       </div>
                     </div>
@@ -243,7 +245,7 @@
                           <div class=" input-group">
                             <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
                             <!-- <input name="birthDay" type="text" maxlength="10" id="ContentPlaceHolder1_txtDogumTarihi" class="form-control" placeholder="gg.AA.yyyy">-->
-                            <input name="donemBitisTarihi" class="form-control"  type="date" data-date-inline-picker="false" data-date-open-on-focus="false"/>
+                            <input name="studentBirthDay" class="form-control"  type="date" data-date-inline-picker="false" data-date-open-on-focus="false"/>
                           </div>
                         </div>
 
@@ -256,7 +258,7 @@
                         <div class="col-md-3">
                           <div class=" input-group">
 
-                            <input type="text" value="<?php date_default_timezone_set("Europe/Istanbul");
+                            <input name="registrationDate" type="text" value="<?php date_default_timezone_set("Europe/Istanbul");
                             echo date("Y-m-d"); ?>" maxlength="10" id="registrationDate" class="form-control" placeholder="yyyy-aa-gg" disabled>
 
                           </div> 
@@ -319,13 +321,15 @@
                   <input name="rehberlikMerkezi" type="text" maxlength="64" id="ContentPlaceHolder1_txtMerkezi" class="form-control" placeholder="Rehberlik Araştırma Merkezi">
 
                 </div>
-                <label class="col-md-2 control-label"><i class="renk">*&nbsp;</i>Eğitsel Tanı:</label>
+                
+                <label class="col-md-2 control-label"><i class="renk"><span class="error">*</span>&nbsp;</i>Eğitsel Tanı:</label>
+                
                 <div class="col-md-4">
-                      
-                    <div class="form-group">
-      
-                     <select id="framework" name="framework[]" multiple class="form-control" >
-                      <option value="Hafif Düzey Zihinsel Yetersizlik">Hafif D&#252;zey Zihinsel Yetersizlik</option>
+
+                  <div class="form-group">
+
+                   <select id="framework" name="framework[]" multiple class="form-control" >
+                    <option value="Hafif Düzey Zihinsel Yetersizlik (HDZY)">Hafif D&#252;zey Zihinsel Yetersizlik (HDZY)</option>
                     <option value="Orta Düzey Zihinsel Yetersizlik (ODZY)">Orta D&#252;zey Zihinsel Yetersizlik (ODZY)</option>
                     <option value="Ağır Düzey Zihinsel Yetersizlik (ADZY)">Ağır D&#252;zey Zihinsel Yetersizlik (ADZY)</option>
                     <option value="Çok Ağır Düzey Zihinsel Yetersizlik (CADZY)">&#199;ok Ağır D&#252;zey Zihinsel Yetersizlik (CADZY)</option>
@@ -339,27 +343,19 @@
                     <option value="Üstün Yetenekli Birey (ÜYB)">&#220;st&#252;n Yetenekli Birey (&#220;YB)</option>
                     <option value="İşitme Yetersizliği">İşitme Yetersizliği</option>
                     <option value="Normal">Normal</option>
-                    </select>
-                  </div>
-          
+                  </select>
+                </div>
+              </div>
+            </div>
+            <!-- End .form-group 6 -->
 
-
-
-
-
-               <span id="ContentPlaceHolder1_lblTani" style="color:Red;font-weight:bold;"></span>
-             </div>
-           </div>
-           <!-- End .form-group 6 -->
-
-         </div>
-       </div>
-     </div>
-     <!-- End .panel -->
-
-   </div>
- </div>
- <!-- End Of ContentPlaceHolder1_pnlgenel -->
+          </div>
+        </div>
+      </div>
+      <!-- End .panel -->
+    </div>
+  </div>
+  <!-- End Of ContentPlaceHolder1_pnlgenel -->
 </div>
 
 <!-- End Of ContentWrapper -->
@@ -375,17 +371,17 @@
       <div class="form-horizontal group-border stripped">
 
         <div class="form-group">
-          <div class="row">
-            <label class="col-md-2 control-label" for=""><i class="renk">*&nbsp;</i>Veli Adı:</label>
+          <div class="row">           
+            <label class="col-md-2 control-label" for=""><i class="renk">&nbsp;</i>Adı:</label>
             <div class="col-md-3">
-              <input name="VeliAdi" type="text" maxlength="64" id="parentName" class="form-control" placeholder="Velinin Adı">
-              <span class="error"></span>
+              <input name="parentName" type="text" maxlength="64" id="parentName" class="form-control" placeholder="Velinin Adı">
+              <span class="error">* <?php echo $_SESSION["parentNameErr"]; ?></span>
             </div>
 
-            <label class="col-md-2 control-label" for=""><i class="renk">*&nbsp;</i>Veli Soyadı:</label>
+            <label class="col-md-2 control-label" for=""><i class="renk">&nbsp;</i>Soyadı:</label>
             <div class="col-md-3">
-              <input name="VeliSoyadi" type="text" maxlength="64" id="parentSurname" class="form-control" placeholder="Velinin Soyadı">
-              <span class="error"></span>
+              <input name="parentSurname" type="text" maxlength="64" id="parentSurname" class="form-control" placeholder="Velinin Soyadı">
+              <span class="error">* <?php echo $_SESSION["parentSurnameErr"]; ?></span>
             </div>
           </div>
         </div>
@@ -401,7 +397,7 @@
             <label class="col-md-2 control-label" for="">Yakınlık Derecesi:</label>
             <div class="col-md-3">              
               <div class="fancy-select">
-                <select name="Yakınlık Derecesi" id="Yakinlik" class="fancy-select form-control fancified">
+                <select name="parentYakinlik" id="Yakinlik" class="fancy-select form-control fancified">
                   <option value="Anne">Anne</option>
                   <option value="Baba">Baba</option>
                   <option value="Diğer">Diğer</option>
@@ -436,14 +432,14 @@
         <div class="form-group">
           <label class="col-md-2 control-label" for="">Email Adresi:</label>
           <div class="col-md-8">
-            <input name="emailAdresi" type="text" maxlength="256" id="emailAdresi" class="form-control" placeholder="Ev Adresi">
+            <input name="emailAdresi" type="text" maxlength="255" id="emailAdresi" class="form-control" placeholder="Email Adresi">
           </div>
         </div>
 
         <div class="form-group">
           <label class="col-md-2 control-label" for="">Ev Adresi:</label>
           <div class="col-md-8">
-            <input name="EvAdresi" type="text" maxlength="256" id="EvAdresi" class="form-control" placeholder="Ev Adresi">
+            <input name="EvAdresi" type="text" maxlength="255" id="EvAdresi" class="form-control" placeholder="Ev Adresi">
           </div>
         </div>
         <!-- End .form-group  -->
@@ -451,7 +447,7 @@
         <div class="form-group">
           <label class="col-md-2 control-label" for="">İş Adresi:</label>
           <div class=" col-md-8">
-            <input name="parentIsAdresi" type="text" maxlength="256" id="IsAdresi" class="form-control">
+            <input name="parentIsAdresi" type="text" maxlength="255" id="IsAdresi" class="form-control" placeholder="İş Adresi">
           </div>
         </div>
         <!-- End .form-group  -->
@@ -466,14 +462,17 @@
       </div>
 
       <!--<button type="submit" id="sub" class="btn btn-success mr5 mb10">Kaydet Button</button> -->
-      <input type="submit" id="sub" value="Kaydet" class="btn btn-success">  
-      <span class="error" "><?php echo $_SESSION["errorMessage"]; ?></span>
-      <h1><span id="result" style="color:blue"></span></h1></div>
-
-      <i class="renk">* ile işaretli alanların doldurulması zorunludur!</i> 
+      <div class="form-group">
+        <div class="row">
+          <div class="col-md-6">  
+            <input type="submit" id="sub" value="Kaydet" class="btn btn-success">  
+            
+          </div>
+        </div>
+      </div> 
 
     </div>
-
+    <span class="error">* ile işaretli alanların doldurulması zorunludur!</span> 
 
     <!-- End of Panel -->
 
@@ -705,10 +704,10 @@ session_unset(); ?>
 <script>
   $(document).ready(function(){
    $('#framework').multiselect({
-    nonSelectedText: 'Select Framework',
+    nonSelectedText: 'Tanı Seç',
     enableFiltering: true,
     enableCaseInsensitiveFiltering: true,
-    buttonWidth:'400px'
+    buttonWidth:'300px'
   });
  /*
  $('#framework_form').on('submit', function(event){

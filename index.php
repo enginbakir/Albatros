@@ -77,9 +77,9 @@
           <small>...........</small>
         </h1>
         <ol class="breadcrumb">
-          <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-          <li><a href="#">Students</a></li>
-          <li class="active">Data tables</li>
+          <li><a href="#"><i class="fa fa-dashboard"></i> Anasayfa</a></li>
+          <li><a href="#">Öğrenciler</a></li>
+          <li class="active"></li>
         </ol>
       </section>
 
@@ -192,7 +192,7 @@
                               $sql = "SELECT student_PK,name,surname FROM student where name='".$name."' and surname='".$surname."';";
                             }
                             if(isset($name) && !isset($surname)){
-                              $sql = "SELECT student_PK,name,surname FROM student where name='".$name."';";;
+                              $sql = "SELECT student_PK,name,surname FROM student where name='".$name."';";
                             }
                             if(!isset($name) && isset($surname)){
                               $sql = "SELECT student_PK, name, surname from student where surname='".$surname."';";
@@ -206,7 +206,7 @@
 
                             $retval = mysql_query( $sql, $conn );
 
-
+                            $num_rows = mysql_num_rows($retval);
                             if(! $retval ) {
                               die('Could not get data: ' . mysql_error());
                             }
