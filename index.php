@@ -5,7 +5,7 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
-  <title>AdminLTE 2 | Dashboard</title>
+  <title>Admin - Albatros</title>
   <!-- Tell the browser to be responsive to screen width -->
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
   <!-- Bootstrap 3.3.7 -->
@@ -133,25 +133,26 @@
 
                               <?php 
 
-                              $dbhost = 'localhost';
+                            /*  $dbhost = 'localhost';
                               $dbuser = 'root';
                               $dbpass = '12345678';
 
                               $rec_limit = 10;
-                              $conn = mysql_connect($dbhost, $dbuser, $dbpass);
+                              $conn = mysqli_connect($dbhost, $dbuser, $dbpass);
 
                               if(! $conn ) {
-                                die('Could not connect: ' . mysql_error());
+                                die('Could not connect: ' . mysqli_error());
                               }
-                              mysql_select_db('albatros');
-
+                              mysqli_select_db('albatros');
+*/
+                              include "baglan.php";
                               /* Get total number of records */
                               $sql = "SELECT student_PK FROM student ";
-                              $retval = mysql_query( $sql, $conn );
+                              $retval = mysqli_query( $conn,$sql );
 
   ///////////////////////////////////
 
-                              $num_rows = mysql_num_rows($retval);
+                              $num_rows = mysqli_num_rows($retval);
 
                               $num_pages = (int) ($num_rows / 10);
 
@@ -161,9 +162,9 @@
   ///////////////////////////////////
 
                               if(! $retval ) {
-                                die('Could not get data: ' . mysql_error());
+                                die('Could not get data: ' . mysqli_error());
                               }
-                              $row = mysql_fetch_array($retval, MYSQL_NUM );
+                              $row = mysqli_fetch_array($retval, MYSQL_ASSOC );
                               $rec_count = $row[0];
 
 
@@ -204,15 +205,15 @@
                             unset($_POST['surname']); 
                             //echo $sql;
 
-                            $retval = mysql_query( $sql, $conn );
+                            $retval = mysqli_query( $conn, $sql );
 
-                            $num_rows = mysql_num_rows($retval);
+                            $num_rows = mysqli_num_rows($retval);
                             if(! $retval ) {
-                              die('Could not get data: ' . mysql_error());
+                              die('Could not get data: ' . mysqli_error());
                             }
 
 
-                            while($row = mysql_fetch_array($retval, MYSQL_ASSOC)) {
+                            while($row = mysqli_fetch_array($retval, MYSQL_ASSOC)) {
                               echo "<tr>";
 
                               echo "<td class='id'>".$row['student_PK']."</td>";
@@ -239,7 +240,7 @@
                       <div class="col col-xs-8">
                         <ul class="pagination hidden-xs pull-right">
                          <?php
-                         mysql_close($conn); ?>
+                         mysqli_close($conn); ?>
 
                        </div>
                      </div>

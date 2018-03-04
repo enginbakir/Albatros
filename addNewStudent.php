@@ -12,14 +12,7 @@ if (!$conn) {
 //$conn = mysql_connect('localhost','root','12345678');
 //$db = mysql_select_db('albatros');
 
-
-
-$conn = mysqli_connect('localhost','root','12345678','albatros');
-
-if($conn->connect_error){
-	die("Connection Failed: ".$conn->connect_error);
-}
-
+include "baglan.php";
 
 
 /*
@@ -248,7 +241,7 @@ function runParentQuery($sqlQuery){
 	else{
 
 		$_SESSION["errorMessage"] = "Ekleme Gerçekleştirilemedi. Veli Bilgilerini Kontrol Ediniz!!! <br> Error: " . $sqlQuery . "<br>" . mysqli_error($conn);
-		//header("Location: ogrenciEkle.php");
+		header("Location: ogrenciEkle.php");
 		$bool = false;
 		echo "<br>runParentQuery else<br>";
 	}
@@ -273,7 +266,7 @@ function runStudentQuery($sqlQuery){
 
 	if(mysqli_query($conn,$sqlStudentQuery) && $bool == true){
 		$_SESSION["errorMessage"] = "Ekleme Başarı ile Tamamlandı.";
-		//header("Location: http://localhost/Albatros/ogrenciEkle.php");
+		header("Location: ogrenciEkle.php");
 		$studentLastID = mysqli_insert_id($conn);		
 		//$_SESSION["lastStudentID"] = $studentLastID;
 		//$columns = implode(", ",array_keys($educationalDiagnosis));
@@ -292,13 +285,13 @@ function runStudentQuery($sqlQuery){
 			//if(mysqli_query($conn,"INSERT INTO `users`(`username`, `password`) VALUES ([value-2],[value-3])"))
 			$_SESSION["errorMessage"] = "Ekleme Başarı ile Tamamlandı.";
 		}
-		//header("Location: ogrenciEkle.php");
+		header("Location: ogrenciEkle.php");
 		echo "<br>runStudentQuery if<br>";
 
 	}
 	else{
 		$_SESSION["errorMessage"] = "Student Bilgilerini Kontrol Ediniz!!!<br> Error: <br>". mysqli_error($conn);
-		//header("Location: ogrenciEkle.php");
+		header("Location: ogrenciEkle.php");
 		echo "Student Bilgilerini Kontrol Ediniz!!!<br> Error: <br>". mysqli_error($conn);
 		echo "<br>runStudentQuery else<br>";
 	}
