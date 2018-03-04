@@ -13,6 +13,9 @@ if (!$conn) {
 //$db = mysql_select_db('albatros');
 
 include "baglan.php";
+if (!$conn)
+	$_SESSION["connection"] = "Veritabanı Bağlantı Hatası";
+	//die("Connection Failed: ".$conn->connect_error);
 
 
 /*
@@ -29,7 +32,7 @@ $target_file = $target_dir . basename($_FILES["fileToUpload"]["name"]);
 $uploadOk = 1;
 $imageFileType = strtolower(pathinfo($target_file,PATHINFO_EXTENSION));
 $_SESSION["imageName"] = $target_file;
- //// STUDENT ////
+//// STUDENT ////
 $studentName = $studentSurname = $gender = $TCNumber = $class = $raporNumber = $birthday = $educationalDiagnosis[] = $donemBaslangicTarihi = $registrationDate = $transportation = $rehberlikMerkezi = null;
 $nameErr = $surnameErr = $TCNumberErr = null;
 $username = $password = null;
@@ -37,7 +40,7 @@ $donemBaslangicTarihi = $_POST["donemBaslangicTarihi"];
 $donemBitisTarihi = $_POST["donemBitisTarihi"];
 $studentLastID = null;
 
- //// PARENT ////
+//// PARENT ////
 $parentName = $parentSurname = $parentTCNumber = $parentYakinlik = $parentSabitTel = $parentCepTel = $parentEmailAdress = $parentAdress = $parentIsAdress = $aciklama = $proximity = null;
 $parentNameErr = $parentSurnameErr = $parentTCNumberErr = null;
 $parentLastID = null;
@@ -75,7 +78,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
 	if(!empty($_POST["TCNumber"])){
 		$TCNumber = test_input($_POST['TCNumber']);
 		if(preg_match("/^[0-9]{11}$/", $TCNumber)){
-			
+
 			if(isTcKimlik($TCNumber) == false){
 				$_SESSION["TCNumberErr"] = "TC Kimlik Numarası Yanlıştır";
 				$bool = false;
@@ -94,11 +97,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
 
 
 
-	
 
 
 
-	//// EĞİTSEL TANI CONTROLÜ  BURAYA YAZILACAK /////////
+
+//// EĞİTSEL TANI CONTROLÜ  AŞAĞI  YAZILACAK /////////
 
 	if(!empty($_POST["framework"])){
 		$counter = 0;
@@ -115,10 +118,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
 			$counter ++;
 		}
 
-
+	}
+	else{
+		$_SESSION["educationalDiagnosisErr"] = "Eğitsel Tanı Seçilmedi";
 	}
 
-//// EĞİTSEL TANI CONTROLÜ  BURAYA YAZILACAK /////////
+//// EĞİTSEL TANI CONTROLÜ  YUKARI  YAZILACAK /////////
 	if(!empty($_POST["gender"])){
 		if($_POST["gender"] == "Kız")
 			$gender = 1;
@@ -143,15 +148,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
 	if(empty($donemBitisTarihi))
 		$bool = false;
 
-
-	
-
-
-
-	$sqlStudentQuery = "INSERT INTO `student`(`tc_no`, `name`, `surname`, `class`, `rapor_no`, `birthday`, `photo`, `registration_date`, `rehberlik_merkezi`,`term_start_date`, `term_finish_date`, `gender_FK`, `parent_FK`) VALUES  
-	('$TCNumber','$studentName','$studentSurname','$class','$rapor_no','$birthday','$target_file','$currentDate','$rehberlikMerkezi','$donemBaslangicTarihi','$donemBitisTarihi','$gender','".$parentLastID."')";
-
-	////// VELİ KONTROLLERİ BURADAN AŞAĞIYA ///////
+////// VELİ KONTROLLERİ BURADAN AŞAĞIYA ///////
 
 
 	if (empty($_POST["parentName"])) {
@@ -219,11 +216,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
 	$sqlParentQuery = "INSERT INTO parent (tel_no,sabit_tel,tc_no,name,surname,adress,work_adress,description,email_adress,degree_of_proximity_FK) VALUES ('$parentCepTel','$parentSabitTel','$parentTCNumber','$parentName','$parentSurname','$parentAdress','$parentIsAdress','$aciklama','$parentEmailAdress','$proximity')";
 
 	runParentQuery($sqlParentQuery);
-	runStudentQuery($sqlStudentQuery);
-	/// VELİ KONTROLLERİ BURADAN YUKARIYA ///
+	runStudentQuery();
+/// VELİ KONTROLLERİ BURADAN YUKARIYA ///
 
 
- /// END OF REQUEST IF CODE BLOCK  ///
+/// END OF REQUEST IF CODE BLOCK  ///
 }
 
 
@@ -248,7 +245,7 @@ function runParentQuery($sqlQuery){
 }
 
 
-function runStudentQuery($sqlQuery){
+function runStudentQuery(){
 
 	global $conn;
 	global $studentLastID;
@@ -268,10 +265,10 @@ function runStudentQuery($sqlQuery){
 		$_SESSION["errorMessage"] = "Ekleme Başarı ile Tamamlandı.";
 		header("Location: ogrenciEkle.php");
 		$studentLastID = mysqli_insert_id($conn);		
-		//$_SESSION["lastStudentID"] = $studentLastID;
-		//$columns = implode(", ",array_keys($educationalDiagnosis));
-		//$escaped_values = array_map('mysql_real_escape_string', array_values($educationalDiagnosis));
-		//$values  = implode(", ", $escaped_values);
+//$_SESSION["lastStudentID"] = $studentLastID;
+//$columns = implode(", ",array_keys($educationalDiagnosis));
+//$escaped_values = array_map('mysql_real_escape_string', array_values($educationalDiagnosis));
+//$values  = implode(", ", $escaped_values);
 		foreach ($educationalDiagnosis as $key ) {
 			$value = (int)$key;
 			$sql = "INSERT INTO student_diagnosis (student_PK,diagnosis_FK) VALUES ('$studentLastID','$value')";
@@ -282,7 +279,7 @@ function runStudentQuery($sqlQuery){
 				$bool = false;
 		}	
 		if($bool == true){
-			//if(mysqli_query($conn,"INSERT INTO `users`(`username`, `password`) VALUES ([value-2],[value-3])"))
+//if(mysqli_query($conn,"INSERT INTO `users`(`username`, `password`) VALUES ([value-2],[value-3])"))
 			$_SESSION["errorMessage"] = "Ekleme Başarı ile Tamamlandı.";
 		}
 		header("Location: ogrenciEkle.php");
@@ -359,6 +356,7 @@ if(empty($fileErrors) == true && $bool == true) {
 }else{
 	$_SESSION["errors"] = $fileErrors;
 }
+
 
 
 

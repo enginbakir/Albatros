@@ -121,9 +121,13 @@
                           <!-- Start .panel -->
                           <div class="panel-heading">
 
-                            <h4 class="panel-title">Öğrenci Bilgileri   </h4>
-                            <span class="error bigfont"><?php echo $_SESSION["errorMessage"]; 
-                            echo "<br>".$_SESSION["lastParentID"]; ?></span>
+                            <h4 class="panel-title">Öğrenci Bilgileri</h4>
+                            <span class="error bigfont">
+                              <?php if(isset($_SESSION["connection"]))
+                                  echo "Veritabanı Bağlantı Hatası";
+                                ?>
+                              
+                            </span>
                           </div>
 
                           <div class="panel-body pt0 pb0">
@@ -323,7 +327,7 @@
                 </div>
                 
                 <label class="col-md-2 control-label"><i class="renk"><span class="error">*</span>&nbsp;</i>Eğitsel Tanı:</label>
-                
+                <span class="error"><?php echo $_SESSION["educationalDiagnosisErr"]; ?></span>
                 <div class="col-md-4">
 
                   <div class="form-group">
@@ -392,7 +396,7 @@
             <label class="col-md-2 control-label">T.C. No:</label>
             <div class="col-md-3">
               <input name="parentTCNumber" type="text" maxlength="11" id="parentTCNumber" class="form-control" placeholder="TC Kimlik No">
-              <span class="error"></span>
+              <span class="error"><?php echo $_SESSION["parentTCNumberErr"] ?></span>
             </div>
             <label class="col-md-2 control-label" for="">Yakınlık Derecesi:</label>
             <div class="col-md-3">              
@@ -670,31 +674,31 @@
 </div>
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 <?php 
 session_unset(); ?>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
