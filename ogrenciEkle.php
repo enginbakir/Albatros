@@ -15,11 +15,9 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-3-typeahead/4.0.2/bootstrap3-typeahead.min.js"></script>  
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" />
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
-
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/0.9.13/css/bootstrap-multiselect.css" />
-
-
   <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/0.9.13/js/bootstrap-multiselect.js"></script>
+
   <!-- Mervenin ekledikleri-->
   <!-- Import google fonts - Heading first/ text second -->
   <link href="http://fonts.googleapis.com/css?family=Droid+Sans:400,700" rel="stylesheet" type="text/css">
@@ -104,7 +102,7 @@
               <div class="col-md-12">
 
                 <!-- FORM -->
-                <!--<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>-->
+
                 <form id="addStudentForm" action="addNewStudent.php" method="post" enctype="multipart/form-data">
 
                   <!-- FORM -->
@@ -124,8 +122,9 @@
                             <h4 class="panel-title">Öğrenci Bilgileri</h4>
                             <span class="error bigfont">
                               <?php if(isset($_SESSION["connection"]))
-                                  echo "Veritabanı Bağlantı Hatası";
-                                ?>
+                              echo "Veritabanı Bağlantı Hatası";
+                              echo $_SESSION["errorMessage"];
+                              ?>
                               
                             </span>
                           </div>
@@ -138,377 +137,346 @@
                               <div class="form-group">
 
                                 <div class="row">
-                                  <label class="col-md-2 control-label" for="">Dönem Başlangıç Tarihi:</label>
+                                  <div>
+
+                                    <label class="col-md-2 control-label" for="">Dönem Başlangıç Tarihi:</label>
+                                  </div>
                                   <div class="col-md-3">
 
                                     <div class="input-group">
-                                      <!-- <span class="input-group-addon"><i class="fa fa-calendar"></i></span>-->
-                                      <!-- <input name="startDate" type="text" value="18.09.2017" maxlength="10" id="ContentPlaceHolder1_txtBasTarihi" class="form-control" placeholder="gg.AA.yyyy"> -->
-                                      <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                                      <span class="error"><?php echo $_SESSION["donemBaslangicTarihi"]; ?></span>
                                       <input name="donemBaslangicTarihi" class="form-control" type="date" data-date-inline-picker="false" data-date-open-on-focus="true" />
                                     </div>
                                   </div>
                                   <label class="col-md-2 control-label" for="">Dönem Bitiş Tarihi:</label>
+
                                   <div class="col-md-3">
 
                                     <div class="input-group">
-                                 <!-- <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-                                  <input name="endDate" type="text" value="08.06.2018" maxlength="10" id="ContentPlaceHolder1_txtBitisTarihi" class="form-control " placeholder="gg.AA.yyyy"> -->
-                                  <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-                                  <input name="donemBitisTarihi" class="form-control"  type="date" data-date-inline-picker="false" data-date-open-on-focus="false"/>
+                                      <span class="error"><?php echo $_SESSION["donemBitisTarihi"]; ?></span>
+                                      <input name="donemBitisTarihi" class="form-control"  type="date" data-date-inline-picker="false" data-date-open-on-focus="false"/>
 
+                                    </div>
+
+                                  </div>
                                 </div>
 
                               </div>
-                            </div>
+                              <!-- End .form-group 1 -->
 
-                          </div>
-                          <!-- End .form-group 1 -->
+                              <!-- Start .form-group 2 -->
+                              <div class="form-group">
 
-                          <!-- Start .form-group 2 -->
-                          <div class="form-group">
+                                <div class="row">
 
-                            <div class="row">
+                                  <label class="col-md-2 control-label"><i class="renk">&nbsp;</i>Adı:</label>
 
-                              <label class="col-md-2 control-label"><i class="renk">&nbsp;</i>Adı:</label>
+                                  <div class="col-md-3">
+                                    <input name="studentName" type="text" maxlength="64" id="ContentPlaceHolder1_txtAdi" class="form-control" placeholder="Öğrenci Adı">
+                                    <span class="error">* <?php echo $_SESSION["nameErr"];?></span>
 
-                              <div class="col-md-3">
-                                <input name="studentName" type="text" maxlength="64" id="ContentPlaceHolder1_txtAdi" class="form-control" placeholder="Öğrenci Adı">
-                                <span class="error">* <?php echo $_SESSION["nameErr"];?></span>
+                                  </div>
 
+                                  <label class="col-md-2 control-label"><i class="renk">&nbsp;</i>Soyadı:</label>
+                                  <div class="col-md-3">
+                                    <input name="studentSurname" type="text" maxlength="64" id="ContentPlaceHolder1_txtSoyadi" class="form-control" placeholder="Öğrenci Soyadı">
+                                    <span class="error">* <?php echo $_SESSION["surNameErr"];?></span>
+
+                                  </div>
+
+                                </div>
+                              </div>
+                              <!-- End .form-group 2 -->
+
+                              <!-- Start .form-group 3 -->
+                              <div class="form-group">
+                                <div class="row">
+
+                                  <label class="col-md-2 control-label">Cinsiyet:</label>
+                                  <div class="col-md-3">    
+                                    <div class="fancy-select">
+                                      <select name="gender" id="Cinsiyet" class="fancy-select form-control fancified" >
+                                        <option value="Erkek">Erkek</option>
+                                        <option value="Kız">Kız</option> 
+                                      </select>
+                                    </div> 
+
+                                  </div>
+                                  <label class="col-md-2 control-label">T.C. No:</label>
+                                  <div class="col-md-3">
+
+                                    <input name="TCNumber" type="text" maxlength="11" id="ContentPlaceHolder1_txtTC" class="form-control" placeholder="T.C. Kimlik No">
+                                    <span class="error"><?php echo $_SESSION["TCNumberErr"];?></span>
+                                  </div>                          
+                                </div>
                               </div>
 
-                              <label class="col-md-2 control-label"><i class="renk">&nbsp;</i>Soyadı:</label>
-                              <div class="col-md-3">
-                                <input name="studentSurname" type="text" maxlength="64" id="ContentPlaceHolder1_txtSoyadi" class="form-control" placeholder="Öğrenci Soyadı">
-                                <span class="error">* <?php echo $_SESSION["surNameErr"];?></span>
-                                
+                              <!-- End .form-group 3 -->
+
+                              <!-- Start .form-group 4 -->
+
+                              <div class="form-group">
+                                <div class="row">
+                                  <label class="col-md-2 control-label">Sınıfı:</label>
+                                  <div class="col-md-3">
+
+                                    <input name="studentClass" type="text" maxlength="8" id="ContentPlaceHolder1_txtSinif" class="form-control" placeholder="Sınıfı">
+
+                                  </div>
+                                  <label class="col-md-2 control-label">Rapor No:</label>
+                                  <div class="col-md-3">
+                                    <input name="studentRapor" type="text" maxlength="16" id="ContentPlaceHolder1_txtRapor" class="form-control" placeholder="Rapor No">
+
+                                  </div>
+
+                                </div>
+                              </div>
+                              <!-- End .form-group 4 -->
+
+                              <!-- Start .form-group 4 -->
+                              <div class="form-group">
+                                <div class="row">
+                                  <label class="col-md-2 control-label" for="">Doğum Tarihi:</label>
+                                  <div class="col-md-3">
+                                    <div class=" input-group">
+                                      <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                                      <!-- <input name="birthDay" type="text" maxlength="10" id="ContentPlaceHolder1_txtDogumTarihi" class="form-control" placeholder="gg.AA.yyyy">-->
+                                      <input name="studentBirthDay" class="form-control"  type="date" data-date-inline-picker="false" data-date-open-on-focus="false"/>
+                                    </div>
+                                  </div>
+
+                                  <label class="col-md-2 control-label" for="">Kayıt Tarihi:</label>
+                                  <div class="col-md-3">
+                                    <div class=" input-group">
+
+                                      <input name="registrationDate" type="text" value="<?php date_default_timezone_set("Europe/Istanbul");
+                                      echo date("Y-m-d"); ?>" maxlength="10" id="registrationDate" class="form-control" placeholder="yyyy-aa-gg" disabled>
+
+                                    </div> 
+                                  </div>
+                                </div>
                               </div>
 
-                            </div>
-                          </div>
-                          <!-- End .form-group 2 -->
+                              <!-- End .form-group  -->   
+                              <!-- End .form-group 4 -->
 
-                          <!-- Start .form-group 3 -->
-                          <div class="form-group">
-                            <div class="row">
+                              <!-- Start .form-group 5 -->
 
-                              <label class="col-md-2 control-label">Cinsiyet:</label>
-                              <div class="col-md-3">    
-                                <div class="fancy-select">
-                                  <select name="gender" id="Cinsiyet" class="fancy-select form-control fancified" >
-                                    <option value="Erkek">Erkek</option>
-                                    <option value="Kız">Kız</option> 
+                              <!-- End .form-group 5 -->
+
+                              <!---- FOTOĞRAF -->
+
+                              <div class="form-group">
+                                <label class="col-md-2 control-label" for="">Fotoğraf Seç:</label>
+                                <div class="col-md-3">
+                                  <span class="error">
+                                    <?php 
+                                    for($temp; $temp < 5;$temp++){
+                                      if(!empty($_SESSION["fileErrors"][$temp]))
+                                        echo $_SESSION["fileErrors"][$temp]." "; 
+                                    }
+                                    ?>
+                                  </span>
+
+                                  <input type="file" name="fileToUpload" id="fileToUpload" class="btn btn-info mr5 mb10">
+                                </div>
+                                <label class="col-md-2 control-label" for="">Ulaşım:</label>
+                                <div class="col-md-3">
+
+                                  <input name="transportation" type="text" maxlength="64" class="form-control" placeholder="Ulaşım">
+                                </div>
+                              </div>
+
+                              <!---- FOTOĞRAF -->
+
+                              <!-- Start .form-group 6 -->
+                              <div class="form-group">
+                                <label class="col-md-2 control-label" for="">Reh. Araş. Merkezi:</label>
+                                <div class="col-md-3">
+
+                                  <input name="rehberlikMerkezi" type="text" maxlength="64" id="ContentPlaceHolder1_txtMerkezi" class="form-control" placeholder="Rehberlik Araştırma Merkezi">
+
+                                </div>
+
+                                <label class="col-md-2 control-label"><i class="renk"><span class="error">*</span>&nbsp;</i>Eğitsel Tanı:</label>
+                                <span class="error"><?php echo $_SESSION["educationalDiagnosisErr"]; ?></span>
+                                <div class="col-md-4">
+
+                                  <div class="form-group">
+
+                                   <select id="framework" name="framework[]" multiple class="form-control" >
+                                    <option value="Hafif Düzey Zihinsel Yetersizlik (HDZY)">Hafif D&#252;zey Zihinsel Yetersizlik (HDZY)</option>
+                                    <option value="Orta Düzey Zihinsel Yetersizlik (ODZY)">Orta D&#252;zey Zihinsel Yetersizlik (ODZY)</option>
+                                    <option value="Ağır Düzey Zihinsel Yetersizlik (ADZY)">Ağır D&#252;zey Zihinsel Yetersizlik (ADZY)</option>
+                                    <option value="Çok Ağır Düzey Zihinsel Yetersizlik (CADZY)">&#199;ok Ağır D&#252;zey Zihinsel Yetersizlik (CADZY)</option>
+                                    <option value="Bedensel Yetersizlik">Bedensel Yetersizlik</option>
+                                    <option value="Görme Yetersizliği">G&#246;rme Yetersizliği</option>
+                                    <option value="Duygusal Davranış Bozukluğu (DDB)">Duygusal Davranış Bozukluğu (DDB)</option>
+                                    <option value="Yaygın Gelişimsel Bozukluk (OTİZM)">Yaygın Gelişimsel Bozukluk (OTİZM)</option>
+                                    <option value="Özel Öğrenme Güçlüğü (ÖÖG)">&#214;zel &#214;ğrenme G&#252;&#231;l&#252;ğ&#252;(&#214;&#214;G)</option>
+                                    <option value="Dikkat Eksikliği ve Hiperaktivite Bozukluğu (DEHB)">Dikkat Eksikliği ve Hiperaktivite Bozukluğu (DEHB)</option>
+                                    <option value="Dil Konuşma Güçlüğü (DKG)">Dil Konuşma G&#252;&#231;l&#252;ğ&#252; (DKG)</option>
+                                    <option value="Üstün Yetenekli Birey (ÜYB)">&#220;st&#252;n Yetenekli Birey (&#220;YB)</option>
+                                    <option value="İşitme Yetersizliği">İşitme Yetersizliği</option>
+                                    <option value="Normal">Normal</option>
                                   </select>
-                            <!-- <div class="trigger">Erkek</div>
-                            <ul class="options">
-                              <li data-raw-value="Erkek" class="selected">Erkek</li>
-                              <li data-raw-value="Kız">Kız</li>
-                            </ul> -->
-                          </div> 
+                                </div>
+                              </div>
+                            </div>
+                            <!-- End .form-group 6 -->
 
+                          </div>
                         </div>
-                        <label class="col-md-2 control-label">T.C. No:</label>
-                        <div class="col-md-3">
-
-                          <input name="TCNumber" type="text" maxlength="11" id="ContentPlaceHolder1_txtTC" class="form-control" placeholder="T.C. Kimlik No">
-                          <span class="error"><?php echo $_SESSION["TCNumberErr"];?></span>
-                          <!-- <span id="ContentPlaceHolder1_RegularExpressionValidator1" style="color:Red;font-weight:bold;visibility:hidden;">Lütfen Geçerli Bir Numara Giriniz</span> -->
-                          
-                        </div>                          
                       </div>
+                      <!-- End .panel -->
+                    </div>
+                  </div>
+                  <!-- End Of ContentPlaceHolder1_pnlgenel -->
+                </div>
+
+                <!-- End Of ContentWrapper -->
+
+                <div class="col-lg-16">
+                  <div class="panel panel-default toggle panelMove panelRefresh" id="supr1">
+                    <!-- Start .panel -->
+                    <div class="panel-heading">
+                      <h4 class="panel-title">Veli Bilgileri</h4>
                     </div>
 
-                    <!-- End .form-group 3 -->
+                    <div class="panel-body pt0 pb0">
+                      <div class="form-horizontal group-border stripped">
 
-                    <!-- Start .form-group 4 -->
+                        <div class="form-group">
+                          <div class="row">           
+                            <label class="col-md-2 control-label" for=""><i class="renk">&nbsp;</i>Adı:</label>
+                            <div class="col-md-3">
+                              <input name="parentName" type="text" maxlength="64" id="parentName" class="form-control" placeholder="Velinin Adı">
+                              <span class="error">* <?php echo $_SESSION["parentNameErr"]; ?></span>
+                            </div>
 
-                    <div class="form-group">
-                      <div class="row">
-                        <label class="col-md-2 control-label">Sınıfı:</label>
-                        <div class="col-md-3">
-
-                          <input name="studentClass" type="text" maxlength="8" id="ContentPlaceHolder1_txtSinif" class="form-control" placeholder="Sınıfı">
-
+                            <label class="col-md-2 control-label" for=""><i class="renk">&nbsp;</i>Soyadı:</label>
+                            <div class="col-md-3">
+                              <input name="parentSurname" type="text" maxlength="64" id="parentSurname" class="form-control" placeholder="Velinin Soyadı">
+                              <span class="error">* <?php echo $_SESSION["parentSurnameErr"]; ?></span>
+                            </div>
+                          </div>
                         </div>
-                        <label class="col-md-2 control-label">Rapor No:</label>
-                        <div class="col-md-3">
-                          <input name="studentRapor" type="text" maxlength="16" id="ContentPlaceHolder1_txtRapor" class="form-control" placeholder="Rapor No">
+                        <!-- End .form-group  -->
 
-                        </div>
-
-                      </div>
-                    </div>
-                    <!-- End .form-group 4 -->
-
-                    <!-- Start .form-group 4 -->
-                    <div class="form-group">
-                      <div class="row">
-                        <label class="col-md-2 control-label" for="">Doğum Tarihi:</label>
-                        <div class="col-md-3">
-                          <div class=" input-group">
-                            <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-                            <!-- <input name="birthDay" type="text" maxlength="10" id="ContentPlaceHolder1_txtDogumTarihi" class="form-control" placeholder="gg.AA.yyyy">-->
-                            <input name="studentBirthDay" class="form-control"  type="date" data-date-inline-picker="false" data-date-open-on-focus="false"/>
+                        <div class="form-group">
+                          <div class="row">
+                            <label class="col-md-2 control-label">T.C. No:</label>
+                            <div class="col-md-3">
+                              <input name="parentTCNumber" type="text" maxlength="11" id="parentTCNumber" class="form-control" placeholder="TC Kimlik No">
+                              <span class="error"><?php echo $_SESSION["parentTCNumberErr"] ?></span>
+                            </div>
+                            <label class="col-md-2 control-label" for="">Yakınlık Derecesi:</label>
+                            <div class="col-md-3">              
+                              <div class="fancy-select">
+                                <select name="parentYakinlik" id="Yakinlik" class="fancy-select form-control fancified">
+                                  <option value="Anne">Anne</option>
+                                  <option value="Baba">Baba</option>
+                                  <option value="Diğer">Diğer</option>
+                                </select>
+                              </div> 
+                            </div>
                           </div>
                         </div>
 
-                        <!-- <label class="col-md-2 control-label">Telefon:</label>
-                        <div class="col-md-3">
-                          <input name="ctl00$ContentPlaceHolder1$txtTelefon" type="text" maxlength="16" id="ContentPlaceHolder1_txtTelefon" class="form-control" placeholder="Telefon">
-                          <span id="ContentPlaceHolder1_RegularExpressionValidator2" style="color:Red;font-weight:bold;visibility:hidden;">Lütfen Geçerli Bir Numara Giriniz</span>
-                        </div> -->
-                        <label class="col-md-2 control-label" for="">Kayıt Tarihi:</label>
-                        <div class="col-md-3">
-                          <div class=" input-group">
 
-                            <input name="registrationDate" type="text" value="<?php date_default_timezone_set("Europe/Istanbul");
-                            echo date("Y-m-d"); ?>" maxlength="10" id="registrationDate" class="form-control" placeholder="yyyy-aa-gg" disabled>
 
-                          </div> 
+                        <!-- End .form-group  -->
+
+                        <div class="form-group">
+                          <div class="row">
+
+                            <label class="col-md-2 control-label">Sabit Telefon:</label>
+                            <div class="col-md-3">
+                              <input name="parentPhoneNumber" type="text" maxlength="11" id="SabitTel" class="form-control" placeholder="Sabit Telefon">
+                              <span class="error"><?php echo $_SESSION["parentPhoneNumberErr"] ?></span>
+                            </div>
+                            <label class="col-md-2 control-label">Cep Telefonu:</label>
+                            <div class="col-md-3">
+
+                              <input name="parentMobilePhone" type="text" maxlength="11" id="CepTel" class="form-control" placeholder="Cep Telefonu">
+                              <span class="error"><?php echo $_SESSION["parentMobilePhoneErr"] ?></span>
+                            </div>
+
+                          </div>
                         </div>
+
+                        <div class="form-group">
+                          <label class="col-md-2 control-label" for="">Email Adresi:</label>
+                          <div class="col-md-8">
+                            <input name="emailAdresi" type="text" maxlength="255" id="emailAdresi" class="form-control" placeholder="Email Adresi">
+                          </div>
+                        </div>
+
+                        <div class="form-group">
+                          <label class="col-md-2 control-label" for="">Ev Adresi:</label>
+                          <div class="col-md-8">
+                            <input name="evAdresi" type="text" maxlength="255" id="EvAdresi" class="form-control" placeholder="Ev Adresi">
+                          </div>
+                        </div>
+                        <!-- End .form-group  -->
+
+                        <div class="form-group">
+                          <label class="col-md-2 control-label" for="">İş Adresi:</label>
+                          <div class=" col-md-8">
+                            <input name="parentIsAdresi" type="text" maxlength="255" id="IsAdresi" class="form-control" placeholder="İş Adresi">
+                          </div>
+                        </div>
+                        <!-- End .form-group  -->
+                        <div class="form-group">
+                          <label class="col-md-2 control-label" for="">Açıklama:</label>
+                          <div class="col-md-8">
+                            <textarea name="Aciklama" rows="2" cols="20" id="Aciklama" class="form-control"></textarea>
+                          </div>
+                        </div>
+
+                        <!-- End .form-group  -->
                       </div>
+
+                      <!--<button type="submit" id="sub" class="btn btn-success mr5 mb10">Kaydet Button</button> -->
+                      <div class="form-group">
+                        <div class="row">
+                          <div class="col-md-6">  
+                            <input type="submit" id="sub" value="Kaydet" class="btn btn-success">  
+
+                          </div>
+                        </div>
+                      </div> 
+
                     </div>
+                    <span class="error">* ile işaretli alanların doldurulması zorunludur!</span> 
 
-                    <!-- End .form-group  -->   
-                    <!-- End .form-group 4 -->
+                    <!-- End of Panel -->
 
-                    <!-- Start .form-group 5 -->
-                    <!-- <div class="form-group">
-                      <div class="row">
-                        
-                      
-                        <label class="col-md-2 control-label" for="">Ayrılış Tarihi:</label>
-                        <div class="col-md-3">
-                            <div class=" input-group">
-                           <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                  </div>
+                  <!-- End of col-lg-16 -->
+                </form>
 
 
-                           <input name="ctl00$ContentPlaceHolder1$txtAyrilis" type="text" maxlength="10" id="ContentPlaceHolder1_txtAyrilis" class="form-control" placeholder="gg.AA.yyyy">
-
-                         </div> 
-                     </div>                       
-                 </div>
-               </div>--> 
-               <!-- End .form-group 5 -->
-
-               <!---- FOTOĞRAF -->
-
-               <div class="form-group">
-                <label class="col-md-2 control-label" for="">Fotoğraf Seç:</label>
-                <div class="col-md-3">
-                  <span class="error">
-                    <?php 
-                    for($temp; $temp < 5;$temp++){
-                      if(!empty($_SESSION["errors"][$temp]))
-                        echo $_SESSION["errors"][$temp]." "; 
-                    }
-                    ?>
-                  </span>
-
-                  <input type="file" name="fileToUpload" id="fileToUpload" class="btn btn-info mr5 mb10">
-                </div>
-                <label class="col-md-2 control-label" for="">Ulaşım:</label>
-                <div class="col-md-3">
-
-                  <input name="transportation" type="text" maxlength="64" class="form-control" placeholder="Ulaşım">
-                </div>
               </div>
 
-              <!---- FOTOĞRAF -->
-
-              <!-- Start .form-group 6 -->
-              <div class="form-group">
-                <label class="col-md-2 control-label" for="">Reh. Araş. Merkezi:</label>
-                <div class="col-md-3">
-
-                  <input name="rehberlikMerkezi" type="text" maxlength="64" id="ContentPlaceHolder1_txtMerkezi" class="form-control" placeholder="Rehberlik Araştırma Merkezi">
-
-                </div>
-                
-                <label class="col-md-2 control-label"><i class="renk"><span class="error">*</span>&nbsp;</i>Eğitsel Tanı:</label>
-                <span class="error"><?php echo $_SESSION["educationalDiagnosisErr"]; ?></span>
-                <div class="col-md-4">
-
-                  <div class="form-group">
-
-                   <select id="framework" name="framework[]" multiple class="form-control" >
-                    <option value="Hafif Düzey Zihinsel Yetersizlik (HDZY)">Hafif D&#252;zey Zihinsel Yetersizlik (HDZY)</option>
-                    <option value="Orta Düzey Zihinsel Yetersizlik (ODZY)">Orta D&#252;zey Zihinsel Yetersizlik (ODZY)</option>
-                    <option value="Ağır Düzey Zihinsel Yetersizlik (ADZY)">Ağır D&#252;zey Zihinsel Yetersizlik (ADZY)</option>
-                    <option value="Çok Ağır Düzey Zihinsel Yetersizlik (CADZY)">&#199;ok Ağır D&#252;zey Zihinsel Yetersizlik (CADZY)</option>
-                    <option value="Bedensel Yetersizlik">Bedensel Yetersizlik</option>
-                    <option value="Görme Yetersizliği">G&#246;rme Yetersizliği</option>
-                    <option value="Duygusal Davranış Bozukluğu (DDB)">Duygusal Davranış Bozukluğu (DDB)</option>
-                    <option value="Yaygın Gelişimsel Bozukluk (OTİZM)">Yaygın Gelişimsel Bozukluk (OTİZM)</option>
-                    <option value="Özel Öğrenme Güçlüğü (ÖÖG)">&#214;zel &#214;ğrenme G&#252;&#231;l&#252;ğ&#252;(&#214;&#214;G)</option>
-                    <option value="Dikkat Eksikliği ve Hiperaktivite Bozukluğu (DEHB)">Dikkat Eksikliği ve Hiperaktivite Bozukluğu (DEHB)</option>
-                    <option value="Dil Konuşma Güçlüğü (DKG)">Dil Konuşma G&#252;&#231;l&#252;ğ&#252; (DKG)</option>
-                    <option value="Üstün Yetenekli Birey (ÜYB)">&#220;st&#252;n Yetenekli Birey (&#220;YB)</option>
-                    <option value="İşitme Yetersizliği">İşitme Yetersizliği</option>
-                    <option value="Normal">Normal</option>
-                  </select>
-                </div>
-              </div>
+              <div class="control-sidebar-bg"></div>
             </div>
-            <!-- End .form-group 6 -->
-
           </div>
         </div>
-      </div>
-      <!-- End .panel -->
+      </section>
     </div>
-  </div>
-  <!-- End Of ContentPlaceHolder1_pnlgenel -->
-</div>
-
-<!-- End Of ContentWrapper -->
-
-<div class="col-lg-16">
-  <div class="panel panel-default toggle panelMove panelRefresh" id="supr1">
-    <!-- Start .panel -->
-    <div class="panel-heading">
-      <h4 class="panel-title">Veli Bilgileri</h4>
-    </div>
-
-    <div class="panel-body pt0 pb0">
-      <div class="form-horizontal group-border stripped">
-
-        <div class="form-group">
-          <div class="row">           
-            <label class="col-md-2 control-label" for=""><i class="renk">&nbsp;</i>Adı:</label>
-            <div class="col-md-3">
-              <input name="parentName" type="text" maxlength="64" id="parentName" class="form-control" placeholder="Velinin Adı">
-              <span class="error">* <?php echo $_SESSION["parentNameErr"]; ?></span>
-            </div>
-
-            <label class="col-md-2 control-label" for=""><i class="renk">&nbsp;</i>Soyadı:</label>
-            <div class="col-md-3">
-              <input name="parentSurname" type="text" maxlength="64" id="parentSurname" class="form-control" placeholder="Velinin Soyadı">
-              <span class="error">* <?php echo $_SESSION["parentSurnameErr"]; ?></span>
-            </div>
-          </div>
-        </div>
-        <!-- End .form-group  -->
-
-        <div class="form-group">
-          <div class="row">
-            <label class="col-md-2 control-label">T.C. No:</label>
-            <div class="col-md-3">
-              <input name="parentTCNumber" type="text" maxlength="11" id="parentTCNumber" class="form-control" placeholder="TC Kimlik No">
-              <span class="error"><?php echo $_SESSION["parentTCNumberErr"] ?></span>
-            </div>
-            <label class="col-md-2 control-label" for="">Yakınlık Derecesi:</label>
-            <div class="col-md-3">              
-              <div class="fancy-select">
-                <select name="parentYakinlik" id="Yakinlik" class="fancy-select form-control fancified">
-                  <option value="Anne">Anne</option>
-                  <option value="Baba">Baba</option>
-                  <option value="Diğer">Diğer</option>
-                </select>
-              </div> 
-            </div>
-          </div>
-        </div>
+    <?php include '/albatros/footer.php'; ?>
+  </div> 
 
 
-
-        <!-- End .form-group  -->
-
-        <div class="form-group">
-          <div class="row">
-
-            <label class="col-md-2 control-label">Sabit Telefon:</label>
-            <div class="col-md-3">
-              <input name="parentPhoneNumber" type="text" maxlength="16" id="SabitTel" class="form-control" placeholder="Sabit Telefon">
-              <span class="error"></span>
-            </div>
-            <label class="col-md-2 control-label">Cep Telefonu:</label>
-            <div class="col-md-3">
-
-              <input name="parentMobilePhone" type="text" maxlength="16" id="CepTel" class="form-control" placeholder="Cep Telefonu">
-              <span class="error"></span>
-            </div>
-
-          </div>
-        </div>
-
-        <div class="form-group">
-          <label class="col-md-2 control-label" for="">Email Adresi:</label>
-          <div class="col-md-8">
-            <input name="emailAdresi" type="text" maxlength="255" id="emailAdresi" class="form-control" placeholder="Email Adresi">
-          </div>
-        </div>
-
-        <div class="form-group">
-          <label class="col-md-2 control-label" for="">Ev Adresi:</label>
-          <div class="col-md-8">
-            <input name="EvAdresi" type="text" maxlength="255" id="EvAdresi" class="form-control" placeholder="Ev Adresi">
-          </div>
-        </div>
-        <!-- End .form-group  -->
-
-        <div class="form-group">
-          <label class="col-md-2 control-label" for="">İş Adresi:</label>
-          <div class=" col-md-8">
-            <input name="parentIsAdresi" type="text" maxlength="255" id="IsAdresi" class="form-control" placeholder="İş Adresi">
-          </div>
-        </div>
-        <!-- End .form-group  -->
-        <div class="form-group">
-          <label class="col-md-2 control-label" for="">Açıklama:</label>
-          <div class="col-md-8">
-            <textarea name="Aciklama" rows="2" cols="20" id="Aciklama" class="form-control"></textarea>
-          </div>
-        </div>
-
-        <!-- End .form-group  -->
-      </div>
-
-      <!--<button type="submit" id="sub" class="btn btn-success mr5 mb10">Kaydet Button</button> -->
-      <div class="form-group">
-        <div class="row">
-          <div class="col-md-6">  
-            <input type="submit" id="sub" value="Kaydet" class="btn btn-success">  
-            
-          </div>
-        </div>
-      </div> 
-
-    </div>
-    <span class="error">* ile işaretli alanların doldurulması zorunludur!</span> 
-
-    <!-- End of Panel -->
-
-  </div>
-  <!-- End of col-lg-16 -->
-
-<!--<a id="ContentPlaceHolder1_btnKaydet" class="btn btn-success mr5 mb10" title="Kaydet" href='javascript:WebForm_DoPostBackWithOptions(new WebForm_PostBackOptions("ctl00$ContentPlaceHolder1$btnKaydet", "", true, "", "", false, true))'><i class="glyphicon glyphicon-ok">&nbsp;<span class="spanfont">Kaydet</span></i></a>
-  <a id="ContentPlaceHolder1_btnIptal" class="btn btn-success mr5 mb10" title="İptal" href='javascript:WebForm_DoPostBackWithOptions(new WebForm_PostBackOptions("ctl00$ContentPlaceHolder1$btnIptal", "", true, "", "", false, true))'><i class="glyphicon glyphicon-remove">&nbsp;<span class="spanfont">İptal</span>&nbsp;</i></a> -->
-
-</form>
+  <!-- ./wrapper -->
 
 
-</div>
+  <div>
+    <!-- jQuery 3 -->
 
-<div class="control-sidebar-bg"></div>
-</div>
-</div>
-</div>
-</section>
-</div>
-<?php include '/albatros/footer.php'; ?>
-</div> 
-
-
-<!-- ./wrapper -->
-
-
-<div>
-  <!-- jQuery 3 -->
-  
-  <script>
-    $(function () {
+    <script>
+      $(function () {
 
     /* initialize the external events
     -----------------------------------------------------------------*/
