@@ -76,9 +76,9 @@
 
   <div class="wrapper">
 
-    <?php include '/albatros/header.php'; ?>
+    <?php include 'header.php'; ?>
     <!-- Left side column. contains the logo and sidebar -->
-    <?php include '/albatros/sidebar.php'; ?>
+    <?php include 'sidebar.php'; ?>
     <!-- Content Wrapper. Contains page content -->
     <div class="content-wrapper">
       <!-- Content Header (Page header) -->
@@ -88,7 +88,7 @@
           <small>...........</small>
         </h1>
         <ol class="breadcrumb">
-          <li><a href="#"><i class="fa fa-dashboard"></i>Ana Sayfa</a></li>
+          <li><a href="index.php"><i class="fa fa-dashboard"></i>Ana Sayfa</a></li>
           <li><a href="index.php">Öğrenci</a></li>
           <li class="active">Ekle</li>
         </ol>

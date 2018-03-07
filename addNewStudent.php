@@ -91,119 +91,153 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
 		$_SESSION["educationalDiagnosisErr"] = "Eğitsel Tanı Seçilmedi";
 	}
 
-//// EĞİTSEL TANI CONTROLÜ  YUKARI  YAZILACAK /////////
-	if(!empty($_POST["gender"])){
-		if($_POST["gender"] == "Kız")
-			$gender = 1;
-		else
-			$gender = 2;
-	}
 
-	if(!empty($_POST["studentClass"]))
-		$class = $_POST["studentClass"];
-	if(!empty($_POST["studentRapor"]))
-		$rapor_no = $_POST["studentRapor"];
-	if(!empty($_POST["studentBirthDay"]))
-		$birthday = $_POST["studentBirthDay"];
-	if(!empty($_POST["registrationDate"]))
-		$registrationDate = $_POST["registrationDate"];
-	if(!empty($_POST["transportation"]))
-		$transportation = $_POST["transportation"];
-	if(!empty($_POST["rehberlikMerkezi"]))
-		$rehberlikMerkezi = $_POST["rehberlikMerkezi"];
-	
-	if(empty($_POST["donemBaslangicTarihi"])){
-		$_SESSION["donemBaslangicTarihi"] = "Bir Tarih Seçin";
-		$bool = false;
+	///// FOTOĞRAF KONTOLÜ BURADAN AŞAĞIYA ////
+
+	// Check if file already exists
+	if (file_exists($target_file)) {
+		$fileErrors[1] = "Bu Dosya Zaten Mevcut!!";
+		$uploadOk = 0;
 	}
-	else
-		$donemBaslangicTarihi = $_POST["donemBaslangicTarihi"];
-	if(empty($_POST["donemBitisTarihi"])){
-		$_SESSION["donemBitisTarihi"] = "Bir Tarih Seçin";
-		$bool = false;
+// Check file size
+	if ($_FILES["fileToUpload"]["size"] > 2097152) {
+		$fileErrors[2] = "Lütfen 2 MB'den küçük dosya seçin!!!";
+		$uploadOk = 0;
 	}
+// Allow certain file formats
+	if($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg"
+		&& $imageFileType != "gif" ) {
+		$fileErrors[3] = "Sadece JPG, JPEG, PNG & GIF Dosyaları Kabul Edilir!!";
+	$uploadOk = 0;
+}
+
+if(empty($fileErrors) == true && $bool == true) {
+	if (move_uploaded_file($_FILES["fileToUpload"]["tmp_name"], $target_file)) {
+		echo "The file ". basename( $_FILES["fileToUpload"]["name"]). " has been uploaded.";
+	} else {
+		$fileErrors[4] = "Yükleme Hatası, Bilgileri Kontrol Ediniz!!";
+	}
+}else{
+	$_SESSION["fileErrors"] = $fileErrors;
+	$bool = false;
+}
+
+//// FOTOĞRAF KONTROLÜ BURADAN YUKARIYA /////
+
+
+//// EĞİTSEL TANI CONTROLÜ  YUKARI  YAZILACAK /////////
+if(!empty($_POST["gender"])){
+	if($_POST["gender"] == "Kız")
+		$gender = 1;
 	else
-		$donemBitisTarihi = $_POST["donemBitisTarihi"];
+		$gender = 2;
+}
+
+if(!empty($_POST["studentClass"]))
+	$class = $_POST["studentClass"];
+if(!empty($_POST["studentRapor"]))
+	$rapor_no = $_POST["studentRapor"];
+if(!empty($_POST["studentBirthDay"]))
+	$birthday = $_POST["studentBirthDay"];
+if(!empty($_POST["registrationDate"]))
+	$registrationDate = $_POST["registrationDate"];
+if(!empty($_POST["transportation"]))
+	$transportation = $_POST["transportation"];
+if(!empty($_POST["rehberlikMerkezi"]))
+	$rehberlikMerkezi = $_POST["rehberlikMerkezi"];
+
+if(empty($_POST["donemBaslangicTarihi"])){
+	$_SESSION["donemBaslangicTarihi"] = "Bir Tarih Seçin";
+	$bool = false;
+}
+else
+	$donemBaslangicTarihi = $_POST["donemBaslangicTarihi"];
+if(empty($_POST["donemBitisTarihi"])){
+	$_SESSION["donemBitisTarihi"] = "Bir Tarih Seçin";
+	$bool = false;
+}
+else
+	$donemBitisTarihi = $_POST["donemBitisTarihi"];
 
 ////// VELİ KONTROLLERİ BURADAN AŞAĞIYA ///////
 
 
-	if (empty($_POST["parentName"])) {
-		$_SESSION["parentNameErr"] = "İsim Gereklidir";
+if (empty($_POST["parentName"])) {
+	$_SESSION["parentNameErr"] = "İsim Gereklidir";
+	$bool = false;
+} 
+else{
+	$parentName = test_input($_POST["parentName"]);
+	if (!preg_match("/^[\p{L} ]+$/u",$parentName)) {
+		$_SESSION["parentNameErr"] = "Sadece Harf ve Boşluk Giriniz"; 
 		$bool = false;
-	} 
-	else{
-		$parentName = test_input($_POST["parentName"]);
-		if (!preg_match("/^[\p{L} ]+$/u",$parentName)) {
-			$_SESSION["parentNameErr"] = "Sadece Harf ve Boşluk Giriniz"; 
-			$bool = false;
-		}
 	}
+}
 
 
-	if (empty($_POST["parentSurname"])) {
-		$_SESSION["parentSurnameErr"] = "İsim Gereklidir";
+if (empty($_POST["parentSurname"])) {
+	$_SESSION["parentSurnameErr"] = "İsim Gereklidir";
+	$bool = false;
+} 
+else{
+	$parentSurname = test_input($_POST["parentSurname"]);
+	if (!preg_match("/^[\p{L} ]+$/u",$parentSurname)) {
+		$_SESSION["parentSurnameErr"] = "Sadece Harf ve Boşluk Giriniz"; 
 		$bool = false;
-	} 
-	else{
-		$parentSurname = test_input($_POST["parentSurname"]);
-		if (!preg_match("/^[\p{L} ]+$/u",$parentSurname)) {
-			$_SESSION["parentSurnameErr"] = "Sadece Harf ve Boşluk Giriniz"; 
-			$bool = false;
-		}
 	}
+}
 
 
 
-	if(!empty($_POST["parentTCNumber"])){
-		$parentTCNumber = test_input($_POST['parentTCNumber']);
-		if(preg_match("/^[0-9]{11}$/", $parentTCNumber)){
+if(!empty($_POST["parentTCNumber"])){
+	$parentTCNumber = test_input($_POST['parentTCNumber']);
+	if(preg_match("/^[0-9]{11}$/", $parentTCNumber)){
 
-			if(isTcKimlik($parentTCNumber) == false){
-				$_SESSION["parentTCNumberErr"] = "TC Kimlik Numarası Yanlıştır";
-				$bool = false;
-			}
-		}
-		else
-		{
+		if(isTcKimlik($parentTCNumber) == false){
 			$_SESSION["parentTCNumberErr"] = "TC Kimlik Numarası Yanlıştır";
 			$bool = false;
 		}
 	}
-
-	if($_POST["parentYakinlik"] == "Anne")
-		$proximity = 1;
-	else if($_POST["parentYakinlik"] == "Baba")
-		$proximity = 2;
 	else
-		$proximity = 3;
-
-	if(!empty($_POST["parentPhoneNumber"]) && is_numeric($_POST["parentPhoneNumber"]))
-		$parentSabitTel = $_POST["parentPhoneNumber"];
-	else
-		$_SESSION["parentPhoneNumberErr"] = "Sadece Sayı Giriniz";
-	if(!empty($_POST["parentMobilePhone"]) && is_numeric($_POST["parentMobilePhone"]))
-		$parentCepTel = $_POST["parentMobilePhone"];
-	else
-		$_SESSION["parentMobilePhoneErr"] = "Sadece Sayı Giriniz";
-	if(!empty($_POST["emailAdresi"]))
-		$parentEmailAdress = $_POST["emailAdresi"];
-	if(!empty($_POST["evAdresi"]))
-		$parentAdress = $_POST["evAdresi"];
-	if(!empty($_POST["parentIsAdresi"]))
-		$parentIsAdress = $_POST["parentIsAdresi"];
-	if(!empty($_POST["Aciklama"]))
-		$aciklama = $_POST["Aciklama"];
-
-
-	$sqlParentQuery = "INSERT INTO parent (tel_no,sabit_tel,tc_no,name,surname,adress,work_adress,description,email_adress,degree_of_proximity_FK) VALUES ('$parentCepTel','$parentSabitTel','$parentTCNumber','$parentName','$parentSurname','$parentAdress','$parentIsAdress','$aciklama','$parentEmailAdress','$proximity')";
-
-	if($bool == true)
-		runParentQuery($sqlParentQuery);
-	else{
-		$_SESSION["errorMessage"] = "runParentQuery() fonksiyonu çağrılamadı";
-		header("Location: ogrenciEkle.php");
+	{
+		$_SESSION["parentTCNumberErr"] = "TC Kimlik Numarası Yanlıştır";
+		$bool = false;
 	}
+}
+
+if($_POST["parentYakinlik"] == "Anne")
+	$proximity = 1;
+else if($_POST["parentYakinlik"] == "Baba")
+	$proximity = 2;
+else
+	$proximity = 3;
+
+if(!empty($_POST["parentPhoneNumber"]) && is_numeric($_POST["parentPhoneNumber"]))
+	$parentSabitTel = $_POST["parentPhoneNumber"];
+else
+	$_SESSION["parentPhoneNumberErr"] = "Sadece Sayı Giriniz";
+if(!empty($_POST["parentMobilePhone"]) && is_numeric($_POST["parentMobilePhone"]))
+	$parentCepTel = $_POST["parentMobilePhone"];
+else
+	$_SESSION["parentMobilePhoneErr"] = "Sadece Sayı Giriniz";
+if(!empty($_POST["emailAdresi"]))
+	$parentEmailAdress = $_POST["emailAdresi"];
+if(!empty($_POST["evAdresi"]))
+	$parentAdress = $_POST["evAdresi"];
+if(!empty($_POST["parentIsAdresi"]))
+	$parentIsAdress = $_POST["parentIsAdresi"];
+if(!empty($_POST["Aciklama"]))
+	$aciklama = $_POST["Aciklama"];
+
+
+$sqlParentQuery = "INSERT INTO parent (tel_no,sabit_tel,tc_no,name,surname,adress,work_adress,description,email_adress,degree_of_proximity_FK) VALUES ('$parentCepTel','$parentSabitTel','$parentTCNumber','$parentName','$parentSurname','$parentAdress','$parentIsAdress','$aciklama','$parentEmailAdress','$proximity')";
+
+if($bool == true)
+	runParentQuery($sqlParentQuery);
+else{
+	$_SESSION["errorMessage"] = "runParentQuery() fonksiyonu çağrılamadı";
+	header("Location: ogrenciEkle.php");
+}
 /// VELİ KONTROLLERİ BURADAN YUKARIYA ///
 
 
@@ -299,32 +333,6 @@ if(isset($_POST["submit"])) {
 		$fileErrors[0] = "File is not an image.";
 		$uploadOk = 0;
 	}
-}
-// Check if file already exists
-if (file_exists($target_file)) {
-	$fileErrors[1] = "Sorry, file already exists.";
-	$uploadOk = 0;
-}
-// Check file size
-if ($_FILES["fileToUpload"]["size"] > 2097152) {
-	$fileErrors[2] = "Sorry, your file is too large.";
-	$uploadOk = 0;
-}
-// Allow certain file formats
-if($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg"
-	&& $imageFileType != "gif" ) {
-	$fileErrors[3] = "Sorry, only JPG, JPEG, PNG & GIF files are allowed.";
-$uploadOk = 0;
-}
-
-if(empty($fileErrors) == true && $bool == true) {
-	if (move_uploaded_file($_FILES["fileToUpload"]["tmp_name"], $target_file)) {
-		echo "The file ". basename( $_FILES["fileToUpload"]["name"]). " has been uploaded.";
-	} else {
-		$fileErrors[4] = "Sorry, there was an error uploading your file.";
-	}
-}else{
-	$_SESSION["fileErrors"] = $fileErrors;
 }
 
 mysqli_close($conn);
