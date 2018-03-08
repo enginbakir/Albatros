@@ -4,7 +4,7 @@
 session_start();
 
 
-include "baglan.php";
+include "connectDB.php";
 if (!$conn)
 	$_SESSION["connection"] = "Veritabanı Bağlantı Hatası";
 
@@ -89,7 +89,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
 	else{
 		$_SESSION["educationalDiagnosisErr"] = "Eğitsel Tanı Seçilmedi";
 	}
-
+	
+//// EĞİTSEL TANI CONTROLÜ  YUKARI  YAZILACAK /////////
 
 	///// FOTOĞRAF KONTOLÜ BURADAN AŞAĞIYA ////
 
@@ -112,7 +113,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
 	}
 // Check file size
 	if ($_FILES["fileToUpload"]["size"] > 2097152) {
-		$fileErrors[2] = "Lütfen 2 MB'den küçük dosya seçin!!!";
+		$fileErrors[2] = "Lütfen 2 MB'den küçük dosya seçin!!!"; 
 		$uploadOk = 0;
 	}
 // Allow certain file formats
@@ -136,7 +137,7 @@ if(empty($fileErrors) == true && $bool == true) {
 //// FOTOĞRAF KONTROLÜ BURADAN YUKARIYA /////
 
 
-//// EĞİTSEL TANI CONTROLÜ  YUKARI  YAZILACAK /////////
+
 if(!empty($_POST["gender"])){
 	if($_POST["gender"] == "Kız")
 		$gender = 1;
@@ -223,11 +224,13 @@ else if($_POST["parentYakinlik"] == "Baba")
 else
 	$proximity = 3;
 
-if(!empty($_POST["parentPhoneNumber"]) && is_numeric($_POST["parentPhoneNumber"]))
+if(!empty($_POST["parentPhoneNumber"]))
+	if(is_numeric($_POST["parentPhoneNumber"]))
 	$parentSabitTel = $_POST["parentPhoneNumber"];
 else
 	$_SESSION["parentPhoneNumberErr"] = "Sadece Sayı Giriniz";
-if(!empty($_POST["parentMobilePhone"]) && is_numeric($_POST["parentMobilePhone"]))
+if(!empty($_POST["parentMobilePhone"]))
+	if(is_numeric($_POST["parentMobilePhone"]))
 	$parentCepTel = $_POST["parentMobilePhone"];
 else
 	$_SESSION["parentMobilePhoneErr"] = "Sadece Sayı Giriniz";
@@ -247,7 +250,7 @@ if($bool == true)
 	runParentQuery($sqlParentQuery);
 else{
 	$_SESSION["errorMessage"] = "runParentQuery() fonksiyonu çağrılamadı";
-	header("Location: ogrenciEkle.php");
+	header("Location: ogrenci_ekle.php");
 }
 /// VELİ KONTROLLERİ BURADAN YUKARIYA ///
 
@@ -271,7 +274,7 @@ function runParentQuery($sqlQuery){
 
 		$_SESSION["errorMessage"] = "Ekleme Gerçekleştirilemedi.Bilgileri Kontrol Ediniz!!! <br> Error: " . $sqlQuery . "<br>" . mysqli_error($conn);
 		$bool = false;
-		header("Location: ogrenciEkle.php");
+		header("Location: ogrenci_ekle.php");
 	}
 }
 
@@ -301,11 +304,11 @@ function runStudentQuery($parentLastID){
 
 			$_SESSION["errorMessage"] = "Ekleme Başarı ile Tamamlandı.";
 		}
-		header("Location: ogrenciEkle.php");
+		header("Location: ogrenci_ekle.php");
 	}
 	else{
 		$_SESSION["errorMessage"] = "Student Bilgilerini Kontrol Ediniz!!!<br> Error: <br>". mysqli_error($conn);
-		header("Location: ogrenciEkle.php");
+		header("Location: ogrenci_ekle.php");
 	}
 }
 
