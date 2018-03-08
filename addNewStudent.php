@@ -74,7 +74,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
 		}
 	}
 
-
 //// EĞİTSEL TANI CONTROLÜ  AŞAĞI  YAZILACAK /////////
 
 	if(!empty($_POST["framework"])){
@@ -94,6 +93,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
 
 	///// FOTOĞRAF KONTOLÜ BURADAN AŞAĞIYA ////
 
+	$fileErrors = array();
+// Check if image file is a actual image or fake image
+	if(isset($_POST["submit"])) {
+		$check = getimagesize($_FILES["fileToUpload"]["tmp_name"]);
+		if($check !== false) {
+			echo "File is an image - " . $check["mime"] . ".";
+			$uploadOk = 1;
+		} else {
+			$fileErrors[0] = "File is not an image.";
+			$uploadOk = 0;
+		}
+	}
 	// Check if file already exists
 	if (file_exists($target_file)) {
 		$fileErrors[1] = "Bu Dosya Zaten Mevcut!!";
@@ -322,18 +333,7 @@ function isTcKimlik($tc)
 
 
 
-$fileErrors = array();
-// Check if image file is a actual image or fake image
-if(isset($_POST["submit"])) {
-	$check = getimagesize($_FILES["fileToUpload"]["tmp_name"]);
-	if($check !== false) {
-		echo "File is an image - " . $check["mime"] . ".";
-		$uploadOk = 1;
-	} else {
-		$fileErrors[0] = "File is not an image.";
-		$uploadOk = 0;
-	}
-}
+
 
 mysqli_close($conn);
 
