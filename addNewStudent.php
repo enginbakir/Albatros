@@ -29,8 +29,6 @@ $parentName = $parentSurname = $parentTCNumber = $parentYakinlik = $parentSabitT
 $parentNameErr = $parentSurnameErr = $parentTCNumberErr = null;
 $parentLastID = null;
 
-
-
 $filePath = "";
 $sqlQuery = "";
 $bool = true;
@@ -330,11 +328,6 @@ function isTcKimlik($tc)
 
 	return true;  
 }  
-
-
-
-
-
 mysqli_close($conn);
 
 ?>

@@ -5,7 +5,7 @@ require_once "baglan.php";
 <!DOCTYPE html>
 <html>
 <head>
-
+  
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 
@@ -21,6 +21,7 @@ require_once "baglan.php";
 	<link rel="stylesheet" href="bower_components/Ionicons/css/ionicons.min.css">
 	<!-- Theme style -->
 	<link rel="stylesheet" href="dist/css/AdminLTE.min.css">
+
   <!-- AdminLTE Skins. Choose a skin from the css/skins
   	folder instead of downloading all of them to reduce the load. -->
   	<link rel="stylesheet" href="dist/css/skins/_all-skins.min.css">
@@ -153,6 +154,7 @@ require_once "baglan.php";
                               /* Get total number of records */
                               $sql = "SELECT student_PK FROM student ";
                               $retval = mysqli_query( $conn,$sql );
+
 
   ///////////////////////////////////
 
@@ -520,6 +522,7 @@ require_once "baglan.php";
 
 </div>
 
+
 </div>
 
 </div>
@@ -589,6 +592,7 @@ include 'footer.php';
 
 		$(function () {
 
+
     /* initialize the external events
     -----------------------------------------------------------------*/
     function init_events(ele) {
@@ -598,7 +602,7 @@ include 'footer.php';
         // it doesn't need to have a start or end
         var eventObject = {
           title: $.trim($(this).text()) // use the element's text as the event title
-        }
+      }
 
         // store the Event Object in the DOM element so we can get to it later
         $(this).data('eventObject', eventObject)
@@ -608,9 +612,9 @@ include 'footer.php';
         	zIndex        : 1070,
           revert        : true, // will cause the event to go back to its
           revertDuration: 0  //  original position after the drag
-        })
-
       })
+
+    })
     }
 
     init_events($('#external-events div.external-event'))
@@ -679,9 +683,9 @@ include 'footer.php';
          url            : 'http://google.com/',
           backgroundColor: '#3c8dbc', //Primary (light-blue)
           borderColor    : '#3c8dbc' //Primary (light-blue)
-        }
-        ],
-        editable  : true,
+      }
+      ],
+      editable  : true,
       droppable : true, // this allows things to be dropped onto the calendar !!!
       drop      : function (date, allDay) { // this function is called when something is dropped
 
@@ -705,10 +709,10 @@ include 'footer.php';
         if ($('#drop-remove').is(':checked')) {
           // if so, remove the element from the "Draggable Events" list
           $(this).remove()
-        }
-
       }
-    })
+
+  }
+})
 
     /* ADDING EVENTS */
     var currColor = '#3c8dbc' //Red by default
@@ -720,7 +724,7 @@ include 'footer.php';
       currColor = $(this).css('color')
       //Add color effect to button
       $('#add-new-event').css({ 'background-color': currColor, 'border-color': currColor })
-    })
+  })
     $('#add-new-event').click(function (e) {
     	e.preventDefault()
       //Get value and make sure it is not null
@@ -744,8 +748,8 @@ include 'footer.php';
 
       //Remove event from text input
       $('#new-event').val('')
-    })
   })
+})
 </script>
 
 <script type="text/javascript">
@@ -759,7 +763,7 @@ include 'footer.php';
 		isim = $('.isim',this).text();
 		soyisim = $('.soyisim',this).text();
    // alert(id +','+ isim+','+ soyisim);
- });
+});
 
 	$("#silButton").on("click",function(){
     //
@@ -769,6 +773,7 @@ include 'footer.php';
     		type:"POST",
     		url:"PHP/deleteStudent.php",
     		data:{id:id,isim:isim},
+
       //dataType:"text",
       success:function(data){
 
@@ -805,7 +810,9 @@ include 'footer.php';
 
       if(params != null){
 
+
       }
+
 
       method = method || "post";
       var form = document.createElement("form");
@@ -818,6 +825,7 @@ include 'footer.php';
           hiddenField.setAttribute("type", "hidden");
           hiddenField.setAttribute("name", key);
           hiddenField.setAttribute("value", params[key]);
+
 
           form.appendChild(hiddenField);
         }
