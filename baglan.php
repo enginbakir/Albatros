@@ -3,9 +3,9 @@
 session_start();
 
 $username = "root";
-$password = "12345678";
+$password = "123456";
 $server = "localhost";
-$database = "albatros";
+$database = "project";
 
 
 $conn = mysqli_connect($server,$username,$password,$database);
