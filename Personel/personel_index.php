@@ -7,30 +7,30 @@
   <!-- Tell the browser to be responsive to screen width -->
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
   <!-- Bootstrap 3.3.7 -->
-  <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="../bower_components/bootstrap/dist/css/bootstrap.min.css">
   <!-- Font Awesome -->
-  <link rel="stylesheet" href="bower_components/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" href="../bower_components/font-awesome/css/font-awesome.min.css">
   <!-- Ionicons -->
-  <link rel="stylesheet" href="bower_components/Ionicons/css/ionicons.min.css">
+  <link rel="stylesheet" href="../bower_components/Ionicons/css/ionicons.min.css">
   <!-- Theme style -->
-  <link rel="stylesheet" href="dist/css/AdminLTE.min.css">
+  <link rel="stylesheet" href="../dist/css/AdminLTE.min.css">
   <!-- AdminLTE Skins. Choose a skin from the css/skins
     folder instead of downloading all of them to reduce the load. -->
-    <link rel="stylesheet" href="dist/css/skins/_all-skins.min.css">
+    <link rel="stylesheet" href="../dist/css/skins/_all-skins.min.css">
     <!-- Morris chart -->
-    <link rel="stylesheet" href="bower_components/morris.js/morris.css">
+    <link rel="stylesheet" href="../bower_components/morris.js/morris.css">
     <!-- jvectormap -->
-    <link rel="stylesheet" href="bower_components/jvectormap/jquery-jvectormap.css">
+    <link rel="stylesheet" href="../bower_components/jvectormap/jquery-jvectormap.css">
     <!-- Date Picker -->
-    <link rel="stylesheet" href="bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css">
+    <link rel="stylesheet" href="../bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css">
     <!-- Daterange picker -->
-    <link rel="stylesheet" href="bower_components/bootstrap-daterangepicker/daterangepicker.css">
+    <link rel="stylesheet" href="../bower_components/bootstrap-daterangepicker/daterangepicker.css">
     <!-- bootstrap wysihtml5 - text editor -->
-    <link rel="stylesheet" href="plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css">
+    <link rel="stylesheet" href="../plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css">
     <!-- Calendar:)) -->
-    <link rel="stylesheet" href="bower_components\fullcalendar\dist\fullcalendar.min.css">
-    <link rel="stylesheet" href="bower_components\fullcalendar\dist\fullcalendar.css">
-    <link rel="stylesheet" href="bower_components\fullcalendar\dist\fullcalendar.print.min.css" media="print">
+    <link rel="stylesheet" href="../bower_components\fullcalendar\dist\fullcalendar.min.css">
+    <link rel="stylesheet" href="../bower_components\fullcalendar\dist\fullcalendar.css">
+    <link rel="stylesheet" href="../bower_components\fullcalendar\dist\fullcalendar.print.min.css" media="print">
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
   <!--[if lt IE 9]>
@@ -151,7 +151,7 @@
         <!-- Sidebar user panel -->
         <div class="user-panel">
           <div class="pull-left image">
-            <img src="dist/img/avatar3.png" class="img-circle" alt="User Image">
+            <img src="../dist/img/avatar3.png" class="img-circle" alt="User Image">
           </div>
           <div class="pull-left info">
             <p>Merve Tunçel</p>
@@ -159,15 +159,15 @@
           </div>
         </div>
         <!-- search form -->
-        <form action="#" method="get" class="sidebar-form">
+      <!--  <form action="#" method="get" class="sidebar-form">
           <div class="input-group">
-            <!-- <input type="text" name="q" class="form-control" placeholder="Search..."> -->
+            <!-- <input type="text" name="q" class="form-control" placeholder="Search..."> 
             <span class="input-group-btn">
               <button type="submit" name="search" id="search-btn" class="btn btn-flat"><i class="fa fa-search"></i>
               </button>
             </span>
           </div>
-        </form>
+        </form> -->
         <!-- /.search form -->
         <!-- sidebar menu: : style can be found in sidebar.less -->
         <ul class="sidebar-menu" data-widget="tree">
@@ -176,16 +176,6 @@
             <a href="">
               <i class="fa fa-book"></i> 
               <span>Öğrenci Bilgileri</span>
-            </a>
-          </li>
-          <li>
-            <a href="pages/mailbox/mailbox.html">
-              <i class="fa fa-envelope"></i> <span>Mailbox</span>
-              <span class="pull-right-container">
-                <small class="label pull-right bg-yellow">12</small>
-                <small class="label pull-right bg-green">16</small>
-                <small class="label pull-right bg-red">5</small>
-              </span>
             </a>
           </li>
         </ul>
@@ -305,7 +295,7 @@
                         </div> 
                         <div class="btn-group btn-group-justified" style="padding-bottom: 10px">
                           <div class="btn-group">
-                            <a href="ogrenci_ekle.html" class="btn btn-primary" role="button">&nbsp;&nbsp;Ekle&nbsp;&nbsp;</a>
+                            <a href="ogrenci_ekle.html" class="btn btn-primary" role="button">&nbsp;&nbsp;Bep Ekle&nbsp;&nbsp;</a>
                           </div>
                           <div class="btn-group">
                             <button type="button" class="btn btn-primary">&nbsp;&nbsp;Sil&nbsp;&nbsp;</button>
@@ -409,7 +399,8 @@
                           <div id="menu2" class="tab-pane fade">
                             <div class="box box-primary">
                               <div class="box-body box-profile">
-                                <img class="profile-user-img img-responsive img-circle" src="dist/img/avatar5.png" alt="User profile picture">
+                                <img class="profile-user-img img-responsive img-circle" src="<?php echo '../dist/img/avatar5.png'; ?>" alt="User profile picture">
+
 
                                 <h3 class="profile-username text-center">Engin Bakır</h3>
                                 <ul class="list-group list-group-unbordered">
@@ -585,46 +576,46 @@
   <!-- ./wrapper -->
 
   <!-- jQuery 3 -->
-  <script src="bower_components/jquery/dist/jquery.min.js"></script>
+  <script src="../bower_components/jquery/dist/jquery.min.js"></script>
   <!-- jQuery UI 1.11.4 -->
-  <script src="bower_components/jquery-ui/jquery-ui.min.js"></script>
+  <script src="../bower_components/jquery-ui/jquery-ui.min.js"></script>
   <!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
   <script>
     $.widget.bridge('uibutton', $.ui.button);
   </script>
   <!-- Bootstrap 3.3.7 -->
-  <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+  <script src="../bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
   <!-- Calendar :)) -->
-  <script src="bower_components\fullcalendar\dist\fullcalendar.min.js"></script>
-  <script src="bower_components\fullcalendar\dist\fullcalendar.js"></script>
-  <script src="bower_components\moment\moment.js"></script>
+  <script src="../bower_components\fullcalendar\dist\fullcalendar.min.js"></script>
+  <script src="../bower_components\fullcalendar\dist\fullcalendar.js"></script>
+  <script src="../bower_components\moment\moment.js"></script>
   <!-- Morris.js charts -->
-  <script src="bower_components/raphael/raphael.min.js"></script>
-  <script src="bower_components/morris.js/morris.min.js"></script>
+  <script src="../bower_components/raphael/raphael.min.js"></script>
+  <script src="../bower_components/morris.js/morris.min.js"></script>
   <!-- Sparkline -->
-  <script src="bower_components/jquery-sparkline/dist/jquery.sparkline.min.js"></script>
+  <script src="../bower_components/jquery-sparkline/dist/jquery.sparkline.min.js"></script>
   <!-- jvectormap -->
-  <script src="plugins/jvectormap/jquery-jvectormap-1.2.2.min.js"></script>
-  <script src="plugins/jvectormap/jquery-jvectormap-world-mill-en.js"></script>
+  <script src="../plugins/jvectormap/jquery-jvectormap-1.2.2.min.js"></script>
+  <script src="../plugins/jvectormap/jquery-jvectormap-world-mill-en.js"></script>
   <!-- jQuery Knob Chart -->
-  <script src="bower_components/jquery-knob/dist/jquery.knob.min.js"></script>
+  <script src="../bower_components/jquery-knob/dist/jquery.knob.min.js"></script>
   <!-- daterangepicker -->
-  <script src="bower_components/moment/min/moment.min.js"></script>
-  <script src="bower_components/bootstrap-daterangepicker/daterangepicker.js"></script>
+  <script src="../bower_components/moment/min/moment.min.js"></script>
+  <script src="../bower_components/bootstrap-daterangepicker/daterangepicker.js"></script>
   <!-- datepicker -->
-  <script src="bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
+  <script src="../bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
   <!-- Bootstrap WYSIHTML5 -->
-  <script src="plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js"></script>
+  <script src="../plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js"></script>
   <!-- Slimscroll -->
-  <script src="bower_components/jquery-slimscroll/jquery.slimscroll.min.js"></script>
+  <script src="../bower_components/jquery-slimscroll/jquery.slimscroll.min.js"></script>
   <!-- FastClick -->
-  <script src="bower_components/fastclick/lib/fastclick.js"></script>
+  <script src="../bower_components/fastclick/lib/fastclick.js"></script>
   <!-- AdminLTE App -->
-  <script src="dist/js/adminlte.min.js"></script>
+  <script src="../dist/js/adminlte.min.js"></script>
   <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
-  <script src="dist/js/pages/dashboard.js"></script>
+  <script src="../dist/js/pages/dashboard.js"></script>
   <!-- AdminLTE for demo purposes -->
-  <script src="dist/js/demo.js"></script>
+  <script src="../dist/js/demo.js"></script>
   <!-- Page specific script -->
   <script>
     $(function () {
