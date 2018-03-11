@@ -15,7 +15,7 @@
   <link rel="stylesheet" href="dist/css/plugins.css">
   <link rel="stylesheet" href="dist/css/custom.css">
   <link rel="stylesheet" href="dist/css/bootstrap.css">
-  <link rel="stylesheet" href="dist/css/ek.css">
+  <link rel="stylesheet" href="dist/css/accordion.css"> <!--Kaba değerlendirme tablo animasyonu css i -->
   <!-- Bootstrap 3.3.7 -->
   <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css">
   <!-- Font Awesome -->
@@ -48,11 +48,11 @@
   <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]-->
 
-  <script>
+<script>
   $( function() {
     $( "#accordion" ).accordion();
   } );
-  </script>
+</script>
 
 <!-- Google Font -->
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
@@ -474,7 +474,47 @@
 
 <!-- First col-md-16 ending -->
 
+<!--Kaba değerlendirme tablo animasyonu html i -->
+
 <div class="col-lg-16">
+  <div class="panel panel-default  toggle panelMove panelRefresh">
+    <div class="panel-body">
+      <div class="col-lg-16">
+        <div class="accordion collapse in">
+          <button class="accordion_mt">ÖZEL ÖĞRENME GÜÇLÜĞÜ DESTEK EĞİTİM PROGRAMI &gt;&gt; OKUMA YAZMA</button>
+          <div class="panel_mt">  
+            <div class="accordion1Content">
+              <table class="table table-striped table-bordered table-hover" cellspacing="0" rules="all" border="1" style="border-collapse:collapse;">
+                <tbody>
+                  <tr>
+                    <th scope="col">KAZANIMLAR</th>
+                    <th scope="col">EVET</th>
+                    <th scope="col">HAYIR</th>
+                    <th scope="col">ACIKLAMA</th>
+                  </tr>
+                  <tr>
+                    <td>Yazı araç-gereçlerini tanır.</td>
+                    <td>Yazı araç-gereçlerini tanır.</td>
+                    <td>Yazı araç-gereçlerini tanır.</td>
+                    <td>Yazı araç-gereçlerini tanır.</td>
+                  </tr>
+                  <tr>
+                    <td>Yazı araç-gereçlerini tanır.</td>
+                    <td>Yazı araç-gereçlerini tanır.</td>
+                    <td>Yazı araç-gereçlerini tanır.</td>
+                    <td>Yazı araç-gereçlerini tanır.</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>          
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!--<div class="col-lg-16">
   <div class="panel panel-default  toggle panelMove panelRefresh" id="supr2">
 
     <div class="panel-body">
@@ -483,7 +523,7 @@
 
         <div id="ContentPlaceHolder1_Accordion1" class="accordion collapse in" style="overflow: auto;" aria-expanded="true">
           <input type="hidden">
-          <div id="ContentPlaceHolder1" class="accordion1Header">
+          <div id="ContentPlaceHolder1" class="accordion1Header">            
             <span>ÖZEL ÖĞRENME GÜÇLÜĞÜ DESTEK EĞİTİM PROGRAMI &gt;&gt; OKUMA YAZMA</span>
           </div>
 
@@ -612,8 +652,8 @@
 
      </div>
    </div>
-   <!-- End .panel -->
- </div>
+    End .panel
+  </div>-->
 
 </div>
 </div>
@@ -667,6 +707,23 @@
   <script src="dist/js/demo.js"></script>
   <!-- Page specific script -->
 
+  <!--Kaba değerlendirme tablo animasyonu js si -->
+  <script>
+    var acc = document.getElementsByClassName("accordion_mt");
+    var i;
+
+    for (i = 0; i < acc.length; i++) {
+      acc[i].addEventListener("click", function() {
+        this.classList.toggle("active");
+        var panel = this.nextElementSibling;
+        if (panel.style.maxHeight){
+          panel.style.maxHeight = null;
+        } else {
+          panel.style.maxHeight = panel.scrollHeight + "px";
+        } 
+      });
+    }
+  </script>
   <script>
     $(function () {
 
