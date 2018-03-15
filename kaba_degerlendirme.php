@@ -1,3 +1,5 @@
+
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -487,23 +489,38 @@
               <table class="table table-striped table-bordered table-hover" cellspacing="0" rules="all" border="1" style="border-collapse:collapse;">
                 <tbody>
                   <tr>
-                    <th scope="col">KAZANIMLAR</th>
-                    <th scope="col">EVET</th>
-                    <th scope="col">HAYIR</th>
-                    <th scope="col">ACIKLAMA</th>
+                    <th>KAZANIMLAR</th>
+                    <th>EVET</th>
+                    <th>HAYIR</th>
+                    <th>ACIKLAMA</th>
                   </tr>
+
+                  <?php
+                  $con = mysqli_connect("localhost","root","123456","project");
+                  mysqli_set_charset($con, "utf8");
+
+                  if (mysqli_connect_errno())
+                  {
+                    echo "MySQL bağlantısı başarısız: " . mysqli_connect_error();
+                  }
+                  $datam = mysqli_query($con,"SELECT * FROM kazanımlar ORDER BY kazanım_name ASC");
+
+                  while($write = mysqli_fetch_array($datam, MYSQL_ASSOC)){ ?>
                   <tr>
-                    <td>Yazı araç-gereçlerini tanır.</td>
-                    <td>Yazı araç-gereçlerini tanır.</td>
-                    <td>Yazı araç-gereçlerini tanır.</td>
-                    <td>Yazı araç-gereçlerini tanır.</td>
+                    <td>
+                      <?php echo $write['kazanım_name']; ?>
+                    </td>
+                    <td>
+                      <?php echo $write['evet']; ?>
+                    </td> 
+                    <td>
+                      <?php echo $write['hayır']; ?>
+                    </td> 
+                    <td>
+                      <?php echo $write['acıklama']; ?>
+                    </td>  
                   </tr>
-                  <tr>
-                    <td>Yazı araç-gereçlerini tanır.</td>
-                    <td>Yazı araç-gereçlerini tanır.</td>
-                    <td>Yazı araç-gereçlerini tanır.</td>
-                    <td>Yazı araç-gereçlerini tanır.</td>
-                  </tr>
+                  <?php } ?> 
                 </tbody>
               </table>
             </div>          
