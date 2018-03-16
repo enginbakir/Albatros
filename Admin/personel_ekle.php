@@ -138,7 +138,7 @@
                         <label class="col-md-2 control-label">Cinsiyet:</label>
                         <div class="col-md-3">
                          <div class="fancy-select">
-                          <select name="gender" id="Cinsiyet" class="fancy-select form-control fancified" >
+                          <select name="personelGender" id="Cinsiyet" class="fancy-select form-control fancified" >
                             <option value="Erkek">Erkek</option>
                             <option value="Kız">Kız</option> 
                           </select>
@@ -222,7 +222,7 @@
                     <div class="col-md-3">
                      <div class=" input-group">
                        <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-                       <input name="ayrilisTarihi" type="date" id="ayrilisTarihi" class="form-control" placeholder="gg.AA.yyyy">
+                       <input name="personelAyrilisTarihi" type="date" id="ayrilisTarihi" class="form-control" placeholder="gg.AA.yyyy">
                      </div>
                    </div>
                  </div>
@@ -459,5 +459,6 @@
   })
 </script>
 
+<?php session_unset(); ?>
 </body>
 </html>

@@ -1,12 +1,20 @@
 <?php 
-
-require_once 'connectDB.php';
-if (!$conn)
+session_start();
+session_unset(); 
+include 'connectDB.php';
+ /*if (!$conn){
 	$_SESSION["connection"] = "Veritabanı Bağlantı Hatası";
+	echo "Veritabanı Bağlantı Hatası";
+}*/
+if (mysqli_connect_errno())
+{
+	echo "Failed to connect to MySQL: " . mysqli_connect_error();
+}
+
 date_default_timezone_set("Europe/Istanbul");
 $currentDate = date("Y-m-d");
 
-$target_dir = "images/";
+$target_dir = "../images/";
 $target_file = $target_dir . basename($_FILES["fileToUpload"]["name"]);
 $uploadOk = 1;
 $imageFileType = strtolower(pathinfo($target_file,PATHINFO_EXTENSION));
@@ -15,6 +23,9 @@ $_SESSION["imageName"] = $target_file;
 $personelName = $personelSurname = $personelTCNumber = $personelUnvan = $personelTelefon = $personelGender = $personelEmailAdresi = $personelKayitTarihi = $personelAyrilisTarihi = null;
 
 $bool = true;
+
+
+///// START OF REQUEST POST IF CODE BLOCK ////
 
 if ($_SERVER["REQUEST_METHOD"] == "POST"){
 	if (empty($_POST["personelName"])) {
@@ -29,14 +40,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
 		}
 	}
 
-	if(empty($_POST['studentSurname'])){
-		$_SESSION["surNameErr"] = "Soyisim Gereklidir";
+	if(empty($_POST["personelSurname"])){
+		$_SESSION["personelSurnameErr"] = "Soyisim Gereklidir";
 		$bool = false;
 	}
 	else{
-		$studentSurname = test_input($_POST['studentSurname']);
-		if(!preg_match("/^[\p{L} ]+$/u",$studentSurname)){
-			$_SESSION["surNameErr"] = "Sadece Harf ve Boşluk Giriniz";
+		$personelSurname = test_input($_POST['personelSurname']);
+		if(!preg_match("/^[\p{L} ]+$/u",$personelSurname)){
+			$_SESSION["personelSurnameErr"] = "Sadece Harf ve Boşluk Giriniz";
 			$bool = false;
 		}
 	}
@@ -109,7 +120,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
 
 	if(empty($fileErrors) == true && $bool == true) {
 		if (move_uploaded_file($_FILES["fileToUpload"]["tmp_name"], $target_file)) {
-			echo "The file ". basename( $_FILES["fileToUpload"]["name"]). " has been uploaded.";
+			echo "The file ". basename( $_FILES["fileToUpload"]["name"]). " has been uploaded.<br><br>";
 		} else {
 			$fileErrors[4] = "Yükleme Hatası, Bilgileri Kontrol Ediniz!!";
 		}
@@ -121,14 +132,41 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
 //// FOTOĞRAF KONTROLÜ BURADAN YUKARIYA /////
 
 
+	var_dump($_SESSION);
+	echo "<br><br>";
+	$personel_type_FK = findPersonelType($personelUnvan);
 
-
-
+	$sqlPersonelQuery = "INSERT INTO `personel`(`name`, `surname`, `email_address`, `tel_no`, `photo`, `personel_type_FK`, `gender_FK`) VALUES ('$personelName','$personelSurname','$personelEmailAdresi','$personelTelefon','$target_file',".$personel_type_FK.",".$personelGender.")";
+	if($bool == true)
+		runPersonelQuery($sqlPersonelQuery);
+	else
+		echo "runPersonelQuery Çağrılamadı!!!<br><br>";
 	print_r($_POST);
-	echo "<br>".$target_file;
- 	////////// END OF REQUESTE POST IF CODE BLOCK ///////////
+	echo "<br><br>".$target_file;
+
+}
+	////////// END OF REQUEST POST IF CODE BLOCK ///////////
+function runPersonelQuery($query){
+
+global $conn;
+	if(mysqli_query($conn,$query)){
+		echo "Personel Başarıyla Eklendi!!!<br><br>";
+	}
+	else
+		echo "Ekleme Başarısız!!!<br><br>";
+
 }
 
+function findPersonelType($personelUnvan){
+
+	global $conn;
+
+	$query = "SELECT * from personel_types where personel_type='".$personelUnvan."';";
+	$result = mysqli_query($conn,$query);
+	$row = mysqli_fetch_array($result,MYSQL_ASSOC);
+	return $row['personel_type_PK']."<br>";
+
+}
 
 
 function isTcKimlik($tc)  
@@ -152,4 +190,6 @@ function test_input($data) {
 	$data = htmlspecialchars($data);
 	return $data;
 }
+
+mysqli_close($conn);
 ?>
