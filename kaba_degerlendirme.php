@@ -482,6 +482,7 @@
   <div class="panel panel-default  toggle panelMove panelRefresh">
     <div class="panel-body">
       <div class="col-lg-16">
+        <!--OKUMA YAZMA starting -->
         <div class="accordion collapse in">
           <button class="accordion_mt">ÖZEL ÖĞRENME GÜÇLÜĞÜ DESTEK EĞİTİM PROGRAMI &gt;&gt; OKUMA YAZMA</button>
           <div class="panel_mt">  
@@ -526,6 +527,101 @@
             </div>          
           </div>
         </div>
+        <!--OKUMA YAZMA ending -->
+
+        <!--ÖĞRENMEYE HAZIRLIK starting -->
+        <div class="accordion collapse in">
+          <button class="accordion_mt">ÖZEL ÖĞRENME GÜÇLÜĞÜ DESTEK EĞİTİM PROGRAMI &gt;&gt; ÖĞRENMEYE HAZIRLIK</button>
+          <div class="panel_mt">  
+            <div class="accordion1Content">
+              <table class="table table-striped table-bordered table-hover" cellspacing="0" rules="all" border="1" style="border-collapse:collapse;">
+                <tbody>
+                  <tr>
+                    <th>KAZANIMLAR</th>
+                    <th>EVET</th>
+                    <th>HAYIR</th>
+                    <th>ACIKLAMA</th>
+                  </tr>
+
+                  <?php
+                  $con = mysqli_connect("localhost","root","123456","project");
+                  mysqli_set_charset($con, "utf8");
+
+                  if (mysqli_connect_errno())
+                  {
+                    echo "MySQL bağlantısı başarısız: " . mysqli_connect_error();
+                  }
+                  $datam = mysqli_query($con,"SELECT * FROM ogrenmeye_hazirlik ORDER BY kazanımlar_o ASC");
+
+                  while($write = mysqli_fetch_array($datam, MYSQL_ASSOC)){ ?>
+                  <tr>
+                    <td>
+                      <?php echo $write['kazanımlar_o']; ?>
+                    </td>
+                    <td>
+                      <?php echo $write['evet_o']; ?>
+                    </td> 
+                    <td>
+                      <?php echo $write['hayir_o']; ?>
+                    </td> 
+                    <td>
+                      <?php echo $write['aciklama_o']; ?>
+                    </td>  
+                  </tr>
+                  <?php } ?> 
+                </tbody>
+              </table>
+            </div>          
+          </div>
+        </div>
+        <!--ÖĞRENMEYE HAZIRLIK ending -->
+
+        <!--MATEMATİK starting -->
+        <div class="accordion collapse in">
+          <button class="accordion_mt">ÖZEL ÖĞRENME GÜÇLÜĞÜ DESTEK EĞİTİM PROGRAMI &gt;&gt; MATEMATİK</button>
+          <div class="panel_mt">  
+            <div class="accordion1Content">
+              <table class="table table-striped table-bordered table-hover" cellspacing="0" rules="all" border="1" style="border-collapse:collapse;">
+                <tbody>
+                  <tr>
+                    <th>KAZANIMLAR</th>
+                    <th>EVET</th>
+                    <th>HAYIR</th>
+                    <th>ACIKLAMA</th>
+                  </tr>
+
+                  <?php
+                  $con = mysqli_connect("localhost","root","123456","project");
+                  mysqli_set_charset($con, "utf8");
+
+                  if (mysqli_connect_errno())
+                  {
+                    echo "MySQL bağlantısı başarısız: " . mysqli_connect_error();
+                  }
+                  $datam = mysqli_query($con,"SELECT * FROM mathematics ORDER BY mathematic_id ASC");
+
+                  while($write = mysqli_fetch_array($datam, MYSQL_ASSOC)){ ?>
+                  <tr>
+                    <td>
+                      <?php echo $write['mathematic']; ?>
+                    </td>
+                    <td>
+                      <?php echo $write['evet_m']; ?>
+                    </td> 
+                    <td>
+                      <?php echo $write['hayir_m']; ?>
+                    </td> 
+                    <td>
+                      <?php echo $write['aciklama_m']; ?>
+                    </td>  
+                  </tr>
+                  <?php } ?> 
+                </tbody>
+              </table>
+            </div>          
+          </div>
+        </div>
+        <!--MATEMATİK ending -->
       </div>
     </div>
   </div>
