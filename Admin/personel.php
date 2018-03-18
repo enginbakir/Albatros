@@ -3,11 +3,12 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>AdminLTE 2 | Dashboard</title>
+	<title>Albatros | Admin - Personeller</title>
 	<!-- Tell the browser to be responsive to screen width -->
 	<meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
 	<!-- Bootstrap 3.3.7 -->
 	<link rel="stylesheet" href="../bower_components/bootstrap/dist/css/bootstrap.min.css">
+	<link rel="stylesheet" href="../bower_components/bootstrap/dist/css/myCss.css">
 	<!-- Font Awesome -->
 	<link rel="stylesheet" href="../bower_components/font-awesome/css/font-awesome.min.css">
 	<!-- Ionicons -->
@@ -71,7 +72,6 @@
 				</ol>
 			</section>
 
-			<!-- Main content class="col-md-3" style="font-size: 5px; font-weight: bold; font-family: Arial, Helvetica, sans-serif;"-->
 			<section class="content">
 				<div class="row">
 					<div class="col-md-6">
@@ -97,7 +97,7 @@
 								<div class="row">
 									<div class="col-md-12">
 										<div class="scrollable">
-											<table id="example2" class="table table-bordered table-hover">
+											<table id="example2" class="table table-bordered table-hover table-striped table-condens formatHTML5">
 												<thead>
 													<tr>
 														<th>ID</th>
@@ -122,13 +122,13 @@
 														$surname = $_POST['surname'];    
 
 													if(isset($name) && isset($surname)){
-														$sql = "SELECT * FROM personel where name='".$name."' and surname='".$surname."';";
+														$sql = "SELECT * FROM personel where name='".$name."' and surname=' INNER JOIN personel_types on personel.personel_type_FK=personel_types.personel_type_PK".$surname."';";
 													}
 													if(isset($name) && !isset($surname)){
-														$sql = "SELECT * FROM personel where name='".$name."';";
+														$sql = "SELECT * FROM personel where name='".$name."' INNER JOIN personel_types on personel.personel_type_FK=personel_types.personel_type_PK;";
 													}
 													if(!isset($name) && isset($surname)){
-														$sql = "SELECT * from personel where surname='".$surname."';";
+														$sql = "SELECT * from personel where surname='".$surname."' INNER JOIN personel_types on personel.personel_type_FK=personel_types.personel_type_PK;";
 													}
 													if (!isset($name) && !isset($surname)) {
 														//$sql = "SELECT * FROM personel ";
@@ -180,6 +180,9 @@
 						</div>
 						<!-- /.box -->
 					</div>
+
+					<!--- START OF RIGHT PAGE ---->
+
 					<div class="col-md-6">
 						<!-- /.box -->
 						<div class="box">
@@ -604,6 +607,47 @@
 		alert(date);
 	});
 
+</script>
+
+<script type="text/javascript">
+	var id = -1;
+	var isim; 
+	var soyisim;
+	$("tbody tr").click(function () {
+		$('.selected').removeClass('selected');
+		$(this).addClass("selected");
+		id = $('.id',this).text();
+		isim = $('.isim',this).text();
+		soyisim = $('.soyisim',this).text();
+    alert(id +','+ isim+','+ soyisim);
+});
+
+	$("#silButton").on("click",function(){
+    //
+    if(id>0){
+    	var answer = confirm("Kaydı Silmeyi Onaylıyor Musunuz ??");
+    	if(answer){
+    		$.ajax({
+    			type:"POST",
+    			url:"deleteStudent.php",
+    			data:{id:id,isim:isim},
+    			success:function(data){
+    				alert(data);
+    				location.reload();
+    			}
+    		});
+    	}
+    	else {
+    		return false;
+    	}
+    }
+    if(id < 0)
+    	alert("Bir Kayıt Seçin!!!");
+});
+
+	$("#notlar").on("click",function(){
+
+	})
 </script>
 
 </div>

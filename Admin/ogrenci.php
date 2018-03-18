@@ -9,7 +9,7 @@ require_once "connectDB.php";
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 
-	<title>Admin - Albatros</title>
+	<title>Albatros | Admin - Öğrenciler</title>
 	<!-- Tell the browser to be responsive to screen width -->
 	<meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
 
@@ -50,11 +50,6 @@ require_once "connectDB.php";
 <!-- Google Font -->
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
 
-
-<style type="text/css">
-.table-striped{ background-color: #dddddd;}
-.scrollable{height: 400px; overflow: scroll;}
-</style>
 
 
 
@@ -128,12 +123,6 @@ require_once "connectDB.php";
                               // Get total number of records //
               $sql = "SELECT student_PK FROM student ";
               $retval = mysqli_query( $conn,$sql );
-
-  ///////////////////////////////////
-
-              $num_rows = mysqli_num_rows($retval);
-
-              ///////////////////////////////////
 
               if(! $retval ) {
                die('Could not get data: ' . mysqli_error());
