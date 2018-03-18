@@ -133,32 +133,14 @@ require_once "connectDB.php";
 
               $num_rows = mysqli_num_rows($retval);
 
-              $num_pages = (int) ($num_rows / 10);
+              ///////////////////////////////////
 
-              if(($num_rows / 10) > $num_pages)
-               $num_pages ++;
-
-  ///////////////////////////////////
-
-             if(! $retval ) {
+              if(! $retval ) {
                die('Could not get data: ' . mysqli_error());
              }
              $row = mysqli_fetch_array($retval, MYSQL_ASSOC );
              $rec_count = $row[0];
 
-
-             if( isset($_GET['page'] ) ) {
-
-               $page = $_GET['page'] + 1;
-               $offset = $rec_limit * $page ;
-             }else {
-               $page = 0;
-               $offset = 0;
-             }
-
-             $left_rec = $rec_count - ($page * $rec_limit);
-
-                            ///////
              $name;
              $surname;
              if(isset($_POST['firstname']) && !empty($_POST['firstname']))
@@ -166,8 +148,6 @@ require_once "connectDB.php";
              if(isset($_POST['surname']) && !empty($_POST['surname']))
                $surname = $_POST['surname'];                       
 
-                             //echo $name." ".$surname." ";
-                            //////////
              if(isset($name) && isset($surname)){
                $sql = "SELECT student_PK,name,surname FROM student where name='".$name."' and surname='".$surname."';";
              }
@@ -181,7 +161,7 @@ require_once "connectDB.php";
                $sql = "SELECT student_PK,name,surname FROM student ";
              }
              unset($_POST['firstname']);
-             unset($_POST['surname']); 
+             unset($_POST['surname']);
                             //echo $sql;
 
              $retval = mysqli_query( $conn, $sql );
@@ -712,7 +692,7 @@ include 'footer.php';
 </script>
 
 <script type="text/javascript">
-	var id;
+	var id = -1;
 	var isim; 
 	var soyisim;
 	$("tbody tr").click(function () {
@@ -743,6 +723,8 @@ include 'footer.php';
       return false;
     }
   }
+  if(id < 0)
+    alert("Bir Kayıt Seçin!!!");
 });
 
   $("#notlar").on("click",function(){

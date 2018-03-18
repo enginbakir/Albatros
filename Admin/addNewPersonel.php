@@ -97,7 +97,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
 				echo "File is an image - " . $check["mime"] . ".";
 				$uploadOk = 1;
 			} else {
-				$fileErrors[0] = "File is not an image.";
+				$fileErrors[0] = "Dosya bir resim dosyası olmalıdır!!!";
 				$uploadOk = 0;
 			}
 		}
@@ -123,6 +123,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
 			echo "The file ". basename( $_FILES["fileToUpload"]["name"]). " has been uploaded.<br><br>";
 		} else {
 			$fileErrors[4] = "Yükleme Hatası, Bilgileri Kontrol Ediniz!!";
+			$bool = false;
 		}
 	}else{
 		$_SESSION["fileErrors"] = $fileErrors;
@@ -136,7 +137,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
 	echo "<br><br>";
 	$personel_type_FK = findPersonelType($personelUnvan);
 
-	$sqlPersonelQuery = "INSERT INTO `personel`(`name`, `surname`, `email_address`, `tel_no`, `photo`, `personel_type_FK`, `gender_FK`) VALUES ('$personelName','$personelSurname','$personelEmailAdresi','$personelTelefon','$target_file',".$personel_type_FK.",".$personelGender.")";
+	$sqlPersonelQuery = "INSERT INTO `personel`(`name`, `surname`, `email_address`, `tel_no`, `photo`, `personel_type_FK`, `gender_FK`) VALUES ('$personelName','$personelSurname','$personelEmailAdresi','$personelTelefon','$target_file','$personel_type_FK','$personelGender')";
 	if($bool == true)
 		runPersonelQuery($sqlPersonelQuery);
 	else

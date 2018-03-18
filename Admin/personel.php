@@ -107,42 +107,55 @@
 														<th>Telefon</th>                              
 													</tr>
 												</thead>
-												<tbody>
-													<tr>
-														<td>1</td>
-														<td>Gülben</td>
-														<td>Ergül</td>
-														<td>MATEMATİK ÖĞRETMENİ</td>
-														<td>05428529636</td>
-													</tr>
-													<tr>
-														<td>2</td>
-														<td>Atahan</td>
-														<td>Öztürk</td>
-														<td>TÜRKÇE ÖĞRETMENİ</td>
-														<td>05558729447</td>
-													</tr>
-													<tr>
-														<td>3</td>
-														<td>Sevcan</td>
-														<td>Uğraş</td>
-														<td>REHBER ÖĞRETMENİ</td>
-														<td>05334561232</td>
-													</tr>
-													<tr>
-														<td>4</td>
-														<td>Gamze Yağmur</td>
-														<td>Yakıcı</td>
-														<td>OKUL MÜDÜRÜ</td>
-														<td>05428529636</td>
-													</tr>
-													<tr>
-														<td>5</td>
-														<td>Ferhat</td>
-														<td>Özatak</td>
-														<td>MÜDÜR YARDIMCISI</td>
-														<td>05457894565</td>
-													</tr>
+												<tbody id="tbody">
+
+
+													<?php 
+
+													require_once "connectDB.php";
+
+													$name;
+													$surname;
+													if(isset($_POST['firstname']) && !empty($_POST['firstname']))
+														$name = $_POST['firstname'];
+													if(isset($_POST['surname']) && !empty($_POST['surname']))
+														$surname = $_POST['surname'];    
+
+													if(isset($name) && isset($surname)){
+														$sql = "SELECT * FROM personel where name='".$name."' and surname='".$surname."';";
+													}
+													if(isset($name) && !isset($surname)){
+														$sql = "SELECT * FROM personel where name='".$name."';";
+													}
+													if(!isset($name) && isset($surname)){
+														$sql = "SELECT * from personel where surname='".$surname."';";
+													}
+													if (!isset($name) && !isset($surname)) {
+														//$sql = "SELECT * FROM personel ";
+														$sql = "select * from personel INNER JOIN personel_types on personel.personel_type_FK=personel_types.personel_type_PK";
+													}  
+
+													unset($_POST['firstname']);
+													unset($_POST['surname']);
+													$retval = mysqli_query( $conn, $sql );
+
+													$num_rows = mysqli_num_rows($retval);
+													if(! $retval ) {
+														die('Could not get data: ' . mysqli_error());
+													}
+
+													while($row = mysqli_fetch_array($retval, MYSQL_ASSOC)) {
+														echo "<tr>";
+
+														echo "<td class='id'>".$row['personel_PK']."</td>";
+														echo "<td class='isim'>".$row['name']."</td>";
+														echo "<td class='soyisim'>".$row['surname']."</td>";
+														echo "<td class='unvan'>".$row['personel_type']."</td>";
+														echo "<td class='tel_no'>".$row['tel_no']."</td>";
+
+														echo "</tr>";
+													}
+													?>
 												</tbody>
 											</table>
 										</div>
