@@ -6,6 +6,7 @@ session_start();
 //eğer login session kaydı yapılmadan yani giriş yapmadan admin.php sayfamıza erişmek isterlerse buna engel oluyoruz.
  
 if(!isset($_SESSION["login"])){
+ 
 echo "Bu sayfayı görüntüleme yetkiniz yoktur.";
  
 } else {?>

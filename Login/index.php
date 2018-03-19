@@ -3,7 +3,6 @@
 <head>
 <link rel="stylesheet" type="text/css" href="login.css">
 </head>
-</body>
 <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
 <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
 <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
@@ -12,10 +11,10 @@
     you can substitue the span of reauth username for a input with the username and
     include the remember me checkbox
     -->
-<form action="connection.php" method="POST">
+<form action="connection.php" method="Post">
     <div class="container">
             <p id="profile-name" class="profile-name-card"></p>
-            
+                        <form class="form-signin">
                 <div class="card card-container">
             <table> 
             <tr> 
@@ -26,25 +25,24 @@
             <tr> 
             <td><div>
                 <span>PARENT</span>
-                <input type="radio" id="inputparent" class="form-control" name="user_type" <?php if (isset($user_type) && $user_type=="parent") echo "checked";?> value="parent">
+                <input type="radio" id="inputparent" class="form-control" name="user_type" value="parent">
             </div></td> 
             <td><div>
                 <span>  ADMIN</span>
-                <input type="radio" id="inputadmin" class="form-control" name="user_type" <?php if (isset($user_type) && $user_type=="admin") echo "checked";?> value="admin">
+                <input type="radio" id="inputadmin" class="form-control" name="user_type" value="admin">
             </div></td> 
             <td><div>
                 <span>PERSONEL</span>
-                <input type="radio" id="inputpersonel" class="form-control" name="user_type" <?php if (isset($user_type) && $user_type=="personel") echo "checked";?> value="personel">
+                <input type="radio" id="inputpersonel" class="form-control" name="user_type" value="personel">
             </div></td> 
             </tr>
             </table>
-                <span class="error"><?php echo $user_typeError;?></span>
                 <span id="reauth-username" class="reauth-username"></span>
                 <input name="username" type="text" id="inputusername" class="form-control" placeholder="username" required autofocus>
-                <input name="password" type="text" id="inputPassword" class="form-control" placeholder="password" required>
+                <input name="password" type="password" id="inputPassword" class="form-control" placeholder="password" required>
                 <div id="remember" class="checkbox">
                     <label>
-                        <input type="checkbox" value="remember-me"> Remember me
+                        <input name="remember_me" type="checkbox" value="remember_me"> Remember me
                     </label>
                 </div>
                 <button class="btn btn-lg btn-primary btn-block btn-signin" type="submit">Sign in</button>
