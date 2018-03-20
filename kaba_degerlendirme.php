@@ -1,5 +1,3 @@
-
-
 <!DOCTYPE html>
 <html>
 <head>
@@ -17,7 +15,12 @@
   <link rel="stylesheet" href="dist/css/plugins.css">
   <link rel="stylesheet" href="dist/css/custom.css">
   <link rel="stylesheet" href="dist/css/bootstrap.css">
-  <link rel="stylesheet" href="dist/css/accordion.css"> <!--Kaba değerlendirme tablo animasyonu css i -->
+  <!--Kaba değerlendirme tablo animasyonu css i -->
+  <link rel="stylesheet" href="dist/css/accordion2.css"> 
+  <!--Kaba değerlendirme duallistbox select css i -->
+  <link rel="stylesheet" href="dist/css/bootstrap-duallistbox.css">
+
+
   <!-- Bootstrap 3.3.7 -->
   <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css">
   <!-- Font Awesome -->
@@ -58,6 +61,16 @@
 
 <!-- Google Font -->
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
+
+<!-- Tablo cizgileri için css yazdım. -->
+<style>
+.table-bordered>tbody>tr>td, .table-bordered>tbody>tr>th{
+  border:1px solid #51bcdc;
+  font-size: 18px
+}
+</style>
+
+
 </head>
 <body class="hold-transition skin-blue sidebar-mini">
   <div class="wrapper">
@@ -202,56 +215,6 @@
               <span>Personel Bilgileri</span>
             </a>
           </li>
-          <li class="treeview">
-            <a href="#">
-              <i class="fa fa-table"></i> <span>Tables</span>
-              <span class="pull-right-container">
-                <i class="fa fa-angle-left pull-right"></i>
-              </span>
-            </a>
-            <ul class="treeview-menu">
-              <li><a href="pages/tables/simple.html"><i class="fa fa-circle-o"></i> Simple tables</a></li>
-              <li><a href="pages/tables/data.html"><i class="fa fa-circle-o"></i> Data tables</a></li>
-            </ul>
-          </li>
-          <li>
-            <a href="pages/calendar.html">
-              <i class="fa fa-calendar"></i> <span>Calendar</span>
-              <span class="pull-right-container">
-                <small class="label pull-right bg-red">3</small>
-                <small class="label pull-right bg-blue">17</small>
-              </span>
-            </a>
-          </li>
-          <li>
-            <a href="pages/mailbox/mailbox.html">
-              <i class="fa fa-envelope"></i> <span>Mailbox</span>
-              <span class="pull-right-container">
-                <small class="label pull-right bg-yellow">12</small>
-                <small class="label pull-right bg-green">16</small>
-                <small class="label pull-right bg-red">5</small>
-              </span>
-            </a>
-          </li>
-          <li class="treeview">
-            <a href="#">
-              <i class="fa fa-folder"></i> <span>Examples</span>
-              <span class="pull-right-container">
-                <i class="fa fa-angle-left pull-right"></i>
-              </span>
-            </a>
-            <ul class="treeview-menu">
-              <li><a href="pages/examples/invoice.html"><i class="fa fa-circle-o"></i> Invoice</a></li>
-              <li><a href="pages/examples/profile.html"><i class="fa fa-circle-o"></i> Profile</a></li>
-              <li><a href="pages/examples/login.html"><i class="fa fa-circle-o"></i> Login</a></li>
-              <li><a href="pages/examples/register.html"><i class="fa fa-circle-o"></i> Register</a></li>
-              <li><a href="pages/examples/lockscreen.html"><i class="fa fa-circle-o"></i> Lockscreen</a></li>
-              <li><a href="pages/examples/404.html"><i class="fa fa-circle-o"></i> 404 Error</a></li>
-              <li><a href="pages/examples/500.html"><i class="fa fa-circle-o"></i> 500 Error</a></li>
-              <li><a href="pages/examples/blank.html"><i class="fa fa-circle-o"></i> Blank Page</a></li>
-              <li><a href="pages/examples/pace.html"><i class="fa fa-circle-o"></i> Pace Page</a></li>
-            </ul>
-          </li>
         </ul>
       </section>
       <!-- /.sidebar -->
@@ -360,416 +323,259 @@
                       </div>
                       <!-- End .form-group 4 -->
 
-                      <!-- Start .form-group 4 -->
+                      <!-- Start .form-group 5 -->
                       <div class="form-group">
                         <div class="row">
-                          <label class="col-md-2 control-label" style="width: 150px">Okullar:</label>
-                          <div class="col-md-9">
-                            <input type="text" maxlength="16" class="form-control" placeholder="Seçiniz...">
-                          </div>
+                          <div class="col-md-9" style="padding-left: 167px;">
+                            <select multiple="multiple" size="10" name="duallistbox_demo2" class="demo2">
+                              <!-- Dikkat : Daha sonra derleri veri tabannda tutup oradan çekeceğiz. -->
+                              <option value="option1">OKUMA YAZMA</option>
+                              <option value="option2">ÖĞRENMEYE HAZIRLIK</option>
+                              <!-- <option value="option3" selected="selected">KEYİF :P</option> -->
+                              <option value="option4">MATEMATİK</option>
+                            </select>
+                          </div>                          
+                        </div>
+                        <label class="col-lg-yeni3 col-md-1 control-label" for=""></label>
+                        <div class="col-lg-10 col-md-9" style="padding-left: 52px;">
+                          <br>
+                          <button type="button" class="btn btn-info" onclick="myFunction()">Button</button>
+                          <br><br>
+                          <a class="col-lg-yeni16 col-md-3 btn btn-success mr5 mb10" title="Değerlendir">
+                            <i class="fa fa-folder"></i>Değerlendir
+                          </a>
+                          <br>
                         </div>
                       </div>
+                      <!-- End .form-group 5 -->
+
+
                       <!-- End .form-group 4 -->
-
-
-                      <!-- Start .form-group 5 
-                      <div class="form-group">
-                       <div class="row">
-                        <label class="col-md-2 control-label" for="">Kayıt Tarihi:</label>
-                        <div class="col-md-3">
-                          <div class=" input-group">
-                            <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-
-                            <input  type="text" value="18.09.2017" maxlength="10" class="form-control" placeholder="gg.AA.yyyy">
-
-                          </div>
-                        </div>
-
-                        <label class="col-md-2 control-label" for="">Ayrılış Tarihi:</label>
-                        <div class="col-md-3">
-                         <div class=" input-group">
-                           <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-
-
-                           <input type="text" maxlength="10" class="form-control" placeholder="gg.AA.yyyy">
-
-                         </div>
-                       </div>
-                     </div>
-                   </div>
-                   End .form-group 5 -->
-
-                   <!-- Start .form-group 4 -->
-                   <div class="form-group">
-                    <div class="row">
-                      <label class="col-lg-yeni3 col-md-1 control-label" for=""></label>
+                      <!-- <label class="col-lg-yeni3 col-md-1 control-label" for=""></label>
                       <div class="col-lg-10 col-md-9">
-
-                        <div class="bootstrap-duallistbox-container row">
-                         <div class="box1 col-md-6">
-                          <label>Dersler</label>
-                          <span class="info-container">
-                            <span class="info"> </span>
-                            <button type="button" class="btn clear1 pull-right btn-default btn-xs">Toplam Ders</button>
-                          </span>
-                          <input class="filter form-control" type="text" placeholder="Ara...">
-                          <div class="btn-group buttons">
-                           <button type="button" class="btn moveall btn-default" title="Hepsini Seç">
-                            <i class="glyphicon glyphicon-arrow-right"></i>
-                            <i class="glyphicon glyphicon-arrow-right"></i>
-                          </button>     
-                          <button type="button" class="btn move btn-default" title="Seçilenleri Taşı">
-                           <i class="glyphicon glyphicon-arrow-right"></i>
-                         </button>   
-                       </div>   
-                       <select multiple="multiple" class="form-control" style="height: 102px;"></select>
-                     </div>
-                     <div class="box2 col-md-6">
-                      <label >Seçilen Dersler</label>
-                      <span class="info-container">
-                        <span class="info"> </span>
-                        <button type="button" class="btn clear2 pull-right btn-default btn-xs">Toplam Ders</button>
-                      </span>
-                      <input class="filter form-control" type="text" placeholder="Ara...">
-                      <div class="btn-group buttons">
-                       <button type="button" class="btn remove btn-default" title="Seçilenleri Sil">
-                        <i class="glyphicon glyphicon-arrow-left"></i>
-                      </button>
-                      <button type="button" class="btn removeall btn-default" title="Hepsini Sil">
-                       <i class="glyphicon glyphicon-arrow-left"></i>
-                       <i class="glyphicon glyphicon-arrow-left"></i>
-                     </button>
-                   </div>
-                   <select multiple="multiple" class="form-control" 
-                   style="height: 102px;"></select>
-                 </div>
-               </div>
-               <select size="4" multiple="multiple" class="duallistbox" style="display: none;">
-
-               </select>
-             </div>
-           </div>
-         </div>
-         <!-- End .form-group 4 -->
-         <label class="col-lg-yeni3 col-md-1 control-label" for=""></label>
-         <div class="col-lg-10 col-md-9">
-          <br>
-          <a class="col-lg-yeni16 col-md-3 btn btn-success mr5 mb10" title="Değerlendir">
-            <i class="fa fa-folder"></i>Değerlendir
-          </a>
-        </div>
+                        <br>
+                        <a class="col-lg-yeni16 col-md-3 btn btn-success mr5 mb10" title="Değerlendir">
+                          <i class="fa fa-folder"></i>Değerlendir
+                        </a>
+                      </div> -->
 
 
-
-      </div>
-    </div>
-    <i class="renk">*</i> ile işaretli alanların doldurulması zorunludur!
-    <br>
-    <span style="color:Red;font-weight:bold;"></span>
-  </div>
-  <!-- End .panel -->
-  <a class="btn btn-success mr5 mb10" title="Kaydet"><i class="glyphicon glyphicon-ok">&nbsp;<span class="spanfont">Kaydet</span></i></a>
-  <a class="btn btn-success mr5 mb10" title="Sil"><i class="glyphicon glyphicon-remove">&nbsp;<span class="spanfont">Sil</span>&nbsp;</i></a>
-  <a class="btn btn-success mr5 mb10" title="Düzenle"><i class="glyphicon glyphicon-edit">&nbsp;<span class="spanfont">Düzenle</span>&nbsp;</i></a>
-  <a class="btn btn-success mr5 mb10" title="Yazdır"><i class="glyphicon glyphicon-print">&nbsp;<span class="spanfont">Yazdır</span>&nbsp;</i></a>
-</div>
-
-<!-- First col-md-16 ending -->
-
-<!--Kaba değerlendirme tablo animasyonu html i -->
-
-<div class="col-lg-16">
-  <div class="panel panel-default  toggle panelMove panelRefresh">
-    <div class="panel-body">
-      <div class="col-lg-16">
-        <!--OKUMA YAZMA starting -->
-        <div class="accordion collapse in">
-          <button class="accordion_mt">ÖZEL ÖĞRENME GÜÇLÜĞÜ DESTEK EĞİTİM PROGRAMI &gt;&gt; OKUMA YAZMA</button>
-          <div class="panel_mt">  
-            <div class="accordion1Content">
-              <table class="table table-striped table-bordered table-hover" cellspacing="0" rules="all" border="1" style="border-collapse:collapse;">
-                <tbody>
-                  <tr>
-                    <th>KAZANIMLAR</th>
-                    <th>EVET</th>
-                    <th>HAYIR</th>
-                    <th>ACIKLAMA</th>
-                  </tr>
-
-                  <?php
-                  $con = mysqli_connect("localhost","root","123456","project");
-                  mysqli_set_charset($con, "utf8");
-
-                  if (mysqli_connect_errno())
-                  {
-                    echo "MySQL bağlantısı başarısız: " . mysqli_connect_error();
-                  }
-                  $datam = mysqli_query($con,"SELECT * FROM kazanımlar ORDER BY kazanım_name ASC");
-
-                  while($write = mysqli_fetch_array($datam, MYSQL_ASSOC)){ ?>
-                  <tr>
-                    <td>
-                      <?php echo $write['kazanım_name']; ?>
-                    </td>
-                    <td>
-                      <?php echo $write['evet']; ?>
-                    </td> 
-                    <td>
-                      <?php echo $write['hayır']; ?>
-                    </td> 
-                    <td>
-                      <?php echo $write['acıklama']; ?>
-                    </td>  
-                  </tr>
-                  <?php } ?> 
-                </tbody>
-              </table>
-            </div>          
-          </div>
-        </div>
-        <!--OKUMA YAZMA ending -->
-
-        <!--ÖĞRENMEYE HAZIRLIK starting -->
-        <div class="accordion collapse in">
-          <button class="accordion_mt">ÖZEL ÖĞRENME GÜÇLÜĞÜ DESTEK EĞİTİM PROGRAMI &gt;&gt; ÖĞRENMEYE HAZIRLIK</button>
-          <div class="panel_mt">  
-            <div class="accordion1Content">
-              <table class="table table-striped table-bordered table-hover" cellspacing="0" rules="all" border="1" style="border-collapse:collapse;">
-                <tbody>
-                  <tr>
-                    <th>KAZANIMLAR</th>
-                    <th>EVET</th>
-                    <th>HAYIR</th>
-                    <th>ACIKLAMA</th>
-                  </tr>
-
-                  <?php
-                  $con = mysqli_connect("localhost","root","123456","project");
-                  mysqli_set_charset($con, "utf8");
-
-                  if (mysqli_connect_errno())
-                  {
-                    echo "MySQL bağlantısı başarısız: " . mysqli_connect_error();
-                  }
-                  $datam = mysqli_query($con,"SELECT * FROM ogrenmeye_hazirlik ORDER BY kazanımlar_o ASC");
-
-                  while($write = mysqli_fetch_array($datam, MYSQL_ASSOC)){ ?>
-                  <tr>
-                    <td>
-                      <?php echo $write['kazanımlar_o']; ?>
-                    </td>
-                    <td>
-                      <?php echo $write['evet_o']; ?>
-                    </td> 
-                    <td>
-                      <?php echo $write['hayir_o']; ?>
-                    </td> 
-                    <td>
-                      <?php echo $write['aciklama_o']; ?>
-                    </td>  
-                  </tr>
-                  <?php } ?> 
-                </tbody>
-              </table>
-            </div>          
-          </div>
-        </div>
-        <!--ÖĞRENMEYE HAZIRLIK ending -->
-
-        <!--MATEMATİK starting -->
-        <div class="accordion collapse in">
-          <button class="accordion_mt">ÖZEL ÖĞRENME GÜÇLÜĞÜ DESTEK EĞİTİM PROGRAMI &gt;&gt; MATEMATİK</button>
-          <div class="panel_mt">  
-            <div class="accordion1Content">
-              <table class="table table-striped table-bordered table-hover" cellspacing="0" rules="all" border="1" style="border-collapse:collapse;">
-                <tbody>
-                  <tr>
-                    <th>KAZANIMLAR</th>
-                    <th>EVET</th>
-                    <th>HAYIR</th>
-                    <th>ACIKLAMA</th>
-                  </tr>
-
-                  <?php
-                  $con = mysqli_connect("localhost","root","123456","project");
-                  mysqli_set_charset($con, "utf8");
-
-                  if (mysqli_connect_errno())
-                  {
-                    echo "MySQL bağlantısı başarısız: " . mysqli_connect_error();
-                  }
-                  $datam = mysqli_query($con,"SELECT * FROM mathematics ORDER BY mathematic_id ASC");
-
-                  while($write = mysqli_fetch_array($datam, MYSQL_ASSOC)){ ?>
-                  <tr>
-                    <td>
-                      <?php echo $write['mathematic']; ?>
-                    </td>
-                    <td>
-                      <?php echo $write['evet_m']; ?>
-                    </td> 
-                    <td>
-                      <?php echo $write['hayir_m']; ?>
-                    </td> 
-                    <td>
-                      <?php echo $write['aciklama_m']; ?>
-                    </td>  
-                  </tr>
-                  <?php } ?> 
-                </tbody>
-              </table>
-            </div>          
-          </div>
-        </div>
-        <!--MATEMATİK ending -->
-      </div>
-    </div>
-  </div>
-</div>
-
-<!--<div class="col-lg-16">
-  <div class="panel panel-default  toggle panelMove panelRefresh" id="supr2">
-
-    <div class="panel-body">
-      <div class="col-lg-16">
-
-
-        <div id="ContentPlaceHolder1_Accordion1" class="accordion collapse in" style="overflow: auto;" aria-expanded="true">
-          <input type="hidden">
-          <div id="ContentPlaceHolder1" class="accordion1Header">            
-            <span>ÖZEL ÖĞRENME GÜÇLÜĞÜ DESTEK EĞİTİM PROGRAMI &gt;&gt; OKUMA YAZMA</span>
-          </div>
-
-          <div style="height: 0px; overflow: hidden; display: none; opacity: 0;">
-            <div id="accordion" class="accordion1Content" style=" height: auto; overflow: hidden;">
-              <div>
-                <div class="slimScrollDiv" style="position: relative; overflow: hidden; width: 100%; height: auto;">
-                  <div class="table-responsive" style="overflow: hidden; width: 100%; height: auto;">
-                    <table class="table table-striped table-bordered table-hover" cellspacing="0" rules="all" border="1" style="border-collapse:collapse;">
-                      <tbody>
-                        <tr>
-                          <th scope="col">KAZANIMLAR</th>
-                          <th scope="col">EVET</th>
-                          <th scope="col">HAYIR</th>
-                          <th scope="col">ACIKLAMA</th>
-                        </tr>
-                        <tr>
-                          <td>Yazı araç-gereçlerini tanır.</td>
-                          <td>
-                            <span class="aspNetDisabled" title="EVET">
-                              <div class="checkbox-custom">
-                                <input type="checkbox" checked="checked" disabled="disabled">
-                                <label for="ContentPlaceHolder1_ctl00_ctl00_0"></label>
-                              </div>
-                            </span>
-                          </td>
-                          <td>
-                            <span class="aspNetDisabled" title="HAYIR">
-                              <div class="checkbox-custom">
-                                <input type="checkbox" disabled="disabled">
-                                <label for="ContentPlaceHolder1_ctl00_ctl01_0"></label>
-                              </div>
-                            </span>
-                          </td>
-                          <td>&nbsp;</td>
-                        </tr>
-                        <tr>
-                          <td>Yazı araç-gereçlerini tanır.</td>
-                          <td>
-                            <span class="aspNetDisabled" title="EVET">
-                              <div class="checkbox-custom">
-                                <input type="checkbox" checked="checked" disabled="disabled">
-                                <label for="ContentPlaceHolder1_ctl00_ctl00_0"></label>
-                              </div>
-                            </span>
-                          </td>
-                          <td>
-                            <span class="aspNetDisabled" title="HAYIR">
-                              <div class="checkbox-custom">
-                                <input type="checkbox" disabled="disabled">
-                                <label for="ContentPlaceHolder1_ctl00_ctl01_0"></label>
-                              </div>
-                            </span>
-                          </td>
-                          <td>&nbsp;</td>
-                        </tr>
-                        <tr>
-                          <td>Yazı araç-gereçlerini tanır.</td>
-                          <td>
-                            <span class="aspNetDisabled" title="EVET">
-                              <div class="checkbox-custom">
-                                <input type="checkbox" checked="checked" disabled="disabled">
-                                <label for="ContentPlaceHolder1_ctl00_ctl00_0"></label>
-                              </div>
-                            </span>
-                          </td>
-                          <td>
-                            <span class="aspNetDisabled" title="HAYIR">
-                              <div class="checkbox-custom">
-                                <input type="checkbox" disabled="disabled">
-                                <label for="ContentPlaceHolder1_ctl00_ctl01_0"></label>
-                              </div>
-                            </span>
-                          </td>
-                          <td>&nbsp;</td>
-                        </tr>
-                        <tr>
-                          <td>Yazı araç-gereçlerini tanır.</td>
-                          <td>
-                            <span class="aspNetDisabled" title="EVET">
-                              <div class="checkbox-custom">
-                                <input type="checkbox" checked="checked" disabled="disabled">
-                                <label for="ContentPlaceHolder1_ctl00_ctl00_0"></label>
-                              </div>
-                            </span>
-                          </td>
-                          <td>
-                            <span class="aspNetDisabled" title="HAYIR">
-                              <div class="checkbox-custom">
-                                <input type="checkbox" disabled="disabled">
-                                <label for="ContentPlaceHolder1_ctl00_ctl01_0"></label>
-                              </div>
-                            </span>
-                          </td>
-                          <td>&nbsp;</td>
-                        </tr>
-                      </tbody>
-                    </table>
+                    </div>
                   </div>
-                  <div class="slimScrollBar ui-draggable ui-draggable-handle" style="background: rgb(243, 243, 243); height: 5px; position: absolute; bottom: 3px; opacity: 0.4; display: none; border-radius: 5px; z-index: 99; left: 0px; width: 1009px;"></div>
-                  <div class="slimScrollRail" style="width: 100%; height: 5px; position: absolute; bottom: 3px; display: none; border-radius: 5px; background: rgb(51, 51, 51); opacity: 0.3; z-index: 90;"></div>
+                  <i class="renk">*</i> ile işaretli alanların doldurulması zorunludur!
+                  <br>
+                  <span style="color:Red;font-weight:bold;"></span>
+                </div>
+                <!-- End .panel -->
+                <a class="btn btn-success mr5 mb10" title="Kaydet"><i class="glyphicon glyphicon-ok">&nbsp;<span class="spanfont">Kaydet</span></i></a>
+                <a class="btn btn-success mr5 mb10" title="Sil"><i class="glyphicon glyphicon-remove">&nbsp;<span class="spanfont">Sil</span>&nbsp;</i></a>
+                <a class="btn btn-success mr5 mb10" title="Düzenle"><i class="glyphicon glyphicon-edit">&nbsp;<span class="spanfont">Düzenle</span>&nbsp;</i></a>
+                <a class="btn btn-success mr5 mb10" title="Yazdır"><i class="glyphicon glyphicon-print">&nbsp;<span class="spanfont">Yazdır</span>&nbsp;</i></a>
+              </div>
+
+              <!-- First col-md-16 ending -->
+
+              <!--Kaba değerlendirme tablo animasyonu html i -->
+
+              <div class="col-lg-16">
+                <div class="panel panel-default  toggle panelMove panelRefresh">
+                  <div class="panel-body" id="toggle_deneme">
+                    <div class="col-lg-16">
+                      <!--OKUMA YAZMA starting -->
+                      <div class="accordion collapse in">
+                        <button class="accordion_mt">ÖZEL ÖĞRENME GÜÇLÜĞÜ DESTEK EĞİTİM PROGRAMI &gt;&gt; OKUMA YAZMA</button>
+                        <div class="panel_mt">  
+                          <div class="accordion1Content">
+                            <table class="table table-striped table-bordered table-hover" cellspacing="0" rules="all" border="1" style="border-collapse:collapse;">
+                              <tbody>
+                                <tr>
+                                  <th>KAZANIMLAR</th>
+                                  <th>EVET</th>
+                                  <th>HAYIR</th>
+                                  <th>ACIKLAMA</th>
+                                </tr>
+
+                                <?php
+                                $con = mysqli_connect("localhost","root","123456","project");
+                                mysqli_set_charset($con, "utf8");
+
+                                if (mysqli_connect_errno())
+                                {
+                                  echo "MySQL bağlantısı başarısız: " . mysqli_connect_error();
+                                }
+                                $datam = mysqli_query($con,"SELECT * FROM kazanımlar ORDER BY kazanım_name ASC");
+
+                                while($write = mysqli_fetch_array($datam, MYSQL_ASSOC)){ ?>
+                                <tr>
+                                  <td>
+                                    <?php echo $write['kazanım_name']; ?>
+                                  </td>
+                                  <td>
+                                    <?php echo $write['evet']; ?>
+                                  </td> 
+                                  <td>
+                                    <?php echo $write['hayır']; ?>
+                                  </td> 
+                                  <td>
+                                    <?php echo $write['acıklama']; ?>
+                                  </td>  
+                                </tr>
+                                <?php } ?> 
+                              </tbody>
+                            </table>
+                          </div>          
+                        </div>
+                      </div>
+                      <!--OKUMA YAZMA ending -->
+
+                      <!--ÖĞRENMEYE HAZIRLIK starting -->
+                      <div class="accordion collapse in">
+                        <button class="accordion_mt">ÖZEL ÖĞRENME GÜÇLÜĞÜ DESTEK EĞİTİM PROGRAMI &gt;&gt; ÖĞRENMEYE HAZIRLIK</button>
+                        <div class="panel_mt">  
+                          <div class="accordion1Content">
+                            <table class="table table-striped table-bordered table-hover" cellspacing="0" rules="all" border="1" style="border-collapse:collapse;">
+                              <tbody>
+                                <tr>
+                                  <th>KAZANIMLAR</th>
+                                  <th>EVET</th>
+                                  <th>HAYIR</th>
+                                  <th>ACIKLAMA</th>
+                                </tr>
+
+                                <?php
+                                $con = mysqli_connect("localhost","root","123456","project");
+                                mysqli_set_charset($con, "utf8");
+
+                                if (mysqli_connect_errno())
+                                {
+                                  echo "MySQL bağlantısı başarısız: " . mysqli_connect_error();
+                                }
+                                $datam = mysqli_query($con,"SELECT * FROM ogrenmeye_hazirlik ORDER BY kazanımlar_o ASC");
+
+                                while($write = mysqli_fetch_array($datam, MYSQL_ASSOC)){ ?>
+                                <tr>
+                                  <td>
+                                    <?php echo $write['kazanımlar_o']; ?>
+                                  </td>
+                                  <td>
+                                    <?php echo $write['evet_o']; ?>
+                                  </td> 
+                                  <td>
+                                    <?php echo $write['hayir_o']; ?>
+                                  </td> 
+                                  <td>
+                                    <?php echo $write['aciklama_o']; ?>
+                                  </td>  
+                                </tr>
+                                <?php } ?> 
+                              </tbody>
+                            </table>
+                          </div>          
+                        </div>
+                      </div>
+                      <!--ÖĞRENMEYE HAZIRLIK ending -->
+
+                      <!--MATEMATİK starting -->
+                      <div class="accordion collapse in">
+                        <button class="accordion_mt">ÖZEL ÖĞRENME GÜÇLÜĞÜ DESTEK EĞİTİM PROGRAMI &gt;&gt; MATEMATİK</button>
+                        <div class="panel_mt">  
+                          <div class="accordion1Content">
+                            <table class="table table-striped table-bordered table-hover" cellspacing="0" rules="all" border="1" style="border-collapse:collapse;">
+                              <tbody>
+                                <tr>
+                                  <th>KAZANIMLAR</th>
+                                  <th>EVET</th>
+                                  <th>HAYIR</th>
+                                  <th>ACIKLAMA</th>
+                                </tr>
+
+                                <?php
+                                $con = mysqli_connect("localhost","root","123456","project");
+                                mysqli_set_charset($con, "utf8");
+
+                                if (mysqli_connect_errno())
+                                {
+                                  echo "MySQL bağlantısı başarısız: " . mysqli_connect_error();
+                                }
+                                $datam = mysqli_query($con,"SELECT * FROM mathematics ORDER BY mathematic_id ASC");
+
+                                while($write = mysqli_fetch_array($datam, MYSQL_ASSOC)){ ?>
+                                <tr>
+                                  <td>
+                                    <?php echo $write['mathematic']; ?>
+                                  </td>
+                                  <td>
+                                    <?php echo $write['evet_m']; ?>
+                                  </td> 
+                                  <td>
+                                    <?php echo $write['hayir_m']; ?>
+                                  </td> 
+                                  <td>
+                                    <?php echo $write['aciklama_m']; ?>
+                                  </td>  
+                                </tr>
+                                <?php } ?> 
+                              </tbody>
+                            </table>
+                          </div>          
+                        </div>
+                      </div>
+                      <!--MATEMATİK ending -->
+
+                      <!--TESTİNG for Toggle starting -->
+                      <div class="accordion collapse in">
+                        <button class="accordion_mt">ÖZEL ÖĞRENME GÜÇLÜĞÜ DESTEK EĞİTİM PROGRAMI &gt;&gt; DENEME</button>
+                        <div class="panel_mt">  
+                          <div class="accordion1Content">
+                            <table class="table table-striped table-bordered table-hover" cellspacing="0" rules="all" border="1" style="border-collapse:collapse;">
+                              <tbody>
+                                <tr>
+                                  <th>KAZANIMLAR</th>
+                                  <th>EVET</th>
+                                  <th>HAYIR</th>
+                                  <th>ACIKLAMA</th>
+                                </tr>
+
+                                <?php
+                                $con = mysqli_connect("localhost","root","123456","project");
+                                mysqli_set_charset($con, "utf8");
+
+                                if (mysqli_connect_errno())
+                                {
+                                  echo "MySQL bağlantısı başarısız: " . mysqli_connect_error();
+                                }
+                                $datam = mysqli_query($con,"SELECT * FROM mathematics ORDER BY mathematic_id ASC");
+
+                                while($write = mysqli_fetch_array($datam, MYSQL_ASSOC)){ ?>
+                                <tr>
+                                  <td>
+                                    <?php echo $write['mathematic']; ?>
+                                  </td>
+                                  <td>
+                                    <input type="checkbox" name="evet">
+                                  </td> 
+                                  <td>
+                                    <input type="checkbox" name="hayır">
+                                  </td> 
+                                  <td>
+                                    <input type="text" name="açıklama">
+                                  </td>  
+                                </tr>
+                                <?php } ?> 
+                              </tbody>
+                            </table>
+                          </div>          
+                        </div>
+                      </div>
+                      <!--TESTİNG for Toggle ending -->
+
+                    </div>
+                  </div>
                 </div>
               </div>
-            </div>
-          </div> 
 
-          <div id="ContentPlaceHolder1_UpdatePanel1">
-
-            <div id="ContentPlaceHolder1_pnlAcc">
-              <div id="ContentPlaceHolder1_Accordion2" class="accordion collapse in" style="overflow: auto;" aria-expanded="true">
-                <input type="hidden">
-              </div>
             </div>
           </div>
-          <br>
-          <div class="text-right">
-            <div class="dxbButton btn btn-info mr5 mb10 dxbButtonSys dxbTSys" id="ContentPlaceHolder1_lnkkabaekle" style="-khtml-user-select:none;">
-              <div class="dxb" id="ContentPlaceHolder1_lnkkabaekle_CD">
-                <div class="dxb-hbc">
-                 <span class="dx-vam"  type="submit">Kazanım Ekle</span>
-               </div>
-             </div>
-           </div>
-         </div>
-       </div>
-
-     </div>
-   </div>
-    End .panel
-  </div>-->
-
-</div>
-</div>
 
   <!-- Add the sidebar's background. This div must be placed
     immediately after the control sidebar -->
@@ -820,9 +626,33 @@
   <script src="dist/js/demo.js"></script>
   <!-- Page specific script -->
 
+  <!-- Toggle denemesi -->
+  <script>
+    function myFunction() {
+      var x = document.getElementById("toggle_deneme");
+      if (x.style.display === "block") {
+        x.style.display = "none";
+      } else {
+        x.style.display = "block";
+      }
+    }
+  </script>
+
+  <!-- DualListbox ın js si -->
+  <script src="dist/js/jquery.bootstrap-duallistbox.js"></script>
+  <script>
+    var demo2 = $('.demo2').bootstrapDualListbox({
+      nonSelectedListLabel: 'Dersler',
+      selectedListLabel: 'Seçilen Dersler',
+      preserveSelectionOnMove: 'moved',
+      moveOnSelect: false,
+      // nonSelectedFilter: '....'
+    });
+  </script>
+
   <!--Kaba değerlendirme tablo animasyonu js si -->
   <script>
-    var acc = document.getElementsByClassName("accordion_mt");
+    var acc = document.getElementsByClassName("accordion_mt","accordion_mt2");
     var i;
 
     for (i = 0; i < acc.length; i++) {
@@ -837,6 +667,8 @@
       });
     }
   </script>
+
+  
   <script>
     $(function () {
 
