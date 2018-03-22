@@ -31,6 +31,8 @@ require_once "connectDB.php";
   	<link rel="stylesheet" href="bower_components/bootstrap-daterangepicker/daterangepicker.css">
   	<!-- bootstrap wysihtml5 - text editor -->
   	<link rel="stylesheet" href="plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css">
+
+
   	<!-- Google Font -->
   	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
   	<!-- jQuery 3 -->
@@ -40,11 +42,16 @@ require_once "connectDB.php";
   	<!-- AdminLTE App -->
   	<script src="dist/js/adminlte.min.js"></script>
 
+
   	<style>
 
   	tr{cursor: pointer; transition: all .25s ease-in-out}
   	.selected{background-color: blue;  color: #fff;}
 
+  	.table-bordered>thead>tr>th, .table-bordered>tbody>tr>td{
+  		border: 1px solid #51bcdc;
+  		font-size:18px 
+  	}
   </style>
 
 </head>
@@ -80,8 +87,8 @@ require_once "connectDB.php";
 									</div>
 
 									<div class="box-body">
-										<!--FORM Öğrenci Veri Tablosu START-->
-										<form class="form-inline" action="/action_page.php" style="padding-bottom: 10px">
+										<!--FORM1 Öğrenci Veri Tablosu START-->
+										<form class="form-inline" action="" style="padding-bottom: 10px">
 											<!--Content wrapper START-->
 											<div class="contentwrapper" > 
 
@@ -98,58 +105,66 @@ require_once "connectDB.php";
 											</div>
 											<!--Content wrapper END-->
 										</form>
-										<!--FORM Öğrenci Veri Tablosu END-->
+										<!--FORM1 Öğrenci Veri Tablosu END-->
 
+										<!--FORM2 Öğrenci Veri Tablosu START-->
+										<form class="form-inline" action=""  style="padding-bottom: 10px">
+											<!--Content wrapper START-->
+											<div class="contentwrapper" > 
+												<div class="row">
+													<div class="col-md-12">
+														<table id="öğrenciVeriTableID" class="table table-bordered ">
+															<thead>
+																<tr>
+																	<th>ID</th>
+																	<th>İsim</th>
+																	<th>Soyisim</th>
+																	<th>Cinsiyet</th>
+																	<th>Sınıf</th>
+																	<th>Devamsızlık</th>
+																</tr>
+															</thead>
 
-										<div class="row">
-											<div class="col-md-12">
-												<table id="öğrenciVeriTableID" class="table table-bordered ">
-													<thead>
-														<tr>
-															<th>ID</th>
-															<th>İsim</th>
-															<th>Soyisim</th>
-															<th>Cinsiyet</th>
-															<th>Sınıf</th>
-															<th>Devamsızlık</th>
-														</tr>
-													</thead>
+															<tbody id="tbody">
 
-													<tbody>
-														
-														<?php
-														$sql = 'SELECT S.student_PK, S.name, S.surname, G.gender_type FROM gender G, student S WHERE S.gender_FK = G.gender_PK';
+																<?php
+																$sql = 'SELECT S.student_PK, S.name, S.surname, G.gender_type FROM gender G, student S WHERE S.gender_FK = G.gender_PK';
 
-														if ($result = mysqli_query($conn, $sql)) {
-															while ($array = mysqli_fetch_array($result, MYSQL_ASSOC)) {
-																echo "<tr scope='row1'>";
-																echo "<td>" .$array['student_PK']. "</td>";
-																echo "<td>" .$array['name']. "</td>";
-																echo "<td>" .$array['surname']. "</td>";
-																echo "<td>" .$array['gender_type']. "</td>";
-																echo "<td>" ." ". "</td>";
-																echo "<td>" ." ". "</td>";
-																echo "</tr>";
-															}   
+																if ($result = mysqli_query($conn, $sql)) {
+																	while ($array = mysqli_fetch_array($result, MYSQL_ASSOC)) {
+																		echo "<tr scope='row1'>";
+																		echo "<td class='id'>" .$array['student_PK']. "</td>";
+																		echo "<td >" .$array['name']. "</td>";
+																		echo "<td>" .$array['surname']. "</td>";
+																		echo "<td>" .$array['gender_type']. "</td>";
+																		echo "<td>" ." ". "</td>";
+																		echo "<td>" ." ". "</td>";
+																		echo "</tr>";
+																	}   
 
-														}
-														else{
-															echo "baglantı yok!";
-														}
+																}
+																else{
+																	echo "baglantı yok!";
+																}
 
-														?>
-														
-													</tbody>
-												</table>
+																?>
+
+															</tbody>
+														</table>
+													</div>
+												</div>										 	
 											</div>
-										</div>
+											<!--Content wrapper END-->
+										</form>
+										<!--FORM2 Öğrenci Veri Tablosu END-->
+
 
 										<div class="btn-group btn-group-justified" style="padding-bottom: 10px">
 											<div class="btn-group">
-												<button type="button" class="btn btn-primary">&nbsp;&nbsp;BEP Oluştur&nbsp;&nbsp;</button>
+												<button id="bepOlustur" type="button" class="btn btn-primary" ">&nbsp;&nbsp;BEP Oluştur&nbsp;&nbsp;</button>
 											</div>
 											<div class="btn-group">
-												<button type="button" class="btn btn-primary">&nbsp;&nbsp;Kaba Değerlendirme&nbsp;&nbsp;</button>
+												<button id="kabaDegerlendirme" type="button" class="btn btn-primary" ">&nbsp;&nbsp;Kaba Değerlendirme&nbsp;&nbsp;</button>
 											</div>
 										</div>
 
@@ -300,7 +315,7 @@ require_once "connectDB.php";
 
 	<!-- To Change Selected HTML Table Row Background Color START-->
 	<script>
-
+		var id;
 		function selectedRow(){
 
 			var index,
@@ -314,16 +329,36 @@ require_once "connectDB.php";
                          if(typeof index !== "undefined"){
                          	table.rows[index].classList.toggle("selected");
                          }
-                         
+
                         // get the selected row index
                         index = this.rowIndex;
                         // add class selected to the row
-                        this.classList.toggle("selected");
-                        
+                        $('.selected').removeClass('selected');
+                        $(this).addClass("selected");
+                        id = $('.id',this).html();
+
+
                     };
                 }
                 
             }
+
             selectedRow();
-        </script>
-  	  <!-- To Change Selected HTML Table Row Background Color END-->
+
+        //Redirect to kaba_degerlendirme 
+        $('#kabaDegerlendirme').on("click",function(){
+
+        	window.location='kaba_degerlendirme.php?id'+id;
+
+        });
+
+        //Redirect to bep_main_page 
+        $('#bepOlustur').on("click",function(){    
+        	
+        	window.location = "bep_main_page.php?id="+id;
+        });
+
+    </script>
+    <!-- To Change Selected HTML Table Row Background Color END-->
+
+
