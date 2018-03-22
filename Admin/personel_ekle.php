@@ -7,7 +7,6 @@
   <title>Admin | Personel</title>
   <!-- Tell the browser to be responsive to screen width -->
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
-  <!-- Mervenin ekledikleri-->
   <!-- Import google fonts - Heading first/ text second -->
   <link href="http://fonts.googleapis.com/css?family=Droid+Sans:400,700" rel="stylesheet" type="text/css">
   <link href="http://fonts.googleapis.com/css?family=Open+Sans:400,700" rel="stylesheet" type="text/css">
@@ -18,6 +17,7 @@
   <link rel="stylesheet" href="../dist/css/bootstrap.css">
   <!-- Bootstrap 3.3.7 -->
   <link rel="stylesheet" href="../bower_components/bootstrap/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="../bower_components/bootstrap/dist/css/myCss.css">
   <!-- Font Awesome -->
   <link rel="stylesheet" href="../bower_components/font-awesome/css/font-awesome.min.css">
   <!-- Ionicons -->
@@ -72,7 +72,7 @@
     <div class="content-wrapper">
       <!-- Content Header (Page header) -->
       <section class="content-header">
-        <h1>
+        <h1 style="color:#000">
           Yeni Personel Ekle
           <small>...........</small>
         </h1>
@@ -102,7 +102,6 @@
                       echo "Veritabanı Bağlantı Hatası";
                       echo $_SESSION["errorMessage"];
                       ?>
-
                     </span>
                   </div>
 
@@ -215,7 +214,7 @@
                       <div class=" input-group">
                         <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
                         <input name="personelKayitTarihi" type="date"  value="<?php date_default_timezone_set("Europe/Istanbul");
-                        echo date("Y-m-d"); ?>" maxlength="10" id="kayitTarihi" class="form-control" disabled placeholder="gg.AA.yyyy">
+                        echo date("Y-m-d"); ?>" maxlength="10" id="kayitTarihi" class="form-control" readonly placeholder="gg.AA.yyyy">
                       </div>
                     </div>
                     <label class="col-md-2 control-label" for="">Ayrılış Tarihi:</label>
