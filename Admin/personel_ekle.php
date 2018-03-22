@@ -11,7 +11,7 @@
   <!-- Import google fonts - Heading first/ text second -->
   <link href="http://fonts.googleapis.com/css?family=Droid+Sans:400,700" rel="stylesheet" type="text/css">
   <link href="http://fonts.googleapis.com/css?family=Open+Sans:400,700" rel="stylesheet" type="text/css">
-  <link rel="stylesheet" href="../dist/css/icons.css">
+
   <link rel="stylesheet" href="../dist/css/main.css">
   <link rel="stylesheet" href="../dist/css/plugins.css">
   <link rel="stylesheet" href="../dist/css/custom.css">

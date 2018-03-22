@@ -8,7 +8,7 @@ if (!$conn) {
 }
 $idtodelete = $_POST["id"];
 
-$sql = "DELETE FROM student WHERE student_PK = ".$idtodelete."";
+$sql = "DELETE FROM personel WHERE personel_PK = ".$idtodelete.";";
 
 
 if (mysqli_query($conn, $sql)) {

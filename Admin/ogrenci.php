@@ -195,7 +195,7 @@ require_once "connectDB.php";
       <div class="btn-group">
         <button id="silButton" type="button" class="btn btn-primary">&nbsp;&nbsp;Sil&nbsp;&nbsp;</button></div>
         <div class="btn-group">
-          <button type="button" class="btn btn-primary">&nbsp;&nbsp;Düzenle&nbsp;&nbsp;</button></div>
+          <a href="ogrenci_düzenle.php" class="btn btn-primary" role="button">&nbsp;&nbsp;Düzenle&nbsp;&nbsp;</a></div>
           <div class="btn-group">
             <button type="button" class="btn btn-primary">&nbsp;&nbsp;Yenile&nbsp;&nbsp;</button></div>
           </div>           
@@ -213,13 +213,13 @@ require_once "connectDB.php";
      <!-- /.box -->
      <div class="box">
       <div class="box-header">
-       <h3 class="box-title">Engin Bakır - Bilgileri</h3>
+       <h3 id="studentInfoTitle" class="box-title"> bilgiler</h3>
      </div>
      <!-- /.box-header -->
      <div class="box-body" style="padding-right: 20px; padding-left: 20px;">
        <div class="row">
         <ul class="nav nav-tabs">
-         <li class="active"><a id="notlar" data-toggle="tab" href="#home">Notlar</a></li>
+         <li id="notlar" class="active"><a data-toggle="tab" href="#home">Notlar</a></li>
          <li><a data-toggle="tab" href="#menu1">Veli Bilgileri</a></li>
          <li><a data-toggle="tab" href="#menu2">Öğrenci Bilgileri</a></li>
          <li><a data-toggle="tab" href="#menu3">Takvim</a></li>
@@ -235,6 +235,7 @@ require_once "connectDB.php";
               <tr>
                <th>Öğretmen</th>
                <th>Not</th>
+               <th>Tarih</th>
              </tr>
            </thead>
            <tbody>
@@ -246,6 +247,7 @@ require_once "connectDB.php";
               consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
               cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
             proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</td>
+            <td>13:30</td>
           </tr>
           <tr>
            <td>Ahmet Atak</td>
@@ -255,6 +257,7 @@ require_once "connectDB.php";
             consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
             cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
           proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</td>
+          <td>14:30</td>
         </tr>
       </tbody>
     </table>
@@ -280,15 +283,13 @@ require_once "connectDB.php";
      <td>05447895632</td>
      <td>neriman.bkr@yahoo.com</td>
    </tr>
+   <tr>
+     <td>Cevdet</td>
+     <td>Bakır</td>
+     <td>05332648511</td>
+     <td>cevdet.bkr@yahoo.com</td>
+   </tr>
  </tbody>
- <tbody>
-  <tr>
-   <td>Cevdet</td>
-   <td>Bakır</td>
-   <td>05332648511</td>
-   <td>cevdet.bkr@yahoo.com</td>
- </tr>
-</tbody>
 </table>
 </div>
 </div>
@@ -684,16 +685,31 @@ include 'footer.php';
 	var id = -1;
 	var isim; 
 	var soyisim;
-	$("tbody tr").click(function () {
-		$('.selected').removeClass('selected');
-		$(this).addClass("selected");
-		id = $('.id',this).text();
-		isim = $('.isim',this).text();
-		soyisim = $('.soyisim',this).text();
+
+   $("tbody tr").click(function () {
+    $('.selected').removeClass('selected');
+    $(this).addClass("selected");
+    id = $('.id',this).text();
+    isim = $('.isim',this).text();
+    soyisim = $('.soyisim',this).text();
+
+document.getElementById("studentInfoTitle").innerHTML = isim+" "+soyisim+" Bilgileri";
+document.getElementById("notlar").class = "active";
+$.ajax({
+  url : "öğrenci_bilgileri.php",
+  method : "POST",
+  data : {id:id},
+  success:function(data){
+
+  }
+});
+
+
+
    // alert(id +','+ isim+','+ soyisim);
  });
 
-	$("#silButton").on("click",function(){
+   $("#silButton").on("click",function(){
     //
     if(id>0){
       var answer = confirm("Kaydı Silmeyi Onaylıyor Musunuz ??");
@@ -716,9 +732,7 @@ include 'footer.php';
     alert("Bir Kayıt Seçin!!!");
 });
 
-  $("#notlar").on("click",function(){
 
-  })
 </script>
 
 <script>
