@@ -337,7 +337,7 @@ require_once "baglan.php";
                     <div class="panel-body" id="toggle_deneme">
                       <div class="col-lg-16">
                         <!--OKUMA YAZMA starting -->
-                        <div class="accordion collapse in">
+                        <div class="accordion collapse in" style="padding-bottom: 5px">
                           <button class="accordion_mt">ÖZEL ÖĞRENME GÜÇLÜĞÜ DESTEK EĞİTİM PROGRAMI &gt;&gt; OKUMA YAZMA</button>
                           <div class="panel_mt">  
                             <div class="accordion1Content">
@@ -351,14 +351,8 @@ require_once "baglan.php";
                                   </tr>
 
                                   <?php
-                                  $con = mysqli_connect("localhost","root","123456","project");
-                                  mysqli_set_charset($con, "utf8");
-
-                                  if (mysqli_connect_errno())
-                                  {
-                                    echo "MySQL bağlantısı başarısız: " . mysqli_connect_error();
-                                  }
-                                  $datam = mysqli_query($con,"SELECT * FROM kazanımlar ORDER BY kazanım_name ASC");
+                                  
+                                  $datam = mysqli_query($conn,"SELECT * FROM kazanımlar ORDER BY kazanım_name ASC");
 
                                   while($write = mysqli_fetch_array($datam, MYSQL_ASSOC)){ ?>
                                   <tr>
@@ -384,7 +378,7 @@ require_once "baglan.php";
                         <!--OKUMA YAZMA ending -->
 
                         <!--ÖĞRENMEYE HAZIRLIK starting -->
-                        <div class="accordion collapse in">
+                        <div class="accordion collapse in" style="padding-bottom: 5px">
                           <button class="accordion_mt">ÖZEL ÖĞRENME GÜÇLÜĞÜ DESTEK EĞİTİM PROGRAMI &gt;&gt; ÖĞRENMEYE HAZIRLIK</button>
                           <div class="panel_mt">  
                             <div class="accordion1Content">
@@ -398,14 +392,8 @@ require_once "baglan.php";
                                   </tr>
 
                                   <?php
-                                  $con = mysqli_connect("localhost","root","123456","project");
-                                  mysqli_set_charset($con, "utf8");
 
-                                  if (mysqli_connect_errno())
-                                  {
-                                    echo "MySQL bağlantısı başarısız: " . mysqli_connect_error();
-                                  }
-                                  $datam = mysqli_query($con,"SELECT * FROM ogrenmeye_hazirlik ORDER BY kazanımlar_o ASC");
+                                  $datam = mysqli_query($conn,"SELECT * FROM ogrenmeye_hazirlik ORDER BY kazanımlar_o ASC");
 
                                   while($write = mysqli_fetch_array($datam, MYSQL_ASSOC)){ ?>
                                   <tr>
@@ -431,7 +419,7 @@ require_once "baglan.php";
                         <!--ÖĞRENMEYE HAZIRLIK ending -->
 
                         <!--MATEMATİK starting -->
-                        <div class="accordion collapse in">
+                        <div class="accordion collapse in" style="padding-bottom: 5px">
                           <button class="accordion_mt">ÖZEL ÖĞRENME GÜÇLÜĞÜ DESTEK EĞİTİM PROGRAMI &gt;&gt; MATEMATİK</button>
                           <div class="panel_mt">  
                             <div class="accordion1Content">
@@ -445,14 +433,8 @@ require_once "baglan.php";
                                   </tr>
 
                                   <?php
-                                  $con = mysqli_connect("localhost","root","123456","project");
-                                  mysqli_set_charset($con, "utf8");
 
-                                  if (mysqli_connect_errno())
-                                  {
-                                    echo "MySQL bağlantısı başarısız: " . mysqli_connect_error();
-                                  }
-                                  $datam = mysqli_query($con,"SELECT * FROM mathematics ORDER BY mathematic_id ASC");
+                                  $datam = mysqli_query($conn,"SELECT * FROM mathematics ORDER BY mathematic_id ASC");
 
                                   while($write = mysqli_fetch_array($datam, MYSQL_ASSOC)){ ?>
                                   <tr>
@@ -478,7 +460,7 @@ require_once "baglan.php";
                         <!--MATEMATİK ending -->
 
                         <!--TESTİNG for Toggle starting -->
-                        <div class="accordion collapse in">
+                        <div class="accordion collapse in" style="padding-bottom: 5px">
                           <button class="accordion_mt">ÖZEL ÖĞRENME GÜÇLÜĞÜ DESTEK EĞİTİM PROGRAMI &gt;&gt; DENEME</button>
                           <div class="panel_mt">  
                             <div class="accordion1Content">
@@ -494,14 +476,8 @@ require_once "baglan.php";
                                     </tr>
 
                                     <?php
-                                    $con = mysqli_connect("localhost","root","123456","project");
-                                    mysqli_set_charset($con, "utf8");
-
-                                    if (mysqli_connect_errno())
-                                    {
-                                      echo "MySQL bağlantısı başarısız: " . mysqli_connect_error();
-                                    }
-                                    $datam = mysqli_query($con,"SELECT * FROM deneme ORDER BY deneme_id ASC");
+                                    
+                                    $datam = mysqli_query($conn,"SELECT * FROM deneme ORDER BY deneme_id ASC");
 
                                     while($write = mysqli_fetch_array($datam, MYSQL_ASSOC)){ ?>
                                     <tr>
@@ -528,6 +504,14 @@ require_once "baglan.php";
                         </div>
 
                         <!--TESTİNG for Toggle ending -->
+
+
+                        <label class="col-lg-yeni3 col-md-1 control-label" for=""></label>
+                        <div class="col-lg-10 col-md-9">
+                          <br>
+                          <button type="button" class="col-lg-yeni16 col-md-2 btn btn-success btn-sm  mr5 mb10" onclick="myFunction()"><i class="fa fa-folder"></i>KAZANIM EKLE</button>
+                          <br>                             
+                        </div>
 
                       </div>
                     </div>
