@@ -13,7 +13,7 @@ require_once "connectDB.php";
 	<!-- Tell the browser to be responsive to screen width -->
 	<meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
 
-  <link rel="stylesheet" type="text/css" href="dist/css/accordion2.css">
+
 
   <!-- seymanın ekledikleri multi-select-input -->
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
@@ -60,209 +60,217 @@ require_once "connectDB.php";
   	<!-- Google Font -->
   	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
 
-  </head>
-  <body class="hold-transition skin-blue sidebar-mini">
+    <style>
 
-  	<div class="wrapper">
-  		<?php include 'header.php'; ?>
-  		<!-- Left side column. contains the logo and sidebar -->
-  		<?php include 'personelPageSidebar.php'; ?>
-  		<!-- Content Wrapper. Contains page content -->
-  		<div class="content-wrapper">
-  			<!-- Content Header (Page header) -->
-  			<section class="content-header">
-  				<h1>Bireysel Eğitim Planı</h1>
+    .table-bordered>thead>tr>th, .table-bordered>tbody>tr>td{
+      border: 1px solid #51bcdc;
+      font-size:18px 
+    }
+  </style>
 
-  			</section>
-  			<!-- Formu yazacağımız ikinci alan -->
-  			<section class="content" >
+</head>
+<body class="hold-transition skin-blue sidebar-mini">
 
+ <div class="wrapper">
+  <?php include 'header.php'; ?>
+  <!-- Left side column. contains the logo and sidebar -->
+  <?php include 'personelPageSidebar.php'; ?>
+  <!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper">
+   <!-- Content Header (Page header) -->
+   <section class="content-header">
+    <h1>Bireysel Eğitim Planı</h1>
 
-  				<!-- FORM -->
-  				<form id="BEPForm" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" method="post" >
-
-  					<!--Content wrapper-->
-  					<div class="contentwrapper" > 
-
-  						<!--ContentPlaceHolder1_pnlgenel-->
-  						<div id="ContentPlaceHolder1_pnlgenel">
-
-  							<!-- Start .panel-1 -->
-  							<div class="col-lg-16 " >
-  								<div class="panel panel-default  toggle panelMove panelRefresh" id="supr0">
+  </section>
+  <!-- Formu yazacağımız ikinci alan -->
+  <section class="content" >
 
 
-  									<div class="panel-heading">
-  										<h4 class="panel-title">Bireysel Eğitim Planı Oluştur</h4>
-  									</div>
-  									<div class="panel-body pt0 pb0">
-  										<div class="form-horizontal group-border stripped">
+    <!-- FORM -->
+    <form id="BEPForm" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" method="post" >
 
-  											<!-- form-group 1 -->
-  											<div class="form-group">
-  												<div class="row">
+     <!--Content wrapper-->
+     <div class="contentwrapper" > 
 
-  													<label class="col-md-2 control-label">Adı:</label>
-  													<div class="col-md-3">
-  														<input name="studentName" type="text" maxlength="64" class="form-control" readonly 
-                              <?php 
-                              $id = $_GET['id'];
-                              $result = mysqli_query($conn, "SELECT name FROM `student` WHERE `student_PK`=$id");
-                              $array = mysqli_fetch_array($result, MYSQL_ASSOC);
-                              echo "value=".$array['name']."";
-                              ?>
-                              > 
-                            </div>
+      <!--ContentPlaceHolder1_pnlgenel-->
+      <div id="ContentPlaceHolder1_pnlgenel">
 
-                            <label class="col-md-2 control-label">Soyadı:</label>
-                            <div class="col-md-3">
-                              <input name="studentSurname" type="text" maxlength="64" class="form-control" readonly
-                              <?php 
-                              $id = $_GET['id'];
-                              $result = mysqli_query($conn, "SELECT surname FROM `student` WHERE `student_PK`=$id");
-                              $array = mysqli_fetch_array($result, MYSQL_ASSOC);
-                              echo "value=".$array['surname']."";
-                              ?>
-                              >
-                            </div>
+       <!-- Start .panel-1 -->
+       <div class="col-lg-16 " >
+        <div class="panel panel-default  toggle panelMove panelRefresh" id="supr0">
 
-                          </div>
-                        </div>
-                        <!-- form-group 1 END-->
 
-                        <!-- form-group 2 -->
-                        <div class="form-group">
-                          <div class="row">
+         <div class="panel-heading">
+          <h4 class="panel-title">Bireysel Eğitim Planı Oluştur</h4>
+        </div>
+        <div class="panel-body pt0 pb0">
+          <div class="form-horizontal group-border stripped">
 
-                           <label class="col-md-2 control-label">T.C. No:</label>
-                           <div class="col-md-3">
-                            <input name="TCNumber" type="text" maxlength="11" class="form-control" readonly
-                            <?php 
-                            $id = $_GET['id'];
-                            $result = mysqli_query($conn, "SELECT tc_no FROM `student` WHERE `student_PK`=$id");
-                            $array = mysqli_fetch_array($result, MYSQL_ASSOC);
-                            echo "value=".$array['tc_no']."";
-                            ?>
-                            >
-                          </div> 
-
-                          <label class="col-md-2 control-label">Sınıfı:</label>
-                          <div class="col-md-3">
-                            <input name="studentClass" type="text" maxlength="8" class="form-control" readonly
-                            <?php 
-                            $id = $_GET['id'];
-                            $result = mysqli_query($conn, "SELECT class FROM `student` WHERE `student_PK`=$id");
-                            $array = mysqli_fetch_array($result, MYSQL_ASSOC);
-                            echo "value=".$array['class']."";
-                            ?>
-                            >
-                          </div>
-
-                        </div>
-                      </div>
-                      <!-- form-group 2 END-->
-
-                      <!-- form-group 3 -->
-                      <div class="form-group">
-                        <div class="row">
-
-                         <label class="col-md-2 control-label" for="">Eğitim Başlama Tarihi:</label>
-                         <div class="col-md-3">
-                          <div class=" input-group">
-                           <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-
-                           <input name="donemBitisTarihi" class="form-control"  type="date" data-date-inline-picker="false" data-date-open-on-focus="false"
-                           readonly
-                           <?php 
-                           $id = $_GET['id'];
-                           $result = mysqli_query($conn, "SELECT registration_date FROM `student` WHERE `student_PK`=$id");
-                           $array = mysqli_fetch_array($result, MYSQL_ASSOC);
-                           echo "value=".$array['registration_date']."";
-                           ?>
-                           >
-                         </div>
-                       </div>
-
-                       <label class="col-md-2 control-label" for="">Eğitim Bitiş Tarihi:</label>
-                       <div class="col-md-3">
-                        <div class=" input-group">
-                         <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-
-                         <input name="donemBitisTarihi" class="form-control"  type="date" data-date-inline-picker="false" data-date-open-on-focus="false" readonly
-                         <?php 
-                         $id = $_GET['id'];
-                         $result = mysqli_query($conn, "SELECT deletion_date FROM `student` WHERE `student_PK`=$id");
-                         $array = mysqli_fetch_array($result, MYSQL_ASSOC);
-                         echo "value=".$array['deletion_date']."";
-                         ?>
-                         >
-                       </div>
-                     </div>
-
-                   </div>
-                 </div>
-                 <!-- form-group 3 END-->      
-
-                 <!--form-group 4 -->
-                 <div class="form-group">
-                  <div class="row">
-                   <label class="col-md-2 control-label" for="">Bep Komisyonu:</label>
-                   <div class="col-md-3">
-                    <div class=" input-group">
-                     <select id="framework1" name="framework1[]" multiple class="form-control" >
-                      <?php
-                      $result = mysqli_query($conn, "SELECT `name`, `surname` FROM `personel`");
-                      while ($array = mysqli_fetch_array($result, MYSQL_ASSOC)) {
-                       echo "<option value=".$array['name']." ".$array['surname'] .">".$array['name']." ".$array['surname'] ."</option>" ;
-                     }   
-                     ?>
-                   </select>
-                 </div>
-               </div>
-             </div>
-           </div>
-           <!-- form-group 4 END-->
-
-           <!--form-group 5 -->
+           <!-- form-group 1 -->
            <div class="form-group">
             <div class="row">
 
-             <label class="col-md-2 control-label" for="">Değerlendirme Tarihi:</label>
+             <label class="col-md-2 control-label">Adı:</label>
              <div class="col-md-3">
-              <div class=" input-group" >
-               <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-               <input name="donemBitisTarihi" class="form-control"  type="date" data-date-inline-picker="false" data-date-open-on-focus="false"/>
-             </div>
-           </div>
+              <input name="studentName" type="text" maxlength="64" class="form-control" readonly 
+              <?php 
+              $id = $_GET['id'];
+              $result = mysqli_query($conn, "SELECT name FROM `student` WHERE `student_PK`=$id");
+              $array = mysqli_fetch_array($result, MYSQL_ASSOC);
+              echo "value=".$array['name']."";
+              ?>
+              > 
+            </div>
 
-         </div>
-       </div>
-       <!-- form-group 5 END-->
+            <label class="col-md-2 control-label">Soyadı:</label>
+            <div class="col-md-3">
+              <input name="studentSurname" type="text" maxlength="64" class="form-control" readonly
+              <?php 
+              $id = $_GET['id'];
+              $result = mysqli_query($conn, "SELECT surname FROM `student` WHERE `student_PK`=$id");
+              $array = mysqli_fetch_array($result, MYSQL_ASSOC);
+              echo "value=".$array['surname']."";
+              ?>
+              >
+            </div>
 
-       <!--form-group 6 -->
-       <div class="form-group">
+          </div>
+        </div>
+        <!-- form-group 1 END-->
+
+        <!-- form-group 2 -->
+        <div class="form-group">
+          <div class="row">
+
+           <label class="col-md-2 control-label">T.C. No:</label>
+           <div class="col-md-3">
+            <input name="TCNumber" type="text" maxlength="11" class="form-control" readonly
+            <?php 
+            $id = $_GET['id'];
+            $result = mysqli_query($conn, "SELECT tc_no FROM `student` WHERE `student_PK`=$id");
+            $array = mysqli_fetch_array($result, MYSQL_ASSOC);
+            echo "value=".$array['tc_no']."";
+            ?>
+            >
+          </div> 
+
+          <label class="col-md-2 control-label">Sınıfı:</label>
+          <div class="col-md-3">
+            <input name="studentClass" type="text" maxlength="8" class="form-control" readonly
+            <?php 
+            $id = $_GET['id'];
+            $result = mysqli_query($conn, "SELECT class FROM `student` WHERE `student_PK`=$id");
+            $array = mysqli_fetch_array($result, MYSQL_ASSOC);
+            echo "value=".$array['class']."";
+            ?>
+            >
+          </div>
+
+        </div>
+      </div>
+      <!-- form-group 2 END-->
+
+      <!-- form-group 3 -->
+      <div class="form-group">
         <div class="row">
 
-         <label class="col-md-2 control-label" for="">Dersler</label>
+         <label class="col-md-2 control-label" for="">Eğitim Başlama Tarihi:</label>
          <div class="col-md-3">
           <div class=" input-group">
+           <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
 
-
-
-           <select id="framework" name="framework[]" multiple class="form-control" >
-            <?php
-            $result = mysqli_query($conn, "SELECT `lesson_name` FROM `lessons`");
-            while ($array = mysqli_fetch_array($result, MYSQL_ASSOC)) {
-             echo "<option value=".$array['lesson_name'].">".$array['lesson_name']."</option>" ;
-           }   
+           <input name="donemBitisTarihi" class="form-control"  type="date" data-date-inline-picker="false" data-date-open-on-focus="false"
+           readonly
+           <?php 
+           $id = $_GET['id'];
+           $result = mysqli_query($conn, "SELECT registration_date FROM `student` WHERE `student_PK`=$id");
+           $array = mysqli_fetch_array($result, MYSQL_ASSOC);
+           echo "value=".$array['registration_date']."";
            ?>
-         </select>
+           >
+         </div>
+       </div>
+
+       <label class="col-md-2 control-label" for="">Eğitim Bitiş Tarihi:</label>
+       <div class="col-md-3">
+        <div class=" input-group">
+         <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+
+         <input name="donemBitisTarihi" class="form-control"  type="date" data-date-inline-picker="false" data-date-open-on-focus="false" readonly
+         <?php 
+         $id = $_GET['id'];
+         $result = mysqli_query($conn, "SELECT deletion_date FROM `student` WHERE `student_PK`=$id");
+         $array = mysqli_fetch_array($result, MYSQL_ASSOC);
+         echo "value=".$array['deletion_date']."";
+         ?>
+         >
        </div>
      </div>
 
    </div>
  </div>
- <!-- form-group 6 END-->
+ <!-- form-group 3 END-->      
+
+ <!--form-group 4 -->
+ <div class="form-group">
+  <div class="row">
+   <label class="col-md-2 control-label" for="">Bep Komisyonu:</label>
+   <div class="col-md-3">
+    <div class=" input-group">
+     <select id="framework1" name="framework1[]" multiple class="form-control" >
+      <?php
+      $result = mysqli_query($conn, "SELECT `name`, `surname` FROM `personel`");
+      while ($array = mysqli_fetch_array($result, MYSQL_ASSOC)) {
+       echo "<option value=".$array['name']." ".$array['surname'] .">".$array['name']." ".$array['surname'] ."</option>" ;
+     }   
+     ?>
+   </select>
+ </div>
+</div>
+</div>
+</div>
+<!-- form-group 4 END-->
+
+<!--form-group 5 -->
+<div class="form-group">
+  <div class="row">
+
+   <label class="col-md-2 control-label" for="">Değerlendirme Tarihi:</label>
+   <div class="col-md-3">
+    <div class=" input-group" >
+     <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+     <input name="donemBitisTarihi" class="form-control"  type="date" data-date-inline-picker="false" data-date-open-on-focus="false"/>
+   </div>
+ </div>
+
+</div>
+</div>
+<!-- form-group 5 END-->
+
+<!--form-group 6 -->
+<div class="form-group">
+  <div class="row">
+
+   <label class="col-md-2 control-label" for="">Dersler</label>
+   <div class="col-md-3">
+    <div class=" input-group">
+
+
+
+     <select id="framework" name="framework[]" multiple class="form-control" >
+      <?php
+      $result = mysqli_query($conn, "SELECT `lesson_name` FROM `lessons`");
+      while ($array = mysqli_fetch_array($result, MYSQL_ASSOC)) {
+       echo "<option value=".$array['lesson_name'].">".$array['lesson_name']."</option>" ;
+     }   
+     ?>
+   </select>
+ </div>
+</div>
+
+</div>
+</div>
+<!-- form-group 6 END-->
 
 </div>
 </div>
@@ -431,7 +439,7 @@ require_once "connectDB.php";
 session_unset(); ?>
 </body>
 </html>
-<!-- seymanın ekledikleri BepKomısyonu multi-select-input-->
+<!-- Seymanın Ekledikleri BepKomısyonu multi-select-input START-->
 <script>
  $(document).ready(function(){
   $('#framework1').multiselect({
@@ -462,9 +470,9 @@ session_unset(); ?>
 
 });
 </script>
-<!-- seymanın ekledikleri son-->
+<!-- Seymanın Ekledikleri END-->
 
-<!-- seymanın ekledikleri Dersler multi-select-input-->
+<!-- Seymanın Ekledikleri Dersler multi-select-input START-->
 <script>
  $(document).ready(function(){
   $('#framework').multiselect({
@@ -495,4 +503,23 @@ session_unset(); ?>
 
 });
 </script>
-<!-- seymanın ekledikleri son-->
+<!-- Seymanın Ekledikleri END-->
+
+<!--Mervenin Ekledikleri Kaba değerlendirme tablo animasyonu js START -->
+<script>
+  var acc = document.getElementsByClassName("accordion_mt");
+  var i;
+
+  for (i = 0; i < acc.length; i++) {
+    acc[i].addEventListener("click", function() {
+      this.classList.toggle("active");
+      var panel = this.nextElementSibling;
+      if (panel.style.maxHeight){
+        panel.style.maxHeight = null;
+      } else {
+        panel.style.maxHeight = panel.scrollHeight + "px";
+      } 
+    });
+  }
+</script>
+  <!--Mervenin Ekledikleri Kaba değerlendirme tablo animasyonu js END -->
