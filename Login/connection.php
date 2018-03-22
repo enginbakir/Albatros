@@ -39,7 +39,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
         $_SESSION["login"] = "true";
         $_SESSION['user'] = $logged_in_user;
       $_SESSION['success']  = "You are now logged in";
-    header("location: ../Personel/personel_home.php");
+    header("location: ../Personel/personel_main_page.php");
       }
     }else {
          echo  ("Your Login Name or Password is invalid");
