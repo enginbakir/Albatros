@@ -1,6 +1,6 @@
 <?php 
 session_start();
-session_unset(); 
+
 include 'connectDB.php';
  /*if (!$conn){
 	$_SESSION["connection"] = "Veritabanı Bağlantı Hatası";
@@ -140,8 +140,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
 	$sqlPersonelQuery = "INSERT INTO `personel`(`name`, `surname`, `email_address`, `tel_no`, `photo`, `personel_type_FK`, `gender_FK`) VALUES ('$personelName','$personelSurname','$personelEmailAdresi','$personelTelefon','$target_file','$personel_type_FK','$personelGender')";
 	if($bool == true)
 		runPersonelQuery($sqlPersonelQuery);
-	else
+	else{
 		echo "runPersonelQuery Çağrılamadı!!!<br><br>";
+		$_SESSION["errorMessage"] = "Ekleme Gerçekleştirilemedi.Bilgileri Kontrol Ediniz!!! <br> Error: " . $sqlQuery . "<br>" . mysqli_error($conn);
+		header("Location: personel_ekle.php");
+	}
 	print_r($_POST);
 	echo "<br><br>".$target_file;
 
@@ -149,9 +152,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
 	////////// END OF REQUEST POST IF CODE BLOCK ///////////
 function runPersonelQuery($query){
 
-global $conn;
+	global $conn;
 	if(mysqli_query($conn,$query)){
-		echo "Personel Başarıyla Eklendi!!!<br><br>";
+		$_SESSION["errorMessage"] = "Ekleme Başarı ile Tamamlandı.";
+		header("Location: personel_ekle.php");
 	}
 	else
 		echo "Ekleme Başarısız!!!<br><br>";

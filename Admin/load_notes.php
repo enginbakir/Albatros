@@ -7,19 +7,21 @@ if (mysqli_connect_errno()) {
 }
 $output = '';  
 if(isset($_POST["id"]))  
+	{  $studentID = (int)$_POST["id"];
+	//$sql  = "SELECT P.name,n.note,n.tarih FROM personel P,note n WHERE student_PK = '".$_POST["id"]."' and P.personel_PK=10";
+	//$sql  = 'SELECT P.name,N.note,N.tarih FROM personel P,note N WHERE N.student_PK = '.$studentID.' and P.personel_PK=10';
+	//$sql  = 'SELECT P.name,N.note,N.tarih FROM personel P,note N WHERE N.student_PK = '.$studentID.' and N.personel_PK=11';
+$sql  = 'SELECT name,note,tarih from note inner JOIN  personel on note.personel_PK = personel.personel_PK where note.student_PK = '.$studentID.'';
+$result = mysqli_query($conn, $sql);  
+while($row = mysqli_fetch_array($result,MYSQL_ASSOC))  
 {  
-	$sql  = "SELECT P.name,n.note,n.tarih FROM personel P,note n WHERE student_PK = '".$_POST["id"]."' and P.personel_PK=8";
-	$sql  = 'SELECT P.name,N.note,N.tarih FROM personel P,note N WHERE N.student_PK = 123 and P.personel_PK=9';
-	$result = mysqli_query($conn, $sql);  
-	while($row = mysqli_fetch_array($result,MYSQL_ASSOC))  
-	{  
-		$output .="<tr>
-		<td>".$row["name"]."</td>
-		<td>".$row["note"]."</td>
-		<td>".$row["tarih"]."</td>
-		</tr>"; 
-	}  
-	echo $output;  
+	$output .="<tr>
+	<td>".$row["name"]."</td>
+	<td>".$row["note"]."</td>
+	<td>".$row["tarih"]."</td>
+	</tr>"; 
+}  
+echo $output;  
 }  
 
 mysqli_close($conn);

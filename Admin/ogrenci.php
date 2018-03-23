@@ -165,7 +165,6 @@ function fill_notes($conn){
 														}
 														unset($_POST['firstname']);
 														unset($_POST['surname']);
-                            //echo $sql;
 
 														$retval = mysqli_query( $conn, $sql );
 
@@ -253,36 +252,7 @@ function fill_notes($conn){
 																					</tr>
 																				</thead>
 																				<tbody id="notes">
-																					<tr>
-																						<td>Nazlı Başak</td>
-																						<td>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-																							tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-																							quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-																							consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
-																							cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
-																						proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</td>
-																						<td>13:30</td>
-																					</tr>
-																					<tr>
-																						<td>Nazlı Başak</td>
-																						<td>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-																							tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-																							quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-																							consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
-																							cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
-																						proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</td>
-																						<td>13:30</td>
-																					</tr>
-																					<tr>
-																						<td>Ahmet Atak</td>
-																						<td>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-																							tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-																							quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-																							consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
-																							cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
-																						proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</td>
-																						<td>14:30</td>
-																					</tr>
+																					
 																				</tbody>
 																			</table>
 																		</div>
@@ -545,18 +515,18 @@ function fill_notes($conn){
 									var id = -1;
 									var isim; 
 									var soyisim;
-									$( document ).ready(function(){
+									/*$( document ).ready(function(){
 										id = $("#tbody tr:first td:first").text();
 										$.ajax({  
 											url:"load_notes.php",  
 											method:"POST",  
 											data:{id:id},  
 											success:function(data){  
-												alert(data);
+												//alert(data);
 												$('#notes').html(data);  
 											}  
 										});  
-									})
+									})*/
 
 									$("#tbody tr").click(function () {
 										$('.selected').removeClass('selected');
@@ -564,6 +534,15 @@ function fill_notes($conn){
 										id = $('.id',this).text();
 										isim = $('.isim',this).text();
 										soyisim = $('.soyisim',this).text();
+
+										$.ajax({  
+											url:"load_notes.php",  
+											method:"POST",  
+											data:{id:id},  
+											success:function(data){  
+												$('#notes').html(data);  
+											}  
+										});  
 
 										document.getElementById("studentInfoTitle").innerHTML = isim+" "+soyisim+" Bilgileri";
 
@@ -574,14 +553,7 @@ function fill_notes($conn){
 											success:function(data){
 											}
 										});*/
-										$.ajax({  
-											url:"load_notes.php",  
-											method:"POST",  
-											data:{id:id},  
-											success:function(data){  
-												$('#notes').html(data);  
-											}  
-										});  
+										
 									});
 
 									$("#silButton").on("click",function(){
