@@ -1,6 +1,6 @@
 <header class="main-header">
       <!-- Logo -->
-      <a href="index.php" class="logo">
+      <a href="admin_home.php" class="logo">
         <!-- mini logo for sidebar mini 50x50 pixels -->
         <span class="logo-mini"><b>A</b>LT</span>
         <!-- logo for regular state and mobile devices -->
@@ -54,13 +54,13 @@
             <!-- User Account: style can be found in dropdown.less -->
             <li class="dropdown user user-menu">
               <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                <img src="dist/img/avatar3.png" class="user-image" alt="User Image">
+                <img src="../dist/img/avatar3.png" class="user-image" alt="User Image">
                 <span class="hidden-xs">Merve Tunçel</span>
               </a>
               <ul class="dropdown-menu">
                 <!-- User image -->
                 <li class="user-header">
-                  <img src="dist/img/avatar3.png" class="img-circle" alt="User Image">
+                  <img src="../dist/img/avatar3.png" class="img-circle" alt="User Image">
 
                   <p>
                     Merve Tunçel - Web Developer
@@ -92,7 +92,7 @@
             </li>
             <!-- Control Sidebar Toggle Button -->
             <li>
-              <a href="#" data-toggle="control-sidebar"><i class="fa fa-gears"></i></a>
+              <a href="#" data-toggle="control-sidebar">Ayarlar<i class="fa fa-gears"></i></a>
             </li>
           </ul>
         </div>

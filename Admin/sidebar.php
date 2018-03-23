@@ -4,7 +4,7 @@
         <!-- Sidebar user panel -->
         <div class="user-panel">
           <div class="pull-left image">
-            <img src="dist/img/avatar3.png" class="img-circle" alt="User Image">
+            <img src="../dist/img/avatar3.png" class="img-circle" alt="User Image">
           </div>
           <div class="pull-left info">
             <p>Engin BAKIR</p>
@@ -26,7 +26,7 @@
         <ul class="sidebar-menu" data-widget="tree">
           <li class="header"></li>
           <li>
-            <a href="admin_index.php">
+            <a href="ogrenci.php">
               <i class="fa fa-book"></i> 
               <span>Öğrenci Bilgileri</span>
             </a>
