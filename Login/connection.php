@@ -34,7 +34,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
       $_SESSION["users"] = "true";
       $_SESSION['user'] = $logged_in_user;
       $_SESSION['success']  = "You are now logged in";
-      header("location: ../Admin/ogrenci.php");
+      header("location: ../Admin/admin.php");
     } else if (isset($_POST["user_type"]) && $_POST["user_type"] == "personel") {
       $_SESSION["users"] = "true";
       $_SESSION['user'] = $logged_in_user;
