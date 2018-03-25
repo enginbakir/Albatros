@@ -3,7 +3,7 @@
 session_start();
 ob_start();
 
-$conn = mysqli_connect("localhost","root","12345678","albatros");
+$conn = mysqli_connect("localhost","root","nazmiyemustafa29","yeni_albatros");
 mysqli_set_charset($conn, "utf8");
 
 if (mysqli_connect_errno())
@@ -16,28 +16,27 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
   $username = $_POST['username'];
   $password = $_POST['password'];
   $user_type = $_POST['user_type'];
-  $sql_user_type = "SELECT * FROM login WHERE User_type ='$user_type'";
-
-  $query = "SELECT * FROM login WHERE username='$username' AND password='$password' and user_type='$user_type' LIMIT 1";
+  $sql_user_type = "SELECT * FROM users WHERE user_type='$user_type'";
+  
+  $query = "SELECT * FROM users WHERE username='$username' AND password='$password' and user_type='$user_type' LIMIT 1";
   $results = mysqli_query($conn, $query);
   $logged_in_user = mysqli_fetch_assoc($results);
 
   if (mysqli_num_rows($results) == 1) { // user found
       // check if user is admin or user
-    $_SESSION["user_id"] = $logged_in_user['user_id'];
 
     if (isset($_POST["user_type"]) && $_POST["user_type"] == "parent") {
-      $_SESSION["login"] = "true";
+      $_SESSION["users"] = "true";
       $_SESSION['user'] = $logged_in_user;
-      $_SESSION['success']  = "You are now logged in";
+      $_SESSION['users']  = "You are now logged in";
       header("location: parent.php");
     } else if (isset($_POST["user_type"]) && $_POST["user_type"] == "admin") {
-      $_SESSION["login"] = "true";
+      $_SESSION["users"] = "true";
       $_SESSION['user'] = $logged_in_user;
       $_SESSION['success']  = "You are now logged in";
-      header("location: ../Admin/admin_home.php");
+      header("location: ../Admin/admin.php");
     } else if (isset($_POST["user_type"]) && $_POST["user_type"] == "personel") {
-      $_SESSION["login"] = "true";
+      $_SESSION["users"] = "true";
       $_SESSION['user'] = $logged_in_user;
       $_SESSION['success']  = "You are now logged in";
       header("location: ../Personel/personel_main_page.php");
@@ -46,7 +45,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
    echo  ("Your Login Name or Password is invalid");
  }
 
-
+ 
 }  
 
 

@@ -7,7 +7,7 @@ require_once "connectDB.php";
 	
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>AdminLTE 2 | Dashboard</title>
+	<title>Albatros</title>
 	<!-- Tell the browser to be responsive to screen width -->
 	<meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
 	<!-- Bootstrap 3.3.7 -->
@@ -134,8 +134,8 @@ require_once "connectDB.php";
 																	while ($array = mysqli_fetch_array($result, MYSQL_ASSOC)) {
 																		echo "<tr scope='row1'>";
 																		echo "<td class='id'>" .$array['student_PK']. "</td>";
-																		echo "<td >" .$array['name']. "</td>";
-																		echo "<td>" .$array['surname']. "</td>";
+																		echo "<td class='isim'>" .$array['name']. "</td>";
+																		echo "<td class='soyisim'>" .$array['surname']. "</td>";
 																		echo "<td>" .$array['gender_type']. "</td>";
 																		echo "<td>" ." ". "</td>";
 																		echo "<td>" ." ". "</td>";
@@ -178,7 +178,7 @@ require_once "connectDB.php";
 								<!-- BOX Kişi Bilgi Tablosu START-->
 								<div class="box">
 									<div class="box-header">
-										<h3 class="box-title">Engin Bakır - Bilgileri</h3>
+										<h3 id="studentInfoTitle" class="box-title">Öğrenci - Bilgileri</h3>
 									</div>
 
 									<div class="box-body" style="padding-right: 20px; padding-left: 20px;">
@@ -204,7 +204,7 @@ require_once "connectDB.php";
 																	</tr>
 																</thead>
 
-																<tbody>
+																<tbody id="notes">
 																	<tr>
 																		<td>Nazlı Başak</td>
 																		<td>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
@@ -318,7 +318,7 @@ require_once "connectDB.php";
 		var id;
 		function selectedRow(){
 
-			var index,
+			var index,isim,soyisim;
 			table = document.getElementById("öğrenciVeriTableID");
 
 			for(var i = 1; i < table.rows.length; i++)
@@ -336,10 +336,21 @@ require_once "connectDB.php";
                         $('.selected').removeClass('selected');
                         $(this).addClass("selected");
                         id = $('.id',this).html();
-
-
+                        isim =$('.isim',this).html();
+                        soyisim =$('.soyisim',this).html();
+                        $.ajax({  
+                        	url:"load_notes.php",  
+                        	method:"GET",  
+                        	data:{id:id},  
+                        	success:function(data){ 
+                        		
+                        		$('#notes').html(data);  
+                        	}  
+                        });  
+                         document.getElementById("studentInfoTitle").innerHTML = isim+" "+soyisim+" Bilgileri";
                     };
                 }
+
                 
             }
 
@@ -348,7 +359,7 @@ require_once "connectDB.php";
         //Redirect to kaba_degerlendirme 
         $('#kabaDegerlendirme').on("click",function(){
 
-        	window.location='kaba_degerlendirme.php?id'+id;
+        	window.location="kaba_degerlendirme.php?id="+id;
 
         });
 
@@ -358,6 +369,9 @@ require_once "connectDB.php";
         	window.location = "bep_main_page.php?id="+id;
         });
 
+
+
+        
     </script>
     <!-- To Change Selected HTML Table Row Background Color END-->
 

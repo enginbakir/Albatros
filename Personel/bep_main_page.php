@@ -9,7 +9,7 @@ require_once "connectDB.php";
 
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>AdminLTE 2 | Dashboard</title>
+	<title>Albatros</title>
 	<!-- Tell the browser to be responsive to screen width -->
 	<meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
 
@@ -72,6 +72,7 @@ require_once "connectDB.php";
 <body class="hold-transition skin-blue sidebar-mini">
 
  <div class="wrapper">
+   <!-- Left side column. contains the logo and sidebar -->
   <?php include 'header.php'; ?>
   <!-- Left side column. contains the logo and sidebar -->
   <?php include 'personelPageSidebar.php'; ?>
