@@ -4,7 +4,7 @@
 session_start();
 
 
-include "connectDB.php";
+include "../connectDB.php";
 if (!$conn)
 	$_SESSION["connection"] = "Veritabanı Bağlantı Hatası";
 
