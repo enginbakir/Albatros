@@ -1,11 +1,10 @@
 <?php 
 
-session_start();
 
 $username = "root";
-$password = "123456";
+$password = "nazmiyemustafa29";
 $server = "localhost";
-$database = "project";
+$database = "yeni_albatros";
 
 
 $conn = mysqli_connect($server,$username,$password,$database);
