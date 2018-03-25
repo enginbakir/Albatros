@@ -1,10 +1,22 @@
 <?php 
 
-$username = "root";
-$password = "12345678";
-$server = "localhost";
-$database = "albatros";
 
+$username = "root";
+$password = "nazmiyemustafa29";
+$server = "localhost";
+$database = "yeni_albatros";
+
+
+$conn = mysqli_connect($server,$username,$password,$database);
+
+
+
+
+
+
+
+
+/*
 $connect = mysql_connect($server,$username,$password);
 mysql_query("SET NAMES UTF8");
 
@@ -21,5 +33,5 @@ if(!$db){
 	echo "Veritabanı bağlantı bilgilerini /baglan.php dosyasından düzeltebilirsiniz.";
 	exit();
 }
-
+*/
 ?>
