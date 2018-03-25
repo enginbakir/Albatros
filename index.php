@@ -51,3 +51,6 @@
         </a>
     </div><!-- /card-container -->
 </div><!-- /container -->
+  <!-- Scripts End-->
+</body>
+</html>
