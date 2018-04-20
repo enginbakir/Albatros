@@ -93,6 +93,7 @@
             <!-- Control Sidebar Toggle Button -->
             <li>
               <a href="#" data-toggle="control-sidebar">Ayarlar<i class="fa fa-gears"></i></a>
+              <a style="text-decoration:none" href='cikis.php' onclick="return confirm('Çıkış yapmak istiyor musunuz ?')">Çıkış Yap</a> | 
             </li>
           </ul>
         </div>

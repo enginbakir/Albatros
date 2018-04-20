@@ -2,9 +2,9 @@
 
 
 $username = "root";
-$password = "nazmiyemustafa29";
+$password = "12345678";
 $server = "localhost";
-$database = "yeni_albatros";
+$database = "albatros";
 
 
 $conn = mysqli_connect($server,$username,$password,$database);

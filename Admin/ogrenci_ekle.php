@@ -18,7 +18,7 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/0.9.13/js/bootstrap-multiselect.js"></script>
 
 
- 
+
   <!-- Import google fonts - Heading first/ text second -->
   <link href="http://fonts.googleapis.com/css?family=Droid+Sans:400,700" rel="stylesheet" type="text/css">
   <link href="http://fonts.googleapis.com/css?family=Open+Sans:400,700" rel="stylesheet" type="text/css">
@@ -27,7 +27,7 @@
   <link rel="stylesheet" href="../dist/css/plugins.css">
   <link rel="stylesheet" href="../dist/css/custom.css">
   <link rel="stylesheet" href="../dist/css/bootstrap.css">
-   <!-- Bootstrap 3.3.7 -->
+  <!-- Bootstrap 3.3.7 -->
   <link rel="stylesheet" href="../bower_components/bootstrap/dist/css/bootstrap.min.css">
   <link rel="stylesheet" href="../bower_components/bootstrap/dist/css/myCss.css">
   <!-- Font Awesome -->
@@ -274,7 +274,7 @@
 
                           <label class="col-md-2 control-label"><i class="renk"><span class="error">*</span>&nbsp;</i>Eğitsel Tanı:</label>
                           <span class="error"><?php echo $_SESSION["educationalDiagnosisErr"]; ?></span>
-                          <div class="col-md-4">
+                          <div class="col-md-3">
 
                             <div class="form-group">
 
@@ -295,6 +295,22 @@
                               <option value="Normal">Normal</option>
                             </select>
                           </div>
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <div class="row">
+                          <label class="col-md-2 control-label" for="">Öğretmen Seç:</label>
+                          <div class="col-md-3">
+                            <div class="form-group">
+                              <select id="ogretmen" name="ogretmen[]" class="fancy-select form-control fancified" >
+                                <option value="Kamile Ataöv">Kamile Ataöv</option>
+                                <option value="Özkan Kılıç">Özkan Kılıç</option>
+                                <option value="Hilal Kaya">Hilal Kaya</option>
+                              </select>
+                            </div>
+                          </div>
+                          <label class="col-md-2 control-label" for=""></label>
+                          <div class="col-md-3"></div>
                         </div>
                       </div>
                       <!-- End .form-group 6 -->
@@ -459,6 +475,7 @@
 </div>
 
 <?php 
+
 session_unset(); ?>
 
 </body>

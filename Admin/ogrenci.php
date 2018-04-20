@@ -1,5 +1,5 @@
 <?php 
-require_once "connectDB.php";
+require_once "../connectDB.php";
 ?>
 
 <!DOCTYPE html>
@@ -138,20 +138,19 @@ require_once "connectDB.php";
 															$surname = $_POST['surname'];                       
 
 														if(isset($name) && isset($surname)){
-															$sql = "SELECT student_PK,name,surname FROM student where name='".$name."' and surname='".$surname."';";
+															$sql = "SELECT * FROM student where name='".$name."' and surname='".$surname."';";
 														}
 														if(isset($name) && !isset($surname)){
-															$sql = "SELECT student_PK,name,surname FROM student where name='".$name."';";
+															$sql = "SELECT * FROM student where name like '%".$name."%';";
 														}
 														if(!isset($name) && isset($surname)){
-															$sql = "SELECT student_PK, name, surname from student where surname='".$surname."';";
+															$sql = "SELECT * from student where surname like '%".$surname."%';";
 														}
 														if (!isset($name) && !isset($surname)) {
-															$sql = "SELECT student_PK,name,surname FROM student ";
+															$sql = "SELECT * FROM student ";
 														}
 														unset($_POST['firstname']);
 														unset($_POST['surname']);
-                            //echo $sql;
 
 														$retval = mysqli_query( $conn, $sql );
 

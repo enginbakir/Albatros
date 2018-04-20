@@ -1,6 +1,11 @@
-<!DOCTYPE html>
-<html>
-<head>
+
+<?php session_start();
+if($_SESSION['access_type'] == "admin"){ 
+ ?>  
+
+ <!DOCTYPE html>
+ <html>
+ <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <title>Albatros-Admin</title>
@@ -210,8 +215,8 @@
                     <div class="pull-right box-tools">
                       <!-- button with a dropdown -->
                       <div class="btn-group">
-                        
-                        
+
+
                       </div>
                       <button type="button" class="btn btn-success btn-sm" data-widget="collapse"><i class="fa fa-minus"></i>
                       </button>
@@ -330,3 +335,13 @@
 <script src="../dist/js/demo.js"></script>
 </body>
 </html>
+
+<?php 
+}
+else{
+
+ header("location: ../index.php");
+}?>
+
+
+

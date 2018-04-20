@@ -1,9 +1,10 @@
 <?php 
 
-session_start();
-ob_start();
+@date_default_timezone_set("Europe/Istanbul");
+@session_start();
+@ob_start();
 
-$conn = mysqli_connect("localhost","root","nazmiyemustafa29","yeni_albatros");
+include '../connectDB.php';
 mysqli_set_charset($conn, "utf8");
 
 if (mysqli_connect_errno())
@@ -15,7 +16,42 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
 {
   $username = $_POST['username'];
   $password = $_POST['password'];
+
+  // buraya user type kontrolü eklenecek login ekranında check edilmediğinde hata veriyor
   $user_type = $_POST['user_type'];
+
+  /*if($user_type == "admin")
+    $query = "SELECT * FROM admin_user WHERE username='$username' AND password='$password' LIMIT 1";
+  if($user_type == "parent")
+    $query = "SELECT * FROM parent_user WHERE username='$username' AND password='$password' LIMIT 1";
+  if($user_type == "personel")
+    $query = "SELECT * FROM personel_user WHERE username='$username' AND password='$password' LIMIT 1";
+*/
+    $query = "SELECT * FROM ".$user_type."_user WHERE username='$username' AND password='$password' LIMIT 1";
+
+    $retval = mysqli_query($conn, $query);
+    $row = mysqli_fetch_array($retval, MYSQL_ASSOC );
+    if(! $retval ) {
+      die('Could not get data: ' . mysqli_error());
+    }
+    if (mysqli_num_rows($retval) == 1){
+  // $_SESSION["access"] = "true";
+     $_SESSION['access_id'] = $row['userAdmin_PK'];
+     $_SESSION["access_type"] = $user_type;
+     header("location: ../Admin/admin.php");
+   }
+   else{
+    $_SESSION['login_error'] = "Kullanıcı Adı veya Şifre Yanlış";
+    header("location: ../index.php");
+  }
+}
+
+
+
+
+
+
+  /*
   $sql_user_type = "SELECT * FROM users WHERE user_type='$user_type'";
   
   $query = "SELECT * FROM users WHERE username='$username' AND password='$password' and user_type='$user_type' LIMIT 1";
@@ -26,17 +62,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
       // check if user is admin or user
 
     if (isset($_POST["user_type"]) && $_POST["user_type"] == "parent") {
-      $_SESSION["users"] = "true";
+      $_SESSION["access"] = "true";
       $_SESSION['user'] = $logged_in_user;
       $_SESSION['users']  = "You are now logged in";
       header("location: parent.php");
     } else if (isset($_POST["user_type"]) && $_POST["user_type"] == "admin") {
-      $_SESSION["users"] = "true";
+      $_SESSION["access"] = "true";
       $_SESSION['user'] = $logged_in_user;
       $_SESSION['success']  = "You are now logged in";
       header("location: ../Admin/admin.php");
     } else if (isset($_POST["user_type"]) && $_POST["user_type"] == "personel") {
-      $_SESSION["users"] = "true";
+      $_SESSION["access"] = "true";
       $_SESSION['user'] = $logged_in_user;
       $_SESSION['success']  = "You are now logged in";
       header("location: ../Personel/personel_main_page.php");
@@ -154,6 +190,6 @@ if ($logged_in_user['user_type'] == 'admin') {
     }
 */
 
-    ob_end_flush();
+   // ob_end_flush();
 
     ?>
