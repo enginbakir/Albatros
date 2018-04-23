@@ -18,7 +18,7 @@ $imageFileType = strtolower(pathinfo($target_file,PATHINFO_EXTENSION));
 $_SESSION["imageName"] = $target_file;
 
 //// STUDENT ////
-$studentName = $studentSurname = $gender = $TCNumber = $class = $raporNumber = $birthday = $educationalDiagnosis[] = $donemBaslangicTarihi = $registrationDate = $transportation = $rehberlikMerkezi = null;
+$studentName = $studentSurname = $gender = $TCNumber = $class = $raporNumber = $birthday = $educationalDiagnosis[] = $donemBaslangicTarihi = $registrationDate = $transportation = $rehberlikMerkezi = $personel_FK = $studentLastID = null;
 $nameErr = $surnameErr = $TCNumberErr = null;
 $username = $password = null;
 $donemBaslangicTarihi;
@@ -144,6 +144,13 @@ if(!empty($_POST["gender"])){
 	else
 		$gender = 2;
 }
+if(!empty($_POST["ogretmen"])){
+	$personel_FK = $_POST["ogretmen"];
+	$_SESSION["personelERR"] = $personel_FK;
+}
+else{
+	$bool = false;
+}
 
 if(!empty($_POST["studentClass"]))
 	$class = $_POST["studentClass"];
@@ -224,119 +231,165 @@ else if($_POST["parentYakinlik"] == "Baba")
 else
 	$proximity = 3;
 
-if(!empty($_POST["parentPhoneNumber"]))
+if(!empty($_POST["parentPhoneNumber"])){
 	if(is_numeric($_POST["parentPhoneNumber"]))
-	$parentSabitTel = $_POST["parentPhoneNumber"];
-else
-	$_SESSION["parentPhoneNumberErr"] = "Sadece Sayı Giriniz";
+		$parentSabitTel = $_POST["parentPhoneNumber"];	
+	else{
+		$bool = false;
+		$_SESSION["parentPhoneNumberErr"] = "Sadece Sayı Giriniz";	
+	}
+}
 if(!empty($_POST["parentMobilePhone"]))
 	if(is_numeric($_POST["parentMobilePhone"]))
-	$parentCepTel = $_POST["parentMobilePhone"];
-else
-	$_SESSION["parentMobilePhoneErr"] = "Sadece Sayı Giriniz";
-if(!empty($_POST["emailAdresi"]))
-	$parentEmailAdress = $_POST["emailAdresi"];
-if(!empty($_POST["evAdresi"]))
-	$parentAdress = $_POST["evAdresi"];
-if(!empty($_POST["parentIsAdresi"]))
-	$parentIsAdress = $_POST["parentIsAdresi"];
-if(!empty($_POST["Aciklama"]))
-	$aciklama = $_POST["Aciklama"];
+		$parentCepTel = $_POST["parentMobilePhone"];
+	else{
+		$bool = false;
+		$_SESSION["parentMobilePhoneErr"] = "Sadece Sayı Giriniz";
+	}
+	if(!empty($_POST["emailAdresi"]))
+		$parentEmailAdress = $_POST["emailAdresi"];
+	if(!empty($_POST["evAdresi"]))
+		$parentAdress = $_POST["evAdresi"];
+	if(!empty($_POST["parentIsAdresi"]))
+		$parentIsAdress = $_POST["parentIsAdresi"];
+	if(!empty($_POST["Aciklama"]))
+		$aciklama = $_POST["Aciklama"];
 
 
-$sqlParentQuery = "INSERT INTO parent (tel_no,sabit_tel,tc_no,name,surname,adress,work_adress,description,email_adress,degree_of_proximity_FK) VALUES ('$parentCepTel','$parentSabitTel','$parentTCNumber','$parentName','$parentSurname','$parentAdress','$parentIsAdress','$aciklama','$parentEmailAdress','$proximity')";
 
-if($bool == true)
-	runParentQuery($sqlParentQuery);
-else{
-	$_SESSION["errorMessage"] = "runParentQuery() fonksiyonu çağrılamadı";
-	header("Location: ogrenci_ekle.php");
-}
+
+
+		/*$sqlParentQuery = "INSERT INTO parent (tel_no,sabit_tel,tc_no,name,surname,adress,work_adress,description,email_adress,degree_of_proximity_FK) VALUES ('$parentCepTel','$parentSabitTel','$parentTCNumber','$parentName','$parentSurname','$parentAdress','$parentIsAdress','$aciklama','$parentEmailAdress','$proximity')";
+
+		if($bool == true)
+			runParentQuery($sqlParentQuery);
+		else{
+			$_SESSION["errorMessage"] = "runParentQuery() fonksiyonu çağrılamadı";
+			header("Location: ogrenci_ekle.php");
+		}*/
+		if($bool){
+			runStudentQuery();
+		}
+		else{
+			$_SESSION["errorMessage"] = "Bilgileri Kontrol Ediniz!!!";
+			header("Location: ogrenci_ekle.php");
+		}
+		
 /// VELİ KONTROLLERİ BURADAN YUKARIYA ///
 
 
 /// END OF REQUEST IF CODE BLOCK  ///
-}
-
-
-function runParentQuery($sqlQuery){
-	global $parentLastID;
-	global $conn;
-	global $bool;
-
-
-	if(mysqli_query($conn,$sqlQuery)){
-		$parentLastID = mysqli_insert_id($conn);	
-		$_SESSION["lastParentID"] = $parentLastID;
-		runStudentQuery($parentLastID);
 	}
 	else{
-
-		$_SESSION["errorMessage"] = "Ekleme Gerçekleştirilemedi.Bilgileri Kontrol Ediniz!!! <br> Error: " . $sqlQuery . "<br>" . mysqli_error($conn);
-		$bool = false;
 		header("Location: ogrenci_ekle.php");
 	}
-}
 
 
-function runStudentQuery($personel_FK){
+	
+	function runStudentQuery(){
 
-	global $conn;
-	global $studentLastID;
-	global $educationalDiagnosis;
-	global $bool;
-	global $class,$donemBitisTarihi,$donemBaslangicTarihi,$rapor_no,$studentSurname,$studentName,$TCNumber,$currentDate,$rehberlikMerkezi,$gender,$birthday;$target_file;
+		global $conn;
+		global $educationalDiagnosis;
+		global $bool;
+		global $class,$donemBitisTarihi,$donemBaslangicTarihi,$rapor_no,$studentSurname,$studentName,$TCNumber,$currentDate,$rehberlikMerkezi,$gender,$birthday,$target_file,$personel_FK;
 
-	$sqlStudentQuery = "INSERT INTO `student`(`tc_no`, `name`, `surname`, `class`, `rapor_no`, `birthday`, `photo`, `registration_date`, `rehberlik_merkezi`,`term_start_date`, `term_finish_date`, `gender_FK`, `personel_FK`) VALUES  
-	('$TCNumber','$studentName','$studentSurname','$class','$rapor_no','$birthday','$target_file','$currentDate','$rehberlikMerkezi','$donemBaslangicTarihi','$donemBitisTarihi','$gender','1')";
+		$sqlStudentQuery = "INSERT INTO `student`(`tc_no`, `name`, `surname`, `class`, `rapor_no`, `birthday`, `photo`, `registration_date`, `rehberlik_merkezi`,`term_start_date`, `term_finish_date`, `gender_FK`, `personel_FK`) VALUES  
+		('$TCNumber','$studentName','$studentSurname','$class','$rapor_no','$birthday','$target_file','$currentDate','$rehberlikMerkezi','$donemBaslangicTarihi','$donemBitisTarihi','$gender','$personel_FK')";
 
-	if(mysqli_query($conn,$sqlStudentQuery)){
-		$studentLastID = mysqli_insert_id($conn);		
-		foreach ($educationalDiagnosis as $key ) {
-			$value = (int)$key;
-			$sql = "INSERT INTO `student_diagnosis`(`student_PK`, `diagnosis_PK`) VALUES ('$studentLastID','$value')";
-			if(mysqli_query($conn,$sql)){			
+		if(mysqli_query($conn,$sqlStudentQuery)){
+			global $studentLastID;
+			 $studentLastID = mysqli_insert_id($conn);		
+			foreach ($educationalDiagnosis as $key ) {
+				$value = (int)$key;
+				$sql = "INSERT INTO `student_diagnosis`(`student_FK`, `diagnosis_FK`) VALUES ('$studentLastID','$value')";					
+				if(mysqli_query($conn,$sql)){
+
+				}
+				else{
+					$bool = false;
+					deleteQueries();
+					$_SESSION["errorMessage"] = "Diagnosis Eklerken Hata Oluştu. !!<br> Error: <br>". mysqli_error($conn);
+				}				
+			}	
+			if($bool){
+				runParentQuery();
 			}
-			else
-				$bool = false;
-		}	
-		if($bool == true){
-
-			$_SESSION["errorMessage"] = "Ekleme Başarı ile Tamamlandı.";
+			else{
+				$_SESSION["errorMessage"] = "Student Bilgilerini Kontrol Ediniz!!!<br> Error: <br>". mysqli_error($conn);
+				header("Location: ogrenci_ekle.php");
+			}
 		}
-		header("Location: ogrenci_ekle.php");
+		else{
+			$_SESSION["errorMessage"] = "Student Bilgilerini Kontrol Ediniz!!!<br> Error: <br>". mysqli_error($conn);
+			header("Location: ogrenci_ekle.php");
+		}
+
 	}
-	else{
-		$_SESSION["errorMessage"] = "Student Bilgilerini Kontrol Ediniz!!!<br> Error: <br>". mysqli_error($conn);
-		header("Location: ogrenci_ekle.php");
-	}
-}
 
-function test_input($data) {
-	$data = trim($data);
-	$data = stripslashes($data);
-	$data = htmlspecialchars($data);
-	return $data;
-}
+	function runParentQuery(){
+		global $parentLastID;
+		global $conn,$parentCepTel,$parentSabitTel,$parentTCNumber,$parentName,$parentSurname,$parentAdress,$parentIsAdress,$aciklama,$parentEmailAdress,$proximity;
+		global $studentLastID;
+		global $bool;
 
-function isTcKimlik($tc)  
-{  
-	if(strlen($tc) < 11){ return false; }  
-	if($tc[0] == '0'){ return false; }  
-	$plus = ($tc[0] + $tc[2] + $tc[4] + $tc[6] + $tc[8]) * 7;  
-	$minus = $plus - ($tc[1] + $tc[3] + $tc[5] + $tc[7]);  
-	$mod = $minus % 10;  
-	if($mod != $tc[9]){ return false; }  
-	$all = '';  
-	for($i = 0 ; $i < 10 ; $i++){ $all += $tc[$i]; }  
-		if($all % 10 != $tc[10]){ return false; }  
-
-	return true;  
-}  
+		$sqlParentQuery = "INSERT INTO `parent`(`tel_no`, `sabit_tel`, `tc_no`, `name`, `surname`, `adress`, `work_adress`, `description`, `email_adress`, `degree_of_proximity_FK`, `student_FK`) VALUES ('$parentCepTel','$parentSabitTel','$parentTCNumber','$parentName','$parentSurname','$parentAdress','$parentIsAdress','$aciklama','$parentEmailAdress','$proximity','$studentLastID')";
 
 
-mysqli_close($conn);
+		if(mysqli_query($conn,$sqlParentQuery)){
+			// $parentLastID = mysqli_insert_id($conn);	
+			// $_SESSION["lastParentID"] = $parentLastID;
+			$_SESSION["errorMessage"] = "Ekleme Başarı ile Tamamlandı.";
+			header("Location: ogrenci_ekle.php");
+		}
+		else{
+			$_SESSION["errorMessage"] = "Ekleme Gerçekleştirilemedi.Bilgileri Kontrol Ediniz!!! <br> Error: <br>". mysqli_error($conn);	
+			deleteQueries();
+		}
 
-?>
+		function deleteQueries(){
+			
+			$sqlDeleteStudentQuery = "DELETE from student where student_PK='$studentLastID'";
+			$sqlDeleteDiagnosisQuery = "DELETE FROM `student_diagnosis` WHERE student_FK ='$studentLastID'";
+			if(mysqli_query($conn,$sqlDeleteStudentQuery))
+				if(mysqli_query($conn,$sqlDeleteDiagnosisQuery)){
+					$bool = false;	
+				}
+
+				header("Location: ogrenci_ekle.php");
+			}
+		}
+		function runSqlQuery($query){
+			if(mysqli_query($conn,$query))
+				return true;
+			else
+				return false;
+		}
+
+		function test_input($data) {
+			$data = trim($data);
+			$data = stripslashes($data);
+			$data = htmlspecialchars($data);
+			return $data;
+		}
+
+		function isTcKimlik($tc)  
+		{  
+			if(strlen($tc) < 11){ return false; }  
+			if($tc[0] == '0'){ return false; }  
+			$plus = ($tc[0] + $tc[2] + $tc[4] + $tc[6] + $tc[8]) * 7;  
+			$minus = $plus - ($tc[1] + $tc[3] + $tc[5] + $tc[7]);  
+			$mod = $minus % 10;  
+			if($mod != $tc[9]){ return false; }  
+			$all = '';  
+			for($i = 0 ; $i < 10 ; $i++){ $all += $tc[$i]; }  
+				if($all % 10 != $tc[10]){ return false; }  
+
+			return true;  
+		}  
+
+
+		mysqli_close($conn);
+		exit();
+		?>
 
  <!-- PHP CHECKING INPUTS -->

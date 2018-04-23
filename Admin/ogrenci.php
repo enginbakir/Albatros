@@ -118,17 +118,7 @@ require_once "../connectDB.php";
 
 													<tbody id="tbody">
 
-														<?php 
-
-                            
-														$sql = "SELECT student_PK FROM student ";
-														$retval = mysqli_query( $conn,$sql );
-
-														if(! $retval ) {
-															die('Could not get data: ' . mysqli_error());
-														}
-														$row = mysqli_fetch_array($retval, MYSQL_ASSOC );
-														$rec_count = $row[0];
+														<?php                            
 
 														$name;
 														$surname;
@@ -172,7 +162,7 @@ require_once "../connectDB.php";
 
 															echo "</tr>";
 														}
-
+														mysqli_close($conn);
 														?>
 
 													</tbody>
@@ -183,8 +173,7 @@ require_once "../connectDB.php";
 											</div>
 											<div class="col col-xs-8">
 												<ul class="pagination hidden-xs pull-right">
-													<?php
-													mysqli_close($conn); ?>
+													
 												</div>
 											</div>
 										</div>      
@@ -686,7 +675,7 @@ require_once "../connectDB.php";
 	var soyisim;
 
 	$("tbody tr").click(function () {
-	
+
 		$('.selected').removeClass('selected');
 		$(this).addClass("selected");
 		id = $('.id',this).text();

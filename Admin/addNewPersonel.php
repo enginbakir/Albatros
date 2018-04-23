@@ -1,7 +1,7 @@
 <?php 
 session_start();
 session_unset(); 
-include 'connectDB.php';
+require_once '../connectDB.php';
  /*if (!$conn){
 	$_SESSION["connection"] = "Veritabanı Bağlantı Hatası";
 	echo "Veritabanı Bağlantı Hatası";

@@ -91,6 +91,7 @@
       <section class="content-header">
         <h1 style="color:#000">
           Yeni Öğrenci Ekle
+          <?php echo $_SESSION["personelERR"]; ?>
           <small>...........</small>
         </h1>
         <ol class="breadcrumb">
@@ -139,16 +140,14 @@
                             <label class="col-md-2 control-label" for="">Dönem Başlangıç Tarihi:</label>
                             <div class="col-md-3">
                               <div class="input-group">
-                                <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-                                <span class="error"><?php echo $_SESSION["donemBaslangicTarihi"]; ?></span>
+                                <span class="input-group-addon error"><i class="fa fa-calendar"><?php echo "*".$_SESSION["donemBaslangicTarihi"]; ?></i></span>
                                 <input name="donemBaslangicTarihi" class="form-control" type="date" data-date-inline-picker="false" data-date-open-on-focus="false" />
                               </div>
                             </div>
                             <label class="col-md-2 control-label" for="">Dönem Bitiş Tarihi:</label>
                             <div class="col-md-3">
                               <div class="input-group">
-                                <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-                                <span class="error"><?php echo $_SESSION["donemBitisTarihi"]; ?></span>
+                                <span class="input-group-addon error"><i class="fa fa-calendar"><?php echo "*".$_SESSION["donemBitisTarihi"]; ?></i></span>
                                 <input name="donemBitisTarihi" class="form-control"  type="date" data-date-inline-picker="false" data-date-open-on-focus="false" />
                               </div>
                             </div>
@@ -301,11 +300,23 @@
                         <div class="row">
                           <label class="col-md-2 control-label" for="">Öğretmen Seç:</label>
                           <div class="col-md-3">
-                            <div class="form-group">
-                              <select id="ogretmen" name="ogretmen[]" class="fancy-select form-control fancified" >
-                                <option value="Kamile Ataöv">Kamile Ataöv</option>
-                                <option value="Özkan Kılıç">Özkan Kılıç</option>
-                                <option value="Hilal Kaya">Hilal Kaya</option>
+                            <div class="form-group">                                                   
+
+                                <?php 
+                                require_once '../connectDB.php';
+                                $sql = "SELECT * FROM personel";
+                                $retval = mysqli_query( $conn,$sql );
+
+                                if(! $retval ) {
+                                  die('Could not get data: ' . mysqli_error());
+                                }
+                                echo '<select id="ogretmen" name="ogretmen" class="fancy-select form-control fancified" >';
+                                while($row = mysqli_fetch_array($retval, MYSQL_ASSOC)) {
+                                  echo "<option value='".$row['personel_PK']."'>".$row['personel_PK']." ".$row['name']."</option>";
+                                }
+                                echo "</select>";
+                                
+                                ?>
                               </select>
                             </div>
                           </div>
@@ -488,6 +499,7 @@ unset($_SESSION["parentSurnameErr"]);
 unset($_SESSION["parentTCNumberErr"]);
 unset($_SESSION["parentPhoneNumberErr"]);
 unset($_SESSION["parentMobilePhoneErr"]);
+mysqli_close($conn);
 ?>
 
 </body>
