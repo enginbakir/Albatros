@@ -266,7 +266,7 @@ function runParentQuery($sqlQuery){
 
 
 	if(mysqli_query($conn,$sqlQuery)){
-		$parentLastID = mysqli_insert_id($conn);		
+		$parentLastID = mysqli_insert_id($conn);	
 		$_SESSION["lastParentID"] = $parentLastID;
 		runStudentQuery($parentLastID);
 	}
@@ -279,16 +279,16 @@ function runParentQuery($sqlQuery){
 }
 
 
-function runStudentQuery($parentLastID){
+function runStudentQuery($personel_FK){
 
 	global $conn;
 	global $studentLastID;
 	global $educationalDiagnosis;
 	global $bool;
-	global $class,$donemBitisTarihi,$donemBaslangicTarihi,$rapor_no,$studentSurname,$studentName,$TCNumber,$currentDate,$rehberlikMerkezi,$gender,$parentLastID,$birthday;$target_file;
+	global $class,$donemBitisTarihi,$donemBaslangicTarihi,$rapor_no,$studentSurname,$studentName,$TCNumber,$currentDate,$rehberlikMerkezi,$gender,$birthday;$target_file;
 
-	$sqlStudentQuery = "INSERT INTO `student`(`tc_no`, `name`, `surname`, `class`, `rapor_no`, `birthday`, `photo`, `registration_date`, `rehberlik_merkezi`,`term_start_date`, `term_finish_date`, `gender_FK`, `parent_FK`) VALUES  
-	('$TCNumber','$studentName','$studentSurname','$class','$rapor_no','$birthday','$target_file','$currentDate','$rehberlikMerkezi','$donemBaslangicTarihi','$donemBitisTarihi','$gender','$parentLastID')";
+	$sqlStudentQuery = "INSERT INTO `student`(`tc_no`, `name`, `surname`, `class`, `rapor_no`, `birthday`, `photo`, `registration_date`, `rehberlik_merkezi`,`term_start_date`, `term_finish_date`, `gender_FK`, `personel_FK`) VALUES  
+	('$TCNumber','$studentName','$studentSurname','$class','$rapor_no','$birthday','$target_file','$currentDate','$rehberlikMerkezi','$donemBaslangicTarihi','$donemBitisTarihi','$gender','1')";
 
 	if(mysqli_query($conn,$sqlStudentQuery)){
 		$studentLastID = mysqli_insert_id($conn);		
@@ -333,9 +333,6 @@ function isTcKimlik($tc)
 
 	return true;  
 }  
-
-
-
 
 
 mysqli_close($conn);

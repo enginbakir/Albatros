@@ -120,7 +120,7 @@ require_once "../connectDB.php";
 
 														<?php 
 
-                              // Get total number of records //
+                            
 														$sql = "SELECT student_PK FROM student ";
 														$retval = mysqli_query( $conn,$sql );
 
@@ -237,7 +237,7 @@ require_once "../connectDB.php";
 																						<th>Tarih</th>
 																					</tr>
 																				</thead>
-																				<tbody>
+																				<tbody id="notes">
 																					<tr>
 																						<td>Nazlı Başak</td>
 																						<td>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
@@ -686,22 +686,22 @@ require_once "../connectDB.php";
 	var soyisim;
 
 	$("tbody tr").click(function () {
+	
 		$('.selected').removeClass('selected');
 		$(this).addClass("selected");
 		id = $('.id',this).text();
 		isim = $('.isim',this).text();
 		soyisim = $('.soyisim',this).text();
 
+		$.ajax({  
+			url:"load_notes.php",  
+			method:"POST",  
+			data:{id:id},  
+			success:function(data){  
+				$('#notes').html(data);  
+			}  
+		});  
 		document.getElementById("studentInfoTitle").innerHTML = isim+" "+soyisim+" Bilgileri";
-
-		$.ajax({
-			url : "öğrenci_bilgileri.php",
-			method : "POST",
-			data : {id:id},
-			success:function(data){
-
-			}
-		});
 	});
 
 	$("#silButton").on("click",function(){

@@ -358,7 +358,7 @@
                           <label class="col-md-2 control-label">T.C. No:</label>
                           <div class="col-md-3">
                             <input name="parentTCNumber" type="text" maxlength="11" id="parentTCNumber" class="form-control" placeholder="TC Kimlik No">
-                            <span class="error"><?php echo $_SESSION["parentTCNumberErr"] ?></span>
+                            <span class="error"><?php echo $_SESSION["parentTCNumberErr"]; ?></span>
                           </div>
                           <label class="col-md-2 control-label" for="">Yakınlık Derecesi:</label>
                           <div class="col-md-3">              
@@ -383,13 +383,13 @@
                           <label class="col-md-2 control-label">Sabit Telefon:</label>
                           <div class="col-md-3">
                             <input name="parentPhoneNumber" type="text" maxlength="11" id="SabitTel" class="form-control" placeholder="Sabit Telefon">
-                            <span class="error"><?php echo $_SESSION["parentPhoneNumberErr"] ?></span>
+                            <span class="error"><?php echo $_SESSION["parentPhoneNumberErr"]; ?></span>
                           </div>
                           <label class="col-md-2 control-label">Cep Telefonu:</label>
                           <div class="col-md-3">
 
                             <input name="parentMobilePhone" type="text" maxlength="11" id="CepTel" class="form-control" placeholder="Cep Telefonu">
-                            <span class="error"><?php echo $_SESSION["parentMobilePhoneErr"] ?></span>
+                            <span class="error"><?php echo $_SESSION["parentMobilePhoneErr"]; ?></span>
                           </div>
 
                         </div>
@@ -476,7 +476,19 @@
 
 <?php 
 
-session_unset(); ?>
+unset($_SESSION['errorMessage']); 
+unset($_SESSION["nameErr"]);
+unset($_SESSION["surNameErr"]);
+unset($_SESSION["TCNumberErr"]);
+unset($_SESSION["TCNumberErr"]);
+unset($_SESSION["fileErrors"]);
+unset($_SESSION["educationalDiagnosisErr"]);
+unset($_SESSION["parentNameErr"]);
+unset($_SESSION["parentSurnameErr"]);
+unset($_SESSION["parentTCNumberErr"]);
+unset($_SESSION["parentPhoneNumberErr"]);
+unset($_SESSION["parentMobilePhoneErr"]);
+?>
 
 </body>
 </html>
