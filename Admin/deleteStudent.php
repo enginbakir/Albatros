@@ -1,6 +1,6 @@
 <?php 
 
-include 'connectDB.php';
+require_once '../connectDB.php';
 
 
 if (!$conn) {

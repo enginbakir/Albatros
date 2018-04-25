@@ -1,5 +1,6 @@
-<?php session_start(); ?>
-
+<?php session_start();
+if($_SESSION['access_type'] == "admin"){ 
+ ?>  
 <!DOCTYPE html>
 <html>
 <head>
@@ -317,8 +318,7 @@
                                 echo "</select>";
                                 
                                 ?>
-                              </select>
-                            </div>
+                              </div>
                           </div>
                           <label class="col-md-2 control-label" for=""></label>
                           <div class="col-md-3"></div>
@@ -505,3 +505,9 @@ mysqli_close($conn);
 </body>
 </html>
 
+<?php 
+}
+else{
+
+ header("location: ../index.php");
+}?>

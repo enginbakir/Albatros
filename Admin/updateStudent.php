@@ -4,21 +4,22 @@
 session_start();
 
 
-include "connectDB.php";
+require_once "../connectDB.php";
 if (!$conn)
 	$_SESSION["connection"] = "Veritabanı Bağlantı Hatası";
 
 date_default_timezone_set("Europe/Istanbul");
-$currentDate = date("Y-m-d");
 
-$target_dir = "images/";
+$studentID = null;
+
+$target_dir = "../images/";
 $target_file = $target_dir . basename($_FILES["fileToUpload"]["name"]);
 $uploadOk = 1;
 $imageFileType = strtolower(pathinfo($target_file,PATHINFO_EXTENSION));
 $_SESSION["imageName"] = $target_file;
 
 //// STUDENT ////
-$studentName = $studentSurname = $gender = $TCNumber = $class = $raporNumber = $birthday = $educationalDiagnosis[] = $donemBaslangicTarihi = $registrationDate = $transportation = $rehberlikMerkezi = null;
+$studentName = $studentSurname = $gender = $TCNumber = $class = $studentRapor = $birthday = $educationalDiagnosis[] = $donemBaslangicTarihi = $registrationDate = $transportation = $rehberlikMerkezi = $personel_FK = $studentLastID = null;
 $nameErr = $surnameErr = $TCNumberErr = null;
 $username = $password = null;
 $donemBaslangicTarihi;
@@ -125,7 +126,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
 
 if(empty($fileErrors) == true && $bool == true) {
 	if (move_uploaded_file($_FILES["fileToUpload"]["tmp_name"], $target_file)) {
-		echo "The file ". basename( $_FILES["fileToUpload"]["name"]). " has been uploaded.";
+		echo "The file ". basename( $_FILES["fileToUpload"]["name"]). " has been uploaded.<br>";
 	} else {
 		$fileErrors[4] = "Yükleme Hatası, Bilgileri Kontrol Ediniz!!";
 	}
@@ -144,7 +145,17 @@ if(!empty($_POST["gender"])){
 	else
 		$gender = 2;
 }
-
+if(!empty($_POST["ogretmen"])){
+	$personel_FK = $_POST["ogretmen"];
+	$_SESSION["personelERR"] = $personel_FK;
+}
+else{
+	$bool = false;
+}
+if(!empty($_POST["student_PK"]))
+	$studentID = $_POST["student_PK"];
+else
+	$bool = false;
 if(!empty($_POST["studentClass"]))
 	$class = $_POST["studentClass"];
 if(!empty($_POST["studentRapor"]))
@@ -171,6 +182,10 @@ if(empty($_POST["donemBitisTarihi"])){
 else
 	$donemBitisTarihi = $_POST["donemBitisTarihi"];
 
+if(!empty($_POST["registrationDate"]))
+	$currentDate = $_POST["registrationDate"];
+else
+	$bool = false;
 ////// VELİ KONTROLLERİ BURADAN AŞAĞIYA ///////
 
 
@@ -224,92 +239,78 @@ else if($_POST["parentYakinlik"] == "Baba")
 else
 	$proximity = 3;
 
-if(!empty($_POST["parentPhoneNumber"]))
+if(!empty($_POST["parentPhoneNumber"])){
 	if(is_numeric($_POST["parentPhoneNumber"]))
-	$parentSabitTel = $_POST["parentPhoneNumber"];
-else
-	$_SESSION["parentPhoneNumberErr"] = "Sadece Sayı Giriniz";
+		$parentSabitTel = $_POST["parentPhoneNumber"];	
+	else{
+		$bool = false;
+		$_SESSION["parentPhoneNumberErr"] = "Sadece Sayı Giriniz";	
+	}
+}
 if(!empty($_POST["parentMobilePhone"]))
 	if(is_numeric($_POST["parentMobilePhone"]))
-	$parentCepTel = $_POST["parentMobilePhone"];
-else
-	$_SESSION["parentMobilePhoneErr"] = "Sadece Sayı Giriniz";
-if(!empty($_POST["emailAdresi"]))
-	$parentEmailAdress = $_POST["emailAdresi"];
-if(!empty($_POST["evAdresi"]))
-	$parentAdress = $_POST["evAdresi"];
-if(!empty($_POST["parentIsAdresi"]))
-	$parentIsAdress = $_POST["parentIsAdresi"];
-if(!empty($_POST["Aciklama"]))
-	$aciklama = $_POST["Aciklama"];
+		$parentCepTel = $_POST["parentMobilePhone"];
+	else{
+		$bool = false;
+		$_SESSION["parentMobilePhoneErr"] = "Sadece Sayı Giriniz";
+	}
+	if(!empty($_POST["emailAdresi"]))
+		$parentEmailAdress = $_POST["emailAdresi"];
+	if(!empty($_POST["evAdresi"]))
+		$parentAdress = $_POST["evAdresi"];
+	if(!empty($_POST["parentIsAdresi"]))
+		$parentIsAdress = $_POST["parentIsAdresi"];
+	if(!empty($_POST["Aciklama"]))
+		$aciklama = $_POST["Aciklama"];
 
 
-$sqlParentQuery = "INSERT INTO parent (tel_no,sabit_tel,tc_no,name,surname,adress,work_adress,description,email_adress,degree_of_proximity_FK) VALUES ('$parentCepTel','$parentSabitTel','$parentTCNumber','$parentName','$parentSurname','$parentAdress','$parentIsAdress','$aciklama','$parentEmailAdress','$proximity')";
 
-if($bool == true)
-	runParentQuery($sqlParentQuery);
-else{
-	$_SESSION["errorMessage"] = "runParentQuery() fonksiyonu çağrılamadı";
-	header("Location: ogrenci_ekle.php");
-}
 /// VELİ KONTROLLERİ BURADAN YUKARIYA ///
 
 
-/// END OF REQUEST IF CODE BLOCK  ///
-}
 
-
-function runParentQuery($sqlQuery){
-	global $parentLastID;
-	global $conn;
-	global $bool;
-
-
-	if(mysqli_query($conn,$sqlQuery)){
-		$parentLastID = mysqli_insert_id($conn);		
-		$_SESSION["lastParentID"] = $parentLastID;
-		runStudentQuery($parentLastID);
+	if($bool){
+		echo "bool is true<br>";
+		runStudentQuery();
 	}
 	else{
-
-		$_SESSION["errorMessage"] = "Ekleme Gerçekleştirilemedi.Bilgileri Kontrol Ediniz!!! <br> Error: " . $sqlQuery . "<br>" . mysqli_error($conn);
-		$bool = false;
-		header("Location: ogrenci_ekle.php");
+		echo "bool is false<br>";
+		$url = "location: ogrenci_duzenle.php?id=".$studentID;
+		//header($url);
 	}
+
+/// END OF REQUEST IF CODE BLOCK  ///
+}
+else{
+	//header("Location: ogrenci_duzenle.php");
 }
 
-
-function runStudentQuery($parentLastID){
-
+function runStudentQuery(){
 	global $conn;
-	global $studentLastID;
 	global $educationalDiagnosis;
 	global $bool;
-	global $class,$donemBitisTarihi,$donemBaslangicTarihi,$rapor_no,$studentSurname,$studentName,$TCNumber,$currentDate,$rehberlikMerkezi,$gender,$parentLastID,$birthday;$target_file;
-
-	$sqlStudentQuery = "INSERT INTO `student`(`tc_no`, `name`, `surname`, `class`, `rapor_no`, `birthday`, `photo`, `registration_date`, `rehberlik_merkezi`,`term_start_date`, `term_finish_date`, `gender_FK`, `parent_FK`) VALUES  
-	('$TCNumber','$studentName','$studentSurname','$class','$rapor_no','$birthday','$target_file','$currentDate','$rehberlikMerkezi','$donemBaslangicTarihi','$donemBitisTarihi','$gender','$parentLastID')";
-
+	global $class,$donemBitisTarihi,$donemBaslangicTarihi,$rapor_no,$studentSurname,$studentName,$TCNumber,$currentDate,$rehberlikMerkezi,$gender,$birthday,$target_file,$personel_FK,$studentID;
+	$sqlStudentQuery = "UPDATE `student` SET `tc_no`='$TCNumber',`name`='$studentName',`surname`='$studentSurname',`class`= '$studentClass' ,`rapor_no`= '$studentRapor' ,`birthday`= '$studentBirthDay' ,`photo`='$target_file',`registration_date`='$currentDate',`rehberlik_merkezi`='$rehberlikMerkezi',`term_start_date`='$donemBaslangicTarihi',`term_finish_date`='$donemBitisTarihi',`gender_FK`='$gender',`personel_FK`='$personel_FK' WHERE student_PK = '$studentID'";
+	$sqlStudentQuery = "UPDATE `student` SET `name`='$studentName',`surname`='$studentSurname' WHERE student_PK = '$studentID'";
+	echo $studentID;
+	echo $studentName;
+	echo "<br>".$studentSurname;
+	echo "<br>".$target_file;
 	if(mysqli_query($conn,$sqlStudentQuery)){
-		$studentLastID = mysqli_insert_id($conn);		
-		foreach ($educationalDiagnosis as $key ) {
-			$value = (int)$key;
-			$sql = "INSERT INTO `student_diagnosis`(`student_PK`, `diagnosis_PK`) VALUES ('$studentLastID','$value')";
-			if(mysqli_query($conn,$sql)){			
-			}
-			else
-				$bool = false;
-		}	
-		if($bool == true){
-
-			$_SESSION["errorMessage"] = "Ekleme Başarı ile Tamamlandı.";
-		}
-		header("Location: ogrenci_ekle.php");
+		$_SESSION["errorMessage"] = "Ekleme Başarıyla Tamamlandı!!";
+		echo "<br>Ekleme Başarıyla Tamamlandı!!";
+		$url = "location: ogrenci_duzenle.php?id=".$studentID;
+		header($url);		
 	}
 	else{
 		$_SESSION["errorMessage"] = "Student Bilgilerini Kontrol Ediniz!!!<br> Error: <br>". mysqli_error($conn);
-		header("Location: ogrenci_ekle.php");
+		$url = "location: ogrenci_duzenle.php?id=".$studentID;
+		header($url);	
 	}
+}
+
+function runParentQuery(){
+
 }
 
 function test_input($data) {
@@ -339,7 +340,7 @@ function isTcKimlik($tc)
 
 
 mysqli_close($conn);
-
+		exit();
 ?>
 
  <!-- PHP CHECKING INPUTS -->

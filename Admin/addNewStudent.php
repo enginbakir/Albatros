@@ -11,7 +11,7 @@ if (!$conn)
 date_default_timezone_set("Europe/Istanbul");
 $currentDate = date("Y-m-d");
 
-$target_dir = "images/";
+$target_dir = "../images/";
 $target_file = $target_dir . basename($_FILES["fileToUpload"]["name"]);
 $uploadOk = 1;
 $imageFileType = strtolower(pathinfo($target_file,PATHINFO_EXTENSION));
@@ -259,14 +259,6 @@ if(!empty($_POST["parentMobilePhone"]))
 
 
 
-		/*$sqlParentQuery = "INSERT INTO parent (tel_no,sabit_tel,tc_no,name,surname,adress,work_adress,description,email_adress,degree_of_proximity_FK) VALUES ('$parentCepTel','$parentSabitTel','$parentTCNumber','$parentName','$parentSurname','$parentAdress','$parentIsAdress','$aciklama','$parentEmailAdress','$proximity')";
-
-		if($bool == true)
-			runParentQuery($sqlParentQuery);
-		else{
-			$_SESSION["errorMessage"] = "runParentQuery() fonksiyonu çağrılamadı";
-			header("Location: ogrenci_ekle.php");
-		}*/
 		if($bool){
 			runStudentQuery();
 		}
@@ -358,6 +350,7 @@ if(!empty($_POST["parentMobilePhone"]))
 				header("Location: ogrenci_ekle.php");
 			}
 		}
+
 		function runSqlQuery($query){
 			if(mysqli_query($conn,$query))
 				return true;

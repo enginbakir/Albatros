@@ -1,37 +1,59 @@
-<!DOCTYPE html>
-<html>
-<head>
-	<meta charset="utf-8">
-	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-
-	<title>Albatros | Admin - Öğrenciler - Düzenleme</title>
-	<!-- Tell the browser to be responsive to screen width -->
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-3-typeahead/4.0.2/bootstrap3-typeahead.min.js"></script>  
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" />
-	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/0.9.13/css/bootstrap-multiselect.css" />
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/0.9.13/js/bootstrap-multiselect.js"></script>
+<?php session_start();
+if($_SESSION['access_type'] == "admin"){ 
+	require_once '../connectDB.php';
+	$id = $_GET["id"];
+	$query = "SELECT * FROM student where student_PK = $id";
+	$retval = mysqli_query($conn,$query);
+	
+	if(! $retval ) {
+		die('Could not get data: ' . mysqli_error());
+	}
+	$row = mysqli_fetch_array($retval, MYSQL_ASSOC);
 
 
+	$veliQuery = "SELECT * from parent where student_FK = ".$row['student_PK'];
+	$veliResult = mysqli_query($conn,$veliQuery);
+	if(! $veliResult ) {
+		die('Could not get data: ' . mysqli_error());
+	}
+	$veliRow = mysqli_fetch_array($veliResult, MYSQL_ASSOC);
+	
+	?>  
 
-	<!-- Import google fonts - Heading first/ text second -->
-	<link href="http://fonts.googleapis.com/css?family=Droid+Sans:400,700" rel="stylesheet" type="text/css">
-	<link href="http://fonts.googleapis.com/css?family=Open+Sans:400,700" rel="stylesheet" type="text/css">
+	<!DOCTYPE html>
+	<html>
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
 
-	<link rel="stylesheet" href="../dist/css/main.css">
-	<link rel="stylesheet" href="../dist/css/plugins.css">
-	<link rel="stylesheet" href="../dist/css/custom.css">
-	<link rel="stylesheet" href="../dist/css/bootstrap.css">
-	<!-- Bootstrap 3.3.7 -->
-	<link rel="stylesheet" href="../bower_components/bootstrap/dist/css/bootstrap.min.css">
-	<link rel="stylesheet" href="../bower_components/bootstrap/dist/css/myCss.css">
-	<!-- Font Awesome -->
-	<link rel="stylesheet" href="../bower_components/font-awesome/css/font-awesome.min.css">
-	<!-- Ionicons -->
-	<link rel="stylesheet" href="../bower_components/Ionicons/css/ionicons.min.css">
-	<!-- Theme style -->
-	<link rel="stylesheet" href="../dist/css/AdminLTE.min.css">
+		<title>Albatros | Admin - Öğrenciler - Düzenleme</title>
+		<!-- Tell the browser to be responsive to screen width -->
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-3-typeahead/4.0.2/bootstrap3-typeahead.min.js"></script>  
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" />
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/0.9.13/css/bootstrap-multiselect.css" />
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/0.9.13/js/bootstrap-multiselect.js"></script>
+
+
+
+		<!-- Import google fonts - Heading first/ text second -->
+		<link href="http://fonts.googleapis.com/css?family=Droid+Sans:400,700" rel="stylesheet" type="text/css">
+		<link href="http://fonts.googleapis.com/css?family=Open+Sans:400,700" rel="stylesheet" type="text/css">
+
+		<link rel="stylesheet" href="../dist/css/main.css">
+		<link rel="stylesheet" href="../dist/css/plugins.css">
+		<link rel="stylesheet" href="../dist/css/custom.css">
+		<link rel="stylesheet" href="../dist/css/bootstrap.css">
+		<!-- Bootstrap 3.3.7 -->
+		<link rel="stylesheet" href="../bower_components/bootstrap/dist/css/bootstrap.min.css">
+		<link rel="stylesheet" href="../bower_components/bootstrap/dist/css/myCss.css">
+		<!-- Font Awesome -->
+		<link rel="stylesheet" href="../bower_components/font-awesome/css/font-awesome.min.css">
+		<!-- Ionicons -->
+		<link rel="stylesheet" href="../bower_components/Ionicons/css/ionicons.min.css">
+		<!-- Theme style -->
+		<link rel="stylesheet" href="../dist/css/AdminLTE.min.css">
   <!-- AdminLTE Skins. Choose a skin from the css/skins
   	folder instead of downloading all of them to reduce the load. -->
   	<link rel="stylesheet" href="../dist/css/skins/_all-skins.min.css">
@@ -76,7 +98,7 @@
 					<small>...........</small>
 				</h1>
 				<ol class="breadcrumb">
-					<li><a href="admin_home.php"><i class="fa fa-dashboard"></i> Anasayfa</a></li>
+					<li><a href="admin.php"><i class="fa fa-dashboard"></i> Anasayfa</a></li>
 					<li><a href="ogrenci.php">Öğrenciler</a></li>
 					<li class="active">Düzenle</li>
 				</ol>
@@ -84,10 +106,27 @@
 			<section class="content">
 				<div class="row">
 					<div class="col-md-12">
-						<form id="updateStudentForm" action="updateNewStudent.php" method="post" enctype="multipart/form-data">
+
+						<!--  FORM   -->
+
+						<form id="updateStudentForm" action="updateStudent.php" method="post" enctype="multipart/form-data">
+
+							<!--  FORM  -->
+
+							<!-- this input will be used to post student_PK to updateStudent.php page -->
+							<input name="student_PK" type="text" maxlength="11" class="form-control" placeholder="Sabit Telefon" style="display: none" <?php echo " value = '".$row["student_PK"]."'"; ?> >
+							<!-- this input will be used to post student_PK to updateStudent.php page -->
+							
 							<div class="panel panel-default  toggle panelMove panelRefresh" id="supr0">
 								<div class="panel-heading">
 									<h4 class="panel-title">Öğrenci Bilgileri</h4>
+									 <span class="error bigfont">
+                        <?php if(isset($_SESSION["connection"]))
+                        echo "Veritabanı Bağlantı Hatası";
+                        echo $_SESSION["errorMessage"];
+                        ?>
+
+                      </span>
 								</div>
 								<div class="panel-body pt0 pb0">
 									<div class="form-horizontal group-border stripped">
@@ -98,7 +137,7 @@
 													<div class="input-group">
 														<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
 														<span class="error"><?php echo $_SESSION["donemBaslangicTarihi"]; ?></span>
-														<input name="donemBaslangicTarihi" class="form-control" type="date" data-date-inline-picker="false" data-date-open-on-focus="false" />
+														<input name="donemBaslangicTarihi" class="form-control" type="date" data-date-inline-picker="false" data-date-open-on-focus="false" value = <?php echo $row['term_start_date']; ?> >
 													</div>
 												</div>
 												<label class="col-md-2 control-label" for="">Dönem Bitiş Tarihi:</label>
@@ -106,7 +145,7 @@
 													<div class="input-group">
 														<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
 														<span class="error"><?php echo $_SESSION["donemBitisTarihi"]; ?></span>
-														<input name="donemBitisTarihi" class="form-control"  type="date" data-date-inline-picker="false" data-date-open-on-focus="false" />
+														<input name="donemBitisTarihi" class="form-control"  type="date" data-date-inline-picker="false" data-date-open-on-focus="false" value = <?php echo $row['term_finish_date']; ?>>
 													</div>
 												</div>
 											</div>
@@ -118,12 +157,12 @@
 											<div class="row">
 												<label class="col-md-2 control-label"><i class="renk">&nbsp;</i>Adı:</label>
 												<div class="col-md-3">
-													<input name="studentName" type="text" maxlength="64" id="ContentPlaceHolder1_txtAdi" class="form-control" placeholder="Öğrenci Adı">
+													<input name="studentName" type="text" maxlength="64" id="ContentPlaceHolder1_txtAdi" class="form-control" placeholder="Öğrenci Adı"  <?php echo " value = '".$row['name']."'"; ?> />
 													<span class="error">* <?php echo $_SESSION["nameErr"];?></span>
 												</div>
 												<label class="col-md-2 control-label"><i class="renk">&nbsp;</i>Soyadı:</label>
 												<div class="col-md-3">
-													<input name="studentSurname" type="text" maxlength="64" id="ContentPlaceHolder1_txtSoyadi" class="form-control" placeholder="Öğrenci Soyadı">
+													<input name="studentSurname" type="text" maxlength="64" id="ContentPlaceHolder1_txtSoyadi" class="form-control" placeholder="Öğrenci Soyadı"<?php echo " value = '".$row['surname']."'"; ?> />
 													<span class="error">* <?php echo $_SESSION["surNameErr"];?></span>
 												</div>
 											</div>
@@ -136,15 +175,27 @@
 												<label class="col-md-2 control-label">Cinsiyet:</label>
 												<div class="col-md-3">    
 													<div class="fancy-select">
-														<select name="gender" id="Cinsiyet" class="fancy-select form-control fancified" >
-															<option value="Erkek">Erkek</option>
-															<option value="Kız">Kız</option> 
-														</select>
+														
+														<?php 
+														echo '<select name="gender" id="Cinsiyet" class="fancy-select form-control fancified" >';
+
+														if($row['gender_FK'] == "1"){
+															echo '<option value = "KIZ">KIZ</option>';
+															echo '<option value = "ERKEK">ERKEK</option>';
+														}
+														else{
+															echo '<option value = "ERKEK">ERKEK</option>';
+															echo '<option value = "KIZ">KIZ</option>';
+														}
+
+														echo '</select>';
+														
+														?>
 													</div> 
 												</div>
 												<label class="col-md-2 control-label">T.C. No:</label>
 												<div class="col-md-3">
-													<input name="TCNumber" type="text" maxlength="11" id="ContentPlaceHolder1_txtTC" class="form-control" placeholder="T.C. Kimlik No">
+													<input name="TCNumber" type="text" maxlength="11" id="ContentPlaceHolder1_txtTC" class="form-control" placeholder="T.C. Kimlik No" value = <?php echo $row['tc_no']; ?>>
 													<span class="error"><?php echo $_SESSION["TCNumberErr"];?></span>
 												</div>                          
 											</div>
@@ -158,11 +209,11 @@
 											<div class="row">
 												<label class="col-md-2 control-label">Sınıfı:</label>
 												<div class="col-md-3">
-													<input name="studentClass" type="text" maxlength="8" id="ContentPlaceHolder1_txtSinif" class="form-control" placeholder="Sınıfı">
+													<input name="studentClass" type="text" maxlength="8" id="ContentPlaceHolder1_txtSinif" class="form-control" placeholder="Sınıfı" value = <?php echo $row['class']; ?>>
 												</div>
 												<label class="col-md-2 control-label">Rapor No:</label>
 												<div class="col-md-3">
-													<input name="studentRapor" type="text" maxlength="16" id="ContentPlaceHolder1_txtRapor" class="form-control" placeholder="Rapor No">
+													<input name="studentRapor" type="text" maxlength="16" id="ContentPlaceHolder1_txtRapor" class="form-control" placeholder="Rapor No" value = <?php echo $row['rapor_no']; ?>>
 												</div>
 											</div>
 										</div>
@@ -175,14 +226,13 @@
 												<div class="col-md-3">
 													<div class=" input-group">
 														<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-														<input name="studentBirthDay" class="form-control"  type="date" data-date-inline-picker="false" data-date-open-on-focus="false"/>
+														<input name="studentBirthDay" class="form-control"  type="date" data-date-inline-picker="false" data-date-open-on-focus="false" value = <?php echo $row['birthday']; ?>>
 													</div>
 												</div>
 												<label class="col-md-2 control-label" for="">Kayıt Tarihi:</label>
 												<div class="col-md-3">
 													<div class=" input-group">
-														<input name="registrationDate" type="text" value="<?php date_default_timezone_set("Europe/Istanbul");
-														echo date("Y-m-d"); ?>" maxlength="10" id="registrationDate" class="form-control" placeholder="yyyy-aa-gg" readonly>
+														<input name="registrationDate" type="text" maxlength="10" id="registrationDate" class="form-control" placeholder="yyyy-aa-gg" readonly value = <?php echo $row['registration_date']; ?> >
 													</div> 
 												</div>
 											</div>
@@ -225,12 +275,13 @@
 											<label class="col-md-2 control-label" for="">Reh. Araş. Merkezi:</label>
 											<div class="col-md-3">
 
-												<input name="rehberlikMerkezi" type="text" maxlength="64" id="ContentPlaceHolder1_txtMerkezi" class="form-control" placeholder="Rehberlik Araştırma Merkezi">
+												<input name="rehberlikMerkezi" type="text" maxlength="255" id="ContentPlaceHolder1_txtMerkezi" class="form-control" <?php echo " value = '".$row['rehberlik_merkezi']."'"; ?> >
 
 											</div>
 
 											<label class="col-md-2 control-label"><i class="renk"><span class="error">*</span>&nbsp;</i>Eğitsel Tanı:</label>
 											<span class="error"><?php echo $_SESSION["educationalDiagnosisErr"]; ?></span>
+											<span class="error">Tüm Tanıları Baştan Seçiniz</span>
 											<div class="col-md-4">
 
 												<div class="form-group">
@@ -254,10 +305,50 @@
 												</div>
 											</div>
 										</div>
+										<div class="form-group">
+											<div class="row">
+												<label class="col-md-2 control-label" for="">Öğretmen Seç:</label>
+												<div class="col-md-3">
+													<div class="form-group">                                                   
+
+														<?php 
+
+														$sql = "SELECT * FROM personel";
+														$retval = mysqli_query( $conn,$sql );
+
+														if(! $retval ) {
+															die('Could not get data: ' . mysqli_error());
+														}
+														echo '<select id="ogretmen" name="ogretmen" class="fancy-select form-control fancified" >';
+														$q = "SELECT * from personel where personel_PK = ".$row["personel_FK"];
+														$result = mysqli_query($conn,$q);
+
+														$personel_name =  mysqli_fetch_array($result, MYSQL_ASSOC);
+														echo "<option value='".$row['personel_FK']."'>".$row['personel_FK']." ".$personel_name['name']."</option>";
+
+														while($row = mysqli_fetch_array($retval, MYSQL_ASSOC)) {
+															if($row['personel_PK'] != $personel_name['personel_PK'])
+																echo "<option value='".$row['personel_PK']."'>".$row['personel_PK']." ".$row['name']."</option>";
+														}
+														echo "</select>";
+
+														?>
+														
+													</div>
+
+												</div>
+
+												<label class="col-md-2 control-label" for=""></label>
+												<div class="col-md-3"></div>
+											</div>
+										</div>
 										<!-- End .form-group 6 -->
 									</div>
 								</div>
 							</div>
+
+
+
 							<div class="col-lg-16">
 								<div class="panel panel-default toggle panelMove panelRefresh" id="supr1">
 									<!-- Start .panel -->
@@ -272,13 +363,13 @@
 												<div class="row">           
 													<label class="col-md-2 control-label" for=""><i class="renk">&nbsp;</i>Adı:</label>
 													<div class="col-md-3">
-														<input name="parentName" type="text" maxlength="64" id="parentName" class="form-control" placeholder="Velinin Adı">
+														<input name="parentName" type="text" maxlength="64" id="parentName" class="form-control" placeholder="Velinin Adı" <?php echo " value = '".$veliRow['name']."'"; ?>>
 														<span class="error">* <?php echo $_SESSION["parentNameErr"]; ?></span>
 													</div>
 
 													<label class="col-md-2 control-label" for=""><i class="renk">&nbsp;</i>Soyadı:</label>
 													<div class="col-md-3">
-														<input name="parentSurname" type="text" maxlength="64" id="parentSurname" class="form-control" placeholder="Velinin Soyadı">
+														<input name="parentSurname" type="text" maxlength="64" id="parentSurname" class="form-control" placeholder="Velinin Soyadı" <?php echo " value = '".$veliRow['surname']."'"; ?>>
 														<span class="error">* <?php echo $_SESSION["parentSurnameErr"]; ?></span>
 													</div>
 												</div>
@@ -375,14 +466,14 @@
 									<!-- End of Panel -->
 								</div>
 							</div>
+
 						</form>
 					</div>
-
 				</div>
 			</section>
 
 		</div>
-		<?php include 'footer.php'; ?>
+		<?php require_once 'footer.php'; ?>
 	</div>
 
 
@@ -403,3 +494,25 @@
 
 </body>
 </html>
+
+<?php 
+
+unset($_SESSION['errorMessage']); 
+unset($_SESSION["nameErr"]);
+unset($_SESSION["surNameErr"]);
+unset($_SESSION["TCNumberErr"]);
+unset($_SESSION["TCNumberErr"]);
+unset($_SESSION["fileErrors"]);
+unset($_SESSION["educationalDiagnosisErr"]);
+unset($_SESSION["parentNameErr"]);
+unset($_SESSION["parentSurnameErr"]);
+unset($_SESSION["parentTCNumberErr"]);
+unset($_SESSION["parentPhoneNumberErr"]);
+unset($_SESSION["parentMobilePhoneErr"]);
+mysqli_close($conn);
+
+}
+else{
+
+	header("location: ../index.php");
+}?>
