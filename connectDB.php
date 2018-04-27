@@ -2,15 +2,21 @@
 
 
 $username = "root";
-$password = "nazmiyemustafa29";
+$password = "123456";
 $server = "localhost";
-$database = "yeni_albatros";
+$database = "albatros";
 
 
 $conn = mysqli_connect($server,$username,$password,$database);
 
 
-
+if(!$conn){
+	echo "Bağlantı hatası:".mysql_errno();
+	exit();
+}
+else{
+	//echo "Connection Successfully";
+}
 
 
 

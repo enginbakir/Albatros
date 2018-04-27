@@ -1,5 +1,5 @@
 <?php 
-require_once "connectDB.php";
+require_once "../connectDB.php";
 ?>
 <!DOCTYPE html>
 <html>
@@ -53,6 +53,7 @@ require_once "connectDB.php";
   		font-size:18px 
   	}
   </style>
+
 
 </head>
 
@@ -157,8 +158,6 @@ require_once "connectDB.php";
 											<!--Content wrapper END-->
 										</form>
 										<!--FORM2 Öğrenci Veri Tablosu END-->
-
-
 										<div class="btn-group btn-group-justified" style="padding-bottom: 10px">
 											<div class="btn-group">
 												<button id="bepOlustur" type="button" class="btn btn-primary" ">&nbsp;&nbsp;BEP Oluştur&nbsp;&nbsp;</button>
@@ -187,8 +186,8 @@ require_once "connectDB.php";
 												<li class="active"><a data-toggle="tab" href="#home">Notlar</a></li>
 												<li><a data-toggle="tab" href="#menu1">Veli Bilgileri</a></li>
 												<li><a data-toggle="tab" href="#menu2">Öğrenci Bilgileri</a></li>
-												<li><a data-toggle="tab" href="#menu3">Takvim</a></li>
-												<li><a data-toggle="tab" href="#menu4">Mail</a></li>
+												<li><a data-toggle="tab" href="#menu3">Devamsızlık Takvimi</a></li>
+												<li><a data-toggle="tab" href="#menu4">Ödeme Bilgileri</a></li>
 											</ul>
 
 											<div class="tab-content">
@@ -293,6 +292,50 @@ require_once "connectDB.php";
 
 												<!-- Page-ÖĞRENCİ BİLGİLERİ END -->
 
+
+												<!-- Page- ÖDEME BİLGİLERİ START -->
+												<div id="menu4" class="tab-pane fade">
+													<div class="row">
+														<div class="col-md-12">
+															<table id="öğrenciOdemeTableID" class="table table-bordered table-hover">
+																<thead>
+																	<tr>
+																		<th>Aylar</th>
+																		<th>Ödeme Bilgisi</th>
+																	</tr>
+																</thead>
+																<tbody >
+																	<?php
+																	$datam = mysqli_query($conn,"SELECT * FROM odeme_bilgileri ");
+
+
+																	
+																	while($write = mysqli_fetch_array($datam, MYSQL_ASSOC)){ ?>
+																	<tr>
+																		<td class="aylar">
+																			<?php echo $write['aylar']; ?>
+																		</td>
+																		
+																		<?php 
+																		if($write['ödeme'] == 0) {
+																			echo "<td id='odemeB' bgcolor='red'>Ödenmedi</td>";
+																		} else{
+																			echo "<td id='odemeB' bgcolor='#00f800'>Ödendi</td>";
+																		}
+																		?>
+																	</tr>
+																	<?php } ?>
+																</tbody>
+															</table>
+
+															<div class="row" id="noo">
+																
+															</div>
+														</div>
+													</div>
+												</div>
+												<!-- Page-ÖDEME BİLGİLERİ END -->
+
 											</div>
 										</div>
 									</div>
@@ -313,18 +356,60 @@ require_once "connectDB.php";
 
 	</html>
 
-	<!-- To Change Selected HTML Table Row Background Color START-->
 	<script>
 		var id;
-		function selectedRow(){
-
-			var index,isim,soyisim;
-			table = document.getElementById("öğrenciVeriTableID");
+		function selectedOdemeRow(){
+			var indexO, ay, odemeBilgisi;
+			table = document.getElementById("öğrenciOdemeTableID");
 
 			for(var i = 1; i < table.rows.length; i++)
 			{
 				table.rows[i].onclick = function()
 				{
+                         // remove the background from the previous selected row
+                         if(typeof index !== "undefined"){
+                         	table.rows[index].classList.toggle("selected");
+                         }
+
+                        // get the selected row index
+                        indexO = this.rowIndex;
+                        // add class selected to the row
+                        $('.selected').removeClass('selected');
+                        $(this).addClass("selected");
+                        ay = $('.aylar',this).html();
+                        odemeBilgisi =$('#odemeB',this).html();
+
+
+                        $.ajax({  
+                        	url:"getodeme.php",  
+                        	method:"GET",  
+                        	data:{'id':indexO},  
+                        	success:function(data){ 
+
+                        		$('#noo').html(data);  
+                        	}  
+                        });
+                        
+                    };
+                }
+            }
+
+            selectedOdemeRow();
+
+        </script>
+
+        <!-- To Change Selected HTML Table Row Background Color START-->
+        <script>
+        	var id;
+        	function selectedRow(){
+
+        		var index,isim,soyisim;
+        		table = document.getElementById("öğrenciVeriTableID");
+
+        		for(var i = 1; i < table.rows.length; i++)
+        		{
+        			table.rows[i].onclick = function()
+        			{
                          // remove the background from the previous selected row
                          if(typeof index !== "undefined"){
                          	table.rows[index].classList.toggle("selected");
@@ -347,7 +432,7 @@ require_once "connectDB.php";
                         		$('#notes').html(data);  
                         	}  
                         });  
-                         document.getElementById("studentInfoTitle").innerHTML = isim+" "+soyisim+" Bilgileri";
+                        document.getElementById("studentInfoTitle").innerHTML = isim+" "+soyisim+" Bilgileri";
                     };
                 }
 

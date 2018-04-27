@@ -3,7 +3,7 @@
 session_start();
 ob_start();
 
-$conn = mysqli_connect("localhost","root","nazmiyemustafa29","yeni_albatros");
+$conn = mysqli_connect("localhost","root","123456","albatros");
 mysqli_set_charset($conn, "utf8");
 
 if (mysqli_connect_errno())
@@ -13,8 +13,15 @@ if (mysqli_connect_errno())
 
 if ($_SERVER["REQUEST_METHOD"] == "POST")
 {
-  $username = $_POST['username'];
-  $password = $_POST['password'];
+
+    // $username = $_POST['username'];
+    // $password = $_POST['password'];
+
+  $username = addslashes($_POST['username']);
+  $password = addslashes($_POST['password']);
+
+  /* mysql_ söz dizimlerini kullanarak yazıyorsan direk addslashes fonksiyonunuda kullanabilirsin. '" gibi özel karakterlerin başına / koyar mysql kayıt ederkende eklediği / ları siler temiz bir kayıt olur. */
+
   $user_type = $_POST['user_type'];
   $sql_user_type = "SELECT * FROM users WHERE user_type='$user_type'";
   
@@ -42,7 +49,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
       header("location: ../Personel/personel_main_page.php");
     }
   }else {
-   echo  ("Your Login Name or Password is invalid");
+
+     header("Location:invalid.php");
+    // echo  ("Your Login Name or Password is invalid");
  }
 
  

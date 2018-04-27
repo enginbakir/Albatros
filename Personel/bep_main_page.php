@@ -1,6 +1,6 @@
 <!-- PHP CHECKING INPUTS -->
 <?php 
-require_once "connectDB.php";
+require_once "../connectDB.php";
 ?>
 
 <!DOCTYPE html>
