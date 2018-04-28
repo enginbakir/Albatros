@@ -274,7 +274,8 @@ if($_SESSION['access_type'] == "admin"){
 													<div id="menu2" class="tab-pane fade">
 														<div class="box box-primary">
 															<div class="box-body box-profile">
-																<img class="profile-user-img img-responsive img-circle" src="../dist/img/avatar5.png" alt="User profile picture">
+
+																<img id = "ogrenciPhoto" class="profile-user-img img-responsive img-circle" src="../dist/img/avatar5.png" alt="User profile picture">
 
 																<h3 class="profile-username text-center">Engin Bakır</h3>
 																<ul class="list-group list-group-unbordered">
@@ -680,6 +681,16 @@ if($_SESSION['access_type'] == "admin"){
 			}  
 		});  
 		document.getElementById("studentInfoTitle").innerHTML = isim+" "+soyisim+" Bilgileri";
+
+		$.ajax({
+			url:"getStudentInfo.php",
+			method:"POST",
+			data :{id:id},
+			success:function(data){
+				$("#ogrenciPhoto").attr('src', data);
+				
+			}
+		});
 	});
 
 	$("#silButton").on("click",function(){

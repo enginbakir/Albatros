@@ -14,7 +14,6 @@ $studentID = null;
 
 $target_dir = "../images/";
 $target_file = $target_dir . basename($_FILES["fileToUpload"]["name"]);
-$uploadOk = 1;
 $imageFileType = strtolower(pathinfo($target_file,PATHINFO_EXTENSION));
 $_SESSION["imageName"] = $target_file;
 
@@ -97,31 +96,31 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
 
 	$fileErrors = array();
 // Check if image file is a actual image or fake image
-	if(isset($_POST["submit"])) {
+	if(isset($_POST["fileToUpload"])) {
 		$check = getimagesize($_FILES["fileToUpload"]["tmp_name"]);
 		if($check !== false) {
 			echo "File is an image - " . $check["mime"] . ".";
-			$uploadOk = 1;
+			
 		} else {
 			$fileErrors[0] = "File is not an image.";
-			$uploadOk = 0;
+			
 		}
 	}
 	// Check if file already exists
 	if (file_exists($target_file)) {
 		$fileErrors[1] = "Bu Dosya Zaten Mevcut!!";
-		$uploadOk = 0;
+
 	}
 // Check file size
 	if ($_FILES["fileToUpload"]["size"] > 2097152) {
 		$fileErrors[2] = "Lütfen 2 MB'den küçük dosya seçin!!!"; 
-		$uploadOk = 0;
+		
 	}
 // Allow certain file formats
 	if($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg"
 		&& $imageFileType != "gif" ) {
 		$fileErrors[3] = "Sadece JPG, JPEG, PNG & GIF Dosyaları Kabul Edilir!!";
-	$uploadOk = 0;
+	
 }
 
 if(empty($fileErrors) == true && $bool == true) {
@@ -129,10 +128,17 @@ if(empty($fileErrors) == true && $bool == true) {
 		echo "The file ". basename( $_FILES["fileToUpload"]["name"]). " has been uploaded.<br>";
 	} else {
 		$fileErrors[4] = "Yükleme Hatası, Bilgileri Kontrol Ediniz!!";
+		$bool = false;
 	}
 }else{
 	$_SESSION["fileErrors"] = $fileErrors;
 	$bool = false;
+}
+
+if(!isset($_POST["fileToUpload"])){
+	$target_file = null ;
+	$bool = true;
+	$_SESSION["fileErrors"] = "";
 }
 
 //// FOTOĞRAF KONTROLÜ BURADAN YUKARIYA /////
@@ -276,7 +282,7 @@ if(!empty($_POST["parentMobilePhone"]))
 	else{
 		echo "bool is false<br>";
 		$url = "location: ogrenci_duzenle.php?id=".$studentID;
-		//header($url);
+		header($url);
 	}
 
 /// END OF REQUEST IF CODE BLOCK  ///
@@ -287,30 +293,55 @@ else{
 
 function runStudentQuery(){
 	global $conn;
-	global $educationalDiagnosis;
 	global $bool;
-	global $class,$donemBitisTarihi,$donemBaslangicTarihi,$rapor_no,$studentSurname,$studentName,$TCNumber,$currentDate,$rehberlikMerkezi,$gender,$birthday,$target_file,$personel_FK,$studentID;
-	$sqlStudentQuery = "UPDATE `student` SET `tc_no`='$TCNumber',`name`='$studentName',`surname`='$studentSurname',`class`= '$studentClass' ,`rapor_no`= '$studentRapor' ,`birthday`= '$studentBirthDay' ,`photo`='$target_file',`registration_date`='$currentDate',`rehberlik_merkezi`='$rehberlikMerkezi',`term_start_date`='$donemBaslangicTarihi',`term_finish_date`='$donemBitisTarihi',`gender_FK`='$gender',`personel_FK`='$personel_FK' WHERE student_PK = '$studentID'";
-	$sqlStudentQuery = "UPDATE `student` SET `name`='$studentName',`surname`='$studentSurname' WHERE student_PK = '$studentID'";
-	echo $studentID;
-	echo $studentName;
-	echo "<br>".$studentSurname;
-	echo "<br>".$target_file;
+	global $class,$donemBitisTarihi,$donemBaslangicTarihi,$studentRapor,$studentSurname,$studentName,$TCNumber,$currentDate,$rehberlikMerkezi,$gender,$birthday,$target_file,$personel_FK,$studentID,$educationalDiagnosis,$transportation,$registrationDate;
+	
+	$sqlStudentQuery = "UPDATE `student` SET `tc_no`='$TCNumber',`name`='$studentName',`surname`='$studentSurname',`class`= '$class' ,`rapor_no`= '$studentRapor' ,`birthday`= '$birthday' ,`photo`='$target_file',`registration_date`='$currentDate',`rehberlik_merkezi`='$rehberlikMerkezi',`term_start_date`='$donemBaslangicTarihi',`term_finish_date`='$donemBitisTarihi',`gender_FK`='$gender',`personel_FK`='$personel_FK' WHERE student_PK = '$studentID'";
+
 	if(mysqli_query($conn,$sqlStudentQuery)){
 		$_SESSION["errorMessage"] = "Ekleme Başarıyla Tamamlandı!!";
 		echo "<br>Ekleme Başarıyla Tamamlandı!!";
-		$url = "location: ogrenci_duzenle.php?id=".$studentID;
-		header($url);		
+
+
+		if(mysqli_query($conn,"DELETE FROM student_diagnosis where student_FK = '$studentID'")){
+			foreach ($educationalDiagnosis as $key ) {
+				$value = (int)$key;
+				$sql = "INSERT INTO `student_diagnosis`(`student_FK`, `diagnosis_FK`) VALUES ('$studentID','$value')";					
+				if(mysqli_query($conn,$sql)){
+					header("location: ogrenci_duzenle.php?id=".$studentID);		
+				}
+				else{
+					$bool = false;
+					$_SESSION["errorMessage"] = "Diagnosis Eklerken Hata Oluştu. !!<br> Error: <br>". mysqli_error($conn);
+				}				
+			}	
+			if($bool == true)
+				runParentQuery();
+		}
+		header("location: ogrenci_duzenle.php?id=".$studentID);	
+
 	}
 	else{
 		$_SESSION["errorMessage"] = "Student Bilgilerini Kontrol Ediniz!!!<br> Error: <br>". mysqli_error($conn);
-		$url = "location: ogrenci_duzenle.php?id=".$studentID;
-		header($url);	
+		header("location: ogrenci_duzenle.php?id=".$studentID);	
 	}
 }
 
 function runParentQuery(){
+	global $conn;
+	global $studentID;
+	global $parentName, $parentSurname, $parentTCNumber, $parentYakinlik, $parentSabitTel, $parentCepTel, $parentEmailAdress, $parentAdress, $parentIsAdress, $proximity,$aciklama;
 
+	$sqlParentQuery = "UPDATE `parent` SET `tel_no`='$parentCepTel',`sabit_tel`='$parentSabitTel',`tc_no`='$parentTCNumber',`name`='$parentName',`surname`='$parentSurname',`adress`='$parentAdress',`work_adress`='$parentIsAdress',`description`='$aciklama',`email_adress`='$parentEmailAdress',`degree_of_proximity_FK`='$proximity' WHERE student_FK = '$studentID'";
+
+	if(mysqli_query($conn,$sqlParentQuery)){
+		$_SESSION["errorMessage"] = "Ekleme Başarıyla Tamamlandı!!";
+		
+	}
+	else
+		$_SESSION["errorMessage"] = "Öğrenci Güncelleme Başarıyla Tamamlandı.<br>Veli Güncellemesini Tekrar Deneyiniz!!!";
+
+	header("location: ogrenci_duzenle.php?id=".$studentID);	
 }
 
 function test_input($data) {
@@ -340,7 +371,7 @@ function isTcKimlik($tc)
 
 
 mysqli_close($conn);
-		exit();
+exit();
 ?>
 
  <!-- PHP CHECKING INPUTS -->

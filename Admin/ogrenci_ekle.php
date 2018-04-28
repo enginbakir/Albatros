@@ -1,9 +1,9 @@
 <?php session_start();
 if($_SESSION['access_type'] == "admin"){ 
  ?>  
-<!DOCTYPE html>
-<html>
-<head>
+ <!DOCTYPE html>
+ <html>
+ <head>
 
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -238,7 +238,10 @@ if($_SESSION['access_type'] == "admin"){
                         <!---- FOTOĞRAF -->
 
                         <div class="form-group">
-                          <label class="col-md-2 control-label" for="">Fotoğraf Seç:</label>
+                          <div class="row">
+                            <label class="col-md-6 control-label " for="">Lütfen 2 MB'den küçük JPG, JPEG ve PNG Dosyaları Seçin!!</label>
+                          </div>
+                          <label class="col-md-2 control-label " for="">Fotoğraf Seç:</label>
                           <div class="col-md-3">
                             <span class="error">
                               <?php 
@@ -303,22 +306,22 @@ if($_SESSION['access_type'] == "admin"){
                           <div class="col-md-3">
                             <div class="form-group">                                                   
 
-                                <?php 
-                                require_once '../connectDB.php';
-                                $sql = "SELECT * FROM personel";
-                                $retval = mysqli_query( $conn,$sql );
+                              <?php 
+                              require_once '../connectDB.php';
+                              $sql = "SELECT * FROM personel";
+                              $retval = mysqli_query( $conn,$sql );
 
-                                if(! $retval ) {
-                                  die('Could not get data: ' . mysqli_error());
-                                }
-                                echo '<select id="ogretmen" name="ogretmen" class="fancy-select form-control fancified" >';
-                                while($row = mysqli_fetch_array($retval, MYSQL_ASSOC)) {
-                                  echo "<option value='".$row['personel_PK']."'>".$row['personel_PK']." ".$row['name']."</option>";
-                                }
-                                echo "</select>";
-                                
-                                ?>
-                              </div>
+                              if(! $retval ) {
+                                die('Could not get data: ' . mysqli_error());
+                              }
+                              echo '<select id="ogretmen" name="ogretmen" class="fancy-select form-control fancified" >';
+                              while($row = mysqli_fetch_array($retval, MYSQL_ASSOC)) {
+                                echo "<option value='".$row['personel_PK']."'>".$row['personel_PK']." ".$row['name']."</option>";
+                              }
+                              echo "</select>";
+
+                              ?>
+                            </div>
                           </div>
                           <label class="col-md-2 control-label" for=""></label>
                           <div class="col-md-3"></div>
@@ -480,6 +483,10 @@ if($_SESSION['access_type'] == "admin"){
       buttonWidth:'300px'
     });
 
+
+     $("#fileInfo").mousedown(function(){
+      alert("Mouse down over p1!");
+    });
    });
  </script>
 
@@ -499,6 +506,9 @@ unset($_SESSION["parentSurnameErr"]);
 unset($_SESSION["parentTCNumberErr"]);
 unset($_SESSION["parentPhoneNumberErr"]);
 unset($_SESSION["parentMobilePhoneErr"]);
+unset($_SESSION["donemBaslangicTarihi"]);
+unset($_SESSION["donemBitisTarihi"]);
+
 mysqli_close($conn);
 ?>
 

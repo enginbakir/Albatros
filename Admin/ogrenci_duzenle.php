@@ -256,7 +256,7 @@ if($_SESSION['access_type'] == "admin"){
 													?>
 												</span>
 
-												<input type="file" name="fileToUpload" id="fileToUpload" class="btn btn-default btn-file">
+												<input type="file" name="fileToUpload" class="btn btn-default btn-file" >
 											</div>
 											<label class="col-md-2 control-label" for="">Ulaşım:</label>
 											<div class="col-md-3">
