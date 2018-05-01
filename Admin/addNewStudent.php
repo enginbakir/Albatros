@@ -12,11 +12,6 @@ date_default_timezone_set("Europe/Istanbul");
 $currentDate = date("Y-m-d");
 
 
-$target_dir = "../images/";
-$target_file = $target_dir . basename($_FILES["fileToUpload"]["name"]);
-$imageFileType = strtolower(pathinfo($target_file,PATHINFO_EXTENSION));
-$_SESSION["imageName"] = $target_file;
-
 //// STUDENT ////
 $studentName = $studentSurname = $gender = $TCNumber = $class = $raporNumber = $birthday = $educationalDiagnosis[] = $donemBaslangicTarihi = $registrationDate = $transportation = $rehberlikMerkezi = $personel_FK = $studentLastID = null;
 $nameErr = $surnameErr = $TCNumberErr = null;
@@ -94,48 +89,52 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
 
 	///// FOTOĞRAF KONTOLÜ BURADAN AŞAĞIYA ////
 
-	$fileErrors = array();
-// Check if image file is a actual image or fake image
-	if(isset($_POST["fileToUpload"])) {
-		$check = getimagesize($_FILES["fileToUpload"]["tmp_name"]);
-		if($check !== false) {
-			echo "File is an image - " . $check["mime"] . ".";
-		} else {
-			$fileErrors[0] = "File is not an image.";
-		}
-	}
-	// Check if file already exists
-	if (file_exists($target_file)) {
-		$fileErrors[1] = "Bu Dosya Zaten Mevcut!!";
-	}
-// Check file size
-	if ($_FILES["fileToUpload"]["size"] > 2097152) {
-		$fileErrors[2] = "Lütfen 2 MB'den küçük dosya seçin!!!"; 
-	}
-// Allow certain file formats
-	if($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg") {
-		$fileErrors[3] = "Sadece JPG, JPEG ve PNG Dosyaları Kabul Edilir!!";
-	}
+	$target_dir = "../images/";
+	$target_file = $target_dir . basename($_FILES["fileToUpload"]["name"]);
+	$imageFileType = strtolower(pathinfo($target_file,PATHINFO_EXTENSION));
+	$_SESSION["imageName"] = $target_file;
 
-	if(empty($fileErrors) == true && $bool == true) {
-		if (move_uploaded_file($_FILES["fileToUpload"]["tmp_name"], $target_file)) {
-			echo "The file ". basename( $_FILES["fileToUpload"]["name"]). " has been uploaded.";
-		} else {
-			$fileErrors[4] = "Yükleme Hatası, Bilgileri Kontrol Ediniz!!";
+	$fileErrors = array();
+
+// Check if image file is a actual image or fake image
+
+	if(strlen($target_file) < 11)
+		$target_file = "../images/avatar5.png";
+	else{
+		if(isset($_POST["fileToUpload"])) {
+			$check = getimagesize($_FILES["fileToUpload"]["tmp_name"]);
+			if($check !== false) {
+				echo "File is an image - " . $check["mime"] . ".";
+			} else {
+				$fileErrors[0] = "File is not an image.";
+			}
+		}
+	// Check if file already exists
+		if (file_exists($target_file)) {
+			$fileErrors[1] = "Bu Dosya Zaten Mevcut!!";
+		}
+// Check file size
+		if ($_FILES["fileToUpload"]["size"] > 2097152) {
+			$fileErrors[2] = "Lütfen 2 MB'den küçük dosya seçin!!!"; 
+		}
+// Allow certain file formats
+		if($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg") {
+			$fileErrors[3] = "Sadece JPG, JPEG ve PNG Dosyaları Kabul Edilir!!";
+		}
+
+
+		if(empty($fileErrors) == true && $bool == true) {
+			if (move_uploaded_file($_FILES["fileToUpload"]["tmp_name"], $target_file)) {
+				echo "The file ". basename( $_FILES["fileToUpload"]["name"]). " has been uploaded.";
+			} else {
+				$fileErrors[4] = "Yükleme Hatası, Bilgileri Kontrol Ediniz!!";
+				$bool = false;
+			}
+		}else{
+			$_SESSION["fileErrors"] = $fileErrors;
 			$bool = false;
 		}
-	}else{
-		$_SESSION["fileErrors"] = $fileErrors;
-		$bool = false;
 	}
-
-if(!isset($_POST["fileToUpload"])){
-	$target_file = null ;
-	$bool = true;
-	$_SESSION["fileErrors"] = "";
-}
-
-
 //// FOTOĞRAF KONTROLÜ BURADAN YUKARIYA /////
 
 
@@ -295,7 +294,10 @@ if(!isset($_POST["fileToUpload"])){
 		$sqlStudentQuery = "INSERT INTO `student`(`tc_no`, `name`, `surname`, `class`, `rapor_no`, `birthday`, `photo`, `registration_date`, `rehberlik_merkezi`,`term_start_date`, `term_finish_date`, `gender_FK`, `personel_FK`) VALUES  
 		('$TCNumber','$studentName','$studentSurname','$class','$rapor_no','$birthday','$target_file','$currentDate','$rehberlikMerkezi','$donemBaslangicTarihi','$donemBitisTarihi','$gender','$personel_FK')";
 	}*/
-
+	if(strlen($target_file) < 11)
+		$target_file = "../images/avatar5.png";
+	echo $target_file;
+	
 	$sqlStudentQuery = "INSERT INTO `student`(`tc_no`, `name`, `surname`, `class`, `rapor_no`, `birthday`, `photo`, `registration_date`, `rehberlik_merkezi`,`term_start_date`, `term_finish_date`, `gender_FK`, `personel_FK`) VALUES  
 	('$TCNumber','$studentName','$studentSurname','$class','$rapor_no','$birthday','$target_file','$currentDate','$rehberlikMerkezi','$donemBaslangicTarihi','$donemBitisTarihi','$gender','$personel_FK')";
 
