@@ -309,17 +309,23 @@ if($_SESSION['access_type'] == "admin"){
                               <?php 
                               require_once '../connectDB.php';
                               $sql = "SELECT * FROM personel";
+                              /*
                               $retval = mysqli_query( $conn,$sql );
 
                               if(! $retval ) {
                                 die('Could not get data: ' . mysqli_error());
-                              }
+                              }*/
                               echo '<select id="ogretmen" name="ogretmen" class="fancy-select form-control fancified" >';
+                              foreach ($conn->query($sql) as $row) {
+                              echo "<option value='".$row['personel_PK']."'>".$row['personel_PK']." ".$row['name']."</option>";
+                            }
+                            echo "</select>";
+                             /* echo '<select id="ogretmen" name="ogretmen" class="fancy-select form-control fancified" >';
                               while($row = mysqli_fetch_array($retval, MYSQL_ASSOC)) {
-                                echo "<option value='".$row['personel_PK']."'>".$row['personel_PK']." ".$row['name']."</option>";
+                                
                               }
                               echo "</select>";
-
+                              */
                               ?>
                             </div>
                           </div>

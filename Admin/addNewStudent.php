@@ -4,9 +4,8 @@
 session_start();
 
 
-include "../connectDB.php";
-if (!$conn)
-	$_SESSION["connection"] = "Veritabanı Bağlantı Hatası";
+require_once "../connectDB.php";
+
 
 date_default_timezone_set("Europe/Istanbul");
 $currentDate = date("Y-m-d");

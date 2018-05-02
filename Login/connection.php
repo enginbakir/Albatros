@@ -4,38 +4,118 @@
 @session_start();
 @ob_start();
 
-include '../connectDB.php';
-mysqli_set_charset($conn, "utf8");
+require_once '../connectDB.php';
 
-if (mysqli_connect_errno())
-{
-  echo "MySQL bağlantısı başarısız: " . mysqli_connect_error();
-}
 
 if ($_SERVER["REQUEST_METHOD"] == "POST")
 {
+
   $username = $_POST['username'];
   $password = $_POST['password'];
 
-  // buraya user type kontrolü eklenecek login ekranında check edilmediğinde hata veriyor
-  $user_type = $_POST['user_type'];
+  if(!empty($_POST['user_type'])){
+    $user_type = $_POST['user_type'];
+  }else {
+   $_SESSION['login_error'] = "Kullanıcı Türü Seçiniz!!!";
+   header("location: ../index.php");
+ }
 
-  /*if($user_type == "admin")
-    $query = "SELECT * FROM admin_user WHERE username='$username' AND password='$password' LIMIT 1";
-  if($user_type == "parent")
-    $query = "SELECT * FROM parent_user WHERE username='$username' AND password='$password' LIMIT 1";
-  if($user_type == "personel")
-    $query = "SELECT * FROM personel_user WHERE username='$username' AND password='$password' LIMIT 1";
+ try {
+
+  $stmt = $conn -> prepare("SELECT * FROM ".$user_type."_user WHERE username = :username AND password = :password LIMIT 1;");
+  $stmt->bindParam(':username', $username, PDO::PARAM_STR);
+  $stmt->bindParam(':password', $password, PDO::PARAM_STR);
+  $stmt->execute();
+  $row = $stmt -> fetch(PDO::FETCH_ASSOC);
+  echo $row;
+  if($row > 0){
+
+    if($user_type == "admin"){
+     $_SESSION['access_type'] = $user_type;
+     $_SESSION['access_id'] = $row->userAdmin_PK;
+     $_SESSION['username'] = $row->username;
+     header("location: ../Admin/admin.php");
+   }
+   else if($user_type == "personel"){
+     $_SESSION['access_type'] = $user_type;
+     $_SESSION['access_id'] = $row->userPersonel_PK;
+     $_SESSION['username'] = $row->username;
+     header("location: ../Personel/personel.php");
+   }
+   else if($user_type == "parent"){
+     $_SESSION['access_type'] = $user_type;
+     $_SESSION['access_id'] = $row->userParent_PK;
+     $_SESSION['username'] = $row->username;
+     header("location: ../Parent/parent.php");
+   }
+   else {
+     $_SESSION['login_error'] = "Kullanıcı Türü Seçiniz!!!";
+     header("location: ../index.php");
+   }
+ }else{
+   $_SESSION['login_error'] = "Kullanıcı adı veya şifre yanlış!!!";
+   header("location: ../index.php");
+ }
+ 
+} catch (Exception $e) { 
+  // $_SESSION['login_error'] = $e->getMessage(); 
+ $_SESSION['login_error'] = "Bilgileri Kontrol Ediniz!!!!";
+ header("location: ../index.php");
+}
+
+
+ /* $query = "SELECT * FROM ".$user_type."_user WHERE username=? AND password=? LIMIT 1";
+  $stmt = $conn->prepare($query);
+  $stmt -> bind_param('ss', $username, $password);*/
+}
+/*  $stmt = $conn->prepare("SELECT * FROM ".$user_type."_user WHERE username = '$username' AND `password` = '$password' LIMIT 1") or die(mysqli_error());
+  if($stmt -> execute()){
+    $result = $stmt->get_result();
+    $num_rows = $result->num_rows;
+  }
+
 */
-    $query = "SELECT * FROM ".$user_type."_user WHERE username='$username' AND password='$password' LIMIT 1";
+/*
 
-    $retval = mysqli_query($conn, $query);
-    $row = mysqli_fetch_array($retval, MYSQL_ASSOC );
+  if($user_type == "admin")
+    $stmt -> bind_result($userAdmin_PK,$username,$status);
+  $stmt -> store_result();
+  if($user_type == "personel")
+    $stmt -> bind_result($userPersonel_PK,$username,$status);
+  if($user_type == "parent")
+    $stmt -> bind_result($userParent_PK,$username,$status);
+
+*/
+
+/*
+  if($stmt -> num_rows == 1){
+    if($stmt->fetch()){
+     if ($status == 0) {
+       $_SESSION['login_error'] = "Kullanıcı Adı veya Şifre Yanlış";
+       header("location: ../index.php");
+     } else {
+       $_SESSION['access_type'] = $user_type;
+       $_SESSION['access_id'] = $userAdmin_PK;
+       $_SESSION['username'] = $username;
+       header("location: ../Admin/admin.php");
+     }
+   }
+ }*/
+
+
+
+
+
+
+    /*$retval = $conn -> query($query);
+    
     if(! $retval ) {
       die('Could not get data: ' . mysqli_error());
     }
-    if (mysqli_num_rows($retval) == 1){
+
+    if ($result->num_rows > 0){
   // $_SESSION["access"] = "true";
+     $row = $result->fetch_assoc();
      $_SESSION['access_id'] = $row['userAdmin_PK'];
      $_SESSION["access_type"] = $user_type;
      header("location: ../Admin/admin.php");
@@ -82,114 +162,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
  }
 
  
-}  
+}  */
 
-
-
-
-   /* 
-
-
-
-
-
-
-if ($logged_in_user['user_type'] == 'admin') {
-
-        $_SESSION['user'] = $logged_in_user;
-        $_SESSION['success']  = "You are now logged in";
-        header('location: admin.php');      
-    }else if($logged_in_user['user_type'] == 'parent'){
-        $_SESSION['user'] = $logged_in_user;
-        $_SESSION['success']  = "You are now logged in";
-
-        header('location: parent.php');
-      }
-      else if($logged_in_user['user_type'] == 'personel'){
-        $_SESSION['user'] = $logged_in_user;
-        $_SESSION['success']  = "You are now logged in";
-
-        header('location: personel.php');
-      }
-  }
-  else {
-      echo( "Wrong username/password combination");
-    }
-
-
-
-
-
-
-
-
-
-
-
- $sql = "SELECT * FROM loginform WHERE User_name='" .$username. "' AND Password='" .$password. "' AND User_type='" .$user_type. "' ";
-      // If result matched $myusername and $mypassword, table row must be 1 row
-    $search_result=mysqli_query($conn, $sql);
-
-    $userfound=mysqli_num_rows($search_result);
-
-    if($userfound >= 1)
-    {
-           session_start();
-           $_SESSION['User_name']= $username; 
-
-           $row=mysql_fetch_assoc($search_result);
-    if (isset($_POST["user_type"]) && $_POST["user_type"] == "parent") {
-    header("location: parent.php");
-    } else if (isset($_POST["user_type"]) && $_POST["user_type"] == "admin") {
-    header("location: admin.php");
-    } else if (isset($_POST["user_type"]) && $_POST["user_type"] == "personel") {
-    header("location: personel.php");
-    }else {
-         $error = "Your Login Name or Password is invalid";
-      }
-
-    }
-}
-
-
-
-
-
-   $sql_u = "SELECT * FROM loginform WHERE User_type='$username'";
-    $sql_p = "SELECT * FROM loginform WHERE Password='$password'";
-    $sql_user_type = "SELECT * FROM loginform WHERE User_type='$user_type'";
-    //$verisay=mysql_num_rows($sql_user_type);
-
-   $sql="SELECT * FROM loginform where User_name='$username' AND Password='password' AND User_type='user_type'";
-    $query=mysqli_query($con, $sql);
-    $res=mysqli_fetch($query);
-    
-    //Remember me option
-    if($res){
-      if(!empty($_POST["remember_me"])){
-        setcookie("User_name", $_POST["User_name"], time()*(10 * 365 * 24 * 60 * 60));
-        setcookie("Password", $_POST["Password"], time()*(10 * 365 * 24 * 60 * 60));
-        setcookie("User_type", $_POST["User_type"], time()*(10 * 365 * 24 * 60 * 60));
-      }
-      else{
-        if(isset($_COOKIE["User_name"])){
-          setcookie("User_name","");
-        }
-        if(isset($_COOKIE["Password"])){
-          setcookie("Password","");
-        }
-        if(isset($_COOKIE["User_type"])){
-          setcookie("User_type","");
-        }
-      }
-      header("location:admin.php");
-
-    }
-    else{
-      $msg="Inavalid Username or Password";
-    }
-*/
-
-   // ob_end_flush();
-
-    ?>
+?>
