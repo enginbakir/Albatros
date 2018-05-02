@@ -74,10 +74,24 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
 		$counter = 0;
 		foreach ($_POST["framework"] as $key) {
 			$query = "SELECT diagnosis_PK FROM educational_diagnosis where diagnosis = '".$key."';";
+			try{
+				foreach ($conn->query($query) as $row) {
+
+					$educationalDiagnosis [$counter] = $row['diagnosis_PK'];
+					$counter ++;
+				}
+			}
+			catch (Exception $e) { 
+  // $_SESSION['login_error'] = $e->getMessage(); 
+				echo "diagnosis hata<br>";
+				echo $e->getMessage();
+			}
+			 /*
 			$result = mysqli_query($conn,$query);
 			$row = mysqli_fetch_array($result,MYSQL_ASSOC);
 			$educationalDiagnosis [$counter] = $row['diagnosis_PK'];
-			$counter ++;
+			$counter ++; 
+			*/
 		}
 	}
 	else{
@@ -300,6 +314,24 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
 	$sqlStudentQuery = "INSERT INTO `student`(`tc_no`, `name`, `surname`, `class`, `rapor_no`, `birthday`, `photo`, `registration_date`, `rehberlik_merkezi`,`term_start_date`, `term_finish_date`, `gender_FK`, `personel_FK`) VALUES  
 	('$TCNumber','$studentName','$studentSurname','$class','$rapor_no','$birthday','$target_file','$currentDate','$rehberlikMerkezi','$donemBaslangicTarihi','$donemBitisTarihi','$gender','$personel_FK')";
 
+	try{
+		$retval = $conn->exec($sqlStudentQuery);
+	}
+	catch(Exception $e) { 
+		echo "hata<br><br>";
+		echo $e->getMessage();
+	}
+	if($retval === false){
+		$_SESSION["errorMessage"] = "Student Bilgilerini Kontrol Ediniz!!!<br> Error: <br>". mysqli_error($conn);
+		header("Location: ogrenci_ekle.php");
+	}
+	else{
+		global $studentLastID;
+		$studentLastID = $conn -> lastInsertId();
+		echo "son eklenen öğrenci id : ".$studentLastID;	
+	}
+
+	/*
 	if(mysqli_query($conn,$sqlStudentQuery)){
 		global $studentLastID;
 		$studentLastID = mysqli_insert_id($conn);		
@@ -326,7 +358,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
 	else{
 		$_SESSION["errorMessage"] = "Student Bilgilerini Kontrol Ediniz!!!<br> Error: <br>". mysqli_error($conn);
 		header("Location: ogrenci_ekle.php");
-	}
+	}*/
+
+
 
 }
 
@@ -392,9 +426,6 @@ function runParentQuery(){
 		return true;  
 	}  
 
-
-	mysqli_close($conn);
-	exit();
 	?>
 
- <!-- PHP CHECKING INPUTS -->
+	<!-- PHP CHECKING INPUTS -->
