@@ -293,44 +293,133 @@ require_once "../connectDB.php";
 												<!-- Page-ÖĞRENCİ BİLGİLERİ END -->
 
 
+												<!-- Page-DEVAMSIZLIK BİLGİLERİ START -->
+												
+												<div id="menu3" class="tab-pane fade">
+													<div class="row">
+														<div class="col-md-12">
+															<div class="form-group">
+																<div class="row">
+																	<br>
+																	<label class="col-md-3 control-label" style="
+																	padding-top: 10px;padding-left: 30px; padding-right: 0px;">Devamsızlık Tarihi:</label>
+																	<div class="col-md-4">
+																		<div class="input-group">
+																			<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+																			<input id="devamsizlikTarihi" class="form-control" type="date" data-date-inline-picker="false" data-date-open-on-focus="false" />
+																		</div>
+																	</div>
+																	<div class="col-md-4"><input id="devamsizlikAciklama" type="text" maxlength="64"class="form-control" placeholder="Açıklama"></div>
+
+																	<button type="submit" id="button2" class="btn btn-succes"><i class="fa fa-folder"></i></button> 
+																	<script>
+																		$(document).ready(function(){
+																			$("#button2").click(function(){
+																				var tarih=$("#devamsizlikTarihi").val();
+																				var acıklama=$("#devamsizlikAciklama").val();
+																				$.ajax({
+																					url:'insert.php',
+																					method:'POST',
+																					data:{
+																						tarih:tarih,
+																						acıklama:acıklama
+																					},
+																					success:function(data){
+																						location.reload();
+																						alert(data);
+																					}
+																				});
+																			});
+																		});
+																	</script>																
+																</div>
+
+																<br>
+																<table border="1" class="table table-bordered table-hover">
+																	<thead>
+																		<tr>
+																			<th>*</th>
+																			<th>Tarih</th>
+																			<th>Durum</th>
+																			<th>Açıklama</th>
+																		</tr>
+																	</thead>
+																	<?php
+																	$sql = 'SELECT * FROM devamsızlık_takvimi';
+																	$counter = 1;
+																	if ($result = $conn->query($sql)) {
+																		while ($array = $result->fetch_assoc()) {
+																			echo "<tr>";
+																			echo "<td class='id'>" .$counter. "</td>";
+																			echo "<td class='tarih'>" .$array['tarih']. "</td>";
+																			echo "<td class='acıklama_d' bgcolor='red'>" .$array['durum']. "</td>";
+																			echo "<td>" .$array['aciklama_devam']. "</td>";
+																			echo "</tr>";
+																			$counter++;
+																		}
+																	}else{
+																		echo "baglantı yok!";
+																	}
+
+																	// if ($counter >= 8 ) {
+																	// 	echo '<script language="javascript">';
+																	// 	echo 'alert("Öğrencinin Devamsızlık hakkı dolmuştur.")';
+																	// 	echo '</script>';
+																	// }
+
+
+																	?>
+																	
+																</table>
+															</div>
+															<!-- End .form-group 1 -->
+														</div>
+													</div>
+												</div>
+												<!-- Page-DEVAMSIZLIK BİLGİLERİ END -->
+
 												<!-- Page- ÖDEME BİLGİLERİ START -->
+
+
+												<?php
+												include('process.php');
+												$newobj = new processing();
+												?>
+
 												<div id="menu4" class="tab-pane fade">
 													<div class="row">
 														<div class="col-md-12">
-															<table id="öğrenciOdemeTableID" class="table table-bordered table-hover">
+															<table border="1" class="table table-bordered table-hover">
 																<thead>
 																	<tr>
-																		<th>Aylar</th>
-																		<th>Ödeme Bilgisi</th>
+																		<th>ID</th>
+																		<th>AYLAR</th>
+																		<th>ÖDEMEBİLGİSİ</th>
+																		<th>SEÇ</th>
 																	</tr>
 																</thead>
-																<tbody >
-																	<?php
-																	$datam = mysqli_query($conn,"SELECT * FROM odeme_bilgileri ");
-
-
-																	
-																	while($write = mysqli_fetch_array($datam, MYSQL_ASSOC)){ ?>
-																	<tr>
-																		<td class="aylar">
-																			<?php echo $write['aylar']; ?>
-																		</td>
-																		
-																		<?php 
-																		if($write['ödeme'] == 0) {
-																			echo "<td id='odemeB' bgcolor='red'>Ödenmedi</td>";
-																		} else{
-																			echo "<td id='odemeB' bgcolor='#00f800'>Ödendi</td>";
-																		}
-																		?>
-																	</tr>
-																	<?php } ?>
-																</tbody>
+																<?php echo $newobj->display();?>
 															</table>
+															<script>
+																$(document).ready(function(){
+																	$(".selectstatus").change(function(){
+																		var statusname = $(this).val();                  
+																		var getid = $(this).attr("status-id");                  
+																		$.ajax({
+																			type:'POST',
+																			url:'ajax.php',
+																			data:{statusname:statusname,getid
+																				:getid},
+																				success:function(result){
+																					location.reload();
+																					$("#display").html(result);
+																					alert(result);
 
-															<div class="row" id="noo">
-																
-															</div>
+																				}
+																			});
+																	});
+																});
+															</script>
 														</div>
 													</div>
 												</div>
@@ -356,60 +445,18 @@ require_once "../connectDB.php";
 
 	</html>
 
+	<!-- To Change Selected HTML Table Row Background Color START-->
 	<script>
 		var id;
-		function selectedOdemeRow(){
-			var indexO, ay, odemeBilgisi;
-			table = document.getElementById("öğrenciOdemeTableID");
+		function selectedRow(){
+
+			var index,isim,soyisim;
+			table = document.getElementById("öğrenciVeriTableID");
 
 			for(var i = 1; i < table.rows.length; i++)
 			{
 				table.rows[i].onclick = function()
 				{
-                         // remove the background from the previous selected row
-                         if(typeof index !== "undefined"){
-                         	table.rows[index].classList.toggle("selected");
-                         }
-
-                        // get the selected row index
-                        indexO = this.rowIndex;
-                        // add class selected to the row
-                        $('.selected').removeClass('selected');
-                        $(this).addClass("selected");
-                        ay = $('.aylar',this).html();
-                        odemeBilgisi =$('#odemeB',this).html();
-
-
-                        $.ajax({  
-                        	url:"getodeme.php",  
-                        	method:"GET",  
-                        	data:{'id':indexO},  
-                        	success:function(data){ 
-
-                        		$('#noo').html(data);  
-                        	}  
-                        });
-                        
-                    };
-                }
-            }
-
-            selectedOdemeRow();
-
-        </script>
-
-        <!-- To Change Selected HTML Table Row Background Color START-->
-        <script>
-        	var id;
-        	function selectedRow(){
-
-        		var index,isim,soyisim;
-        		table = document.getElementById("öğrenciVeriTableID");
-
-        		for(var i = 1; i < table.rows.length; i++)
-        		{
-        			table.rows[i].onclick = function()
-        			{
                          // remove the background from the previous selected row
                          if(typeof index !== "undefined"){
                          	table.rows[index].classList.toggle("selected");

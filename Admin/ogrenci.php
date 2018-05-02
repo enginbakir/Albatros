@@ -1,5 +1,5 @@
 <?php 
-require_once "connectDB.php";
+require_once "../connectDB.php";
 ?>
 
 <!DOCTYPE html>
@@ -121,15 +121,7 @@ require_once "connectDB.php";
 														<?php 
 
                               // Get total number of records //
-														$sql = "SELECT student_PK FROM student ";
-														$retval = mysqli_query( $conn,$sql );
-
-														if(! $retval ) {
-															die('Could not get data: ' . mysqli_error());
-														}
-														$row = mysqli_fetch_array($retval, MYSQL_ASSOC );
-														$rec_count = $row[0];
-
+												
 														$name;
 														$surname;
 														if(isset($_POST['firstname']) && !empty($_POST['firstname']))
