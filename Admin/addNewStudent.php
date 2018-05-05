@@ -4,15 +4,19 @@
 session_start();
 
 
+
 require_once "../connectDB.php";
+
 
 
 date_default_timezone_set("Europe/Istanbul");
 $currentDate = date("Y-m-d");
 
 
+
 //// STUDENT ////
 $studentName = $studentSurname = $gender = $TCNumber = $class = $raporNumber = $birthday = $educationalDiagnosis[] = $donemBaslangicTarihi = $registrationDate = $transportation = $rehberlikMerkezi = $personel_FK = $studentLastID = null;
+
 $nameErr = $surnameErr = $TCNumberErr = null;
 $username = $password = null;
 $donemBaslangicTarihi;
@@ -74,6 +78,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
 		$counter = 0;
 		foreach ($_POST["framework"] as $key) {
 			$query = "SELECT diagnosis_PK FROM educational_diagnosis where diagnosis = '".$key."';";
+
 			try{
 				foreach ($conn->query($query) as $row) {
 
@@ -92,6 +97,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
 			$educationalDiagnosis [$counter] = $row['diagnosis_PK'];
 			$counter ++; 
 			*/
+
 		}
 	}
 	else{
@@ -101,6 +107,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
 //// EĞİTSEL TANI CONTROLÜ  YUKARI  YAZILACAK /////////
 
 	///// FOTOĞRAF KONTOLÜ BURADAN AŞAĞIYA ////
+
 
 	$target_dir = "../images/";
 	$target_file = $target_dir . basename($_FILES["fileToUpload"]["name"]);
@@ -192,7 +199,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
 	else
 		$donemBitisTarihi = $_POST["donemBitisTarihi"];
 
+  
+
 ////// VELİ KONTROLLERİ BURADAN AŞAĞIYA ///////
+
 
 
 	if (empty($_POST["parentName"])) {
@@ -237,6 +247,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
 			$bool = false;
 		}
 	}
+
 
 	if($_POST["parentYakinlik"] == "Anne")
 		$proximity = 1;
@@ -404,7 +415,9 @@ function test_input($data) {
 	return $data;
 }
 
+
 function isTcKimlik($tc){  
+
 	if(strlen($tc) < 11){ return false; }  
 	if($tc[0] == '0'){ return false; }  
 	$plus = ($tc[0] + $tc[2] + $tc[4] + $tc[6] + $tc[8]) * 7;  
@@ -418,6 +431,8 @@ function isTcKimlik($tc){
 	return true;  
 }  
 
+
 ?>
 
 <!-- PHP CHECKING INPUTS -->
+

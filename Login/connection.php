@@ -107,6 +107,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
 
 
 
+
+
     /*$retval = $conn -> query($query);
     
     if(! $retval ) {
@@ -125,6 +127,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
     header("location: ../index.php");
   }
 }
+
+
 
 
 

@@ -1,9 +1,5 @@
 <?php 
-
 require_once '../connectDB.php';
-
-
-
 
 try{
 	$idtodelete = $_POST["id"];

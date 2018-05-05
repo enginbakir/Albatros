@@ -1,4 +1,3 @@
- 
 <?php 
 session_start();
 if($_SESSION['access_type'] == "admin"){ 
@@ -26,6 +25,7 @@ if($_SESSION['access_type'] == "admin"){
 		<link rel="stylesheet" href="../bower_components/Ionicons/css/ionicons.min.css">
 		<!-- Theme style -->
 		<link rel="stylesheet" href="../dist/css/AdminLTE.min.css">
+
   <!-- AdminLTE Skins. Choose a skin from the css/skins
   	folder instead of downloading all of them to reduce the load. -->
   	<link rel="stylesheet" href="../dist/css/skins/_all-skins.min.css">
@@ -93,11 +93,13 @@ if($_SESSION['access_type'] == "admin"){
 
 								<form class="form-inline" action ="" method="post" style="padding-bottom: 10px">
 									<div class="form-group">
+
 										<label >Adı:</label>
 										<input type="text" class="form-control" name="firstname" id="adi" placeholder="Öğrencinin Adı" name="Öğrenci adı">
 									</div>
 									<div class="form-group">
 										<label >Soyadı:</label>
+
 										<input type="text" class="form-control" name="surname" id="soyadi" placeholder="Öğrencinin Soyadı" name="Soyad">
 									</div>
 									<button id="searchStudent" type="submit" class="btn btn-primary">Listele</button>
@@ -122,7 +124,9 @@ if($_SESSION['access_type'] == "admin"){
 
 													<tbody id="tbody">
 
+
 														<?php                            
+
 
 														$name;
 														$surname;
@@ -132,6 +136,7 @@ if($_SESSION['access_type'] == "admin"){
 															$surname = $_POST['surname'];                       
 
 														if(isset($name) && isset($surname)){
+
 															$sql = "SELECT * FROM student where name='".$name."' and surname='".$surname."';";
 														}
 														if(isset($name) && !isset($surname)){
@@ -168,16 +173,19 @@ if($_SESSION['access_type'] == "admin"){
 															echo "Listeleme Hatası :".$e->getMessage();
 														}
 														
+
 														?>
 
 													</tbody>
 												</table>
 											</div>
 
+
 											<div class="col col-s-6"> <?php echo "<br>Kayıtlı Öğrenci Sayısı: ".$retval->rowCount(); ?>
 											</div>
 											<div class="col col-xs-8">
 												<ul class="pagination hidden-xs pull-right">
+
 												</div>
 											</div>
 										</div>      
@@ -185,6 +193,7 @@ if($_SESSION['access_type'] == "admin"){
 											<div class="btn-group">
 												<a href="ogrenci_ekle.php" class="btn btn-primary" role="button">&nbsp;&nbsp;Ekle&nbsp;&nbsp;</a></div>
 												<div class="btn-group">
+
 													<button id="silButton" type="button" class="btn btn-primary">&nbsp;&nbsp;Sil&nbsp;&nbsp;</button>
 												</div>
 												<div class="btn-group">
@@ -417,11 +426,14 @@ if($_SESSION['access_type'] == "admin"){
 																<!-- /.box-footer -->
 															</div>
 															<!-- /. box -->
+
+											
 														</div>
 
 													</div>
 
 												</div>
+
 
 											</div>
 
@@ -661,7 +673,6 @@ if($_SESSION['access_type'] == "admin"){
 	var soyisim;
 
 	$("tbody tr").click(function () {
-
 		$('.selected').removeClass('selected');
 		$(this).addClass("selected");
 		id = $('.id',this).text();
@@ -684,6 +695,7 @@ if($_SESSION['access_type'] == "admin"){
 			data :{id:id},
 			success:function(data){
 				$("#ogrenciPhoto").attr('src', data);
+
 			}
 		});
 	});
@@ -710,6 +722,7 @@ if($_SESSION['access_type'] == "admin"){
     if(id < 0)
     	alert("Bir Kayıt Seçin!!!");
 });
+
 
 
 
@@ -776,6 +789,7 @@ if($_SESSION['access_type'] == "admin"){
 </div>
 <!-- Scripts End-->
 </body>
+
 </html>
 
 <?php 
@@ -784,3 +798,4 @@ else{
 
 	header("location: ../index.php");
 }?>
+

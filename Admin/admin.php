@@ -1,4 +1,5 @@
 
+
 <?php session_start();
 if($_SESSION['access_type'] == "admin"){ 
  ?>  
@@ -6,6 +7,7 @@ if($_SESSION['access_type'] == "admin"){
  <!DOCTYPE html>
  <html>
  <head>
+
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <title>Albatros-Admin</title>
@@ -216,7 +218,6 @@ if($_SESSION['access_type'] == "admin"){
                       <!-- button with a dropdown -->
                       <div class="btn-group">
 
-
                       </div>
                       <button type="button" class="btn btn-success btn-sm" data-widget="collapse"><i class="fa fa-minus"></i>
                       </button>
@@ -336,12 +337,12 @@ if($_SESSION['access_type'] == "admin"){
 </body>
 </html>
 
+
 <?php 
 }
 else{
 
  header("location: ../index.php");
 }?>
-
 
 

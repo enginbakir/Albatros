@@ -4,16 +4,20 @@
 session_start();
 
 
+
 require_once "../connectDB.php";
+
 if (!$conn)
 	$_SESSION["connection"] = "Veritabanı Bağlantı Hatası";
 
 date_default_timezone_set("Europe/Istanbul");
 
+
 $studentID = null;
 
 //// STUDENT ////
 $studentName = $studentSurname = $gender = $TCNumber = $class = $studentRapor = $birthday = $educationalDiagnosis[] = $donemBaslangicTarihi = $registrationDate = $transportation = $rehberlikMerkezi = $personel_FK = $studentLastID = null;
+
 $nameErr = $surnameErr = $TCNumberErr = null;
 $username = $password = null;
 $donemBaslangicTarihi;
@@ -75,6 +79,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
 		$counter = 0;
 		foreach ($_POST["framework"] as $key) {
 			$query = "SELECT diagnosis_PK FROM educational_diagnosis where diagnosis = '".$key."';";
+
 			try{
 				foreach ($conn->query($query) as $row) {
 
@@ -86,6 +91,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
 				echo "diagnosis hata<br>";
 				echo $e->getMessage();
 			}
+
 		}
 	}
 	else{
@@ -95,6 +101,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
 //// EĞİTSEL TANI CONTROLÜ  YUKARI  YAZILACAK /////////
 
 	///// FOTOĞRAF KONTOLÜ BURADAN AŞAĞIYA ////
+
 
 	$target_dir = "../images/";
 	$target_file = $target_dir . basename($_FILES["fileToUpload"]["name"]);
@@ -231,10 +238,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
 		}
 		else
 		{
+
 			$_SESSION["parentTCNumberErr"] = "TC Kimlik Numarası Yanlıştır";
 			$bool = false;
 		}
 	}
+
 
 	if($_POST["parentYakinlik"] == "Anne")
 		$proximity = 1;

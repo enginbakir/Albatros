@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<title>ALBATROS</title>
@@ -23,6 +24,7 @@
 
   	<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
   	<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+
   <!--[if lt IE 9]>
   <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
   <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
@@ -33,6 +35,7 @@
 href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
 </head>
 <body class="hold-transition skin-blue sidebar-mini">
+
 	<div class="wrapper">
 
 		<!-- Left side column. contains the logo and sidebar -->
@@ -170,16 +173,21 @@ href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,30
   <script>
   	$(function () {
 
+
     /* initialize the external events
     -----------------------------------------------------------------*/
     function init_events(ele) {
+
     	ele.each(function () {
+
 
         // create an Event Object (http://arshaw.com/fullcalendar/docs/event_data/Event_Object/)
         // it doesn't need to have a start or end
         var eventObject = {
           title: $.trim($(this).text()) // use the element's text as the event title
+
       }
+
 
         // store the Event Object in the DOM element so we can get to it later
         $(this).data('eventObject', eventObject)
@@ -189,9 +197,11 @@ href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,30
           zIndex        : 1070, //?
           revert        : true, // will cause the event to go back to its
           revertDuration: 0  //  original position after the drag
+
       })
 
     })
+
     }
 
     init_events($('#external-events div.external-event'))
@@ -204,6 +214,7 @@ href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,30
     m    = date.getMonth(),
     y    = date.getFullYear()
     $('#calendar').fullCalendar({
+
     	header    : {
     		left  : 'prev,next today',
     		center: 'title',
@@ -256,6 +267,7 @@ href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,30
 
       ],
       editable  : true,
+
       droppable : true, // this allows things to be dropped onto the calendar !!!
       drop      : function (date, allDay) { // this function is called when something is dropped
 
@@ -284,16 +296,20 @@ href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,30
   }
 })
 
+
     /* ADDING EVENTS */
     var currColor = '#3c8dbc' //Red by default
     //Color chooser button
     var colorChooser = $('#color-chooser-btn')
     $('#color-chooser > li > a').click(function (e) {
+
     	e.preventDefault()
+
       //Save color
       currColor = $(this).css('color')
       //Add color effect to button
       $('#add-new-event').css({ 'background-color': currColor, 'border-color': currColor })
+
   })
     $('#add-new-event').click(function (e) {
     	e.preventDefault()
@@ -301,14 +317,18 @@ href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,30
       var val = $('#new-event').val()
       if (val.length == 0) {
       	return
+
       }
 
       //Create events
       var event = $('<div />')
       event.css({
+
       	'background-color': currColor,
       	'border-color'    : currColor,
       	'color'           : '#fff'
+
+        
       }).addClass('external-event')
       event.html(val)
       $('#external-events').prepend(event)
@@ -318,8 +338,10 @@ href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,30
 
       //Remove event from text input
       $('#new-event').val('')
+
   })
 })
+
 </script>
 </body>
 </html>

@@ -14,13 +14,17 @@
     <ul class="sidebar-menu" data-widget="tree">
       <li class="header"></li>
       <li>
+
         <a href="ogrenci.php">
+
           <i class="fa fa-book"></i>
           <span style="font-size: 17px">Öğrenci Bilgileri</span>
         </a>
       </li>
       <li>
+
         <a href="personel.php">
+
           <i class="fa fa-book"></i>
           <span style="font-size: 17px">Personel Bilgileri</span>
         </a>

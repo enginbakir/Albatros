@@ -1,12 +1,16 @@
 <?php 
 session_start();
 
+
 require_once '../connectDB.php';
+
 
 date_default_timezone_set("Europe/Istanbul");
 $currentDate = date("Y-m-d");
 
+
 $personelID = null;
+
 
 $personelName = $personelSurname = $personelTCNumber = $personelUnvan = $personelTelefon = $personelGender = $personelEmailAdresi = $personelKayitTarihi = $personelAyrilisTarihi = null;
 
@@ -54,30 +58,37 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
 			$bool = false;
 		}
 	}
+
 	if(!empty($_POST["personel_PK"]))
 		$personelID = $_POST["personel_PK"];
 	else
 		$bool = false;
+
 	if(!empty($_POST["personelGender"])){
 		if($_POST["personelGender"] == "Kız")
 			$personelGender = 1;
 		else
 			$personelGender = 2;
 	}
+
 	if(!empty($_POST["personelUnvan"])){
 		$personelUnvan = $_POST["personelUnvan"];
 	}
+
 	if(!empty($_POST["personelEmailAdresi"]))
 		$personelEmailAdresi = $_POST["personelEmailAdresi"];
 	if(!empty($_POST["personelKayitTarihi"]))
 		$personelKayitTarihi = $_POST["personelKayitTarihi"];
 	if(!empty($_POST["personelAyrilisTarihi"]))
 		$personelAyrilisTarihi = $_POST["personelAyrilisTarihi"];
+
 	if(!empty($_POST["personelTelefon"])){
+
 		if(is_numeric($_POST["personelTelefon"]))
 			$personelTelefon = $_POST["personelTelefon"];
 		else
 			$_SESSION["personelTelefonErr"] = "Sadece Sayı Giriniz";
+
 	}
 			///// FOTOĞRAF KONTOLÜ BURADAN AŞAĞIYA ////
 
@@ -92,6 +103,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
 	if(strlen($target_file) < 11){
 	}
 	else{
+
 		if(isset($_POST["submit"])) {
 			$check = getimagesize($_FILES["fileToUpload"]["tmp_name"]);
 			if($check !== false) {
@@ -130,6 +142,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
 		$_SESSION["fileErrors"] = $fileErrors;
 		$bool = false;
 	}
+
 }
 //// FOTOĞRAF KONTROLÜ BURADAN YUKARIYA /////
 
@@ -206,6 +219,7 @@ function findPersonelType($personelUnvan){
 
 	global $conn;
 
+
 	try{
 		$sql = "SELECT * from personel_types where personel_type='".$personelUnvan."';";
 		$row = $conn->query($sql,PDO::FETCH_ASSOC)->fetch();
@@ -216,6 +230,7 @@ function findPersonelType($personelUnvan){
 		header("Location: personel_ekle.php"); 
 		exit();
 	}
+
 
 }
 
@@ -241,5 +256,6 @@ function test_input($data) {
 	$data = htmlspecialchars($data);
 	return $data;
 }
+
 
 ?>

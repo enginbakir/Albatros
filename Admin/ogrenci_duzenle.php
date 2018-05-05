@@ -1,3 +1,4 @@
+
 <?php session_start();
 if($_SESSION['access_type'] == "admin"){ 
 	require_once '../connectDB.php';
@@ -48,6 +49,7 @@ if($_SESSION['access_type'] == "admin"){
 		<link rel="stylesheet" href="../bower_components/Ionicons/css/ionicons.min.css">
 		<!-- Theme style -->
 		<link rel="stylesheet" href="../dist/css/AdminLTE.min.css">
+
   <!-- AdminLTE Skins. Choose a skin from the css/skins
   	folder instead of downloading all of them to reduce the load. -->
   	<link rel="stylesheet" href="../dist/css/skins/_all-skins.min.css">
@@ -81,9 +83,11 @@ if($_SESSION['access_type'] == "admin"){
 </head>
 <body class="hold-transition skin-blue sidebar-mini">
 	<div class="wrapper">
+
 		<?php include 'header.php'; ?>
 		<!-- Left side column. contains the logo and sidebar -->
 		<?php include 'sidebar.php'; ?>
+
 		<!-- Content Wrapper. Contains page content -->
 		<div class="content-wrapper">
 			<section class="content-header">
@@ -93,6 +97,7 @@ if($_SESSION['access_type'] == "admin"){
 				</h1>
 				<ol class="breadcrumb">
 					<li><a href="admin.php"><i class="fa fa-dashboard"></i> Anasayfa</a></li>
+
 					<li><a href="ogrenci.php">Öğrenciler</a></li>
 					<li class="active">Düzenle</li>
 				</ol>
@@ -100,6 +105,7 @@ if($_SESSION['access_type'] == "admin"){
 			<section class="content">
 				<div class="row">
 					<div class="col-md-12">
+
 
 						<!--  FORM   -->
 
@@ -121,6 +127,7 @@ if($_SESSION['access_type'] == "admin"){
 										?>
 
 									</span>
+
 								</div>
 								<div class="panel-body pt0 pb0">
 									<div class="form-horizontal group-border stripped">
@@ -131,7 +138,9 @@ if($_SESSION['access_type'] == "admin"){
 													<div class="input-group">
 														<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
 														<span class="error"><?php echo $_SESSION["donemBaslangicTarihi"]; ?></span>
+
 														<input name="donemBaslangicTarihi" class="form-control" type="date" data-date-inline-picker="false" data-date-open-on-focus="false" value = <?php echo $row['term_start_date']; ?> >
+
 													</div>
 												</div>
 												<label class="col-md-2 control-label" for="">Dönem Bitiş Tarihi:</label>
@@ -139,7 +148,9 @@ if($_SESSION['access_type'] == "admin"){
 													<div class="input-group">
 														<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
 														<span class="error"><?php echo $_SESSION["donemBitisTarihi"]; ?></span>
+
 														<input name="donemBitisTarihi" class="form-control"  type="date" data-date-inline-picker="false" data-date-open-on-focus="false" value = <?php echo $row['term_finish_date']; ?> >
+
 													</div>
 												</div>
 											</div>
@@ -151,12 +162,16 @@ if($_SESSION['access_type'] == "admin"){
 											<div class="row">
 												<label class="col-md-2 control-label"><i class="renk">&nbsp;</i>Adı:</label>
 												<div class="col-md-3">
+
 													<input name="studentName" type="text" maxlength="64" id="ContentPlaceHolder1_txtAdi" class="form-control" placeholder="Öğrenci Adı"  <?php echo " value = '".$row['name']."'"; ?> />
+
 													<span class="error">* <?php echo $_SESSION["nameErr"];?></span>
 												</div>
 												<label class="col-md-2 control-label"><i class="renk">&nbsp;</i>Soyadı:</label>
 												<div class="col-md-3">
+
 													<input name="studentSurname" type="text" maxlength="64" id="ContentPlaceHolder1_txtSoyadi" class="form-control" placeholder="Öğrenci Soyadı"<?php echo " value = '".$row['surname']."'"; ?> />
+
 													<span class="error">* <?php echo $_SESSION["surNameErr"];?></span>
 												</div>
 											</div>
@@ -169,6 +184,7 @@ if($_SESSION['access_type'] == "admin"){
 												<label class="col-md-2 control-label">Cinsiyet:</label>
 												<div class="col-md-3">    
 													<div class="fancy-select">
+
 														
 														<?php 
 														echo '<select name="gender" id="Cinsiyet" class="fancy-select form-control fancified" >';
@@ -185,11 +201,14 @@ if($_SESSION['access_type'] == "admin"){
 														echo '</select>';
 														
 														?>
+
 													</div> 
 												</div>
 												<label class="col-md-2 control-label">T.C. No:</label>
 												<div class="col-md-3">
+
 													<input name="TCNumber" type="text" maxlength="11" id="ContentPlaceHolder1_txtTC" class="form-control" placeholder="T.C. Kimlik No" value = <?php echo $row['tc_no']; ?>>
+
 													<span class="error"><?php echo $_SESSION["TCNumberErr"];?></span>
 												</div>                          
 											</div>
@@ -203,11 +222,13 @@ if($_SESSION['access_type'] == "admin"){
 											<div class="row">
 												<label class="col-md-2 control-label">Sınıfı:</label>
 												<div class="col-md-3">
+
 													<input name="studentClass" type="text" maxlength="8" id="ContentPlaceHolder1_txtSinif" class="form-control" placeholder="Sınıfı" value = <?php echo $row['class']; ?>>
 												</div>
 												<label class="col-md-2 control-label">Rapor No:</label>
 												<div class="col-md-3">
 													<input name="studentRapor" type="text" maxlength="16" id="ContentPlaceHolder1_txtRapor" class="form-control" placeholder="Rapor No" value = <?php echo $row['rapor_no']; ?>>
+
 												</div>
 											</div>
 										</div>
@@ -220,13 +241,17 @@ if($_SESSION['access_type'] == "admin"){
 												<div class="col-md-3">
 													<div class=" input-group">
 														<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+
 														<input name="studentBirthDay" class="form-control"  type="date" data-date-inline-picker="false" data-date-open-on-focus="false" value = <?php echo $row['birthday']; ?>>
+
 													</div>
 												</div>
 												<label class="col-md-2 control-label" for="">Kayıt Tarihi:</label>
 												<div class="col-md-3">
 													<div class=" input-group">
+
 														<input name="registrationDate" type="text" maxlength="10" id="registrationDate" class="form-control" placeholder="yyyy-aa-gg" readonly value = <?php echo $row['registration_date']; ?> >
+
 													</div> 
 												</div>
 											</div>
@@ -250,8 +275,10 @@ if($_SESSION['access_type'] == "admin"){
 													?>
 												</span>
 
+
 												<input type="file" name="fileToUpload" class="btn btn-default btn-file" >
 												<img id = "ogrenciPhoto" class="profile-user-img img-responsive img-circle" src=<?php echo $row['photo']; ?> alt="User profile picture">
+
 											</div>
 											<label class="col-md-2 control-label" for="">Ulaşım:</label>
 											<div class="col-md-3">
@@ -270,13 +297,17 @@ if($_SESSION['access_type'] == "admin"){
 											<label class="col-md-2 control-label" for="">Reh. Araş. Merkezi:</label>
 											<div class="col-md-3">
 
+
 												<input name="rehberlikMerkezi" type="text" maxlength="255" id="ContentPlaceHolder1_txtMerkezi" class="form-control" <?php echo " value = '".$row['rehberlik_merkezi']."'"; ?> >
+
 
 											</div>
 
 											<label class="col-md-2 control-label"><i class="renk"><span class="error">*</span>&nbsp;</i>Eğitsel Tanı:</label>
 											<span class="error"><?php echo $_SESSION["educationalDiagnosisErr"]; ?></span>
+
 											<span class="error">Tüm Tanıları Baştan Seçiniz</span>
+
 											<div class="col-md-4">
 
 												<div class="form-group">
@@ -300,6 +331,7 @@ if($_SESSION['access_type'] == "admin"){
 												</div>
 											</div>
 										</div>
+
 										<div class="form-group">
 											<div class="row">
 												<label class="col-md-2 control-label" for="">Öğretmen Seç:</label>
@@ -326,13 +358,11 @@ if($_SESSION['access_type'] == "admin"){
 												<div class="col-md-3"></div>
 											</div>
 										</div>
+
 										<!-- End .form-group 6 -->
 									</div>
 								</div>
 							</div>
-
-
-
 							<div class="col-lg-16">
 								<div class="panel panel-default toggle panelMove panelRefresh" id="supr1">
 									<!-- Start .panel -->
@@ -347,13 +377,17 @@ if($_SESSION['access_type'] == "admin"){
 												<div class="row">           
 													<label class="col-md-2 control-label" for=""><i class="renk">&nbsp;</i>Adı:</label>
 													<div class="col-md-3">
+
 														<input name="parentName" type="text" maxlength="64" id="parentName" class="form-control" placeholder="Velinin Adı" <?php echo " value = '".$veliRow['name']."'"; ?>>
+
 														<span class="error">* <?php echo $_SESSION["parentNameErr"]; ?></span>
 													</div>
 
 													<label class="col-md-2 control-label" for=""><i class="renk">&nbsp;</i>Soyadı:</label>
 													<div class="col-md-3">
+
 														<input name="parentSurname" type="text" maxlength="64" id="parentSurname" class="form-control" placeholder="Velinin Soyadı" <?php echo " value = '".$veliRow['surname']."'"; ?>>
+
 														<span class="error">* <?php echo $_SESSION["parentSurnameErr"]; ?></span>
 													</div>
 												</div>
@@ -364,7 +398,9 @@ if($_SESSION['access_type'] == "admin"){
 												<div class="row">
 													<label class="col-md-2 control-label">T.C. No:</label>
 													<div class="col-md-3">
+
 														<input name="parentTCNumber" type="text" maxlength="11" id="parentTCNumber" class="form-control" placeholder="TC Kimlik No" <?php echo " value = '".$veliRow['tc_no']."'" ?>>
+
 														<span class="error"><?php echo $_SESSION["parentTCNumberErr"] ?></span>
 													</div>
 													<label class="col-md-2 control-label" for="">Yakınlık Derecesi:</label>
@@ -389,13 +425,17 @@ if($_SESSION['access_type'] == "admin"){
 
 													<label class="col-md-2 control-label">Sabit Telefon:</label>
 													<div class="col-md-3">
+
 														<input name="parentPhoneNumber" type="text" maxlength="11" id="SabitTel" class="form-control" placeholder="Sabit Telefon" <?php echo " value = '".$veliRow['sabit_tel']."'" ?>>
+
 														<span class="error"><?php echo $_SESSION["parentPhoneNumberErr"] ?></span>
 													</div>
 													<label class="col-md-2 control-label">Cep Telefonu:</label>
 													<div class="col-md-3">
 
+
 														<input name="parentMobilePhone" type="text" maxlength="11" id="CepTel" class="form-control" placeholder="Cep Telefonu" <?php echo " value = '".$veliRow['tel_no']."'" ?>>
+
 														<span class="error"><?php echo $_SESSION["parentMobilePhoneErr"] ?></span>
 													</div>
 
@@ -405,14 +445,18 @@ if($_SESSION['access_type'] == "admin"){
 											<div class="form-group">
 												<label class="col-md-2 control-label" for="">Email Adresi:</label>
 												<div class="col-md-8">
+
 													<input name="emailAdresi" type="text" maxlength="255" id="emailAdresi" class="form-control" placeholder="Email Adresi" <?php echo " value = '".$veliRow['email_adress']."'" ?>>
+
 												</div>
 											</div>
 
 											<div class="form-group">
 												<label class="col-md-2 control-label" for="">Ev Adresi:</label>
 												<div class="col-md-8">
+
 													<input name="evAdresi" type="text" maxlength="255" id="EvAdresi" class="form-control" placeholder="Ev Adresi" <?php echo " value = '".$veliRow['adress']."'" ?>>
+
 												</div>
 											</div>
 											<!-- End .form-group  -->
@@ -420,14 +464,18 @@ if($_SESSION['access_type'] == "admin"){
 											<div class="form-group">
 												<label class="col-md-2 control-label" for="">İş Adresi:</label>
 												<div class=" col-md-8">
+
 													<input name="parentIsAdresi" type="text" maxlength="255" id="IsAdresi" class="form-control" placeholder="İş Adresi" <?php echo " value = '".$veliRow['work_adress']."'" ?>>
+
 												</div>
 											</div>
 											<!-- End .form-group  -->
 											<div class="form-group">
 												<label class="col-md-2 control-label" for="">Açıklama:</label>
 												<div class="col-md-8">
+
 													<textarea name="Aciklama" rows="2" cols="20" id="Aciklama" class="form-control" <?php echo " value = '".$veliRow['description']."'" ?> ></textarea >
+
 												</div>
 											</div>
 
@@ -439,7 +487,9 @@ if($_SESSION['access_type'] == "admin"){
 											<div class="row">
 												<div class="col-md-6">  
 													<input type="submit" id="sub" value="Kaydet" class="btn btn-success">  
+
 													<a href="ogrenci.php" class="btn btn-success" role="button">İptal</a>
+
 												</div>
 											</div>
 										</div> 
@@ -451,13 +501,17 @@ if($_SESSION['access_type'] == "admin"){
 								</div>
 							</div>
 
+
 						</form>
 					</div>
+
 				</div>
 			</section>
 
 		</div>
+
 		<?php require_once 'footer.php'; ?>
+
 	</div>
 
 
@@ -477,6 +531,7 @@ if($_SESSION['access_type'] == "admin"){
 	</div>
 
 </body>
+
 </html>
 
 <?php 
@@ -502,3 +557,4 @@ else{
 	header("location: ../index.php");
 	exit();
 }?>
+

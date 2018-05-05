@@ -1,3 +1,4 @@
+
 <?php 
 session_start();
 if($_SESSION['access_type'] == "admin"){ 
@@ -21,6 +22,7 @@ if($_SESSION['access_type'] == "admin"){
 		<link rel="stylesheet" href="../bower_components/Ionicons/css/ionicons.min.css">
 		<!-- Theme style -->
 		<link rel="stylesheet" href="../dist/css/AdminLTE.min.css">
+
   <!-- AdminLTE Skins. Choose a skin from the css/skins
   	folder instead of downloading all of them to reduce the load. -->
   	<link rel="stylesheet" href="../dist/css/skins/_all-skins.min.css">
@@ -60,8 +62,10 @@ if($_SESSION['access_type'] == "admin"){
 <body class="hold-transition skin-blue sidebar-mini">
 	<div class="wrapper">
 
+
 		<?php require_once 'header.php'; 
 		require_once 'sidebar.php'; ?>
+
 
 		<!-- Content Wrapper. Contains page content -->
 		<div class="content-wrapper">
@@ -89,6 +93,7 @@ if($_SESSION['access_type'] == "admin"){
 							<!-- /.box-header -->
 							<div class="box-body">
 
+
 								<form class="form-inline" action="" style="padding-bottom: 10px">
 									<div class="form-group">
 										<label for="">Adı:</label>
@@ -97,6 +102,7 @@ if($_SESSION['access_type'] == "admin"){
 									<div class="form-group">
 										<label for="">Soyadı:</label>
 										<input type="text" class="form-control" name="surname" id="soyadi" placeholder="Personelin Soyadı" name="Personel Soyad">
+
 									</div>
 									<button type="submit" class="btn btn-primary">Listele</button>
 								</form>
@@ -109,7 +115,9 @@ if($_SESSION['access_type'] == "admin"){
 														<th>ID</th>
 														<th>İsim</th>
 														<th>Soyisim</th>
+
 														<th>Durum</th>
+
 														<th>Ünvan</th>
 														<th>Telefon</th>                              
 													</tr>
@@ -117,7 +125,9 @@ if($_SESSION['access_type'] == "admin"){
 												<tbody id="tbody">
 
 
+
 													<?php 	
+
 
 													$name;
 													$surname;
@@ -136,11 +146,14 @@ if($_SESSION['access_type'] == "admin"){
 														$sql = "SELECT * from personel where surname='".$surname."' INNER JOIN personel_types on personel.personel_type_FK=personel_types.personel_type_PK;";
 													}
 													if (!isset($name) && !isset($surname)) {
+
 														$sql = "SELECT * from personel INNER JOIN personel_types on personel.personel_type_FK=personel_types.personel_type_PK;";
+
 													}  
 
 													unset($_POST['firstname']);
 													unset($_POST['surname']);
+
 													try{
 														$retval = $conn->query($sql, PDO::FETCH_ASSOC);
 														foreach ($retval as $row) {
@@ -162,6 +175,7 @@ if($_SESSION['access_type'] == "admin"){
 													}
 													catch(Exception $e) { 
 														echo "Listeleme Hatası :".$e->getMessage();
+
 													}
 													?>
 												</tbody>
@@ -177,7 +191,9 @@ if($_SESSION['access_type'] == "admin"){
 										<button id="silButton" type="button" class="btn btn-primary">&nbsp;&nbsp;Sil&nbsp;&nbsp;</button>
 									</div>
 									<div class="btn-group">
+
 										<button id="duzenle" type="button" class="btn btn-primary">&nbsp;&nbsp;Düzenle&nbsp;&nbsp;</button>
+
 									</div>
 								</div>             
 							</div>
@@ -627,6 +643,7 @@ if($_SESSION['access_type'] == "admin"){
 		soyisim = $('.soyisim',this).text();
 	});
 
+
 	$('#duzenle').on("click",function(){
 		if(id>0)
 			window.location = "personel_duzenle.php?id="+id;
@@ -664,10 +681,12 @@ if($_SESSION['access_type'] == "admin"){
 	$("#notlar").on("click",function(){
 
 	})
+
 </script>
 
 </div>
 </body>
+
 </html>
 
 <?php 
@@ -675,3 +694,4 @@ if($_SESSION['access_type'] == "admin"){
 else{
 	header("location: ../index.php");
 }?>
+

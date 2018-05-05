@@ -1,4 +1,5 @@
 
+
 <?php
 session_start();
 if($_SESSION['access_type'] == "admin"){ 
@@ -15,11 +16,13 @@ else{ ?>
             <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
         </head>
         <body>
+
 <!--
     you can substitue the span of reauth username for a input with the username and
     include the remember me checkbox
 -->
 <form action="Login/connection.php" method="Post">
+
     <div class="container">
         <p id="profile-name" class="profile-name-card"></p>
         <form class="form-signin">
@@ -70,4 +73,5 @@ else{ ?>
 session_unset('login_error');
     }
 ?>
+
 

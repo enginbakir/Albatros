@@ -1,3 +1,4 @@
+
 <?php 
 session_start();
 if($_SESSION['access_type'] == "admin"){ 
@@ -30,6 +31,7 @@ if($_SESSION['access_type'] == "admin"){
     <link rel="stylesheet" href="../bower_components/Ionicons/css/ionicons.min.css">
     <!-- Theme style -->
     <link rel="stylesheet" href="../dist/css/AdminLTE.min.css">
+
   <!-- AdminLTE Skins. Choose a skin from the css/skins
     folder instead of downloading all of them to reduce the load. -->
     <link rel="stylesheet" href="../dist/css/skins/_all-skins.min.css">
@@ -154,7 +156,9 @@ if($_SESSION['access_type'] == "admin"){
                       <div class="col-md-3">
 
                         <input name="personelTCNumber" type="text" maxlength="11" id="personelTCNumber" class="form-control" placeholder="T.C. Kimlik No">
+
                         <span class="error"><?php echo $_SESSION["personelTCNumberErr"];?></span>
+
                       </div>   
                     </div>                       
                   </div>
@@ -167,6 +171,7 @@ if($_SESSION['access_type'] == "admin"){
                       <div class="col-md-3">
                         <div class="fancy-select">
                           <select name="personelUnvan" id="unvan" class="fancy-select form-control fancified" >
+
                             <option selected="selected" value="11">Ünvan Seçiniz</option>
                             <option value="1">OKUL MÜDÜRÜ</option>
                             <option value="2">MÜDÜR YARDIMCISI</option>
@@ -181,6 +186,7 @@ if($_SESSION['access_type'] == "admin"){
                             <option value="11">DİĞER</option>
                           </select>
                         </div>
+
                       </div>
 
                       <label class="col-md-2 control-label">Telefon:</label>
@@ -463,6 +469,7 @@ if($_SESSION['access_type'] == "admin"){
   })
 </script>
 
+
 <?php 
 unset($_SESSION["connection"]);
 unset( $_SESSION["errorMessage"]);
@@ -482,3 +489,7 @@ else{
 
   header("location: ../index.php");
 }?>
+
+</body>
+</html>
+

@@ -2,6 +2,7 @@
 
 
 $username = "root";
+
 $password = "12345678";
 $server = "localhost";
 $database = "albatros";
@@ -39,5 +40,6 @@ try{
 	header("location: ../index.php");  	// make this function run after 3 second
 	exit();
 }
+
 
 ?>

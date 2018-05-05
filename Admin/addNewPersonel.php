@@ -1,6 +1,7 @@
 <?php 
 session_start();
 
+
 require_once '../connectDB.php';
 
 
@@ -44,13 +45,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
 		$personelTCNumber = test_input($_POST['personelTCNumber']);
 		if(preg_match("/^[0-9]{11}$/", $personelTCNumber)){
 			if(isTcKimlik($personelTCNumber) == false){
+
 				$_SESSION["personelTCNumberErr"] = "TC Kimlik Numarası Yanlıştırrrr";
+
 				$bool = false;
 			}
 		}
 		else
 		{
 			$_SESSION["personelTCNumberErr"] = "TC Kimlik Numarası YanlıştıWFAWEF";
+
 			$bool = false;
 		}
 	}
@@ -69,11 +73,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
 		$personelKayitTarihi = $_POST["personelKayitTarihi"];
 	if(!empty($_POST["personelAyrilisTarihi"]))
 		$personelAyrilisTarihi = $_POST["personelAyrilisTarihi"];
+
 	if(!empty($_POST["personelTelefon"])){
+
 		if(is_numeric($_POST["personelTelefon"]))
 			$personelTelefon = $_POST["personelTelefon"];
 		else
 			$_SESSION["personelTelefonErr"] = "Sadece Sayı Giriniz";
+
 	}
 			///// FOTOĞRAF KONTOLÜ BURADAN AŞAĞIYA ////
 
@@ -88,6 +95,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
 		$target_file = "../images/avatar5.png";
 	else{
 		if(isset($_POST["fileToUpload"])) {
+
 			$check = getimagesize($_FILES["fileToUpload"]["tmp_name"]);
 			if($check !== false) {
 				echo "File is an image - " . $check["mime"] . ".";
@@ -99,7 +107,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
 		}
 	// Check if file already exists
 		if (file_exists($target_file)) {
+
 			$fileErrors[1] = "Bu Dosya Mevcut!!";
+
 			$uploadOk = 0;
 		}
 // Check file size
@@ -125,6 +135,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
 		$_SESSION["fileErrors"] = $fileErrors;
 		$bool = false;
 	}
+
 }
 //// FOTOĞRAF KONTROLÜ BURADAN YUKARIYA /////
 
@@ -181,6 +192,7 @@ function findPersonelType($personelUnvan){
 
 	global $conn;
 
+
 	try{
 		$sql = "SELECT * from personel_types where personel_type='".$personelUnvan."';";
 		$row = $conn->query($sql,PDO::FETCH_ASSOC)->fetch();
@@ -193,7 +205,6 @@ function findPersonelType($personelUnvan){
 	}
 
 }
-function isTcKimlik($tc){  
 
 	if(strlen($tc) < 11){ return false; }  
 	if($tc[0] == '0'){ return false; }  

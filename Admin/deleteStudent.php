@@ -1,5 +1,6 @@
 <?php 
 
+
 require_once '../connectDB.php';
 
 
@@ -20,4 +21,5 @@ catch(Exception $e) {
 	echo "Silme Hatası :".$e->getMessage();
 }
 exit();
+
 ?>

@@ -1,3 +1,4 @@
+
 <?php session_start();
 if($_SESSION['access_type'] == "admin"){ 
   require_once "../connectDB.php";
@@ -38,6 +39,7 @@ if($_SESSION['access_type'] == "admin"){
     <link rel="stylesheet" href="../bower_components/Ionicons/css/ionicons.min.css">
     <!-- Theme style -->
     <link rel="stylesheet" href="../dist/css/AdminLTE.min.css">
+
   <!-- AdminLTE Skins. Choose a skin from the css/skins
     folder instead of downloading all of them to reduce the load. -->
     <link rel="stylesheet" href="../dist/css/skins/_all-skins.min.css">
@@ -93,7 +95,9 @@ if($_SESSION['access_type'] == "admin"){
       <section class="content-header">
         <h1 style="color:#000">
           Yeni Öğrenci Ekle
+
           <?php echo $_SESSION["personelERR"]; ?>
+
           <small>...........</small>
         </h1>
         <ol class="breadcrumb">
@@ -142,14 +146,18 @@ if($_SESSION['access_type'] == "admin"){
                             <label class="col-md-2 control-label" for="">Dönem Başlangıç Tarihi:</label>
                             <div class="col-md-3">
                               <div class="input-group">
+
                                 <span class="input-group-addon error"><i class="fa fa-calendar"><?php echo "*".$_SESSION["donemBaslangicTarihi"]; ?></i></span>
+
                                 <input name="donemBaslangicTarihi" class="form-control" type="date" data-date-inline-picker="false" data-date-open-on-focus="false" />
                               </div>
                             </div>
                             <label class="col-md-2 control-label" for="">Dönem Bitiş Tarihi:</label>
                             <div class="col-md-3">
                               <div class="input-group">
+
                                 <span class="input-group-addon error"><i class="fa fa-calendar"><?php echo "*".$_SESSION["donemBitisTarihi"]; ?></i></span>
+
                                 <input name="donemBitisTarihi" class="form-control"  type="date" data-date-inline-picker="false" data-date-open-on-focus="false" />
                               </div>
                             </div>
@@ -239,10 +247,12 @@ if($_SESSION['access_type'] == "admin"){
                         <!---- FOTOĞRAF -->
 
                         <div class="form-group">
+
                           <div class="row">
                             <label class="col-md-6 control-label " for="">Lütfen 2 MB'den küçük JPG, JPEG ve PNG Dosyaları Seçin!!</label>
                           </div>
                           <label class="col-md-2 control-label " for="">Fotoğraf Seç:</label>
+
                           <div class="col-md-3">
                             <span class="error">
                               <?php 
@@ -278,7 +288,9 @@ if($_SESSION['access_type'] == "admin"){
 
                           <label class="col-md-2 control-label"><i class="renk"><span class="error">*</span>&nbsp;</i>Eğitsel Tanı:</label>
                           <span class="error"><?php echo $_SESSION["educationalDiagnosisErr"]; ?></span>
+
                           <div class="col-md-3">
+
 
                             <div class="form-group">
 
@@ -301,6 +313,7 @@ if($_SESSION['access_type'] == "admin"){
                           </div>
                         </div>
                       </div>
+
                       <div class="form-group">
                         <div class="row">
                           <label class="col-md-2 control-label" for="">Öğretmen Seç:</label>
@@ -330,6 +343,7 @@ if($_SESSION['access_type'] == "admin"){
                           <div class="col-md-3"></div>
                         </div>
                       </div>
+
                       <!-- End .form-group 6 -->
 
                     </div>
@@ -375,7 +389,9 @@ if($_SESSION['access_type'] == "admin"){
                           <label class="col-md-2 control-label">T.C. No:</label>
                           <div class="col-md-3">
                             <input name="parentTCNumber" type="text" maxlength="11" id="parentTCNumber" class="form-control" placeholder="TC Kimlik No">
+
                             <span class="error"><?php echo $_SESSION["parentTCNumberErr"]; ?></span>
+
                           </div>
                           <label class="col-md-2 control-label" for="">Yakınlık Derecesi:</label>
                           <div class="col-md-3">              
@@ -400,13 +416,17 @@ if($_SESSION['access_type'] == "admin"){
                           <label class="col-md-2 control-label">Sabit Telefon:</label>
                           <div class="col-md-3">
                             <input name="parentPhoneNumber" type="text" maxlength="11" id="SabitTel" class="form-control" placeholder="Sabit Telefon">
+
                             <span class="error"><?php echo $_SESSION["parentPhoneNumberErr"]; ?></span>
+
                           </div>
                           <label class="col-md-2 control-label">Cep Telefonu:</label>
                           <div class="col-md-3">
 
                             <input name="parentMobilePhone" type="text" maxlength="11" id="CepTel" class="form-control" placeholder="Cep Telefonu">
+
                             <span class="error"><?php echo $_SESSION["parentMobilePhoneErr"]; ?></span>
+
                           </div>
 
                         </div>
@@ -487,15 +507,18 @@ if($_SESSION['access_type'] == "admin"){
     });
 
 
+
      $("#fileInfo").mousedown(function(){
       alert("Mouse down over p1!");
     });
+
    });
  </script>
 
 </div>
 
 <?php 
+
 
 unset($_SESSION['errorMessage']); 
 unset($_SESSION["nameErr"]);
@@ -514,8 +537,10 @@ unset($_SESSION["donemBitisTarihi"]);
 
 ?>
 
+
 </body>
 </html>
+
 
 <?php 
 }
@@ -526,3 +551,4 @@ else{
 }
 exit();
 ?>
+
