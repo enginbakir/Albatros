@@ -2,36 +2,44 @@
 
 
 $username = "root";
-$password = "nazmiyemustafa29";
+
+$password = "12345678";
 $server = "localhost";
-$database = "yeni_albatros";
+$database = "albatros";
 
+ 	//////////////// MYSQLİ_CONNECT PROCEDURAL /////////
 
-$conn = mysqli_connect($server,$username,$password,$database);
+// $conn = mysqli_connect($server,$username,$password,$database);
+// mysqli_set_charset($conn, "utf8");
 
-
-
-
-
-
-
-
-/*
-$connect = mysql_connect($server,$username,$password);
-mysql_query("SET NAMES UTF8");
-
-if(!$connect){
-	echo "Bağlantı hatası:".mysql_errno();
-	exit();
-}
-else{
-	echo "Connection Successfully";
-}
-$db = mysql_select_db($database);
-if(!$db){
-	echo "Veritabanı Hatası:".mysql_errno(); echo "<br>";
-	echo "Veritabanı bağlantı bilgilerini /baglan.php dosyasından düzeltebilirsiniz.";
-	exit();
+/*if (mysqli_connect_errno())
+{
+  echo "MySQL bağlantısı başarısız: " . mysqli_connect_error();
 }
 */
+
+	//////// MYSQLİ OBJECT ORİENTED ////////
+
+// Create connection
+/*
+$conn = new mysqli($servername, $username, $password, $dbname);
+// Check connection
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+} */
+
+
+	/////////////   PDO   ///////////////
+
+
+try{
+	$conn = new PDO("mysql:host=127.0.0.1;dbname=albatros", "root", "12345678");
+	$conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+}catch(PDOException $e){
+	echo "Connection failed: " . $e->getMessage();
+	header("location: ../index.php");  	// make this function run after 3 second
+	exit();
+}
+
+
 ?>

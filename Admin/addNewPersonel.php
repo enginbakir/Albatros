@@ -1,24 +1,13 @@
 <?php 
 session_start();
-session_unset(); 
-include 'connectDB.php';
- /*if (!$conn){
-	$_SESSION["connection"] = "Veritabanı Bağlantı Hatası";
-	echo "Veritabanı Bağlantı Hatası";
-}*/
-if (mysqli_connect_errno())
-{
-	echo "Failed to connect to MySQL: " . mysqli_connect_error();
-}
+
+
+require_once '../connectDB.php';
+
 
 date_default_timezone_set("Europe/Istanbul");
 $currentDate = date("Y-m-d");
 
-$target_dir = "../images/";
-$target_file = $target_dir . basename($_FILES["fileToUpload"]["name"]);
-$uploadOk = 1;
-$imageFileType = strtolower(pathinfo($target_file,PATHINFO_EXTENSION));
-$_SESSION["imageName"] = $target_file;
 
 $personelName = $personelSurname = $personelTCNumber = $personelUnvan = $personelTelefon = $personelGender = $personelEmailAdresi = $personelKayitTarihi = $personelAyrilisTarihi = null;
 
@@ -56,13 +45,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
 		$personelTCNumber = test_input($_POST['personelTCNumber']);
 		if(preg_match("/^[0-9]{11}$/", $personelTCNumber)){
 			if(isTcKimlik($personelTCNumber) == false){
-				$_SESSION["personelTCNumberErr"] = "TC Kimlik Numarası Yanlıştır";
+
+				$_SESSION["personelTCNumberErr"] = "TC Kimlik Numarası Yanlıştırrrr";
+
 				$bool = false;
 			}
 		}
 		else
 		{
-			$_SESSION["personelTCNumberErr"] = "TC Kimlik Numarası Yanlıştır";
+			$_SESSION["personelTCNumberErr"] = "TC Kimlik Numarası YanlıştıWFAWEF";
+
 			$bool = false;
 		}
 	}
@@ -81,17 +73,29 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
 		$personelKayitTarihi = $_POST["personelKayitTarihi"];
 	if(!empty($_POST["personelAyrilisTarihi"]))
 		$personelAyrilisTarihi = $_POST["personelAyrilisTarihi"];
-	if(!empty($_POST["personelTelefon"]))
+
+	if(!empty($_POST["personelTelefon"])){
+
 		if(is_numeric($_POST["personelTelefon"]))
 			$personelTelefon = $_POST["personelTelefon"];
 		else
 			$_SESSION["personelTelefonErr"] = "Sadece Sayı Giriniz";
 
+	}
 			///// FOTOĞRAF KONTOLÜ BURADAN AŞAĞIYA ////
 
-		$fileErrors = array();
+	$target_dir = "../images/";
+	$target_file = $target_dir . basename($_FILES["fileToUpload"]["name"]);
+	$uploadOk = 1;
+	$imageFileType = strtolower(pathinfo($target_file,PATHINFO_EXTENSION));
+
+	$fileErrors = array();
 // Check if image file is a actual image or fake image
-		if(isset($_POST["submit"])) {
+	if(strlen($target_file) < 11)
+		$target_file = "../images/avatar5.png";
+	else{
+		if(isset($_POST["fileToUpload"])) {
+
 			$check = getimagesize($_FILES["fileToUpload"]["tmp_name"]);
 			if($check !== false) {
 				echo "File is an image - " . $check["mime"] . ".";
@@ -103,7 +107,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
 		}
 	// Check if file already exists
 		if (file_exists($target_file)) {
-			$fileErrors[1] = "Bu Dosya Zaten Mevcut!!";
+
+			$fileErrors[1] = "Bu Dosya Mevcut!!";
+
 			$uploadOk = 0;
 		}
 // Check file size
@@ -130,31 +136,55 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
 		$bool = false;
 	}
 
+}
 //// FOTOĞRAF KONTROLÜ BURADAN YUKARIYA /////
 
 
-	var_dump($_SESSION);
-	echo "<br><br>";
-	$personel_type_FK = findPersonelType($personelUnvan);
 
-	$sqlPersonelQuery = "INSERT INTO `personel`(`name`, `surname`, `email_address`, `tel_no`, `photo`, `personel_type_FK`, `gender_FK`) VALUES ('$personelName','$personelSurname','$personelEmailAdresi','$personelTelefon','$target_file','$personel_type_FK','$personelGender')";
-	if($bool == true)
-		runPersonelQuery($sqlPersonelQuery);
-	else
-		echo "runPersonelQuery Çağrılamadı!!!<br><br>";
-	print_r($_POST);
-	echo "<br><br>".$target_file;
+$personel_type_FK = $personelUnvan;
+$sqlPersonelQuery = "INSERT INTO `personel`(`name`, `surname`, `registration_date`,`deletion_date`, `email_address`, `tel_no`, `photo`,`status`, `personel_type_FK`, `gender_FK`) VALUES ('$personelName','$personelSurname','$currentDate','$personelAyrilisTarihi','$personelEmailAdresi','$personelTelefon','$target_file','1','$personel_type_FK','$personelGender')";
+
+if($bool == true){
+
+	runPersonelQuery($sqlPersonelQuery);
+}
+else{
+	if(empty($fileErrors[1]))
+		unlink($target_file);
+	$_SESSION["errorMessage"] = "Personel Bilgilerini Kontrol Ediniz!!!<br>";
+	echo $sqlPersonelQuery;
+	header("Location: personel_ekle.php");
+	exit();
+}
+
+
 
 }
 	////////// END OF REQUEST POST IF CODE BLOCK ///////////
-function runPersonelQuery($query){
 
-global $conn;
-	if(mysqli_query($conn,$query)){
-		echo "Personel Başarıyla Eklendi!!!<br><br>";
+function runPersonelQuery($sql){
+
+	global $target_file;
+	global $conn;
+	if(strlen($target_file) < 11)
+		$target_file = "../images/avatar5.png";
+
+	try{
+		$retval = $conn->query($sql);
+		if($retval === false){
+			$_SESSION["errorMessage"] = "Personel Bilgilerini Kontrol Ediniz!!!<br> Ekleme Hatası: <br>";
+		}
+		else{
+			$_SESSION["errorMessage"] = "Ekleme Başarıyla Tamalandı!!!<br>";			
+		}
+		header("Location: personel_ekle.php");
+		exit();
+
+	}catch(Exception $e) { 
+		$_SESSION["errorMessage"] = "Personel Bilgilerini Kontrol Ediniz!!!<br> Error: <br>".$e->getMessage();
+		header("Location: personel_ekle.php"); 
+		exit();
 	}
-	else
-		echo "Ekleme Başarısız!!!<br><br>";
 
 }
 
@@ -162,16 +192,20 @@ function findPersonelType($personelUnvan){
 
 	global $conn;
 
-	$query = "SELECT * from personel_types where personel_type='".$personelUnvan."';";
-	$result = mysqli_query($conn,$query);
-	$row = mysqli_fetch_array($result,MYSQL_ASSOC);
-	return $row['personel_type_PK']."<br>";
+
+	try{
+		$sql = "SELECT * from personel_types where personel_type='".$personelUnvan."';";
+		$row = $conn->query($sql,PDO::FETCH_ASSOC)->fetch();
+		return $row['personel_type_PK'];
+	}
+	catch(Exception $e) { 
+		$_SESSION["errorMessage"] = "Personel Bilgilerini Kontrol Ediniz!!!<br> Error: <br>".$e->getMessage();
+		header("Location: personel_ekle.php"); 
+		exit();
+	}
 
 }
 
-
-function isTcKimlik($tc)  
-{  
 	if(strlen($tc) < 11){ return false; }  
 	if($tc[0] == '0'){ return false; }  
 	$plus = ($tc[0] + $tc[2] + $tc[4] + $tc[6] + $tc[8]) * 7;  
@@ -192,5 +226,5 @@ function test_input($data) {
 	return $data;
 }
 
-mysqli_close($conn);
+
 ?>

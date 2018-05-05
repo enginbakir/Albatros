@@ -1,41 +1,45 @@
-<?php session_start(); ?>
 
-<!DOCTYPE html>
-<html>
-<head>
+<?php session_start();
+if($_SESSION['access_type'] == "admin"){ 
+  require_once "../connectDB.php";
+  ?>  
+  <!DOCTYPE html>
+  <html>
+  <head>
 
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <!-- Tell the browser to be responsive to screen width -->
-  <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
-  <title>Albatros | Admin - Öğrenciler - Ekleme</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <title>Albatros | Admin - Öğrenciler - Ekleme</title>
 
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-3-typeahead/4.0.2/bootstrap3-typeahead.min.js"></script>  
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" />
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/0.9.13/css/bootstrap-multiselect.css" />
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/0.9.13/js/bootstrap-multiselect.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-3-typeahead/4.0.2/bootstrap3-typeahead.min.js"></script>  
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" />
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/0.9.13/css/bootstrap-multiselect.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/0.9.13/js/bootstrap-multiselect.js"></script>
 
 
- 
-  <!-- Import google fonts - Heading first/ text second -->
-  <link href="http://fonts.googleapis.com/css?family=Droid+Sans:400,700" rel="stylesheet" type="text/css">
-  <link href="http://fonts.googleapis.com/css?family=Open+Sans:400,700" rel="stylesheet" type="text/css">
 
-  <link rel="stylesheet" href="../dist/css/main.css">
-  <link rel="stylesheet" href="../dist/css/plugins.css">
-  <link rel="stylesheet" href="../dist/css/custom.css">
-  <link rel="stylesheet" href="../dist/css/bootstrap.css">
-   <!-- Bootstrap 3.3.7 -->
-  <link rel="stylesheet" href="../bower_components/bootstrap/dist/css/bootstrap.min.css">
-  <link rel="stylesheet" href="../bower_components/bootstrap/dist/css/myCss.css">
-  <!-- Font Awesome -->
-  <link rel="stylesheet" href="../bower_components/font-awesome/css/font-awesome.min.css">
-  <!-- Ionicons -->
-  <link rel="stylesheet" href="../bower_components/Ionicons/css/ionicons.min.css">
-  <!-- Theme style -->
-  <link rel="stylesheet" href="../dist/css/AdminLTE.min.css">
+    <!-- Import google fonts - Heading first/ text second -->
+    <link href="http://fonts.googleapis.com/css?family=Droid+Sans:400,700" rel="stylesheet" type="text/css">
+    <link href="http://fonts.googleapis.com/css?family=Open+Sans:400,700" rel="stylesheet" type="text/css">
+
+    <link rel="stylesheet" href="../dist/css/main.css">
+    <link rel="stylesheet" href="../dist/css/plugins.css">
+    <link rel="stylesheet" href="../dist/css/custom.css">
+    <link rel="stylesheet" href="../dist/css/bootstrap.css">
+    <!-- Bootstrap 3.3.7 -->
+    <link rel="stylesheet" href="../bower_components/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../bower_components/bootstrap/dist/css/myCss.css">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="../bower_components/font-awesome/css/font-awesome.min.css">
+    <!-- Ionicons -->
+    <link rel="stylesheet" href="../bower_components/Ionicons/css/ionicons.min.css">
+    <!-- Theme style -->
+    <link rel="stylesheet" href="../dist/css/AdminLTE.min.css">
+
   <!-- AdminLTE Skins. Choose a skin from the css/skins
     folder instead of downloading all of them to reduce the load. -->
     <link rel="stylesheet" href="../dist/css/skins/_all-skins.min.css">
@@ -91,6 +95,9 @@
       <section class="content-header">
         <h1 style="color:#000">
           Yeni Öğrenci Ekle
+
+          <?php echo $_SESSION["personelERR"]; ?>
+
           <small>...........</small>
         </h1>
         <ol class="breadcrumb">
@@ -139,16 +146,18 @@
                             <label class="col-md-2 control-label" for="">Dönem Başlangıç Tarihi:</label>
                             <div class="col-md-3">
                               <div class="input-group">
-                                <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-                                <span class="error"><?php echo $_SESSION["donemBaslangicTarihi"]; ?></span>
+
+                                <span class="input-group-addon error"><i class="fa fa-calendar"><?php echo "*".$_SESSION["donemBaslangicTarihi"]; ?></i></span>
+
                                 <input name="donemBaslangicTarihi" class="form-control" type="date" data-date-inline-picker="false" data-date-open-on-focus="false" />
                               </div>
                             </div>
                             <label class="col-md-2 control-label" for="">Dönem Bitiş Tarihi:</label>
                             <div class="col-md-3">
                               <div class="input-group">
-                                <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-                                <span class="error"><?php echo $_SESSION["donemBitisTarihi"]; ?></span>
+
+                                <span class="input-group-addon error"><i class="fa fa-calendar"><?php echo "*".$_SESSION["donemBitisTarihi"]; ?></i></span>
+
                                 <input name="donemBitisTarihi" class="form-control"  type="date" data-date-inline-picker="false" data-date-open-on-focus="false" />
                               </div>
                             </div>
@@ -238,7 +247,12 @@
                         <!---- FOTOĞRAF -->
 
                         <div class="form-group">
-                          <label class="col-md-2 control-label" for="">Fotoğraf Seç:</label>
+
+                          <div class="row">
+                            <label class="col-md-6 control-label " for="">Lütfen 2 MB'den küçük JPG, JPEG ve PNG Dosyaları Seçin!!</label>
+                          </div>
+                          <label class="col-md-2 control-label " for="">Fotoğraf Seç:</label>
+
                           <div class="col-md-3">
                             <span class="error">
                               <?php 
@@ -274,7 +288,9 @@
 
                           <label class="col-md-2 control-label"><i class="renk"><span class="error">*</span>&nbsp;</i>Eğitsel Tanı:</label>
                           <span class="error"><?php echo $_SESSION["educationalDiagnosisErr"]; ?></span>
-                          <div class="col-md-4">
+
+                          <div class="col-md-3">
+
 
                             <div class="form-group">
 
@@ -297,6 +313,37 @@
                           </div>
                         </div>
                       </div>
+
+                      <div class="form-group">
+                        <div class="row">
+                          <label class="col-md-2 control-label" for="">Öğretmen Seç:</label>
+                          <div class="col-md-3">
+                            <div class="form-group">                                                   
+                              <?php 
+
+
+                              try{ 
+                                $sql = "SELECT * FROM personel";
+                                echo '<select id="ogretmen" name="ogretmen" class="fancy-select form-control fancified" >';
+
+                                foreach ($conn->query($sql) as $row) {
+                                  echo "<option value='".$row['personel_PK']."'>".$row['personel_PK']." ".$row['name']."</option>";
+                                }
+                                echo "</select>";          
+                              }
+                              catch(Exception $e) { 
+                                echo "Öğretmen Listeleme Hatası :".$e->getMessage();
+                              }
+
+                              ?>
+
+                            </div>
+                          </div>
+                          <label class="col-md-2 control-label" for=""></label>
+                          <div class="col-md-3"></div>
+                        </div>
+                      </div>
+
                       <!-- End .form-group 6 -->
 
                     </div>
@@ -342,7 +389,9 @@
                           <label class="col-md-2 control-label">T.C. No:</label>
                           <div class="col-md-3">
                             <input name="parentTCNumber" type="text" maxlength="11" id="parentTCNumber" class="form-control" placeholder="TC Kimlik No">
-                            <span class="error"><?php echo $_SESSION["parentTCNumberErr"] ?></span>
+
+                            <span class="error"><?php echo $_SESSION["parentTCNumberErr"]; ?></span>
+
                           </div>
                           <label class="col-md-2 control-label" for="">Yakınlık Derecesi:</label>
                           <div class="col-md-3">              
@@ -367,13 +416,17 @@
                           <label class="col-md-2 control-label">Sabit Telefon:</label>
                           <div class="col-md-3">
                             <input name="parentPhoneNumber" type="text" maxlength="11" id="SabitTel" class="form-control" placeholder="Sabit Telefon">
-                            <span class="error"><?php echo $_SESSION["parentPhoneNumberErr"] ?></span>
+
+                            <span class="error"><?php echo $_SESSION["parentPhoneNumberErr"]; ?></span>
+
                           </div>
                           <label class="col-md-2 control-label">Cep Telefonu:</label>
                           <div class="col-md-3">
 
                             <input name="parentMobilePhone" type="text" maxlength="11" id="CepTel" class="form-control" placeholder="Cep Telefonu">
-                            <span class="error"><?php echo $_SESSION["parentMobilePhoneErr"] ?></span>
+
+                            <span class="error"><?php echo $_SESSION["parentMobilePhoneErr"]; ?></span>
+
                           </div>
 
                         </div>
@@ -453,14 +506,49 @@
       buttonWidth:'300px'
     });
 
+
+
+     $("#fileInfo").mousedown(function(){
+      alert("Mouse down over p1!");
+    });
+
    });
  </script>
 
 </div>
 
 <?php 
-session_unset(); ?>
+
+
+unset($_SESSION['errorMessage']); 
+unset($_SESSION["nameErr"]);
+unset($_SESSION["surNameErr"]);
+unset($_SESSION["TCNumberErr"]);
+unset($_SESSION["TCNumberErr"]);
+unset($_SESSION["fileErrors"]);
+unset($_SESSION["educationalDiagnosisErr"]);
+unset($_SESSION["parentNameErr"]);
+unset($_SESSION["parentSurnameErr"]);
+unset($_SESSION["parentTCNumberErr"]);
+unset($_SESSION["parentPhoneNumberErr"]);
+unset($_SESSION["parentMobilePhoneErr"]);
+unset($_SESSION["donemBaslangicTarihi"]);
+unset($_SESSION["donemBitisTarihi"]);
+
+?>
+
 
 </body>
 </html>
+
+
+<?php 
+}
+else{
+
+ header("location: ../index.php");
+
+}
+exit();
+?>
 

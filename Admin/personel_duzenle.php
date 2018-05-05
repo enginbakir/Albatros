@@ -1,17 +1,20 @@
-
-<?php 
-session_start();
+<?php session_start();
 if($_SESSION['access_type'] == "admin"){ 
-  require_once "../connectDB.php";
-  ?>
+	require_once '../connectDB.php';
+	$id = $_GET["id"];
+	$sql = "SELECT * FROM personel where personel_PK = $id";
 
-  <!DOCTYPE html>
+	$row = $conn->query($sql, PDO::FETCH_ASSOC)->fetch();
+	
+	?>  
+
+	<!DOCTYPE html>
   <html>
   <head>
 
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Albatros | Admin - Personel Ekle</title>
+    <title>Albatros | Admin - Personel Düzenleme</title>
     <!-- Tell the browser to be responsive to screen width -->
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
     <!-- Import google fonts - Heading first/ text second -->
@@ -31,7 +34,6 @@ if($_SESSION['access_type'] == "admin"){
     <link rel="stylesheet" href="../bower_components/Ionicons/css/ionicons.min.css">
     <!-- Theme style -->
     <link rel="stylesheet" href="../dist/css/AdminLTE.min.css">
-
   <!-- AdminLTE Skins. Choose a skin from the css/skins
     folder instead of downloading all of them to reduce the load. -->
     <link rel="stylesheet" href="../dist/css/skins/_all-skins.min.css">
@@ -96,7 +98,10 @@ if($_SESSION['access_type'] == "admin"){
         <div class="row">
           <div class="col-md-12">
             <!-- FORM -->
-            <form id="addPersonelForm" action="addNewPersonel.php" method="post" enctype="multipart/form-data">
+            <form id="updatePersonelForm" action="updatePersonel.php" method="post" enctype="multipart/form-data">
+            	<input name="personel_PK" type="text" maxlength="11" class="form-control" style="display: none" <?php echo " value = '".$row["personel_PK"]."'"; ?> >
+            	
+							<!-- this input wi
               <!-- FORM -->
               <div class="contentwrapper">
                 <!--Content wrapper-->
@@ -125,13 +130,13 @@ if($_SESSION['access_type'] == "admin"){
                         <label class="col-md-2 control-label"><i class="renk">&nbsp;</i>Adı:</label>
 
                         <div class="col-md-3">
-                          <input name="personelName" type="text" maxlength="64" id="" class="form-control" placeholder="Personel Adı">
+                          <input name="personelName" type="text" maxlength="64" id="" class="form-control" placeholder="Personel Adı" <?php echo " value = '".$row["name"]."'"; ?>>
                           <span class="error">* <?php echo $_SESSION["nameErr"];?></span>
                         </div>
 
                         <label class="col-md-2 control-label"><i class="renk">&nbsp;</i>Soyadı:</label>
                         <div class="col-md-3">
-                          <input name="personelSurname" type="text" maxlength="64" id="" class="form-control" placeholder="Personel Soyadı">
+                          <input name="personelSurname" type="text" maxlength="64" id="" class="form-control" placeholder="Personel Soyadı" <?php echo " value = '".$row["surname"]."'"; ?>>
                           <span class="error">* <?php echo $_SESSION["surNameErr"];?></span>
                         </div>
 
@@ -155,10 +160,8 @@ if($_SESSION['access_type'] == "admin"){
                       <label class="col-md-2 control-label">T.C. No:</label>
                       <div class="col-md-3">
 
-                        <input name="personelTCNumber" type="text" maxlength="11" id="personelTCNumber" class="form-control" placeholder="T.C. Kimlik No">
-
+                        <input name="personelTCNumber" type="text" maxlength="11" id="personelTCNumber" class="form-control" placeholder="T.C. Kimlik No" <?php echo " value = ''"; ?>>
                         <span class="error"><?php echo $_SESSION["personelTCNumberErr"];?></span>
-
                       </div>   
                     </div>                       
                   </div>
@@ -186,12 +189,11 @@ if($_SESSION['access_type'] == "admin"){
                             <option value="11">DİĞER</option>
                           </select>
                         </div>
-
                       </div>
 
                       <label class="col-md-2 control-label">Telefon:</label>
                       <div class="col-md-3">
-                        <input name="personelTelefon" type="text" maxlength="16" id="personelTelefon" class="form-control" placeholder="Telefon">
+                        <input name="personelTelefon" type="text" maxlength="16" id="personelTelefon" class="form-control" placeholder="Telefon" <?php echo " value = '".$row["tel_no"]."'"; ?>>
                         <span id="ContentPlaceHolder1_RegularExpressionValidator2" style="color:Red;font-weight:bold;visibility:hidden;">Lütfen Geçerli Bir Numara Giriniz</span>
                       </div>
                     </div>
@@ -211,10 +213,11 @@ if($_SESSION['access_type'] == "admin"){
                         ?>
                       </span>
                       <input type="file" name="fileToUpload" id="fileToUpload" class="btn btn-default btn-file">
+                      <img id = "personelPhoto" class="profile-user-img img-responsive img-circle" src=<?php echo $row['photo']; ?> alt="User profile picture">
                     </div>
                     <label class="col-md-2 control-label" for="">Email Adresi:</label>
                     <div class="col-md-3">
-                      <input name="personelEmailAdresi" type="text" maxlength="255" id="personelEmailAdresi" class="form-control" placeholder="Email Adresi">
+                      <input name="personelEmailAdresi" type="text" maxlength="255" id="personelEmailAdresi" class="form-control" placeholder="Email Adresi" <?php echo " value = '".$row["email_address"]."'"; ?>>
                     </div>
                   </div>
 
@@ -232,7 +235,7 @@ if($_SESSION['access_type'] == "admin"){
                     <div class="col-md-3">
                      <div class=" input-group">
                        <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-                       <input name="personelAyrilisTarihi" type="date" id="ayrilisTarihi" class="form-control" placeholder="gg.AA.yyyy">
+                       <input name="personelAyrilisTarihi" type="date" id="ayrilisTarihi" class="form-control" placeholder="gg.AA.yyyy" <?php echo " value = '".$row["deletion_date"]."'"; ?>>
                      </div>
                    </div>
                  </div>
@@ -242,6 +245,7 @@ if($_SESSION['access_type'] == "admin"){
               <div class="row">
                 <div class="col-md-6">  
                   <input type="submit" id="sub" value="Kaydet" class="btn btn-success">  
+                  <a href="personel.php" class="btn btn-success" role="button">İptal</a>
                 </div>
               </div>
             </div> 
@@ -469,7 +473,6 @@ if($_SESSION['access_type'] == "admin"){
   })
 </script>
 
-
 <?php 
 unset($_SESSION["connection"]);
 unset( $_SESSION["errorMessage"]);
@@ -489,7 +492,3 @@ else{
 
   header("location: ../index.php");
 }?>
-
-</body>
-</html>
-
