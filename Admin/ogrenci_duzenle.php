@@ -2,21 +2,15 @@
 if($_SESSION['access_type'] == "admin"){ 
 	require_once '../connectDB.php';
 	$id = $_GET["id"];
-	$query = "SELECT * FROM student where student_PK = $id";
-	$retval = mysqli_query($conn,$query);
-	
-	if(! $retval ) {
-		die('Could not get data: ' . mysqli_error());
-	}
-	$row = mysqli_fetch_array($retval, MYSQL_ASSOC);
+	$sql = "SELECT * FROM student where student_PK = $id";
 
+	$row = $conn->query($sql, PDO::FETCH_ASSOC)->fetch();
 
-	$veliQuery = "SELECT * from parent where student_FK = ".$row['student_PK'];
-	$veliResult = mysqli_query($conn,$veliQuery);
-	if(! $veliResult ) {
-		die('Could not get data: ' . mysqli_error());
+	$veliQuery = "SELECT * from parent where student_FK = $id";
+	$veliRow = $conn->query($veliQuery,PDO::FETCH_ASSOC)->fetch();
+	if($veliRow === false) {
+		die('Could not get data: ');
 	}
-	$veliRow = mysqli_fetch_array($veliResult, MYSQL_ASSOC);
 	
 	?>  
 
@@ -87,9 +81,9 @@ if($_SESSION['access_type'] == "admin"){
 </head>
 <body class="hold-transition skin-blue sidebar-mini">
 	<div class="wrapper">
-
-		<?php include '/header.php'; 
-		include '/sidebar.php'; ?>
+		<?php include 'header.php'; ?>
+		<!-- Left side column. contains the logo and sidebar -->
+		<?php include 'sidebar.php'; ?>
 		<!-- Content Wrapper. Contains page content -->
 		<div class="content-wrapper">
 			<section class="content-header">
@@ -120,13 +114,13 @@ if($_SESSION['access_type'] == "admin"){
 							<div class="panel panel-default  toggle panelMove panelRefresh" id="supr0">
 								<div class="panel-heading">
 									<h4 class="panel-title">Öğrenci Bilgileri</h4>
-									 <span class="error bigfont">
-                        <?php if(isset($_SESSION["connection"]))
-                        echo "Veritabanı Bağlantı Hatası";
-                        echo $_SESSION["errorMessage"];
-                        ?>
+									<span class="error bigfont">
+										<?php if(isset($_SESSION["connection"]))
+										echo "Veritabanı Bağlantı Hatası";
+										echo $_SESSION["errorMessage"];
+										?>
 
-                      </span>
+									</span>
 								</div>
 								<div class="panel-body pt0 pb0">
 									<div class="form-horizontal group-border stripped">
@@ -145,7 +139,7 @@ if($_SESSION['access_type'] == "admin"){
 													<div class="input-group">
 														<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
 														<span class="error"><?php echo $_SESSION["donemBitisTarihi"]; ?></span>
-														<input name="donemBitisTarihi" class="form-control"  type="date" data-date-inline-picker="false" data-date-open-on-focus="false" value = <?php echo $row['term_finish_date']; ?>>
+														<input name="donemBitisTarihi" class="form-control"  type="date" data-date-inline-picker="false" data-date-open-on-focus="false" value = <?php echo $row['term_finish_date']; ?> >
 													</div>
 												</div>
 											</div>
@@ -257,6 +251,7 @@ if($_SESSION['access_type'] == "admin"){
 												</span>
 
 												<input type="file" name="fileToUpload" class="btn btn-default btn-file" >
+												<img id = "ogrenciPhoto" class="profile-user-img img-responsive img-circle" src=<?php echo $row['photo']; ?> alt="User profile picture">
 											</div>
 											<label class="col-md-2 control-label" for="">Ulaşım:</label>
 											<div class="col-md-3">
@@ -314,26 +309,15 @@ if($_SESSION['access_type'] == "admin"){
 														<?php 
 
 														$sql = "SELECT * FROM personel";
-														$retval = mysqli_query( $conn,$sql );
 
-														if(! $retval ) {
-															die('Could not get data: ' . mysqli_error());
-														}
 														echo '<select id="ogretmen" name="ogretmen" class="fancy-select form-control fancified" >';
-														$q = "SELECT * from personel where personel_PK = ".$row["personel_FK"];
-														$result = mysqli_query($conn,$q);
-
-														$personel_name =  mysqli_fetch_array($result, MYSQL_ASSOC);
-														echo "<option value='".$row['personel_FK']."'>".$row['personel_FK']." ".$personel_name['name']."</option>";
-
-														while($row = mysqli_fetch_array($retval, MYSQL_ASSOC)) {
-															if($row['personel_PK'] != $personel_name['personel_PK'])
-																echo "<option value='".$row['personel_PK']."'>".$row['personel_PK']." ".$row['name']."</option>";
+														foreach ($conn->query($sql) as $row) {
+															echo "<option value='".$row['personel_PK']."'>".$row['personel_PK']." ".$row['name']."</option>";
 														}
 														echo "</select>";
 
 														?>
-														
+
 													</div>
 
 												</div>
@@ -380,7 +364,7 @@ if($_SESSION['access_type'] == "admin"){
 												<div class="row">
 													<label class="col-md-2 control-label">T.C. No:</label>
 													<div class="col-md-3">
-														<input name="parentTCNumber" type="text" maxlength="11" id="parentTCNumber" class="form-control" placeholder="TC Kimlik No">
+														<input name="parentTCNumber" type="text" maxlength="11" id="parentTCNumber" class="form-control" placeholder="TC Kimlik No" <?php echo " value = '".$veliRow['tc_no']."'" ?>>
 														<span class="error"><?php echo $_SESSION["parentTCNumberErr"] ?></span>
 													</div>
 													<label class="col-md-2 control-label" for="">Yakınlık Derecesi:</label>
@@ -405,13 +389,13 @@ if($_SESSION['access_type'] == "admin"){
 
 													<label class="col-md-2 control-label">Sabit Telefon:</label>
 													<div class="col-md-3">
-														<input name="parentPhoneNumber" type="text" maxlength="11" id="SabitTel" class="form-control" placeholder="Sabit Telefon">
+														<input name="parentPhoneNumber" type="text" maxlength="11" id="SabitTel" class="form-control" placeholder="Sabit Telefon" <?php echo " value = '".$veliRow['sabit_tel']."'" ?>>
 														<span class="error"><?php echo $_SESSION["parentPhoneNumberErr"] ?></span>
 													</div>
 													<label class="col-md-2 control-label">Cep Telefonu:</label>
 													<div class="col-md-3">
 
-														<input name="parentMobilePhone" type="text" maxlength="11" id="CepTel" class="form-control" placeholder="Cep Telefonu">
+														<input name="parentMobilePhone" type="text" maxlength="11" id="CepTel" class="form-control" placeholder="Cep Telefonu" <?php echo " value = '".$veliRow['tel_no']."'" ?>>
 														<span class="error"><?php echo $_SESSION["parentMobilePhoneErr"] ?></span>
 													</div>
 
@@ -421,14 +405,14 @@ if($_SESSION['access_type'] == "admin"){
 											<div class="form-group">
 												<label class="col-md-2 control-label" for="">Email Adresi:</label>
 												<div class="col-md-8">
-													<input name="emailAdresi" type="text" maxlength="255" id="emailAdresi" class="form-control" placeholder="Email Adresi">
+													<input name="emailAdresi" type="text" maxlength="255" id="emailAdresi" class="form-control" placeholder="Email Adresi" <?php echo " value = '".$veliRow['email_adress']."'" ?>>
 												</div>
 											</div>
 
 											<div class="form-group">
 												<label class="col-md-2 control-label" for="">Ev Adresi:</label>
 												<div class="col-md-8">
-													<input name="evAdresi" type="text" maxlength="255" id="EvAdresi" class="form-control" placeholder="Ev Adresi">
+													<input name="evAdresi" type="text" maxlength="255" id="EvAdresi" class="form-control" placeholder="Ev Adresi" <?php echo " value = '".$veliRow['adress']."'" ?>>
 												</div>
 											</div>
 											<!-- End .form-group  -->
@@ -436,14 +420,14 @@ if($_SESSION['access_type'] == "admin"){
 											<div class="form-group">
 												<label class="col-md-2 control-label" for="">İş Adresi:</label>
 												<div class=" col-md-8">
-													<input name="parentIsAdresi" type="text" maxlength="255" id="IsAdresi" class="form-control" placeholder="İş Adresi">
+													<input name="parentIsAdresi" type="text" maxlength="255" id="IsAdresi" class="form-control" placeholder="İş Adresi" <?php echo " value = '".$veliRow['work_adress']."'" ?>>
 												</div>
 											</div>
 											<!-- End .form-group  -->
 											<div class="form-group">
 												<label class="col-md-2 control-label" for="">Açıklama:</label>
 												<div class="col-md-8">
-													<textarea name="Aciklama" rows="2" cols="20" id="Aciklama" class="form-control"></textarea>
+													<textarea name="Aciklama" rows="2" cols="20" id="Aciklama" class="form-control" <?php echo " value = '".$veliRow['description']."'" ?> ></textarea >
 												</div>
 											</div>
 
@@ -455,7 +439,7 @@ if($_SESSION['access_type'] == "admin"){
 											<div class="row">
 												<div class="col-md-6">  
 													<input type="submit" id="sub" value="Kaydet" class="btn btn-success">  
-
+													<a href="ogrenci.php" class="btn btn-success" role="button">İptal</a>
 												</div>
 											</div>
 										</div> 
@@ -509,10 +493,12 @@ unset($_SESSION["parentSurnameErr"]);
 unset($_SESSION["parentTCNumberErr"]);
 unset($_SESSION["parentPhoneNumberErr"]);
 unset($_SESSION["parentMobilePhoneErr"]);
-mysqli_close($conn);
+unset($_SESSION["donemBitisTarihi"]);
+unset($_SESSION["donemBaslangicTarihi"]);
 
 }
 else{
 
 	header("location: ../index.php");
+	exit();
 }?>

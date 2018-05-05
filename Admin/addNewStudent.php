@@ -298,70 +298,49 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
 		global $educationalDiagnosis;
 		global $bool;
 		global $class,$donemBitisTarihi,$donemBaslangicTarihi,$rapor_no,$studentSurname,$studentName,$TCNumber,$currentDate,$rehberlikMerkezi,$gender,$birthday,$target_file,$personel_FK;
+		global $studentLastID;
 
-	/*if($target_file == null){
-		$sqlStudentQuery = "INSERT INTO `student`(`tc_no`, `name`, `surname`, `class`, `rapor_no`, `birthday`, `registration_date`, `rehberlik_merkezi`,`term_start_date`, `term_finish_date`, `gender_FK`, `personel_FK`) VALUES  
-		('$TCNumber','$studentName','$studentSurname','$class','$rapor_no','$birthday','$currentDate','$rehberlikMerkezi','$donemBaslangicTarihi','$donemBitisTarihi','$gender','$personel_FK')";
-	}
-	else{
-		$sqlStudentQuery = "INSERT INTO `student`(`tc_no`, `name`, `surname`, `class`, `rapor_no`, `birthday`, `photo`, `registration_date`, `rehberlik_merkezi`,`term_start_date`, `term_finish_date`, `gender_FK`, `personel_FK`) VALUES  
-		('$TCNumber','$studentName','$studentSurname','$class','$rapor_no','$birthday','$target_file','$currentDate','$rehberlikMerkezi','$donemBaslangicTarihi','$donemBitisTarihi','$gender','$personel_FK')";
-	}*/
 	if(strlen($target_file) < 11)
 		$target_file = "../images/avatar5.png";
 	echo $target_file;
 	
-	$sqlStudentQuery = "INSERT INTO `student`(`tc_no`, `name`, `surname`, `class`, `rapor_no`, `birthday`, `photo`, `registration_date`, `rehberlik_merkezi`,`term_start_date`, `term_finish_date`, `gender_FK`, `personel_FK`) VALUES  
-	('$TCNumber','$studentName','$studentSurname','$class','$rapor_no','$birthday','$target_file','$currentDate','$rehberlikMerkezi','$donemBaslangicTarihi','$donemBitisTarihi','$gender','$personel_FK')";
+	$sqlStudentQuery = "INSERT INTO `student`(`tc_no`, `name`, `surname`, `class`, `rapor_no`, `birthday`, `photo`, `registration_date`, `rehberlik_merkezi`,`term_start_date`, `term_finish_date`,`status`,`gender_FK`, `personel_FK`) VALUES  
+	('$TCNumber','$studentName','$studentSurname','$class','$rapor_no','$birthday','$target_file','$currentDate','$rehberlikMerkezi','$donemBaslangicTarihi','$donemBitisTarihi','1','$gender','$personel_FK')";
 
 	try{
-		$retval = $conn->exec($sqlStudentQuery);
+		$retval = $conn->query($sqlStudentQuery);
+		$studentLastID = $conn -> lastInsertId();	
+
+		if($retval === false){
+			$_SESSION["errorMessage"] = "Student Bilgilerini Kontrol Ediniz!!!<br> Ekleme Hatası: <br>";
+			header("Location: ogrenci_ekle.php");
+			exit();
+		}
+		else{	
+			if($studentLastID > 0){
+				foreach ($educationalDiagnosis as $key ) {
+					$value = (int) $key;
+					$sql = "INSERT INTO `student_diagnosis`(`student_FK`, `diagnosis_FK`) VALUES (:student_FK,:diagnosis_FK)";
+					$stmt = $conn-> prepare($sql);
+					$stmt -> bindParam(':student_FK',$studentLastID);
+					$stmt -> bindParam(':diagnosis_FK',$value);
+					$stmt -> execute();
+				}
+				runParentQuery();
+			}	
+			else{
+				unlink($target_file);
+				$_SESSION["errorMessage"] = "Student Bilgilerini Kontrol Ediniz!!! last id awd  ";
+				header("Location: ogrenci_ekle.php");
+				exit();
+			}
+		}
 	}
 	catch(Exception $e) { 
-		echo "hata<br><br>";
-		echo $e->getMessage();
+		$_SESSION["errorMessage"] = "Student Bilgilerini Kontrol Ediniz!!!<br> Error: <br>".$e->getMessage();
+		header("Location: ogrenci_ekle.php"); 
+		exit();
 	}
-	if($retval === false){
-		$_SESSION["errorMessage"] = "Student Bilgilerini Kontrol Ediniz!!!<br> Error: <br>". mysqli_error($conn);
-		header("Location: ogrenci_ekle.php");
-	}
-	else{
-		global $studentLastID;
-		$studentLastID = $conn -> lastInsertId();
-		echo "son eklenen öğrenci id : ".$studentLastID;	
-	}
-
-	/*
-	if(mysqli_query($conn,$sqlStudentQuery)){
-		global $studentLastID;
-		$studentLastID = mysqli_insert_id($conn);		
-		foreach ($educationalDiagnosis as $key ) {
-			$value = (int)$key;
-			$sql = "INSERT INTO `student_diagnosis`(`student_FK`, `diagnosis_FK`) VALUES ('$studentLastID','$value')";					
-			if(mysqli_query($conn,$sql)){
-
-			}
-			else{
-				$bool = false;
-				deleteQueries();
-				$_SESSION["errorMessage"] = "Diagnosis Eklerken Hata Oluştu. !!<br> Error: <br>". mysqli_error($conn);
-			}				
-		}	
-		if($bool){
-			runParentQuery();
-		}
-		else{
-			$_SESSION["errorMessage"] = "Student Bilgilerini Kontrol Ediniz!!!<br> Error: <br>". mysqli_error($conn);
-			header("Location: ogrenci_ekle.php");
-		}
-	}
-	else{
-		$_SESSION["errorMessage"] = "Student Bilgilerini Kontrol Ediniz!!!<br> Error: <br>". mysqli_error($conn);
-		header("Location: ogrenci_ekle.php");
-	}*/
-
-
-
 }
 
 function runParentQuery(){
@@ -373,59 +352,72 @@ function runParentQuery(){
 	$sqlParentQuery = "INSERT INTO `parent`(`tel_no`, `sabit_tel`, `tc_no`, `name`, `surname`, `adress`, `work_adress`, `description`, `email_adress`, `degree_of_proximity_FK`, `student_FK`) VALUES ('$parentCepTel','$parentSabitTel','$parentTCNumber','$parentName','$parentSurname','$parentAdress','$parentIsAdress','$aciklama','$parentEmailAdress','$proximity','$studentLastID')";
 
 
-	if(mysqli_query($conn,$sqlParentQuery)){
-			// $parentLastID = mysqli_insert_id($conn);	
-			// $_SESSION["lastParentID"] = $parentLastID;
-		$_SESSION["errorMessage"] = "Ekleme Başarı ile Tamamlandı.";
-		header("Location: ogrenci_ekle.php");
+	try{
+		$retval = $conn->exec($sqlParentQuery);
+
+	}catch(Exception $e) { 
+		deleteQueries();
+		$_SESSION["errorMessage"] = "Veli Bilgilerini Kontrol Ediniz!!!<br> Error: <br>".$e->getMessage();
+		hheader("Location: ogrenci_ekle.php"); 
+		exit();
+	}
+	if($retval === false){
+		deleteQueries();
+		$_SESSION["errorMessage"] = "Veli Bilgilerini Kontrol Ediniz!!!";
+		header("Location: ogrenci_ekle.php"); 
+		exit();
 	}
 	else{
-		$_SESSION["errorMessage"] = "Ekleme Gerçekleştirilemedi.Bilgileri Kontrol Ediniz!!! <br> Error: <br>". mysqli_error($conn);	
-		deleteQueries();
+		$_SESSION["errorMessage"] = "Ekleme Başarıyla Tamamlandı!!!";
+		header("Location: ogrenci_ekle.php"); 
+		exit();
 	}
 
-	function deleteQueries(){
-		
-		$sqlDeleteStudentQuery = "DELETE from student where student_PK='$studentLastID'";
-		$sqlDeleteDiagnosisQuery = "DELETE FROM `student_diagnosis` WHERE student_FK ='$studentLastID'";
-		if(mysqli_query($conn,$sqlDeleteStudentQuery))
-			if(mysqli_query($conn,$sqlDeleteDiagnosisQuery)){
-				$bool = false;	
-			}
 
-			header("Location: ogrenci_ekle.php");
-		}
+}
+function deleteQueries(){
+	global $target_file;
+	global $studentLastID;
+	global $conn;
+	$sqlDeleteStudentQuery = "DELETE from student where student_PK='$studentLastID'";
+	$sqlDeleteDiagnosisQuery = "DELETE FROM `student_diagnosis` WHERE student_FK ='$studentLastID'";
+
+	try{
+		$retval = $conn->exec($sqlDeleteStudentQuery);
+		$retval = $conn->exec($sqlDeleteDiagnosisQuery);
+		unlink($target_file);
+		$_SESSION["errorMessage"] = "Veri Tabanı Hatası !!";
+		header("Location: ogrenci_ekle.php");
+		exit();
+	}catch(Exception $e) { 
+		$_SESSION["errorMessage"] = "Veri Tabanı Hatası !!".$e->getMessage();
+		hheader("Location: ogrenci_ekle.php"); 
+		exit();
 	}
+}
 
-	function runSqlQuery($query){
-		if(mysqli_query($conn,$query))
-			return true;
-		else
-			return false;
-	}
 
-	function test_input($data) {
-		$data = trim($data);
-		$data = stripslashes($data);
-		$data = htmlspecialchars($data);
-		return $data;
-	}
+function test_input($data) {
+	$data = trim($data);
+	$data = stripslashes($data);
+	$data = htmlspecialchars($data);
+	return $data;
+}
 
-	function isTcKimlik($tc)  
-	{  
-		if(strlen($tc) < 11){ return false; }  
-		if($tc[0] == '0'){ return false; }  
-		$plus = ($tc[0] + $tc[2] + $tc[4] + $tc[6] + $tc[8]) * 7;  
-		$minus = $plus - ($tc[1] + $tc[3] + $tc[5] + $tc[7]);  
-		$mod = $minus % 10;  
-		if($mod != $tc[9]){ return false; }  
-		$all = '';  
-		for($i = 0 ; $i < 10 ; $i++){ $all += $tc[$i]; }  
-			if($all % 10 != $tc[10]){ return false; }  
+function isTcKimlik($tc){  
+	if(strlen($tc) < 11){ return false; }  
+	if($tc[0] == '0'){ return false; }  
+	$plus = ($tc[0] + $tc[2] + $tc[4] + $tc[6] + $tc[8]) * 7;  
+	$minus = $plus - ($tc[1] + $tc[3] + $tc[5] + $tc[7]);  
+	$mod = $minus % 10;  
+	if($mod != $tc[9]){ return false; }  
+	$all = '';  
+	for($i = 0 ; $i < 10 ; $i++){ $all += $tc[$i]; }  
+		if($all % 10 != $tc[10]){ return false; }  
 
-		return true;  
-	}  
+	return true;  
+}  
 
-	?>
+?>
 
-	<!-- PHP CHECKING INPUTS -->
+<!-- PHP CHECKING INPUTS -->

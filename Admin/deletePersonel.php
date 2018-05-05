@@ -1,21 +1,25 @@
 <?php 
 
-include 'connectDB.php';
+require_once '../connectDB.php';
 
 
-if (!$conn) {
-	die("Bağlantı Hatası: " . mysqli_connect_error());
+
+
+try{
+	$idtodelete = $_POST["id"];
+	date_default_timezone_set("Europe/Istanbul");
+	$currentDate = date("Y-m-d");
+	$sql = "UPDATE `personel` SET `status`='0',`deletion_date`='$currentDate' where personel_PK = '$idtodelete';";
+	$retval = $conn -> query($sql, PDO::FETCH_ASSOC);
+	if($retval === false){
+		echo "kayıt Silme Hatası: ";
+	}
+	else{
+		echo "Kayıt Başarıyla Silindi!!!";
+	}
 }
-$idtodelete = $_POST["id"];
-
-$sql = "DELETE FROM personel WHERE personel_PK = ".$idtodelete.";";
-
-
-if (mysqli_query($conn, $sql)) {
-   echo "Kayıt Başarıyla Silindi!!!";
-} else {
-	echo "kayıt Silme Hatası: " . mysqli_error($conn);
+catch(Exception $e) { 
+	echo "Silme Hatası :".$e->getMessage();
 }
-
-
+exit();
 ?>

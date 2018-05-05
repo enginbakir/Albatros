@@ -1,42 +1,43 @@
 <?php session_start();
 if($_SESSION['access_type'] == "admin"){ 
- ?>  
- <!DOCTYPE html>
- <html>
- <head>
+  require_once "../connectDB.php";
+  ?>  
+  <!DOCTYPE html>
+  <html>
+  <head>
 
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <!-- Tell the browser to be responsive to screen width -->
-  <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
-  <title>Albatros | Admin - Öğrenciler - Ekleme</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <title>Albatros | Admin - Öğrenciler - Ekleme</title>
 
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-3-typeahead/4.0.2/bootstrap3-typeahead.min.js"></script>  
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" />
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/0.9.13/css/bootstrap-multiselect.css" />
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/0.9.13/js/bootstrap-multiselect.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-3-typeahead/4.0.2/bootstrap3-typeahead.min.js"></script>  
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" />
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/0.9.13/css/bootstrap-multiselect.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/0.9.13/js/bootstrap-multiselect.js"></script>
 
 
 
-  <!-- Import google fonts - Heading first/ text second -->
-  <link href="http://fonts.googleapis.com/css?family=Droid+Sans:400,700" rel="stylesheet" type="text/css">
-  <link href="http://fonts.googleapis.com/css?family=Open+Sans:400,700" rel="stylesheet" type="text/css">
+    <!-- Import google fonts - Heading first/ text second -->
+    <link href="http://fonts.googleapis.com/css?family=Droid+Sans:400,700" rel="stylesheet" type="text/css">
+    <link href="http://fonts.googleapis.com/css?family=Open+Sans:400,700" rel="stylesheet" type="text/css">
 
-  <link rel="stylesheet" href="../dist/css/main.css">
-  <link rel="stylesheet" href="../dist/css/plugins.css">
-  <link rel="stylesheet" href="../dist/css/custom.css">
-  <link rel="stylesheet" href="../dist/css/bootstrap.css">
-  <!-- Bootstrap 3.3.7 -->
-  <link rel="stylesheet" href="../bower_components/bootstrap/dist/css/bootstrap.min.css">
-  <link rel="stylesheet" href="../bower_components/bootstrap/dist/css/myCss.css">
-  <!-- Font Awesome -->
-  <link rel="stylesheet" href="../bower_components/font-awesome/css/font-awesome.min.css">
-  <!-- Ionicons -->
-  <link rel="stylesheet" href="../bower_components/Ionicons/css/ionicons.min.css">
-  <!-- Theme style -->
-  <link rel="stylesheet" href="../dist/css/AdminLTE.min.css">
+    <link rel="stylesheet" href="../dist/css/main.css">
+    <link rel="stylesheet" href="../dist/css/plugins.css">
+    <link rel="stylesheet" href="../dist/css/custom.css">
+    <link rel="stylesheet" href="../dist/css/bootstrap.css">
+    <!-- Bootstrap 3.3.7 -->
+    <link rel="stylesheet" href="../bower_components/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../bower_components/bootstrap/dist/css/myCss.css">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="../bower_components/font-awesome/css/font-awesome.min.css">
+    <!-- Ionicons -->
+    <link rel="stylesheet" href="../bower_components/Ionicons/css/ionicons.min.css">
+    <!-- Theme style -->
+    <link rel="stylesheet" href="../dist/css/AdminLTE.min.css">
   <!-- AdminLTE Skins. Choose a skin from the css/skins
     folder instead of downloading all of them to reduce the load. -->
     <link rel="stylesheet" href="../dist/css/skins/_all-skins.min.css">
@@ -305,28 +306,24 @@ if($_SESSION['access_type'] == "admin"){
                           <label class="col-md-2 control-label" for="">Öğretmen Seç:</label>
                           <div class="col-md-3">
                             <div class="form-group">                                                   
-
                               <?php 
-                              require_once '../connectDB.php';
-                              $sql = "SELECT * FROM personel";
-                              /*
-                              $retval = mysqli_query( $conn,$sql );
 
-                              if(! $retval ) {
-                                die('Could not get data: ' . mysqli_error());
-                              }*/
-                              echo '<select id="ogretmen" name="ogretmen" class="fancy-select form-control fancified" >';
-                              foreach ($conn->query($sql) as $row) {
-                              echo "<option value='".$row['personel_PK']."'>".$row['personel_PK']." ".$row['name']."</option>";
-                            }
-                            echo "</select>";
-                             /* echo '<select id="ogretmen" name="ogretmen" class="fancy-select form-control fancified" >';
-                              while($row = mysqli_fetch_array($retval, MYSQL_ASSOC)) {
-                                
+
+                              try{ 
+                                $sql = "SELECT * FROM personel";
+                                echo '<select id="ogretmen" name="ogretmen" class="fancy-select form-control fancified" >';
+
+                                foreach ($conn->query($sql) as $row) {
+                                  echo "<option value='".$row['personel_PK']."'>".$row['personel_PK']." ".$row['name']."</option>";
+                                }
+                                echo "</select>";          
                               }
-                              echo "</select>";
-                              */
+                              catch(Exception $e) { 
+                                echo "Öğretmen Listeleme Hatası :".$e->getMessage();
+                              }
+
                               ?>
+
                             </div>
                           </div>
                           <label class="col-md-2 control-label" for=""></label>
@@ -515,7 +512,6 @@ unset($_SESSION["parentMobilePhoneErr"]);
 unset($_SESSION["donemBaslangicTarihi"]);
 unset($_SESSION["donemBitisTarihi"]);
 
-mysqli_close($conn);
 ?>
 
 </body>
@@ -526,4 +522,7 @@ mysqli_close($conn);
 else{
 
  header("location: ../index.php");
-}?>
+
+}
+exit();
+?>

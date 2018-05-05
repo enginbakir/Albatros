@@ -75,10 +75,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
 		$counter = 0;
 		foreach ($_POST["framework"] as $key) {
 			$query = "SELECT diagnosis_PK FROM educational_diagnosis where diagnosis = '".$key."';";
-			$result = mysqli_query($conn,$query);
-			$row = mysqli_fetch_array($result,MYSQL_ASSOC);
-			$educationalDiagnosis [$counter] = $row['diagnosis_PK'];
-			$counter ++;
+			try{
+				foreach ($conn->query($query) as $row) {
+
+					$educationalDiagnosis [$counter] = $row['diagnosis_PK'];
+					$counter ++;
+				}
+			}
+			catch (Exception $e) { 
+				echo "diagnosis hata<br>";
+				echo $e->getMessage();
+			}
 		}
 	}
 	else{
@@ -92,14 +99,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
 	$target_dir = "../images/";
 	$target_file = $target_dir . basename($_FILES["fileToUpload"]["name"]);
 	$imageFileType = strtolower(pathinfo($target_file,PATHINFO_EXTENSION));
-	$_SESSION["imageName"] = $target_file;
+
 
 	$fileErrors = array();
 
 // Check if image file is a actual image or fake image
 
-	if(strlen($target_file) < 11)
-		$target_file = "../images/avatar5.png";
+	if(strlen($target_file) < 11){
+	}
 	else{
 		if(isset($_POST["fileToUpload"])) {
 			$check = getimagesize($_FILES["fileToUpload"]["tmp_name"]);
@@ -122,7 +129,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
 			$fileErrors[3] = "Sadece JPG, JPEG ve PNG Dosyaları Kabul Edilir!!";
 		}
 
-
 		if(empty($fileErrors) == true && $bool == true) {
 			if (move_uploaded_file($_FILES["fileToUpload"]["tmp_name"], $target_file)) {
 				echo "The file ". basename( $_FILES["fileToUpload"]["name"]). " has been uploaded.";
@@ -136,8 +142,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
 		}
 	}
 //// FOTOĞRAF KONTROLÜ BURADAN YUKARIYA /////
-
-
 
 	if(!empty($_POST["gender"])){
 		if($_POST["gender"] == "Kız")
@@ -159,7 +163,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
 	if(!empty($_POST["studentClass"]))
 		$class = $_POST["studentClass"];
 	if(!empty($_POST["studentRapor"]))
-		$rapor_no = $_POST["studentRapor"];
+		$studentRapor = $_POST["studentRapor"];
 	if(!empty($_POST["studentBirthDay"]))
 		$birthday = $_POST["studentBirthDay"];
 	if(!empty($_POST["registrationDate"]))
@@ -274,9 +278,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
 			runStudentQuery();
 		}
 		else{
-			echo "bool is false<br>";
-			$url = "location: ogrenci_duzenle.php?id=".$studentID;
-			header($url);
+			header("location: ogrenci_duzenle.php?id=".$studentID);
+			exit();
 		}
 
 /// END OF REQUEST IF CODE BLOCK  ///
@@ -290,38 +293,45 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
 		global $bool;
 		global $class,$donemBitisTarihi,$donemBaslangicTarihi,$studentRapor,$studentSurname,$studentName,$TCNumber,$currentDate,$rehberlikMerkezi,$gender,$birthday,$target_file,$personel_FK,$studentID,$educationalDiagnosis,$transportation,$registrationDate;
 		
-		if(strlen($target_file) < 11)
-			$target_file = "../images/avatar5.png";
-		echo $target_file;
+		$sql = "SELECT * FROM student where student_PK = $studentID";
+		$row = $conn->query($sql, PDO::FETCH_ASSOC)->fetch();		
 
+		if(strlen($target_file) < 11){	
+			$target_file = $row['photo'];
+		}else{
+			$fileToDelete = $row['photo'];
+			unlink($fileToDelete);
+		}
 		$sqlStudentQuery = "UPDATE `student` SET `tc_no`='$TCNumber',`name`='$studentName',`surname`='$studentSurname',`class`= '$class' ,`rapor_no`= '$studentRapor' ,`birthday`= '$birthday' ,`photo`='$target_file',`registration_date`='$currentDate',`rehberlik_merkezi`='$rehberlikMerkezi',`term_start_date`='$donemBaslangicTarihi',`term_finish_date`='$donemBitisTarihi',`gender_FK`='$gender',`personel_FK`='$personel_FK' WHERE student_PK = '$studentID'";
 
-		if(mysqli_query($conn,$sqlStudentQuery)){
-			$_SESSION["errorMessage"] = "Ekleme Başarıyla Tamamlandı!!";
-			echo "<br>Ekleme Başarıyla Tamamlandı!!";
 
+		try{
+			$retval = $conn->query($sqlStudentQuery);	
 
-			if(mysqli_query($conn,"DELETE FROM student_diagnosis where student_FK = '$studentID'")){
-				foreach ($educationalDiagnosis as $key ) {
-					$value = (int)$key;
-					$sql = "INSERT INTO `student_diagnosis`(`student_FK`, `diagnosis_FK`) VALUES ('$studentID','$value')";					
-					if(mysqli_query($conn,$sql)){
-						header("location: ogrenci_duzenle.php?id=".$studentID);		
-					}
-					else{
-						$bool = false;
-						$_SESSION["errorMessage"] = "Diagnosis Eklerken Hata Oluştu. !!<br> Error: <br>". mysqli_error($conn);
-					}				
-				}	
-				if($bool == true)
-					runParentQuery();
+			if($retval === false){
+				$_SESSION["errorMessage"] = "Student Bilgilerini Kontrol Ediniz!!!<br> Ekleme Hatası: <br>retval :" .$retval;
+				header("location: ogrenci_duzenle.php?id=".$studentID);
+				exit();
 			}
-			header("location: ogrenci_duzenle.php?id=".$studentID);	
+			else{
+				$sqlDeleteDiagnosisQuery = "DELETE FROM `student_diagnosis` WHERE student_FK ='$studentID'";
+				$retval = $conn->exec($sqlDeleteDiagnosisQuery);
+				foreach ($educationalDiagnosis as $key ) {
+					$value = (int) $key;
+					$sql = "INSERT INTO `student_diagnosis`(`student_FK`, `diagnosis_FK`) VALUES (:student_FK,:diagnosis_FK)";
+					$stmt = $conn-> prepare($sql);
+					$stmt -> bindParam(':student_FK',$studentID);
+					$stmt -> bindParam(':diagnosis_FK',$value);
+					$stmt -> execute();
+				}
+				runParentQuery();
+			}				
 
 		}
-		else{
-			$_SESSION["errorMessage"] = "Student Bilgilerini Kontrol Ediniz!!!<br> Error: <br>". mysqli_error($conn);
-			header("location: ogrenci_duzenle.php?id=".$studentID);	
+		catch(Exception $e) { 
+			$_SESSION["errorMessage"] = "Student Bilgilerini Kontrol Ediniz!!!<br> Error: <br>".$e->getMessage();
+			header("location: ogrenci_duzenle.php?id=".$studentID);
+			exit();
 		}
 	}
 
@@ -332,14 +342,26 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
 
 		$sqlParentQuery = "UPDATE `parent` SET `tel_no`='$parentCepTel',`sabit_tel`='$parentSabitTel',`tc_no`='$parentTCNumber',`name`='$parentName',`surname`='$parentSurname',`adress`='$parentAdress',`work_adress`='$parentIsAdress',`description`='$aciklama',`email_adress`='$parentEmailAdress',`degree_of_proximity_FK`='$proximity' WHERE student_FK = '$studentID'";
 
-		if(mysqli_query($conn,$sqlParentQuery)){
-			$_SESSION["errorMessage"] = "Ekleme Başarıyla Tamamlandı!!";
-			
-		}
-		else
-			$_SESSION["errorMessage"] = "Öğrenci Güncelleme Başarıyla Tamamlandı.<br>Veli Güncellemesini Tekrar Deneyiniz!!!";
+		try{
 
-		header("location: ogrenci_duzenle.php?id=".$studentID);	
+			$retval = $conn->exec($sqlParentQuery);	
+			if($retval > 0){		
+				$_SESSION["errorMessage"] = "Düzenleme Başarıyla Tamamlandı!!!";
+				header("location: ogrenci_duzenle.php?id=".$studentID);
+				exit();	
+			}
+			else{
+				$_SESSION["errorMessage"] = "Öğrenci Bilgileri Değiştirildi!!!";
+				header("location: ogrenci_duzenle.php?id=".$studentID);
+				exit();
+			}						
+
+		}
+		catch(Exception $e) { 
+			$_SESSION["errorMessage"] = "Student Bilgilerini Kontrol Ediniz!!!<br> Error: <br>".$e->getMessage();
+			header("location: ogrenci_duzenle.php?id=".$studentID);
+			exit();
+		}
 	}
 
 	function test_input($data) {
@@ -363,12 +385,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
 
 		return true;  
 	}  
-
-
-
-
-
-	mysqli_close($conn);
 	exit();
 	?>
 

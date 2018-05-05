@@ -1,20 +1,26 @@
-<!DOCTYPE html>
-<html>
-<head>
-	<meta charset="utf-8">
-	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>Albatros | Admin - Personeller</title>
-	<!-- Tell the browser to be responsive to screen width -->
-	<meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
-	<!-- Bootstrap 3.3.7 -->
-	<link rel="stylesheet" href="../bower_components/bootstrap/dist/css/bootstrap.min.css">
-	<link rel="stylesheet" href="../bower_components/bootstrap/dist/css/myCss.css">
-	<!-- Font Awesome -->
-	<link rel="stylesheet" href="../bower_components/font-awesome/css/font-awesome.min.css">
-	<!-- Ionicons -->
-	<link rel="stylesheet" href="../bower_components/Ionicons/css/ionicons.min.css">
-	<!-- Theme style -->
-	<link rel="stylesheet" href="../dist/css/AdminLTE.min.css">
+<?php 
+session_start();
+if($_SESSION['access_type'] == "admin"){ 
+	require_once "../connectDB.php";
+	?>
+
+	<!DOCTYPE html>
+	<html>
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<title>Albatros | Admin - Personeller</title>
+		<!-- Tell the browser to be responsive to screen width -->
+		<meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+		<!-- Bootstrap 3.3.7 -->
+		<link rel="stylesheet" href="../bower_components/bootstrap/dist/css/bootstrap.min.css">
+		<link rel="stylesheet" href="../bower_components/bootstrap/dist/css/myCss.css">
+		<!-- Font Awesome -->
+		<link rel="stylesheet" href="../bower_components/font-awesome/css/font-awesome.min.css">
+		<!-- Ionicons -->
+		<link rel="stylesheet" href="../bower_components/Ionicons/css/ionicons.min.css">
+		<!-- Theme style -->
+		<link rel="stylesheet" href="../dist/css/AdminLTE.min.css">
   <!-- AdminLTE Skins. Choose a skin from the css/skins
   	folder instead of downloading all of them to reduce the load. -->
   	<link rel="stylesheet" href="../dist/css/skins/_all-skins.min.css">
@@ -83,14 +89,14 @@
 							<!-- /.box-header -->
 							<div class="box-body">
 
-								<form class="form-inline" action="/action_page.php" style="padding-bottom: 10px">
+								<form class="form-inline" action="" style="padding-bottom: 10px">
 									<div class="form-group">
 										<label for="">Adı:</label>
-										<input type="text" class="form-control" id="adi" placeholder="Personelin Adı" name="Personel adı">
+										<input type="text" class="form-control" name="firstname" id="adi" placeholder="Personelin Adı" name="Personel adı">
 									</div>
 									<div class="form-group">
 										<label for="">Soyadı:</label>
-										<input type="text" class="form-control" id="soyadi" placeholder="Personelin Soyadı" name="Personel Soyad">
+										<input type="text" class="form-control" name="surname" id="soyadi" placeholder="Personelin Soyadı" name="Personel Soyad">
 									</div>
 									<button type="submit" class="btn btn-primary">Listele</button>
 								</form>
@@ -103,6 +109,7 @@
 														<th>ID</th>
 														<th>İsim</th>
 														<th>Soyisim</th>
+														<th>Durum</th>
 														<th>Ünvan</th>
 														<th>Telefon</th>                              
 													</tr>
@@ -110,9 +117,7 @@
 												<tbody id="tbody">
 
 
-													<?php 
-
-													require_once "../connectDB.php";
+													<?php 	
 
 													$name;
 													$surname;
@@ -131,29 +136,32 @@
 														$sql = "SELECT * from personel where surname='".$surname."' INNER JOIN personel_types on personel.personel_type_FK=personel_types.personel_type_PK;";
 													}
 													if (!isset($name) && !isset($surname)) {
-														//$sql = "SELECT * FROM personel ";
-														$sql = "select * from personel INNER JOIN personel_types on personel.personel_type_FK=personel_types.personel_type_PK";
+														$sql = "SELECT * from personel INNER JOIN personel_types on personel.personel_type_FK=personel_types.personel_type_PK;";
 													}  
 
 													unset($_POST['firstname']);
 													unset($_POST['surname']);
-													$retval = mysqli_query( $conn, $sql );
+													try{
+														$retval = $conn->query($sql, PDO::FETCH_ASSOC);
+														foreach ($retval as $row) {
 
-													$num_rows = mysqli_num_rows($retval);
-													if(! $retval ) {
-														die('Could not get data: ' . mysqli_error());
+															echo "<tr>";
+
+															echo "<td class='id'>".$row['personel_PK']."</td>";
+															echo "<td class='isim'>".$row['name']."</td>";
+															echo "<td class='soyisim'>".$row['surname']."</td>";
+															if($row['status'] == 1)
+																echo "<td class='durum'>Kayıtlı</td>";
+															else
+																echo "<td class='durum'>Silindi</td>";
+															echo "<td class='unvan'>".$row['personel_type']."</td>";
+															echo "<td class='tel_no'>".$row['tel_no']."</td>";
+
+															echo "</tr>";
+														}
 													}
-
-													while($row = mysqli_fetch_array($retval, MYSQL_ASSOC)) {
-														echo "<tr>";
-
-														echo "<td class='id'>".$row['personel_PK']."</td>";
-														echo "<td class='isim'>".$row['name']."</td>";
-														echo "<td class='soyisim'>".$row['surname']."</td>";
-														echo "<td class='unvan'>".$row['personel_type']."</td>";
-														echo "<td class='tel_no'>".$row['tel_no']."</td>";
-
-														echo "</tr>";
+													catch(Exception $e) { 
+														echo "Listeleme Hatası :".$e->getMessage();
 													}
 													?>
 												</tbody>
@@ -169,10 +177,7 @@
 										<button id="silButton" type="button" class="btn btn-primary">&nbsp;&nbsp;Sil&nbsp;&nbsp;</button>
 									</div>
 									<div class="btn-group">
-										<button type="button" class="btn btn-primary">&nbsp;&nbsp;Düzenle&nbsp;&nbsp;</button>
-									</div>
-									<div class="btn-group">
-										<button type="button" class="btn btn-primary">&nbsp;&nbsp;Yenile&nbsp;&nbsp;</button>
+										<button id="duzenle" type="button" class="btn btn-primary">&nbsp;&nbsp;Düzenle&nbsp;&nbsp;</button>
 									</div>
 								</div>             
 							</div>
@@ -622,38 +627,51 @@
 		soyisim = $('.soyisim',this).text();
 	});
 
-		
-		
+	$('#duzenle').on("click",function(){
+		if(id>0)
+			window.location = "personel_duzenle.php?id="+id;
+		else
+			alert("Bir Personel Seçin");
+	});
 
-		
+
 	$("#silButton").on("click",function(){
-    
-    if(id>0){
-    	var answer = confirm("Kaydı Silmeyi Onaylıyor Musunuz ??");
-    	if(answer){
-    		$.ajax({
-    			type:"POST",
-    			url:"deletePersonel.php",
-    			data:{id:id,isim:isim},
-    			success:function(data){
-    				alert(data);
-    				location.reload();
-    			}
-    		});
-    	}
-    	else {
-    		return false;
-    	}
-    }
-    if(id < 0)
-    	alert("Bir Kayıt Seçin!!!");
-});
 
-$("#notlar").on("click",function(){
+		if(id>0){
+			var answer = confirm("Kaydı Silmeyi Onaylıyor Musunuz ??");
+			if(answer){
+				$.ajax({
+					type:"POST",
+					url:"deletePersonel.php",
+					data:{id:id,isim:isim},
+					success:function(data){
+						alert(data);
+						location.reload();
+					}
+				});
+			}
+			else {
+				return false;
+			}
+		}
+		if(id < 0)
+			alert("Bir Kayıt Seçin!!!");
+	});
 
-})
+	
+
+
+	$("#notlar").on("click",function(){
+
+	})
 </script>
 
 </div>
 </body>
 </html>
+
+<?php 
+}
+else{
+	header("location: ../index.php");
+}?>

@@ -93,11 +93,11 @@ if($_SESSION['access_type'] == "admin"){
 
 								<form class="form-inline" action ="" method="post" style="padding-bottom: 10px">
 									<div class="form-group">
-										<label for="email">Adı:</label>
+										<label >Adı:</label>
 										<input type="text" class="form-control" name="firstname" id="adi" placeholder="Öğrencinin Adı" name="Öğrenci adı">
 									</div>
 									<div class="form-group">
-										<label for="pwd">Soyadı:</label>
+										<label >Soyadı:</label>
 										<input type="text" class="form-control" name="surname" id="soyadi" placeholder="Öğrencinin Soyadı" name="Soyad">
 									</div>
 									<button id="searchStudent" type="submit" class="btn btn-primary">Listele</button>
@@ -113,6 +113,7 @@ if($_SESSION['access_type'] == "admin"){
 															<th>ID</th>
 															<th>İsim</th>
 															<th>Soyisim</th>
+															<th>Durum</th>
 															<th>Cinsiyet</th>
 															<th>Sınıf</th>
 															<th>Devamsızlık</th>
@@ -144,50 +145,36 @@ if($_SESSION['access_type'] == "admin"){
 														}
 														unset($_POST['firstname']);
 														unset($_POST['surname']);
+														try{
+															$retval = $conn->query($sql, PDO::FETCH_ASSOC);
+															foreach ($retval as $row) {
+																echo "<tr>";
 
-														foreach ($conn->query($sql) as $row) {
-															echo "<tr>";
+																echo "<td class='id'>".$row['student_PK']."</td>";
+																echo "<td class='isim'>".$row['name']."</td>";
+																echo "<td class='soyisim'>".$row['surname']."</td>";
+																if($row['status'] == 1)
+																	echo "<td class='durum'>Kayıtlı</td>";
+																else
+																	echo "<td class='durum'>Silindi</td>";
+																echo "<td class='gender'>Erkek</td>
+																<td class='sinif'>3</td>
+																<td>0</td>";
 
-															echo "<td class='id'>".$row['student_PK']."</td>";
-															echo "<td class='isim'>".$row['name']."</td>";
-															echo "<td class='soyisim'>".$row['surname']."</td>";
-
-															echo "<td class='gender'>Erkek</td>
-															<td class='sinif'>3</td>
-															<td>0</td>";
-
-															echo "</tr>";
+																echo "</tr>";
+															}
 														}
-
-
-														/*$retval = mysqli_query( $conn, $sql );
-
-														$num_rows = mysqli_num_rows($retval);
-														if(! $retval ) {
-															die('Could not get data: ' . mysqli_error());
+														catch(Exception $e) { 
+															echo "Listeleme Hatası :".$e->getMessage();
 														}
-
-														while($row = mysqli_fetch_array($retval, MYSQL_ASSOC)) {
-															echo "<tr>";
-
-															echo "<td class='id'>".$row['student_PK']."</td>";
-															echo "<td class='isim'>".$row['name']."</td>";
-															echo "<td class='soyisim'>".$row['surname']."</td>";
-
-															echo "<td>Erkek</td>
-															<td>3</td>
-															<td>0</td>";
-
-															echo "</tr>";
-														}
-														mysqli_close($conn);*/
+														
 														?>
 
 													</tbody>
 												</table>
 											</div>
 
-											<div class="col col-s-6"> <?php echo "<br>Kayıtlı Öğrenci Sayısı: ".$num_rows ?>
+											<div class="col col-s-6"> <?php echo "<br>Kayıtlı Öğrenci Sayısı: ".$retval->rowCount(); ?>
 											</div>
 											<div class="col col-xs-8">
 												<ul class="pagination hidden-xs pull-right">
@@ -202,240 +189,236 @@ if($_SESSION['access_type'] == "admin"){
 												</div>
 												<div class="btn-group">
 													<button id="duzenle" type="button" class="btn btn-primary">&nbsp;&nbsp;Düzenle&nbsp;&nbsp;</button>
-													<!--
-													<a href="ogrenci_düzenle.php" class="btn btn-primary" role="button">&nbsp;&nbsp;Düzenle&nbsp;&nbsp;</a>
-												-->
-											</div>
-											<div class="btn-group">
-												<button type="button" class="btn btn-primary">&nbsp;&nbsp;Yenile&nbsp;&nbsp;</button>
-											</div>
-										</div>           
+												</div>
+											</div>           
+										</div>
+										<!-- /.box-body -->
 									</div>
-									<!-- /.box-body -->
+									<!-- /.box -->
 								</div>
-								<!-- /.box -->
-							</div>
 
 
 
-							<!-- START OF RIGHT PAGE -->
+								<!-- START OF RIGHT PAGE -->
 
-							<div class="col-md-6">
-								<!-- /.box -->
-								<div class="box">
-									<div class="box-header">
-										<h3 id="studentInfoTitle" class="box-title"> Öğrenci Bilgiler</h3>
-									</div>
-									<!-- /.box-header -->
-									<div class="box-body" style="padding-right: 20px; padding-left: 20px;">
-										<div class="row">
-											<ul class="nav nav-tabs">
-												<li id="notlar" class="active"><a data-toggle="tab" href="#home">Notlar</a></li>
-												<li><a data-toggle="tab" href="#menu1">Veli Bilgileri</a></li>
-												<li><a data-toggle="tab" href="#menu2">Öğrenci Bilgileri</a></li>
-												<li><a data-toggle="tab" href="#menu3">Takvim</a></li>
-												<li><a data-toggle="tab" href="#menu4">Mail</a></li>
-											</ul>
+								<div class="col-md-6">
+									<!-- /.box -->
+									<div class="box">
+										<div class="box-header">
+											<h3 id="studentInfoTitle" class="box-title"> Öğrenci Bilgiler</h3>
+										</div>
+										<!-- /.box-header -->
+										<div class="box-body" style="padding-right: 20px; padding-left: 20px;">
+											<div class="row">
+												<ul class="nav nav-tabs">
+													<li id="notlar" class="active"><a data-toggle="tab" href="#home">Notlar</a></li>
+													<li><a data-toggle="tab" href="#menu1">Veli Bilgileri</a></li>
+													<li><a data-toggle="tab" href="#menu2">Öğrenci Bilgileri</a></li>
+													<li><a data-toggle="tab" href="#menu3">Takvim</a></li>
+													<li><a data-toggle="tab" href="#menu4">Mail</a></li>
+												</ul>
 
-											<div class="tab-content">
-												<div id="home" class="tab-pane fade in active">
-													<div class="row">
-														<div class="col-md-12" style="margin-bottom: 10px;">
-															<table id="example23" class="table table-bordered table-hover">
-																<thead>
-																	<tr>
-																		<th>Öğretmen</th>
-																		<th>Not</th>
-																		<th>Tarih</th>
-																	</tr>
-																</thead>
-																<tbody id="notes">
+												<div class="tab-content">
+													<div id="home" class="tab-pane fade in active">
+														<div class="row">
+															<div class="col-md-12" style="margin-bottom: 10px;">
+																<table id="example23" class="table table-bordered table-hover">
+																	<thead>
+																		<tr>
+																			<th>Öğretmen</th>
+																			<th>Not</th>
+																			<th>Tarih</th>
+																		</tr>
+																	</thead>
+																	<tbody id="notes">
 
-																</tbody>
-															</table>
+																	</tbody>
+																</table>
+															</div>
 														</div>
 													</div>
-												</div>
-												<div id="menu1" class="tab-pane fade">
-													<div class="row">
-														<div class="col-md-12">
-															<table id="example2" class="table table-bordered table-hover">
-																<thead>
-																	<tr>
-																		<th>İsim</th>
-																		<th>Soyisim</th>
-																		<th>Telefon</th>
-																		<th>E-mail</th>
-																	</tr>
-																</thead>
-																<tbody>
-																	<tr>
-																		<td>Neriman</td>
-																		<td>Bakır</td>
-																		<td>05447895632</td>
-																		<td>neriman.bkr@yahoo.com</td>
-																	</tr>
-																	<tr>
-																		<td>Cevdet</td>
-																		<td>Bakır</td>
-																		<td>05332648511</td>
-																		<td>cevdet.bkr@yahoo.com</td>
-																	</tr>
-																</tbody>
-															</table>
+													<div id="menu1" class="tab-pane fade">
+														<div class="row">
+															<div class="col-md-12">
+																<table id="example2" class="table table-bordered table-hover">
+																	<thead>
+																		<tr>
+																			<th>İsim</th>
+																			<th>Soyisim</th>
+																			<th>Telefon</th>
+																			<th>E-mail</th>
+																		</tr>
+																	</thead>
+																	<tbody>
+																		<tr>
+																			<td>Neriman</td>
+																			<td>Bakır</td>
+																			<td>05447895632</td>
+																			<td>neriman.bkr@yahoo.com</td>
+																		</tr>
+																		<tr>
+																			<td>Cevdet</td>
+																			<td>Bakır</td>
+																			<td>05332648511</td>
+																			<td>cevdet.bkr@yahoo.com</td>
+																		</tr>
+																	</tbody>
+																</table>
+															</div>
 														</div>
 													</div>
-												</div>
-												<div id="menu2" class="tab-pane fade">
-													<div class="box box-primary">
-														<div class="box-body box-profile">
-
-															<img id = "ogrenciPhoto" class="profile-user-img img-responsive img-circle" src="../dist/img/avatar5.png" alt="User profile picture">
-
-															<h3 class="profile-username text-center">Engin Bakır</h3>
-															<ul class="list-group list-group-unbordered">
-																<li class="list-group-item">
-																	<b>TC</b> <a class="pull-right">20154895748</a>
-																</li>
-																<li class="list-group-item">
-																	<b>Adres</b> <a class="pull-right">Lorem ipsum dolor sit amet, consectetur.</a>
-																</li>
-																<li class="list-group-item">
-																	<b>Ulaşım</b> <a class="pull-right">Servis</a>
-																</li>
-																<li class="list-group-item">
-																	<b>Eğitsel Tanı</b> <a class="pull-right">Excepteur sint occaecat.</a>
-																</li>
-																<li class="list-group-item">
-																	<b>BEP</b> <a class="pull-right">engin_bakır.pdf</a>
-																</li>
-																<li class="list-group-item">
-																	<b>Dönem Başlayış Tarihi</b> <a class="pull-right">18.09.2017</a>
-																</li>
-																<li class="list-group-item">
-																	<b>Dönem Bitiş Tarihi</b> <a class="pull-right">07.06.2018</a>
-																</li>
-															</ul>
-														</div>
-														<!-- /.box-body -->
-													</div>
-												</div>
-												<div id="menu3" class="tab-pane fade">
-													<p>Takvim Menüsü</p>
-												</div>
-												<div id="menu4" class="tab-pane fade">
-													<div class="col-md-12">
+													<div id="menu2" class="tab-pane fade">
 														<div class="box box-primary">
-															<div class="box-header with-border"><h3 class="box-title">Compose New Message</h3></div>
-															<!-- /.box-header -->
-															<div class="box-body">
-																<div class="form-group"><input class="form-control" placeholder="To: neriman_bkr@yahoo.com"></div>
-																<div class="form-group"><input class="form-control" placeholder="Subject:"></div>
-																<div class="form-group">
-																	<ul class="wysihtml5-toolbar" style="">
-																		<li class="dropdown">
-																			<a class="btn btn-default dropdown-toggle " data-toggle="dropdown">
-																				<span class="glyphicon glyphicon-font"></span>
-																				<span class="current-font">Normal text</span>
-																				<b class="caret"></b>
-																			</a>
-																			<ul class="dropdown-menu">
-																				<li><a data-wysihtml5-command="formatBlock" data-wysihtml5-command-value="p" tabindex="-1" href="javascript:;" unselectable="on">Normal text</a></li>
-																				<li><a data-wysihtml5-command="formatBlock" data-wysihtml5-command-value="h1" tabindex="-1" href="javascript:;" unselectable="on">Heading 1</a></li>
-																				<li><a data-wysihtml5-command="formatBlock" data-wysihtml5-command-value="h2" tabindex="-1" href="javascript:;" unselectable="on">Heading 2</a></li>
-																				<li><a data-wysihtml5-command="formatBlock" data-wysihtml5-command-value="h3" tabindex="-1" href="javascript:;" unselectable="on">Heading 3</a></li>
-																				<li><a data-wysihtml5-command="formatBlock" data-wysihtml5-command-value="h4" tabindex="-1" href="javascript:;" unselectable="on">Heading 4</a></li>
-																				<li><a data-wysihtml5-command="formatBlock" data-wysihtml5-command-value="h5" tabindex="-1" href="javascript:;" unselectable="on">Heading 5</a></li>
-																				<li><a data-wysihtml5-command="formatBlock" data-wysihtml5-command-value="h6" tabindex="-1" href="javascript:;" unselectable="on">Heading 6</a></li>
-																			</ul>
-																		</li>
+															<div class="box-body box-profile">
 
-																		<li>
-																			<div class="btn-group">
-																				<a class="btn  btn-default" data-wysihtml5-command="bold" title="CTRL+B" tabindex="-1" href="javascript:;" unselectable="on">B</a>
-																				<a class="btn  btn-default" data-wysihtml5-command="italic" title="CTRL+I" tabindex="-1" href="javascript:;" unselectable="on">I</a>
-																				<a class="btn  btn-default" data-wysihtml5-command="underline" title="CTRL+U" tabindex="-1" href="javascript:;" unselectable="on">U</a>
-																				<a class="btn  btn-default" data-wysihtml5-command="small" title="CTRL+S" tabindex="-1" href="javascript:;" unselectable="on">S</a>
-																			</div>
-																		</li>
+																<img id = "ogrenciPhoto" class="profile-user-img img-responsive img-circle" src="../dist/img/avatar5.png" alt="User profile picture">
 
-																		<li>
-																			<div class="bootstrap-wysihtml5-insert-link-modal modal fade" data-wysihtml5-dialog="createLink">
-																				<div class="modal-dialog ">
-																					<div class="modal-content">
-																						<div class="modal-header">
-																							<a class="close" data-dismiss="modal">×</a>
-																							<h3>Insert link</h3>
-																						</div>
-																						<div class="modal-body">
-																							<div class="form-group">
-																								<input value="http://" class="bootstrap-wysihtml5-insert-link-url form-control" data-wysihtml5-dialog-field="href">
-																							</div> 
-																							<div class="checkbox">
-																								<label> 
-																									<input type="checkbox" class="bootstrap-wysihtml5-insert-link-target" checked="">Open link in new window
-																								</label>
-																							</div>
-																						</div>
-																						<div class="modal-footer">
-																							<a class="btn btn-default" data-dismiss="modal" data-wysihtml5-dialog-action="cancel" href="#">Cancel</a>
-																							<a href="#" class="btn btn-primary" data-dismiss="modal" data-wysihtml5-dialog-action="save">Insert link</a>
-																						</div>
-																					</div>
-																				</div>
-																			</div>
-																			<a class="btn  btn-default" data-wysihtml5-command="createLink" title="Insert link" tabindex="-1" href="javascript:;" unselectable="on">
-																				<span class="glyphicon glyphicon-share"></span>
-																			</a>
-																		</li>
-
-																		<li>
-																			<div class="bootstrap-wysihtml5-insert-image-modal modal fade" data-wysihtml5-dialog="insertImage">
-																				<div class="modal-dialog ">
-																					<div class="modal-content">
-																						<div class="modal-header">
-																							<a class="close" data-dismiss="modal">×</a>
-																							<h3>Insert image</h3>
-																						</div>
-																						<div class="modal-body">
-																							<div class="form-group">
-																								<input value="http://" class="bootstrap-wysihtml5-insert-image-url form-control" data-wysihtml5-dialog-field="src">
-																							</div> 
-																						</div>
-																						<div class="modal-footer">
-																							<a class="btn btn-default" data-dismiss="modal" data-wysihtml5-dialog-action="cancel" href="#">Cancel</a>
-																							<a class="btn btn-primary" data-dismiss="modal" data-wysihtml5-dialog-action="save" href="#">Insert image</a>
-																						</div>
-																					</div>
-																				</div>
-																			</div>
-																			<a class="btn  btn-default" data-wysihtml5-command="insertImage" title="Insert image" tabindex="-1" href="javascript:;" unselectable="on">
-																				<span class="glyphicon glyphicon-picture"></span>
-																			</a>
-																		</li>
-																	</ul>
-																	<textarea id="compose-textarea" class="form-control" style="height: 200px;"></textarea>
-																	<iframe class="wysihtml5-sandbox" security="restricted" allowtransparency="true" frameborder="0" width="0" height="0" marginwidth="0" marginheight="0" style="display: block; background-color: rgb(255, 255, 255); border-collapse: separate; border-color: rgb(210, 214, 222); border-style: solid; border-width: 1px; clear: none; float: none; margin: 0px; outline: rgb(85, 85, 85) none 0px; outline-offset: 0px; padding: 6px 12px; position: static; top: auto; left: auto; right: auto; bottom: auto; z-index: auto; vertical-align: baseline; text-align: start; box-sizing: border-box; box-shadow: none; border-radius: 0px; width: 100%; height: 100px; display:none;"></iframe>
-																</div>
-																<div class="form-group">
-																	<div class="btn btn-default btn-file">
-																		<i class="fa fa-paperclip"></i> Attachment
-																		<input type="file" name="attachment">
-																	</div>
-																	<p class="help-block">Max. 32MB</p>
-																</div>
+																<h3 class="profile-username text-center">Engin Bakır</h3>
+																<ul class="list-group list-group-unbordered">
+																	<li class="list-group-item">
+																		<b>TC</b> <a class="pull-right">20154895748</a>
+																	</li>
+																	<li class="list-group-item">
+																		<b>Adres</b> <a class="pull-right">Lorem ipsum dolor sit amet, consectetur.</a>
+																	</li>
+																	<li class="list-group-item">
+																		<b>Ulaşım</b> <a class="pull-right">Servis</a>
+																	</li>
+																	<li class="list-group-item">
+																		<b>Eğitsel Tanı</b> <a class="pull-right">Excepteur sint occaecat.</a>
+																	</li>
+																	<li class="list-group-item">
+																		<b>BEP</b> <a class="pull-right">engin_bakır.pdf</a>
+																	</li>
+																	<li class="list-group-item">
+																		<b>Dönem Başlayış Tarihi</b> <a class="pull-right">18.09.2017</a>
+																	</li>
+																	<li class="list-group-item">
+																		<b>Dönem Bitiş Tarihi</b> <a class="pull-right">07.06.2018</a>
+																	</li>
+																</ul>
 															</div>
 															<!-- /.box-body -->
-															<div class="box-footer">
-																<div class="pull-right">
-																	<button type="button" class="btn btn-default"><i class="fa fa-pencil"></i> Draft</button>
-																	<button type="submit" class="btn btn-primary"><i class="fa fa-envelope-o"></i> Send</button>
-																</div>
-																<button type="reset" class="btn btn-default"><i class="fa fa-times"></i> Discard</button>
-															</div>
-															<!-- /.box-footer -->
 														</div>
-														<!-- /. box -->
+													</div>
+													<div id="menu3" class="tab-pane fade">
+														<p>Takvim Menüsü</p>
+													</div>
+													<div id="menu4" class="tab-pane fade">
+														<div class="col-md-12">
+															<div class="box box-primary">
+																<div class="box-header with-border"><h3 class="box-title">Compose New Message</h3></div>
+																<!-- /.box-header -->
+																<div class="box-body">
+																	<div class="form-group"><input class="form-control" placeholder="To: neriman_bkr@yahoo.com"></div>
+																	<div class="form-group"><input class="form-control" placeholder="Subject:"></div>
+																	<div class="form-group">
+																		<ul class="wysihtml5-toolbar" style="">
+																			<li class="dropdown">
+																				<a class="btn btn-default dropdown-toggle " data-toggle="dropdown">
+																					<span class="glyphicon glyphicon-font"></span>
+																					<span class="current-font">Normal text</span>
+																					<b class="caret"></b>
+																				</a>
+																				<ul class="dropdown-menu">
+																					<li><a data-wysihtml5-command="formatBlock" data-wysihtml5-command-value="p" tabindex="-1" href="javascript:;" unselectable="on">Normal text</a></li>
+																					<li><a data-wysihtml5-command="formatBlock" data-wysihtml5-command-value="h1" tabindex="-1" href="javascript:;" unselectable="on">Heading 1</a></li>
+																					<li><a data-wysihtml5-command="formatBlock" data-wysihtml5-command-value="h2" tabindex="-1" href="javascript:;" unselectable="on">Heading 2</a></li>
+																					<li><a data-wysihtml5-command="formatBlock" data-wysihtml5-command-value="h3" tabindex="-1" href="javascript:;" unselectable="on">Heading 3</a></li>
+																					<li><a data-wysihtml5-command="formatBlock" data-wysihtml5-command-value="h4" tabindex="-1" href="javascript:;" unselectable="on">Heading 4</a></li>
+																					<li><a data-wysihtml5-command="formatBlock" data-wysihtml5-command-value="h5" tabindex="-1" href="javascript:;" unselectable="on">Heading 5</a></li>
+																					<li><a data-wysihtml5-command="formatBlock" data-wysihtml5-command-value="h6" tabindex="-1" href="javascript:;" unselectable="on">Heading 6</a></li>
+																				</ul>
+																			</li>
+
+																			<li>
+																				<div class="btn-group">
+																					<a class="btn  btn-default" data-wysihtml5-command="bold" title="CTRL+B" tabindex="-1" href="javascript:;" unselectable="on">B</a>
+																					<a class="btn  btn-default" data-wysihtml5-command="italic" title="CTRL+I" tabindex="-1" href="javascript:;" unselectable="on">I</a>
+																					<a class="btn  btn-default" data-wysihtml5-command="underline" title="CTRL+U" tabindex="-1" href="javascript:;" unselectable="on">U</a>
+																					<a class="btn  btn-default" data-wysihtml5-command="small" title="CTRL+S" tabindex="-1" href="javascript:;" unselectable="on">S</a>
+																				</div>
+																			</li>
+
+																			<li>
+																				<div class="bootstrap-wysihtml5-insert-link-modal modal fade" data-wysihtml5-dialog="createLink">
+																					<div class="modal-dialog ">
+																						<div class="modal-content">
+																							<div class="modal-header">
+																								<a class="close" data-dismiss="modal">×</a>
+																								<h3>Insert link</h3>
+																							</div>
+																							<div class="modal-body">
+																								<div class="form-group">
+																									<input value="http://" class="bootstrap-wysihtml5-insert-link-url form-control" data-wysihtml5-dialog-field="href">
+																								</div> 
+																								<div class="checkbox">
+																									<label> 
+																										<input type="checkbox" class="bootstrap-wysihtml5-insert-link-target" checked="">Open link in new window
+																									</label>
+																								</div>
+																							</div>
+																							<div class="modal-footer">
+																								<a class="btn btn-default" data-dismiss="modal" data-wysihtml5-dialog-action="cancel" href="#">Cancel</a>
+																								<a href="#" class="btn btn-primary" data-dismiss="modal" data-wysihtml5-dialog-action="save">Insert link</a>
+																							</div>
+																						</div>
+																					</div>
+																				</div>
+																				<a class="btn  btn-default" data-wysihtml5-command="createLink" title="Insert link" tabindex="-1" href="javascript:;" unselectable="on">
+																					<span class="glyphicon glyphicon-share"></span>
+																				</a>
+																			</li>
+
+																			<li>
+																				<div class="bootstrap-wysihtml5-insert-image-modal modal fade" data-wysihtml5-dialog="insertImage">
+																					<div class="modal-dialog ">
+																						<div class="modal-content">
+																							<div class="modal-header">
+																								<a class="close" data-dismiss="modal">×</a>
+																								<h3>Insert image</h3>
+																							</div>
+																							<div class="modal-body">
+																								<div class="form-group">
+																									<input value="http://" class="bootstrap-wysihtml5-insert-image-url form-control" data-wysihtml5-dialog-field="src">
+																								</div> 
+																							</div>
+																							<div class="modal-footer">
+																								<a class="btn btn-default" data-dismiss="modal" data-wysihtml5-dialog-action="cancel" href="#">Cancel</a>
+																								<a class="btn btn-primary" data-dismiss="modal" data-wysihtml5-dialog-action="save" href="#">Insert image</a>
+																							</div>
+																						</div>
+																					</div>
+																				</div>
+																				<a class="btn  btn-default" data-wysihtml5-command="insertImage" title="Insert image" tabindex="-1" href="javascript:;" unselectable="on">
+																					<span class="glyphicon glyphicon-picture"></span>
+																				</a>
+																			</li>
+																		</ul>
+																		<textarea id="compose-textarea" class="form-control" style="height: 200px;"></textarea>
+																		<iframe class="wysihtml5-sandbox" security="restricted" allowtransparency="true" frameborder="0" width="0" height="0" marginwidth="0" marginheight="0" style="display: block; background-color: rgb(255, 255, 255); border-collapse: separate; border-color: rgb(210, 214, 222); border-style: solid; border-width: 1px; clear: none; float: none; margin: 0px; outline: rgb(85, 85, 85) none 0px; outline-offset: 0px; padding: 6px 12px; position: static; top: auto; left: auto; right: auto; bottom: auto; z-index: auto; vertical-align: baseline; text-align: start; box-sizing: border-box; box-shadow: none; border-radius: 0px; width: 100%; height: 100px; display:none;"></iframe>
+																	</div>
+																	<div class="form-group">
+																		<div class="btn btn-default btn-file">
+																			<i class="fa fa-paperclip"></i> Attachment
+																			<input type="file" name="attachment">
+																		</div>
+																		<p class="help-block">Max. 32MB</p>
+																	</div>
+																</div>
+																<!-- /.box-body -->
+																<div class="box-footer">
+																	<div class="pull-right">
+																		<button type="button" class="btn btn-default"><i class="fa fa-pencil"></i> Draft</button>
+																		<button type="submit" class="btn btn-primary"><i class="fa fa-envelope-o"></i> Send</button>
+																	</div>
+																	<button type="reset" class="btn btn-default"><i class="fa fa-times"></i> Discard</button>
+																</div>
+																<!-- /.box-footer -->
+															</div>
+															<!-- /. box -->
+														</div>
+
 													</div>
 
 												</div>
@@ -445,75 +428,73 @@ if($_SESSION['access_type'] == "admin"){
 										</div>
 
 									</div>
-
 								</div>
+
+								<!-- END OF RIGHT PAGE -->
+
 							</div>
+						</section>
 
-							<!-- END OF RIGHT PAGE -->
+					</div>
 
-						</div>
-					</section>
+					<?php
+					include 'footer.php'; 
+					?> 
+
 
 				</div>
 
-				<?php
-				include 'footer.php'; 
-				?> 
+				<div>
 
+					<!-- Scripts Start-->
 
-			</div>
+					<!-- jQuery 3 -->
 
-			<div>
+					<script src="../bower_components/jquery/dist/jquery.min.js"></script>
+					<!-- jQuery UI 1.11.4 -->
+					<script src="../bower_components/jquery-ui/jquery-ui.min.js"></script>
+					<!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
+					<script>
+						$.widget.bridge('uibutton', $.ui.button);
+					</script>
+					<!-- Bootstrap 3.3.7 -->
+					<script src="../bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+					<!-- Calendar :)) -->
+					<script src="../bower_components\fullcalendar\dist\fullcalendar.min.js"></script>
+					<script src="../bower_components\fullcalendar\dist\fullcalendar.js"></script>
+					<script src="../bower_components\moment\moment.js"></script>
+					<!-- Morris.js charts -->
+					<script src="../bower_components/raphael/raphael.min.js"></script>
+					<script src="../bower_components/morris.js/morris.min.js"></script>
+					<!-- Sparkline -->
+					<script src="../bower_components/jquery-sparkline/dist/jquery.sparkline.min.js"></script>
+					<!-- jvectormap -->
+					<script src="../plugins/jvectormap/jquery-jvectormap-1.2.2.min.js"></script>
+					<script src="../plugins/jvectormap/jquery-jvectormap-world-mill-en.js"></script>
+					<!-- jQuery Knob Chart -->
+					<script src="../bower_components/jquery-knob/dist/jquery.knob.min.js"></script>
+					<!-- daterangepicker -->
+					<script src="../bower_components/moment/min/moment.min.js"></script>
+					<script src="../bower_components/bootstrap-daterangepicker/daterangepicker.js"></script>
+					<!-- datepicker -->
+					<script src="../bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
+					<!-- Bootstrap WYSIHTML5 -->
+					<script src="../plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js"></script>
+					<!-- Slimscroll -->
+					<script src="../bower_components/jquery-slimscroll/jquery.slimscroll.min.js"></script>
+					<!-- FastClick -->
+					<script src="../bower_components/fastclick/lib/fastclick.js"></script>
+					<!-- AdminLTE App -->
+					<script src="../dist/js/adminlte.min.js"></script>
+					<!-- AdminLTE dashboard demo (This is only for demo purposes) -->
+					<script src="../dist/js/pages/dashboard.js"></script>
+					<!-- AdminLTE for demo purposes -->
+					<script src="../dist/js/demo.js"></script>
+					<!-- Page specific script -->
 
-				<!-- Scripts Start-->
+					<script>
 
-				<!-- jQuery 3 -->
-
-				<script src="../bower_components/jquery/dist/jquery.min.js"></script>
-				<!-- jQuery UI 1.11.4 -->
-				<script src="../bower_components/jquery-ui/jquery-ui.min.js"></script>
-				<!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
-				<script>
-					$.widget.bridge('uibutton', $.ui.button);
-				</script>
-				<!-- Bootstrap 3.3.7 -->
-				<script src="../bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
-				<!-- Calendar :)) -->
-				<script src="../bower_components\fullcalendar\dist\fullcalendar.min.js"></script>
-				<script src="../bower_components\fullcalendar\dist\fullcalendar.js"></script>
-				<script src="../bower_components\moment\moment.js"></script>
-				<!-- Morris.js charts -->
-				<script src="../bower_components/raphael/raphael.min.js"></script>
-				<script src="../bower_components/morris.js/morris.min.js"></script>
-				<!-- Sparkline -->
-				<script src="../bower_components/jquery-sparkline/dist/jquery.sparkline.min.js"></script>
-				<!-- jvectormap -->
-				<script src="../plugins/jvectormap/jquery-jvectormap-1.2.2.min.js"></script>
-				<script src="../plugins/jvectormap/jquery-jvectormap-world-mill-en.js"></script>
-				<!-- jQuery Knob Chart -->
-				<script src="../bower_components/jquery-knob/dist/jquery.knob.min.js"></script>
-				<!-- daterangepicker -->
-				<script src="../bower_components/moment/min/moment.min.js"></script>
-				<script src="../bower_components/bootstrap-daterangepicker/daterangepicker.js"></script>
-				<!-- datepicker -->
-				<script src="../bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
-				<!-- Bootstrap WYSIHTML5 -->
-				<script src="../plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js"></script>
-				<!-- Slimscroll -->
-				<script src="../bower_components/jquery-slimscroll/jquery.slimscroll.min.js"></script>
-				<!-- FastClick -->
-				<script src="../bower_components/fastclick/lib/fastclick.js"></script>
-				<!-- AdminLTE App -->
-				<script src="../dist/js/adminlte.min.js"></script>
-				<!-- AdminLTE dashboard demo (This is only for demo purposes) -->
-				<script src="../dist/js/pages/dashboard.js"></script>
-				<!-- AdminLTE for demo purposes -->
-				<script src="../dist/js/demo.js"></script>
-				<!-- Page specific script -->
-
-				<script>
-
-					$(function () {
+						$(function () {
 
     /* initialize the external events
     -----------------------------------------------------------------*/
@@ -703,7 +684,6 @@ if($_SESSION['access_type'] == "admin"){
 			data :{id:id},
 			success:function(data){
 				$("#ogrenciPhoto").attr('src', data);
-				
 			}
 		});
 	});
