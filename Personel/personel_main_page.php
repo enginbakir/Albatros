@@ -4,10 +4,12 @@ if($_SESSION['access_type'] == 'personel'){
 
 	require_once "../connectDB.php";
 	$id = $_SESSION['access_id'];
+	$access_id = $_SESSION['access_id'];
 	$sql = "SELECT * FROM personel_user where userPersonel_PK = '$id'";
 
 	$result = $conn->query($sql, PDO::FETCH_ASSOC)->fetch()	;
 	$personelID = $result['personel_FK'];
+
 	?>
 	<!DOCTYPE html>
 	<html>

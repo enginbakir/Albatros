@@ -55,17 +55,14 @@
             <li class="dropdown user user-menu">
               <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                 <img src="../dist/img/avatar3.png" class="user-image" alt="User Image">
-                <span class="hidden-xs">Merve Tunçel</span>
+              
               </a>
               <ul class="dropdown-menu">
                 <!-- User image -->
                 <li class="user-header">
                   <img src="../dist/img/avatar3.png" class="img-circle" alt="User Image">
 
-                  <p>
-                    Merve Tunçel - Web Developer
-                    <small>Member since Nov. 2017</small>
-                  </p>
+     
                 </li>
                 <!-- Menu Body -->
                 <li class="user-body">

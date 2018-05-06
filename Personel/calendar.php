@@ -1,14 +1,19 @@
 <?php
+
+session_start();
 require_once('bdd.php');
-
-
 $sql = "SELECT id, title, start, end, color FROM events ";
+try{
+  $req = $bdd->prepare($sql);
+  $req->execute();
+  $id = $_SESSION['access_id'];
+  $access_id = $_SESSION['access_id'];
+  $events = $req->fetchAll();
+}
+catch(PDOException $e){
+  echo "Connection failed: " . $e->getMessage();
 
-$req = $bdd->prepare($sql);
-$req->execute();
-
-$events = $req->fetchAll();
-
+}
 ?>
 
 <!DOCTYPE html>
