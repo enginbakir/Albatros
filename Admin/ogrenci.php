@@ -94,11 +94,11 @@ if($_SESSION['access_type'] == "admin"){
 								<form class="form-inline" action ="" method="post" style="padding-bottom: 10px">
 									<div class="form-group">
 										<label >Adı:</label>
-										<input type="text" class="form-control" name="firstname" id="adi" placeholder="Öğrencinin Adı" name="Öğrenci adı">
+										<input type="text" class="form-control" name="firstname" id="adi" placeholder="Öğrencinin Adı" >
 									</div>
 									<div class="form-group">
 										<label >Soyadı:</label>
-										<input type="text" class="form-control" name="surname" id="soyadi" placeholder="Öğrencinin Soyadı" name="Soyad">
+										<input type="text" class="form-control" name="surname" id="soyadi" placeholder="Öğrencinin Soyadı" >
 									</div>
 									<button id="searchStudent" type="submit" class="btn btn-primary">Listele</button>
 								</form>
@@ -781,6 +781,5 @@ if($_SESSION['access_type'] == "admin"){
 <?php 
 }
 else{
-
 	header("location: ../index.php");
 }?>

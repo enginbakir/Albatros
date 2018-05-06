@@ -1,23 +1,32 @@
 <?php 
-require_once "connectDB.php";
-?>
-<!DOCTYPE html>
-<html>
-<head>
-	
-	<meta charset="utf-8">
-	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>Albatros</title>
-	<!-- Tell the browser to be responsive to screen width -->
-	<meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
-	<!-- Bootstrap 3.3.7 -->
-	<link rel="stylesheet" href="../bower_components/bootstrap/dist/css/bootstrap.min.css">
-	<!-- Font Awesome -->
-	<link rel="stylesheet" href="../bower_components/font-awesome/css/font-awesome.min.css">
-	<!-- Ionicons -->
-	<link rel="stylesheet" href="../bower_components/Ionicons/css/ionicons.min.css">
-	<!-- Theme style -->
-	<link rel="stylesheet" href="../dist/css/AdminLTE.min.css">
+session_start();
+if($_SESSION['access_type'] == 'personel'){
+
+	require_once "../connectDB.php";
+	$id = $_SESSION['access_id'];
+	$sql = "SELECT * FROM personel_user where userPersonel_PK = '$id'";
+
+	$result = $conn->query($sql, PDO::FETCH_ASSOC)->fetch()	;
+	$personelID = $result['personel_FK'];
+	?>
+	<!DOCTYPE html>
+	<html>
+	<head>
+
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<title>Albatros</title>
+		<!-- Tell the browser to be responsive to screen width -->
+		<meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+		<!-- Bootstrap 3.3.7 -->
+		<link rel="stylesheet" href="../bower_components/bootstrap/dist/css/bootstrap.min.css">
+
+		<!-- Font Awesome -->
+		<link rel="stylesheet" href="../bower_components/font-awesome/css/font-awesome.min.css">
+		<!-- Ionicons -->
+		<link rel="stylesheet" href="../bower_components/Ionicons/css/ionicons.min.css">
+		<!-- Theme style -->
+		<link rel="stylesheet" href="../dist/css/AdminLTE.min.css">
   <!-- AdminLTE Skins. Choose a skin from the css/skins
   	folder instead of downloading all of them to reduce the load. -->
   	<link rel="stylesheet" href="../dist/css/skins/_all-skins.min.css">
@@ -54,9 +63,13 @@ require_once "connectDB.php";
   	}
   </style>
 
+
 </head>
 
 <body class="hold-transition skin-blue sidebar-mini">
+	<input id="personel_PK" type="text" style="display: none" <?php echo " value = '".$personelID."'"; 
+	echo $personelID;
+	?> >
 	<div class="wrapper">
 		<!--Main Page Header -->
 		<?php include 'header.php'; ?>
@@ -66,7 +79,10 @@ require_once "connectDB.php";
 		<div class="content-wrapper">
 			<!-- Content Header (Page header) -->
 			<section class="content-header">
-				<h1>Öğrenci Bilgileri</h1>
+				<h1 style="color:#000">
+					Öğrenci Bilgileri
+					<small>...........</small>
+				</h1>
 				<ol class="breadcrumb">
 					<li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
 					<li><a href="#">Students</a></li>
@@ -88,77 +104,99 @@ require_once "connectDB.php";
 
 									<div class="box-body">
 										<!--FORM1 Öğrenci Veri Tablosu START-->
-										<form class="form-inline" action="" style="padding-bottom: 10px">
+										<form class="form-inline" action ="" method="post" style="padding-bottom: 10px">
 											<!--Content wrapper START-->
-											<div class="contentwrapper" > 
-
-												<div class="form-group">
-													<label for="email">Adı:</label>
-													<input type="text" class="form-control" id="adi" placeholder="Öğrencinin Adı" name="Öğrenci adı">
-
-													<label for="pwd">Soyadı:</label>
-													<input type="text" class="form-control" id="soyadi" placeholder="Öğrencinin Soyadı" name="Soyad">
-
-													<button type="submit" class="btn btn-primary">Listele</button>
-												</div>
-
+											<div class="form-group">
+												<label >Adı:</label>
+												<input type="text" class="form-control" name="firstname" id="adi" placeholder="Öğrencinin Adı" >
 											</div>
+											<div class="form-group">
+												<label >Soyadı:</label>
+												<input type="text" class="form-control" name="surname" id="soyadi" placeholder="Öğrencinin Soyadı" >
+											</div>
+											<button id="searchStudent" type="submit" class="btn btn-primary">Listele</button>
 											<!--Content wrapper END-->
 										</form>
 										<!--FORM1 Öğrenci Veri Tablosu END-->
 
 										<!--FORM2 Öğrenci Veri Tablosu START-->
-										<form class="form-inline" action=""  style="padding-bottom: 10px">
-											<!--Content wrapper START-->
-											<div class="contentwrapper" > 
-												<div class="row">
-													<div class="col-md-12">
-														<table id="öğrenciVeriTableID" class="table table-bordered ">
-															<thead>
-																<tr>
-																	<th>ID</th>
-																	<th>İsim</th>
-																	<th>Soyisim</th>
-																	<th>Cinsiyet</th>
-																	<th>Sınıf</th>
-																	<th>Devamsızlık</th>
-																</tr>
-															</thead>
 
-															<tbody id="tbody">
+										<!--Content wrapper START-->
+										<div class="contentwrapper" > 
+											<div class="row">
+												<div class="col-md-12">
+													<table id="öğrenciVeriTableID" class="table table-bordered">
+														<thead>
+															<tr>
+																<th>ID</th>
+																<th>İsim</th>
+																<th>Soyisim</th>
+																<th>Durum</th>
+																<th>Cinsiyet</th>
+																<th>Sınıf</th>
+																<th>Devamsızlık</th>
+															</tr>
+														</thead>
 
-																<?php
-																$sql = 'SELECT S.student_PK, S.name, S.surname, G.gender_type FROM gender G, student S WHERE S.gender_FK = G.gender_PK';
+														<tbody id="tbody">
 
-																if ($result = mysqli_query($conn, $sql)) {
-																	while ($array = mysqli_fetch_array($result, MYSQL_ASSOC)) {
-																		echo "<tr scope='row1'>";
-																		echo "<td class='id'>" .$array['student_PK']. "</td>";
-																		echo "<td class='isim'>" .$array['name']. "</td>";
-																		echo "<td class='soyisim'>" .$array['surname']. "</td>";
-																		echo "<td>" .$array['gender_type']. "</td>";
-																		echo "<td>" ." ". "</td>";
-																		echo "<td>" ." ". "</td>";
-																		echo "</tr>";
-																	}   
+															<?php
 
+															$name;
+															$surname;
+															if(isset($_POST['firstname']) && !empty($_POST['firstname']))
+																$name = $_POST['firstname'];
+															if(isset($_POST['surname']) && !empty($_POST['surname']))
+																$surname = $_POST['surname'];                       
+
+															if(isset($name) && isset($surname)){
+																$sql = "SELECT * FROM student where personel_FK = '$personelID' AND name='".$name."' and surname='".$surname."';";
+															}
+															if(isset($name) && !isset($surname)){
+																$sql = "SELECT * FROM student where personel_FK = '$personelID' AND name like '%".$name."%';";
+															}
+															if(!isset($name) && isset($surname)){
+																$sql = "SELECT * from student where personel_FK = '$personelID' AND surname like '%".$surname."%';";
+															}
+															if (!isset($name) && !isset($surname)) {
+																$sql = "SELECT * FROM student where personel_FK = '$personelID'";
+															}
+
+															unset($_POST['firstname']);
+															unset($_POST['surname']);
+
+															try{
+																$retval = $conn->query($sql, PDO::FETCH_ASSOC);
+																foreach ($retval as $row) {
+
+																	echo "<tr>";
+																	echo "<td class='id'>" .$row['student_PK']. "</td>";
+																	echo "<td class='isim'>" .$row['name']. "</td>";
+																	echo "<td class='soyisim'>" .$row['surname']. "</td>";
+																	if($row['status'] == 1)
+																		echo "<td class='durum'>Kayıtlı</td>";
+																	else
+																		echo "<td class='durum'>Silindi</td>";
+																	echo "<td>" .$row['gender_type']. "</td>";
+																	echo "<td>" ." ". "</td>";
+																	echo "<td>" ." ". "</td>";
+																	echo "</tr>";
 																}
-																else{
-																	echo "baglantı yok!";
-																}
+															}
+															catch(Exception $e) { 
+																echo "Listeleme Hatası :".$e->getMessage();
+															}
 
-																?>
+															?>
 
-															</tbody>
-														</table>
-													</div>
-												</div>										 	
-											</div>
-											<!--Content wrapper END-->
-										</form>
+														</tbody>
+													</table>
+												</div>
+											</div>										 	
+										</div>
+										<!--Content wrapper END-->
+										
 										<!--FORM2 Öğrenci Veri Tablosu END-->
-
-
 										<div class="btn-group btn-group-justified" style="padding-bottom: 10px">
 											<div class="btn-group">
 												<button id="bepOlustur" type="button" class="btn btn-primary" ">&nbsp;&nbsp;BEP Oluştur&nbsp;&nbsp;</button>
@@ -187,8 +225,8 @@ require_once "connectDB.php";
 												<li class="active"><a data-toggle="tab" href="#home">Notlar</a></li>
 												<li><a data-toggle="tab" href="#menu1">Veli Bilgileri</a></li>
 												<li><a data-toggle="tab" href="#menu2">Öğrenci Bilgileri</a></li>
-												<li><a data-toggle="tab" href="#menu3">Takvim</a></li>
-												<li><a data-toggle="tab" href="#menu4">Mail</a></li>
+												<li><a id = "openMenu3" data-toggle="tab" href="#menu3">Devamsızlık </a></li>
+												<li><a data-toggle="tab" href="#menu4">Ödeme </a></li>
 											</ul>
 
 											<div class="tab-content">
@@ -262,7 +300,6 @@ require_once "connectDB.php";
 													<div class="box box-primary">
 														<div class="box-body box-profile">
 															<img class="profile-user-img img-responsive img-circle" src="dist/img/avatar5.png" alt="User profile picture">
-
 															<h3 class="profile-username text-center">Engin Bakır</h3>
 															<ul class="list-group list-group-unbordered">
 																<li class="list-group-item">
@@ -293,6 +330,82 @@ require_once "connectDB.php";
 
 												<!-- Page-ÖĞRENCİ BİLGİLERİ END -->
 
+
+												<!-- Page-DEVAMSIZLIK BİLGİLERİ START -->
+												
+												<div id="menu3" class="tab-pane fade">
+													<div class="row">
+														<div class="col-md-12">
+															<div class="form-group">
+																<div class="row">
+																	<br>
+																	<label class="col-md-2 control-label" style="
+																	padding-top: 10px;padding-left: 30px; padding-right: 0px;">Tarih : </label>
+																	<div class="col-md-4">
+																		<div class="input-group">
+																			<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+																			<input id="devamsizlikTarihi" class="form-control" type="date" data-date-inline-picker="false" data-date-open-on-focus="false" />
+																		</div>
+																	</div>
+																	<div class="col-md-4">
+																		<input id="devamsizlikAciklama" type="text" maxlength="64"class="form-control" placeholder="Açıklama">
+																	</div>
+
+																	<button type="submit" id="button2" class="btn btn-primary"><i class="fa fa-folder"></i>Kaydet</button> 
+
+																</div>
+
+																<br>
+																<table border="1" class="table table-bordered table-hover">
+																	<thead>
+																		<tr>
+																			<th>*</th>
+																			<th>Tarih</th>
+																			<th>Durum</th>
+																			<th>Açıklama</th>
+																		</tr>
+																	</thead>
+																	<tbody id = "devamsizlikListesi">
+
+																	</tbody>
+																</table>
+															</div>
+															<!-- End .form-group 1 -->
+														</div>
+													</div>
+												</div>
+												<!-- Page-DEVAMSIZLIK BİLGİLERİ END -->
+
+												<!-- Page- ÖDEME BİLGİLERİ START -->
+
+
+												<?php
+												include('process.php');
+												$newobj = new processing();
+												?>
+
+												<div id="menu4" class="tab-pane fade">
+													<div class="row">
+														<div class="col-md-12">
+															<table border="1" class="table table-bordered table-hover">
+																<thead>
+																	<tr>
+																		<th>ID</th>
+																		<th>AYLAR</th>
+																		<th>ÖDEMEBİLGİSİ</th>
+																		<th>SEÇ</th>
+																	</tr>
+																</thead>
+																<?php echo $newobj->display();?>
+																<tbody id="odemeBody">
+																	
+																</tbody>
+																
+															</table>
+														</div>
+													</div>
+												</div>
+												<!-- Page-ÖDEME BİLGİLERİ END -->
 											</div>
 										</div>
 									</div>
@@ -301,30 +414,51 @@ require_once "connectDB.php";
 							</div>
 						</div>
 					</div>
-				</section>
-
-
-			</div>
-			<!-- Content Wrapper END-->
-
+				</div>
+			</section>
 		</div>
+		<!-- Content Wrapper END-->
+	</div>
 
-	</body>
 
-	</html>
-
-	<!-- To Change Selected HTML Table Row Background Color START-->
 	<script>
-		var id;
-		function selectedRow(){
+		$(document).ready(function(){
 
-			var index,isim,soyisim;
-			table = document.getElementById("öğrenciVeriTableID");
+			var personelID;
+			var id;
+			$.ajax({
+				url:"getStudentInfo.php",
+				method:"POST",
+				data :{id:id},
+				success:function(data){
+					$("#ogrenciPhoto").attr('src', data);
+				}
+			});
+			$(".selectstatus").change(function(){
+				var statusname = $(this).val();                  
+				var getid = $(this).attr("status-id");             
+				$.ajax({
+					type:'POST',
+					url:'ajax.php',
+					data:{statusname:statusname,getid
+						:getid},
+						success:function(result){
+							location.reload();
+							$("#display").html(result);
+							alert(result);
+						}
+					});
+			});
+			/// To Change Selected HTML Table Row Background Color START
+			function selectedRow(){
 
-			for(var i = 1; i < table.rows.length; i++)
-			{
-				table.rows[i].onclick = function()
+				var index,isim,soyisim;
+				table = document.getElementById("öğrenciVeriTableID");
+
+				for(var i = 1; i < table.rows.length; i++)
 				{
+					table.rows[i].onclick = function()
+					{
                          // remove the background from the previous selected row
                          if(typeof index !== "undefined"){
                          	table.rows[index].classList.toggle("selected");
@@ -338,41 +472,86 @@ require_once "connectDB.php";
                         id = $('.id',this).html();
                         isim =$('.isim',this).html();
                         soyisim =$('.soyisim',this).html();
-                        $.ajax({  
+                        personelID = document.getElementById('personel_PK').value;
+                        $.ajax({
                         	url:"load_notes.php",  
-                        	method:"GET",  
-                        	data:{id:id},  
+                        	method:"POST",  
+                        	data:{id:id,personelID:personelID},  
                         	success:function(data){ 
-                        		
                         		$('#notes').html(data);  
                         	}  
                         });  
-                         document.getElementById("studentInfoTitle").innerHTML = isim+" "+soyisim+" Bilgileri";
+
+                        document.getElementById("studentInfoTitle").innerHTML = isim+" "+soyisim+" Bilgileri";
+                        $.ajax({  
+                        	url:"load_attendance.php",  
+                        	method:"POST",  
+                        	data:{id:id},
+                        	success:function(data){ 
+                        		$('#devamsizlikListesi').html(data);  
+                        	}  
+                        }); 
+                        $.ajax({
+                        	url:"process.php",
+                        	method:"POST",
+                        	data:{id:id},
+                        	success:function(data){
+                        		$('#odemeBody').html(data);
+                        	}
+                        });
                     };
                 }
-
-                
             }
 
             selectedRow();
 
+/// To Change Selected HTML Table Row Background Color END
+
         //Redirect to kaba_degerlendirme 
         $('#kabaDegerlendirme').on("click",function(){
-
         	window.location="kaba_degerlendirme.php?id="+id;
 
         });
 
         //Redirect to bep_main_page 
         $('#bepOlustur').on("click",function(){    
-        	
         	window.location = "bep_main_page.php?id="+id;
+        });
+
+        $("#button2").click(function(){
+
+        	var tarih=$("#devamsizlikTarihi").val();
+        	var aciklama=$("#devamsizlikAciklama").val();
+        	$.ajax({
+        		url:'insert.php',
+        		method:'POST',
+        		data:{
+        			tarih:tarih,
+        			aciklama:aciklama,
+        			id:id
+        		},
+        		success:function(data){
+        			alert(data);
+        			location.reload();
+        			
+        		}
+        	});
         });
 
 
 
-        
-    </script>
-    <!-- To Change Selected HTML Table Row Background Color END-->
+
+    });
+</script>		
 
 
+</body>
+</html>
+
+<?php 
+
+}
+else {
+	header('location : ../index.php');
+	exit();
+} ?>
