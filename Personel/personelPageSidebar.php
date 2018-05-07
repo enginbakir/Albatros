@@ -10,7 +10,7 @@
         <br/><p><?php 
    
         try{
-          $query = $bdd->query("SELECT P.name, P.surname FROM personel_user PU, personel P WHERE PU.userPersonel_PK = $access_id AND PU.personel_FK = P.personel_PK", PDO::FETCH_ASSOC);
+          $query = $conn->query("SELECT P.name, P.surname FROM personel_user PU, personel P WHERE PU.userPersonel_PK = $access_id AND PU.personel_FK = P.personel_PK", PDO::FETCH_ASSOC);
 
           if ( $query->rowCount()) {
            foreach( $query as $row ){

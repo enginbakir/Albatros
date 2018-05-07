@@ -1,10 +1,10 @@
 <?php
 
 session_start();
-require_once('bdd.php');
+require_once('../connectDB.php');
 $sql = "SELECT id, title, start, end, color FROM events ";
 try{
-  $req = $bdd->prepare($sql);
+  $req = $conn->prepare($sql);
   $req->execute();
   $id = $_SESSION['access_id'];
   $access_id = $_SESSION['access_id'];
