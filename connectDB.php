@@ -35,7 +35,7 @@ try{
 	$conn = new PDO("mysql:host=127.0.0.1;dbname=albatros", "root", "12345678");
 	$conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 }catch(PDOException $e){
-	echo "Connection failed: " . $e->getMessage();
+	echo "Veri Tabanı Bağlantısı Başarızı: " . $e->getMessage();
 	header("location: ../index.php");  	// make this function run after 3 second
 	exit();
 }

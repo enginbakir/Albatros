@@ -1,34 +1,35 @@
 <?php 
+
 session_start();
 if($_SESSION['access_type'] == 'personel'){
 
-	require_once "../connectDB.php";
-	$id = $_SESSION['access_id'];
-	$access_id = $_SESSION['access_id'];
-	$sql = "SELECT * FROM personel_user where userPersonel_PK = '$id'";
+	try{
+		require_once "../connectDB.php";
+		$id = $_SESSION['access_id'];
+		$access_id = $_SESSION['access_id'];
+		$sql = "SELECT * FROM personel_user where userPersonel_PK = '$id'";
+		$result = $conn->query($sql, PDO::FETCH_ASSOC)->fetch();
+		$personelID = $result['personel_FK'];		
 
-	$result = $conn->query($sql, PDO::FETCH_ASSOC)->fetch()	;
-	$personelID = $result['personel_FK'];
+		?>
+		<!DOCTYPE html>
+		<html>
+		<head>
 
-	?>
-	<!DOCTYPE html>
-	<html>
-	<head>
+			<meta charset="utf-8">
+			<meta http-equiv="X-UA-Compatible" content="IE=edge">
+			<title>Albatros</title>
+			<!-- Tell the browser to be responsive to screen width -->
+			<meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+			<!-- Bootstrap 3.3.7 -->
+			<link rel="stylesheet" href="../bower_components/bootstrap/dist/css/bootstrap.min.css">
 
-		<meta charset="utf-8">
-		<meta http-equiv="X-UA-Compatible" content="IE=edge">
-		<title>Albatros</title>
-		<!-- Tell the browser to be responsive to screen width -->
-		<meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
-		<!-- Bootstrap 3.3.7 -->
-		<link rel="stylesheet" href="../bower_components/bootstrap/dist/css/bootstrap.min.css">
-
-		<!-- Font Awesome -->
-		<link rel="stylesheet" href="../bower_components/font-awesome/css/font-awesome.min.css">
-		<!-- Ionicons -->
-		<link rel="stylesheet" href="../bower_components/Ionicons/css/ionicons.min.css">
-		<!-- Theme style -->
-		<link rel="stylesheet" href="../dist/css/AdminLTE.min.css">
+			<!-- Font Awesome -->
+			<link rel="stylesheet" href="../bower_components/font-awesome/css/font-awesome.min.css">
+			<!-- Ionicons -->
+			<link rel="stylesheet" href="../bower_components/Ionicons/css/ionicons.min.css">
+			<!-- Theme style -->
+			<link rel="stylesheet" href="../dist/css/AdminLTE.min.css">
   <!-- AdminLTE Skins. Choose a skin from the css/skins
   	folder instead of downloading all of them to reduce the load. -->
   	<link rel="stylesheet" href="../dist/css/skins/_all-skins.min.css">
@@ -55,10 +56,8 @@ if($_SESSION['access_type'] == 'personel'){
 
 
   	<style>
-
   	tr{cursor: pointer; transition: all .25s ease-in-out}
   	.selected{background-color: blue;  color: #fff;}
-
   	.table-bordered>thead>tr>th, .table-bordered>tbody>tr>td{
   		border: 1px solid #51bcdc;
   		font-size:18px 
@@ -143,14 +142,12 @@ if($_SESSION['access_type'] == 'personel'){
 														<tbody id="tbody">
 
 															<?php
-
 															$name;
 															$surname;
 															if(isset($_POST['firstname']) && !empty($_POST['firstname']))
 																$name = $_POST['firstname'];
 															if(isset($_POST['surname']) && !empty($_POST['surname']))
 																$surname = $_POST['surname'];                       
-
 															if(isset($name) && isset($surname)){
 																$sql = "SELECT * FROM student where personel_FK = '$personelID' AND name='".$name."' and surname='".$surname."';";
 															}
@@ -163,14 +160,11 @@ if($_SESSION['access_type'] == 'personel'){
 															if (!isset($name) && !isset($surname)) {
 																$sql = "SELECT * FROM student where personel_FK = '$personelID'";
 															}
-
 															unset($_POST['firstname']);
 															unset($_POST['surname']);
-
 															try{
 																$retval = $conn->query($sql, PDO::FETCH_ASSOC);
 																foreach ($retval as $row) {
-
 																	echo "<tr>";
 																	echo "<td class='id'>" .$row['student_PK']. "</td>";
 																	echo "<td class='isim'>" .$row['name']. "</td>";
@@ -188,7 +182,6 @@ if($_SESSION['access_type'] == 'personel'){
 															catch(Exception $e) { 
 																echo "Listeleme Hatası :".$e->getMessage();
 															}
-
 															?>
 
 														</tbody>
@@ -425,7 +418,6 @@ if($_SESSION['access_type'] == 'personel'){
 
 	<script>
 		$(document).ready(function(){
-
 			var personelID;
 			var id;
 			$.ajax({
@@ -453,10 +445,8 @@ if($_SESSION['access_type'] == 'personel'){
 			});
 			/// To Change Selected HTML Table Row Background Color START
 			function selectedRow(){
-
 				var index,isim,soyisim;
 				table = document.getElementById("öğrenciVeriTableID");
-
 				for(var i = 1; i < table.rows.length; i++)
 				{
 					table.rows[i].onclick = function()
@@ -465,7 +455,6 @@ if($_SESSION['access_type'] == 'personel'){
                          if(typeof index !== "undefined"){
                          	table.rows[index].classList.toggle("selected");
                          }
-
                         // get the selected row index
                         index = this.rowIndex;
                         // add class selected to the row
@@ -483,7 +472,6 @@ if($_SESSION['access_type'] == 'personel'){
                         		$('#notes').html(data);  
                         	}  
                         });  
-
                         document.getElementById("studentInfoTitle").innerHTML = isim+" "+soyisim+" Bilgileri";
                         $.ajax({  
                         	url:"load_attendance.php",  
@@ -504,24 +492,17 @@ if($_SESSION['access_type'] == 'personel'){
                     };
                 }
             }
-
             selectedRow();
-
 /// To Change Selected HTML Table Row Background Color END
-
         //Redirect to kaba_degerlendirme 
         $('#kabaDegerlendirme').on("click",function(){
         	window.location="kaba_degerlendirme.php?id="+id;
-
         });
-
         //Redirect to bep_main_page 
         $('#bepOlustur').on("click",function(){    
         	window.location = "bep_main_page.php?id="+id;
         });
-
         $("#button2").click(function(){
-
         	var tarih=$("#devamsizlikTarihi").val();
         	var aciklama=$("#devamsizlikAciklama").val();
         	$.ajax({
@@ -547,9 +528,13 @@ if($_SESSION['access_type'] == 'personel'){
 </html>
 
 <?php 
-
+}catch(Exception $e) { 
+  // $_SESSION['login_error'] = $e->getMessage(); 
+	$_SESSION['login_error'] = "Veri Tabanı Hatası!!! ".$e->getMessage();
+	header("location: cikis.php");
+}
 }
 else {
-	header('location : ../index.php');
+	header("location: ../index.php");
 	exit();
 } ?>

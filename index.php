@@ -7,11 +7,11 @@ if($_SESSION['access_type'] == "admin"){
 }
 else if ($_SESSION['access_type'] == "personel"){ 
 
-    header("location: Admin/admin.php");
+    header("location: Personel/personel_main_page.php");
 }
 else if ($_SESSION['access_type'] == "parent"){ 
 
-    header("location: Admin/admin.php");
+    header("location: Parent/parent_main_page.php");
 }
 else{ ?>
     <!DOCTYPE html>

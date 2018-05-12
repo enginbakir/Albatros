@@ -1,6 +1,7 @@
+<?php 
 
-<?php session_start();
-if($_SESSION['access_type'] == "admin"){ 
+session_start();
+if($_SESSION['access_type'] == "admin"){
  ?>  
 
  <!DOCTYPE html>
@@ -341,7 +342,6 @@ if($_SESSION['access_type'] == "admin"){
 else{
 
  header("location: ../index.php");
-}?>
-
-
-
+ exit();
+}
+?>

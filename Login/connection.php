@@ -3,21 +3,10 @@
 @date_default_timezone_set("Europe/Istanbul");
 @session_start();
 
-if(isset($_SESSION['access_type'])){
-  if($_SESSION['accest_type'] == "admin")
-    header("location: ../Admin/admin.php");
-  if($_SESSION['accest_type'] == "personel")
-    header("location: ../Personel/personel_main_page.php");
-  if($_SESSION['accest_type'] == "parent")
-    header("location: ../Parent/parent_main_page.php");
-}
-
-
 require_once '../connectDB.php';
 
 if ($_SERVER["REQUEST_METHOD"] == "POST")
 {
-
   $username = $_POST['username'];
   $password = $_POST['password'];
 
@@ -40,19 +29,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
     if($user_type == "admin"){
      $_SESSION['access_type'] = $user_type;
      $_SESSION['access_id'] = $row['userAdmin_PK'];
-     $_SESSION['username'] = $row->username;
      header("location: ../Admin/admin.php");
    }
    else if($user_type == "personel"){
      $_SESSION['access_type'] = $user_type;
      $_SESSION['access_id'] = $row['userPersonel_PK'];
-     $_SESSION['username'] = $row->username;
      header("location: ../Personel/personel_main_page.php");
    }
    else if($user_type == "parent"){
      $_SESSION['access_type'] = $user_type;
-     $_SESSION['access_id'] = $row->userParent_PK;
-     $_SESSION['username'] = $row->username;
+     $_SESSION['access_id'] = $row['userParent_PK'];
      header("location: ../Parent/parent.php");
    }
    else {
@@ -64,13 +50,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
    header("location: ../index.php");
  }
  
-} catch (Exception $e) { 
+} catch (PDOException $e) { 
   // $_SESSION['login_error'] = $e->getMessage(); 
- $_SESSION['login_error'] = "Bilgileri Kontrol Ediniz!!!!";
+ $_SESSION['login_error'] = "Bilgileri Kontrol Ediniz!!!!".$e->getMessage();
  header("location: ../index.php");
 }
 }
 
-
+$conn = null;
 exit();
 ?>
