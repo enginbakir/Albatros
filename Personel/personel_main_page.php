@@ -539,10 +539,6 @@ if($_SESSION['access_type'] == 'personel'){
         		}
         	});
         });
-
-
-
-
     });
 </script>		
 

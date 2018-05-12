@@ -5,6 +5,14 @@ if($_SESSION['access_type'] == "admin"){
 
     header("location: Admin/admin.php");
 }
+else if ($_SESSION['access_type'] == "personel"){ 
+
+    header("location: Admin/admin.php");
+}
+else if ($_SESSION['access_type'] == "parent"){ 
+
+    header("location: Admin/admin.php");
+}
 else{ ?>
     <!DOCTYPE html>
         <html>
@@ -15,10 +23,7 @@ else{ ?>
             <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
         </head>
         <body>
-<!--
-    you can substitue the span of reauth username for a input with the username and
-    include the remember me checkbox
--->
+
 <form action="Login/connection.php" method="Post">
     <div class="container">
         <p id="profile-name" class="profile-name-card"></p>

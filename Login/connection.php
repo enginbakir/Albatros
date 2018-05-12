@@ -2,10 +2,18 @@
 
 @date_default_timezone_set("Europe/Istanbul");
 @session_start();
-@ob_start();
+
+if(isset($_SESSION['access_type'])){
+  if($_SESSION['accest_type'] == "admin")
+    header("location: ../Admin/admin.php");
+  if($_SESSION['accest_type'] == "personel")
+    header("location: ../Personel/personel_main_page.php");
+  if($_SESSION['accest_type'] == "parent")
+    header("location: ../Parent/parent_main_page.php");
+}
+
 
 require_once '../connectDB.php';
-
 
 if ($_SERVER["REQUEST_METHOD"] == "POST")
 {
@@ -27,7 +35,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
   $stmt->bindParam(':password', $password, PDO::PARAM_STR);
   $stmt->execute();
   $row = $stmt -> fetch(PDO::FETCH_ASSOC);
-  echo $row;
   if($row > 0){
 
     if($user_type == "admin"){
@@ -65,4 +72,5 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
 }
 
 
+exit();
 ?>
