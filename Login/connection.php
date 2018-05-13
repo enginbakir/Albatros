@@ -20,8 +20,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
  try {
 
   $stmt = $conn -> prepare("SELECT * FROM ".$user_type."_user WHERE username = :username AND password = :password LIMIT 1;");
-  $stmt->bindParam(':username', $username, PDO::PARAM_STR);
-  $stmt->bindParam(':password', $password, PDO::PARAM_STR);
+  $stmt->bindParam(':username', md5($username), PDO::PARAM_STR);
+  $stmt->bindParam(':password', md5($password), PDO::PARAM_STR);
   $stmt->execute();
   $row = $stmt -> fetch(PDO::FETCH_ASSOC);
   if($row > 0){
@@ -56,6 +56,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
  header("location: ../index.php");
 }
 }
+unset($_POST['username']);
+unset($_POST['password']);
 
 $conn = null;
 exit();

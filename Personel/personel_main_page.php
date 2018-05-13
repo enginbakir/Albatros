@@ -391,12 +391,15 @@ if($_SESSION['access_type'] == 'personel'){
 																		<th>SEÇ</th>
 																	</tr>
 																</thead>
-																<?php echo $newobj->display();?>
+
 																<tbody id="odemeBody">
+
+																	<?php echo $newobj->display();?>
 																	
 																</tbody>
 																
 															</table>
+
 														</div>
 													</div>
 												</div>

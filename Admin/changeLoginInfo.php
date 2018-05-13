@@ -4,10 +4,10 @@ try {
 
 
 	$id = $_POST['id'];
-	$username = $_POST['u'];
-	$password = $_POST['p'];
+	$u = $_POST['u'];
+	$p = $_POST['p'];
 	require_once '../connectDB.php';
-	//echo "<br>".$username."<br>".$password;
+	echo "<br>".$u."<br>".$p."<br>".$id;
 
 	$stmt = $conn -> prepare("SELECT username,password from personel_user where personel_FK =:Pid");
 
@@ -17,8 +17,8 @@ try {
 		echo "Sonuç Bulunamadı : ".$id;
 		$st = null;
 		$st = $conn -> prepare("INSERT INTO personel_user (username,password,personel_FK) VALUES (:username, :password, :id)");
-		$st->bindParam(':username', $username);
-		$st->bindParam(':password', $password);
+		$st->bindParam(':username', md5($u));
+		$st->bindParam(':password', md5($p));
 		$st->bindParam(':id', $id);
 		if($st->execute()){
 			echo "Eklendi";
@@ -31,8 +31,8 @@ try {
 	else{
 		$st = null;
 		$st = $conn -> prepare("UPDATE personel_user SET username = :username, password = :password where personel_FK = :id");
-		$st->bindParam(':username', $username);
-		$st->bindParam(':password', $password);
+		$st->bindParam(':username', md5($u));
+		$st->bindParam(':password', md5($p));
 		$st->bindParam(':id', $id);
 		if($st->execute()){
 			echo "Değiştirildi";
