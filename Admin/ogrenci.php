@@ -676,7 +676,7 @@ if($_SESSION['access_type'] == "admin"){
 				$('#notes').html(data);  
 			}  
 		});  
-		document.getElementById("studentInfoTitle").innerHTML = isim+" "+soyisim+" Bilgileri";
+		document.getElementById("studentInfoTitle").innerHTML = isim+" "+soyisim;
 
 		$.ajax({
 			url:"getStudentInfo.php",

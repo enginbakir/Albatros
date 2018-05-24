@@ -93,14 +93,14 @@ if($_SESSION['access_type'] == "admin"){
 							<!-- /.box-header -->
 							<div class="box-body">
 
-								<form class="form-inline" action="" style="padding-bottom: 10px">
+								<form class="form-inline" action="" method="post" style="padding-bottom: 10px">
 									<div class="form-group">
 										<label for="">Adı:</label>
-										<input type="text" class="form-control" name="firstname" id="adi" placeholder="Personelin Adı" name="Personel adı">
+										<input type="text" class="form-control" name="firstname" id="adi" placeholder="Personelin Adı">
 									</div>
 									<div class="form-group">
 										<label for="">Soyadı:</label>
-										<input type="text" class="form-control" name="surname" id="soyadi" placeholder="Personelin Soyadı" name="Personel Soyad">
+										<input type="text" class="form-control" name="surname" id="soyadi" placeholder="Personelin Soyadı">
 									</div>
 									<button type="submit" class="btn btn-primary">Listele</button>
 								</form>
@@ -119,28 +119,29 @@ if($_SESSION['access_type'] == "admin"){
 													</tr>
 												</thead>
 												<tbody id="tbody">
-
-
 													<?php 	
 
-													$name;
-													$surname;
+													$name = null;
+													$surname = null;
+
+
+
 													if(isset($_POST['firstname']) && !empty($_POST['firstname']))
 														$name = $_POST['firstname'];
 													if(isset($_POST['surname']) && !empty($_POST['surname']))
-														$surname = $_POST['surname'];    
+														$surname = $_POST['surname'];
 
 													if(isset($name) && isset($surname)){
-														$sql = "SELECT * FROM personel where name='".$name."' and surname=' INNER JOIN personel_types on personel.personel_type_FK=personel_types.personel_type_PK".$surname."';";
+														// $sql = "SELECT * FROM personel where name='".$name."' and surname=' INNER JOIN personel_types on personel.personel_type_FK=personel_types.personel_type_PK".$surname."';";
 													}
-													if(isset($name) && !isset($surname)){
-														$sql = "SELECT * FROM personel where name='".$name."' INNER JOIN personel_types on personel.personel_type_FK=personel_types.personel_type_PK;";
+													else if(isset($name) && !isset($surname)){
+														$sql = "SELECT * FROM personel p, personel_types pt where name like '%".$name."%' AND  p.personel_type_FK = pt.personel_type_PK;";
 													}
-													if(!isset($name) && isset($surname)){
-														$sql = "SELECT * from personel where surname='".$surname."' INNER JOIN personel_types on personel.personel_type_FK=personel_types.personel_type_PK;";
+													else if(!isset($name) && isset($surname)){
+														$sql = "SELECT * from personel p, personel_types pt where surname like '%".$surname."%' AND  p.personel_type_FK=pt.personel_type_PK;";		
 													}
-													if (!isset($name) && !isset($surname)) {
-														$sql = "SELECT * from personel INNER JOIN personel_types on personel.personel_type_FK=personel_types.personel_type_PK;";
+													else if (!isset($name) && !isset($surname)) {
+														$sql = "SELECT * from personel p, personel_types pt where p.personel_type_FK = pt.personel_type_PK;";
 													}  
 
 													unset($_POST['firstname']);
@@ -196,7 +197,7 @@ if($_SESSION['access_type'] == "admin"){
 						<!-- /.box -->
 						<div class="box">
 							<div class="box-header">
-								<h3 class="box-title">Gülben Ergül - Bilgileri</h3>
+								<h3 id="personelInfoTitle" class="box-title">Personel - Bilgileri</h3>
 							</div>
 							<!-- /.box-header -->
 							<div class="box-body" style="padding-right: 20px; padding-left: 20px;">
@@ -255,19 +256,20 @@ if($_SESSION['access_type'] == "admin"){
 										<div id="loginInfo" class="tab-pane fade">
 											<div class="col-md-12">
 												<div class="box-body box-profile">
-													<h3 class="profile-username text-center">Gülben Ergül</h3>
-													<ul class="list-group list-group-unbordered">
-														<li class="list-group-item">
-															<input id="username" class="form-control" type="text" data-date-inline-picker="false" data-date-open-on-focus="false"  >
-															
-														</li>
-														<li class="list-group-item">
-															<input id="password" class="form-control" type="password" data-date-inline-picker="false" data-date-open-on-focus="false"  >
-															
-														</li>
-													</ul>
-													<input type="button" id="loginInfoChange" value="Değiştir">
-													<span id="error"></span>
+													<div class="form-group">
+														<div class="row">
+															<ul class="list-group list-group-unbordered">
+																<li class="list-group-item">
+																	<input id="username" class="form-control" type="text" data-date-inline-picker="false" data-date-open-on-focus="false" placeholder="Yeni Üye Adı" >
+																</li>
+																<li class="list-group-item">
+																	<input id="password" class="form-control" type="password" data-date-inline-picker="false" data-date-open-on-focus="false"  placeholder="Yeni Şifre">
+																</li>
+															</ul>
+															<input type="button" class="btn btn-primary" id="loginInfoChange" value="Değiştir">
+															<span id="error"></span>
+														</div>
+													</div>
 												</div>
 												<!-- /.box-body -->
 											</div>
@@ -289,7 +291,7 @@ if($_SESSION['access_type'] == "admin"){
 
 	<div>
 		<!-- Scripts Start-->
-		
+
 		<!-- jQuery 3 -->
 		<script src="../bower_components/jquery/dist/jquery.min.js"></script>
 		<!-- jQuery UI 1.11.4 -->
@@ -528,6 +530,7 @@ if($_SESSION['access_type'] == "admin"){
 				document.getElementById("home").innerHTML = data;
 			}
 		});
+		document.getElementById("personelInfoTitle").innerHTML = isim+" "+soyisim;
 	});
 	$('#loginInfoChange').on("click",function(){
 		var u = document.getElementById("username").value;
