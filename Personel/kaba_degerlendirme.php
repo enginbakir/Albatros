@@ -371,10 +371,10 @@ if($_SESSION['access_type'] == "personel"){
 
   		</div>
   		<!-- End .panel -->
-  		<button type="submit" id="kaydet" class="btn btn-success mr5 mb10" title="Kaydet"><i class="glyphicon glyphicon-ok">&nbsp;<span class="spanfont">Kaydet</span></i></button>
+  		<!-- <button type="submit" id="kaydet" class="btn btn-success mr5 mb10" title="Kaydet"><i class="glyphicon glyphicon-ok">&nbsp;<span class="spanfont">Kaydet</span></i></button>
   		<a id="sil" class="btn btn-success mr5 mb10" title="Sil"><i class="glyphicon glyphicon-remove">&nbsp;<span class="spanfont">Sil</span>&nbsp;</i></a>
   		<a id="duzenle" class="btn btn-success mr5 mb10" title="Düzenle"><i class="glyphicon glyphicon-edit">&nbsp;<span class="spanfont">Düzenle</span>&nbsp;</i></a>
-  		<a id="yazdir" class="btn btn-success mr5 mb10" title="Yazdır"><i class="glyphicon glyphicon-print">&nbsp;<span class="spanfont">Yazdır</span>&nbsp;</i></a>
+  		<a id="yazdir" class="btn btn-success mr5 mb10" title="Yazdır"><i class="glyphicon glyphicon-print">&nbsp;<span class="spanfont">Yazdır</span>&nbsp;</i></a> -->
   	</div>
 
 

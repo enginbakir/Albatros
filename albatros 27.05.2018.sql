@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Anamakine: localhost
--- Üretim Zamanı: 07 May 2018, 06:52:54
+-- Üretim Zamanı: 27 May 2018, 13:38:34
 -- Sunucu sürümü: 5.7.17-log
--- PHP Sürümü: 7.1.1
+-- PHP Sürümü: 5.6.30
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -72,7 +72,7 @@ CREATE TABLE `admin_user` (
 --
 
 INSERT INTO `admin_user` (`userAdmin_PK`, `username`, `password`, `admin_FK`) VALUES
-(1, 'engin', 'bakir', 1);
+(1, 'b238bad91d48802afbda6a1e315ec5c7', '5b32d2b633074d709203fe2f7c14e747', 1);
 
 -- --------------------------------------------------------
 
@@ -196,7 +196,9 @@ INSERT INTO `devamsızlık_takvimi` (`id`, `tarih`, `durum`, `aciklama_devam`, `
 (50, '2018-05-09', 'Gelmedi', '', 15),
 (51, '2018-05-16', 'Gelmedi', '', 15),
 (52, '2018-05-10', 'Gelmedi', 'awdaw', 15),
-(53, '2018-05-15', 'Gelmedi', 'açıklama', 13);
+(53, '2018-05-15', 'Gelmedi', 'açıklama', 13),
+(54, '2018-05-08', 'Gelmedi', 'hasta', 15),
+(55, '2018-05-01', 'Gelmedi', 'hasta', 14);
 
 -- --------------------------------------------------------
 
@@ -258,12 +260,13 @@ INSERT INTO `events` (`id`, `title`, `color`, `start`, `end`) VALUES
 (8, 'Dinner', '#0071c5', '2016-01-12 20:00:00', '0000-00-00 00:00:00'),
 (9, 'Birthday Party', '#FFD700', '2016-01-14 07:00:00', '2016-01-14 07:00:00'),
 (10, 'Double click to change', '#008000', '2016-01-28 00:00:00', '0000-00-00 00:00:00'),
-(15, 'ENGİN BAKIR- adwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwaddddddddddddddddddddddd', '#40E0D0', '2018-05-02 11:30:00', '2018-05-02 11:30:00'),
+(15, 'ENGİN BAKIR- adwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwaddddddddddddddddddddddd', '#40E0D0', '2018-05-01 11:30:00', '2018-05-01 11:30:00'),
 (20, 'awd', '#FF8C00', '2018-05-02 00:00:00', '2018-05-03 00:00:00'),
 (21, '', '#40E0D0', '2018-04-29 07:30:00', '2018-04-29 07:30:00'),
 (22, 'ENGİN BAKIR', '#FF0000', '2018-04-28 00:00:00', '2018-04-29 00:00:00'),
 (23, 'awdawdawdaw', '#000', '2018-05-09 08:30:00', '2018-05-09 08:30:00'),
-(24, 'yeni not', '#008000', '2018-05-02 08:00:00', '2018-05-02 08:00:00');
+(24, 'yeni not', '#008000', '2018-05-02 08:00:00', '2018-05-02 08:00:00'),
+(25, 'dawdawdaw', '#40E0D0', '2018-05-01 00:00:00', '2018-05-02 00:00:00');
 
 -- --------------------------------------------------------
 
@@ -287,148 +290,341 @@ INSERT INTO `gender` (`gender_PK`, `gender_type`) VALUES
 -- --------------------------------------------------------
 
 --
--- Tablo için tablo yapısı `kd_matematik`
+-- Tablo için tablo yapısı `kazanimlar_degerlendirme`
 --
 
-CREATE TABLE `kd_matematik` (
-  `m_ID` int(2) NOT NULL,
-  `m_kazanımlar` varchar(250) CHARACTER SET utf8 COLLATE utf8_turkish_ci NOT NULL,
-  `m_evet` varchar(250) NOT NULL DEFAULT 'Evet',
-  `m_hayir` varchar(250) NOT NULL DEFAULT 'Hayır',
-  `m_aciklama` varchar(250) DEFAULT NULL
+CREATE TABLE `kazanimlar_degerlendirme` (
+  `kazanimlar_degerlendirme_PK` int(11) NOT NULL,
+  `kazanimlar_ders_ogrenci_FK` int(11) NOT NULL,
+  `kazanimlar_FK` int(11) NOT NULL,
+  `durum` int(11) NOT NULL,
+  `aciklama` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Tablo döküm verisi `kd_matematik`
+-- Tablo döküm verisi `kazanimlar_degerlendirme`
 --
 
-INSERT INTO `kd_matematik` (`m_ID`, `m_kazanımlar`, `m_evet`, `m_hayir`, `m_aciklama`) VALUES
-(1, 'Uzamsal ilişkileri ifade etmek için uygun terim kullanır.', 'Evet', 'Hayır', NULL),
-(2, 'İkişer ritmik sayar.', 'Evet', 'Hayır', NULL),
-(3, 'Üçer ritmik sayar.', 'Evet', 'Hayır', NULL),
-(4, 'Dörder ritmik sayar.', 'Evet', 'Hayır', NULL),
-(5, 'Altışar ritmik sayar.', 'Evet', 'Hayır', NULL),
-(6, 'Yedişer ritmik sayar.', 'Evet', 'Hayır', NULL),
-(7, 'Sekizer ritmik sayar.', 'Evet', 'Hayır', NULL),
-(8, 'Dokuzar ritmik sayar.', 'Evet', 'Hayır', NULL),
-(9, 'İki basamaklı doğal sayıları ayırt eder.', 'Evet', 'Hayır', NULL),
-(10, 'Üç ve daha fazla basamaklı doğal sayıları ayırt eder.', 'Evet', 'Hayır', NULL),
-(11, 'Eldesiz toplama işlemi yapar.', 'Evet', 'Hayır', NULL),
-(12, 'Eldeli toplama işlemi yapar.', 'Evet', 'Hayır', NULL),
-(13, 'Onluk bozma gerektirmeyen çıkarma işlemi yapar.', 'Evet', 'Hayır', NULL),
-(14, 'Onluk bozma gerektiren çıkarma işlemi yapar.', 'Evet', 'Hayır', NULL),
-(15, 'Çıkarma işlemi yaparak problem çözer.', 'Evet', 'Hayır', NULL),
-(16, 'Eldesiz çarpma işlemi yapar.', 'Evet', 'Hayır', NULL),
-(17, 'Eldeli çarpma işlemi yapar.', 'Evet', 'Hayır', NULL),
-(18, 'Kısa yoldan çarpma işlemi yapar.', 'Evet', 'Hayır', NULL),
-(19, 'Çarpma işlemi yaparak problem çözer.', 'Evet', 'Hayır', NULL),
-(20, 'Kalansız bölme işlemi yapar.', 'Evet', 'Hayır', NULL),
-(21, 'Kalanlı bölme işlemi yapar.', 'Evet', 'Hayır', NULL),
-(22, 'Kısa yoldan bölme işlemi yapar.', 'Evet', 'Hayır', NULL),
-(23, 'Bölme işlemi yaparak problem çözer.', 'Evet', 'Hayır', NULL),
-(24, 'Dört işlem yaparak problem çözer.', 'Evet', 'Hayır', NULL),
-(25, 'Kesirlerle ilgili problem çözer.', 'Evet', 'Hayır', NULL),
-(26, 'Uzunluk ölçüleri arasında işlem yapar.', 'Evet', 'Hayır', NULL),
-(27, 'Sıvı ölçüleri arasında işlem yapar.', 'Evet', 'Hayır', NULL),
-(28, 'Kütle ölçüleri arasında işlem yapar.', 'Evet', 'Hayır', NULL),
-(29, 'Değer ölçüleri arasında işlem yapar.', 'Evet', 'Hayır', NULL),
-(30, 'Zaman ölçüleri arasında işlem yapar.', 'Evet', 'Hayır', NULL),
-(31, 'Geometrik şekiller arasında ilişki kurar.', 'Evet', 'Hayır', NULL);
+INSERT INTO `kazanimlar_degerlendirme` (`kazanimlar_degerlendirme_PK`, `kazanimlar_ders_ogrenci_FK`, `kazanimlar_FK`, `durum`, `aciklama`) VALUES
+(1, 1, 1, 1, ''),
+(2, 1, 2, 1, ''),
+(3, 1, 3, 0, ''),
+(4, 1, 4, 0, ''),
+(5, 1, 5, 1, ''),
+(6, 1, 6, 0, ''),
+(7, 1, 7, 1, ''),
+(8, 1, 8, 0, ''),
+(9, 1, 9, 1, ''),
+(10, 1, 10, 0, ''),
+(11, 1, 11, 0, ''),
+(12, 1, 12, 0, ''),
+(13, 1, 13, 1, ''),
+(14, 1, 14, 0, ''),
+(15, 1, 15, 1, ''),
+(16, 1, 16, 0, ''),
+(17, 1, 17, 0, ''),
+(18, 1, 18, 0, ''),
+(19, 1, 19, 0, ''),
+(20, 1, 20, 0, ''),
+(21, 1, 21, 0, ''),
+(22, 1, 22, 0, ''),
+(23, 1, 23, 0, ''),
+(24, 1, 24, 0, ''),
+(25, 1, 25, 0, ''),
+(26, 1, 26, 0, ''),
+(27, 1, 27, 0, ''),
+(28, 1, 28, 0, ''),
+(29, 1, 29, 0, ''),
+(30, 1, 30, 0, ''),
+(31, 1, 31, 0, ''),
+(32, 1, 32, 0, ''),
+(33, 1, 33, 0, ''),
+(34, 1, 34, 0, ''),
+(35, 2, 1, 0, ''),
+(36, 2, 2, 1, ''),
+(37, 2, 3, 0, ''),
+(38, 2, 4, 1, ''),
+(39, 2, 5, 0, ''),
+(40, 2, 6, 0, ''),
+(41, 2, 7, 1, ''),
+(42, 2, 8, 0, ''),
+(43, 2, 9, 0, ''),
+(44, 2, 10, 1, ''),
+(45, 2, 11, 1, ''),
+(46, 2, 12, 0, ''),
+(47, 2, 13, 0, ''),
+(48, 2, 14, 1, ''),
+(49, 2, 15, 1, ''),
+(50, 2, 16, 1, ''),
+(51, 2, 17, 0, ''),
+(52, 2, 18, 0, ''),
+(53, 2, 19, 1, ''),
+(54, 2, 20, 0, ''),
+(55, 3, 1, 1, ''),
+(56, 3, 2, 0, ''),
+(57, 3, 3, 0, ''),
+(58, 3, 4, 1, ''),
+(59, 3, 5, 0, ''),
+(60, 3, 6, 0, ''),
+(61, 3, 7, 0, ''),
+(62, 3, 8, 0, ''),
+(63, 3, 9, 0, ''),
+(64, 3, 10, 0, ''),
+(65, 3, 11, 1, ''),
+(66, 3, 12, 0, ''),
+(67, 3, 13, 0, ''),
+(68, 3, 14, 1, ''),
+(69, 3, 15, 0, ''),
+(70, 3, 16, 0, ''),
+(71, 3, 17, 1, ''),
+(72, 3, 18, 0, ''),
+(73, 3, 19, 0, ''),
+(74, 3, 20, 1, ''),
+(75, 3, 21, 0, ''),
+(76, 3, 22, 0, ''),
+(77, 3, 23, 0, ''),
+(78, 3, 24, 1, ''),
+(79, 3, 25, 0, ''),
+(80, 3, 26, 0, ''),
+(81, 3, 27, 0, ''),
+(82, 3, 28, 1, ''),
+(83, 3, 29, 0, ''),
+(84, 3, 30, 0, ''),
+(85, 3, 31, 1, ''),
+(86, 3, 32, 0, ''),
+(87, 3, 33, 1, ''),
+(88, 3, 34, 0, ''),
+(89, 4, 1, 1, ''),
+(90, 4, 2, 0, ''),
+(91, 4, 3, 1, ''),
+(92, 4, 4, 0, ''),
+(93, 4, 5, 0, ''),
+(94, 4, 6, 1, ''),
+(95, 4, 7, 0, ''),
+(96, 4, 8, 0, ''),
+(97, 4, 9, 1, ''),
+(98, 4, 10, 0, ''),
+(99, 4, 11, 1, ''),
+(100, 4, 12, 0, ''),
+(101, 4, 13, 0, ''),
+(102, 4, 14, 1, ''),
+(103, 4, 15, 0, ''),
+(104, 4, 16, 0, ''),
+(105, 4, 17, 1, ''),
+(106, 4, 18, 0, ''),
+(107, 4, 19, 0, ''),
+(108, 4, 20, 0, '');
 
 -- --------------------------------------------------------
 
 --
--- Tablo için tablo yapısı `kd_ogrenmeyehazirlik`
+-- Tablo için tablo yapısı `kazanimlar_degerlendirme_ogretmen`
 --
 
-CREATE TABLE `kd_ogrenmeyehazirlik` (
-  `oH_ID` int(11) NOT NULL,
-  `oH_kazanimlar` varchar(100) NOT NULL,
-  `oH_evet` varchar(250) NOT NULL DEFAULT 'Evet',
-  `oH_hayir` varchar(250) NOT NULL DEFAULT 'Hayır',
-  `oH_aciklama` varchar(250) DEFAULT NULL
+CREATE TABLE `kazanimlar_degerlendirme_ogretmen` (
+  `kazanimlar_degerlendirme_ogretmen_PK` int(11) NOT NULL,
+  `kazanimlar_ders_ogrenci_FK` int(11) NOT NULL,
+  `personel_FK` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Tablo döküm verisi `kd_ogrenmeyehazirlik`
+-- Tablo döküm verisi `kazanimlar_degerlendirme_ogretmen`
 --
 
-INSERT INTO `kd_ogrenmeyehazirlik` (`oH_ID`, `oH_kazanimlar`, `oH_evet`, `oH_hayir`, `oH_aciklama`) VALUES
-(1, 'Metinde istenen şekli bulur.', 'Evet', 'Hayır', NULL),
-(2, 'Benzer şekilleri eşleştirir.', 'Evet', 'Hayır', NULL),
-(4, 'Farklı şekilleri ayırt eder.', 'Evet', 'Hayır', NULL),
-(5, 'Sesin geldiği yönü bulur.', 'Evet', 'Hayır', NULL),
-(6, 'Sesleri tanır.', 'Evet', 'Hayır', NULL),
-(7, 'Aynı anda işitilen farklı seslerden birine odaklanır.', 'Evet', 'Hayır', NULL),
-(8, 'Dokunduğu nesneyi tanır.', 'Evet', 'Hayır', NULL),
-(9, 'Nesneleri duruş yönlerine göre eşleştirir.', 'Evet', 'Hayır', NULL),
-(10, 'Nesneleri duruş yönlerine göre gruplar.', 'Evet', 'Hayır', NULL),
-(11, 'Söyleniş sırasına göre yönergeleri uygular.', 'Evet', 'Hayır', NULL),
-(12, 'Ritim tutar.', 'Evet', 'Hayır', NULL),
-(13, 'Benzer sesler arasındaki farkı ayırt eder.', 'Evet', 'Hayır', NULL),
-(14, 'Hecelerdeki ses sırasını ayırt eder.', 'Evet', 'Hayır', NULL),
-(15, 'Sözcükleri doğru telaffuz eder.', 'Evet', 'Hayır', NULL),
-(16, 'Vücudundan gelen uyaranları algılar.', 'Evet', 'Hayır', NULL),
-(17, 'Vücudundan gelen uyaranlara uygun tepki verir.', 'Evet', 'Hayır', NULL),
-(18, 'Yürütülen çalışma süresince dikkatini toplamaya özen gösterir.', 'Evet', 'Hayır', NULL),
-(19, 'Konuşmayı dinlediğini uygun jest, mimik ve hareketlerle gösterir.', 'Evet', 'Hayır', NULL),
-(20, 'Yönergeleri istenen sürede uygular.', 'Evet', 'Hayır', NULL),
-(21, 'Sorular sorar.', 'Evet', 'Hayır', NULL),
-(22, 'Bilgiyi gerektiğinde kullanır.', 'Evet', 'Hayır', NULL),
-(23, 'Yapacağı çalışmayı planlar.', 'Evet', 'Hayır', NULL),
-(24, 'Yaptığı çalışma planına uyar.', 'Evet', 'Hayır', NULL),
-(25, 'Yaptığı çalışmanın, çalışma planına uygunluğunu kontrol eder.', 'Evet', 'Hayır', NULL),
-(26, 'Başladığı çalışmayı tamamlar.', 'Evet', 'Hayır', NULL),
-(27, 'Dinlediği veya okuduğu konuyla ilgili not tutar.', 'Evet', 'Hayır', NULL),
-(28, 'Zamanını etkin kullanır.', 'Evet', 'Hayır', NULL),
-(29, 'Bağımsız çalışma alışkanlığı edinir.', 'Evet', 'Hayır', NULL),
-(30, 'Beden duruşuna göre yönleri ayırt eder.', 'Evet', 'Hayır', NULL),
-(31, 'Yürüme ile koordinasyon sağlar.', 'Evet', 'Hayır', NULL),
-(32, 'Yuvarlanma, takla atma, sürünmeyle koordinasyon sağlar.', 'Evet', 'Hayır', NULL),
-(33, 'Kaldırma ve taşımalarla koordinasyon sağlar.', 'Evet', 'Hayır', NULL),
-(34, 'Asılma ve sallanmalarla koordinasyon sağlar.', 'Evet', 'Hayır', NULL),
-(35, 'El, göz koordinasyonu sağlar.', 'Evet', 'Hayır', NULL),
-(36, 'Atma ve tutmalarla koordinasyon sağlar.', 'Evet', 'Hayır', NULL),
-(37, 'El, parmak koordinasyonu sağlar.', 'Evet', 'Hayır', NULL);
+INSERT INTO `kazanimlar_degerlendirme_ogretmen` (`kazanimlar_degerlendirme_ogretmen_PK`, `kazanimlar_ders_ogrenci_FK`, `personel_FK`) VALUES
+(1, 1, 23),
+(2, 1, 24),
+(3, 2, 23),
+(4, 2, 24),
+(5, 3, 23),
+(6, 3, 24),
+(7, 3, 25),
+(8, 4, 23),
+(9, 4, 24),
+(10, 4, 25);
 
 -- --------------------------------------------------------
 
 --
--- Tablo için tablo yapısı `kd_okumayazma`
+-- Tablo için tablo yapısı `kazanimlar_ders_ogrenci`
 --
 
-CREATE TABLE `kd_okumayazma` (
-  `oY_ID` int(11) NOT NULL,
-  `oY_kazanimlar` varchar(250) CHARACTER SET utf8 COLLATE utf8_turkish_ci NOT NULL,
-  `oY_evet` varchar(250) NOT NULL DEFAULT 'Evet',
-  `oY_hayir` varchar(250) NOT NULL DEFAULT 'Hayır',
-  `oY_aciklama` varchar(250) DEFAULT NULL
+CREATE TABLE `kazanimlar_ders_ogrenci` (
+  `kazanimlar_ders_ogrenci_PK` int(11) NOT NULL,
+  `student_FK` int(11) NOT NULL,
+  `lessons_FK` int(11) NOT NULL,
+  `date` date NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Tablo döküm verisi `kd_okumayazma`
+-- Tablo döküm verisi `kazanimlar_ders_ogrenci`
 --
 
-INSERT INTO `kd_okumayazma` (`oY_ID`, `oY_kazanimlar`, `oY_evet`, `oY_hayir`, `oY_aciklama`) VALUES
-(1, 'Yazı araç-gereçlerini tanır.', 'Evet', 'Hayır', NULL),
-(2, 'Yazı araç-gereçlerini kurallarına uygun kullanır.', 'Evet', 'Hayır', NULL),
-(3, 'Temel çizgiler çizer', 'Evet', 'Hayır', NULL),
-(4, 'Sesleri okur.', 'Evet', 'Hayır', NULL),
-(5, 'Sesleri yazar.', 'Evet', 'Hayır', NULL),
-(6, 'Heceleri okur.', 'Evet', 'Hayır', NULL),
-(7, 'Heceleri yazar.', 'Evet', 'Hayır', NULL),
-(8, 'Kelimeleri okur.', 'Evet', 'Hayır', NULL),
-(9, 'Tümceleri okur.', 'Evet', 'Hayır', NULL),
-(10, 'Tümceleri yazar.', 'Evet', 'Hayır', NULL),
-(11, 'Metin okur.', 'Evet', 'Hayır', NULL),
-(12, 'Metin yazar.', 'Evet', 'Hayır', NULL),
-(13, 'Etkili okur.', 'Evet', 'Hayır', NULL),
-(14, 'Okuduğu metinle ilgili neden-sonuç ilişkisi kurar', 'Evet', 'Hayır', NULL),
-(15, 'Okuduğu metni anlar.', 'Evet', 'Hayır', NULL),
-(16, 'Olaylar arasında neden-sonuç ilişkisi kurar.', 'Evet', 'Hayır', NULL),
-(17, 'Okumaya istekli olur.', 'Evet', 'Hayır', NULL),
-(18, 'Yazım kurallarına uyar.', 'Evet', 'Hayır', NULL),
-(19, 'Noktalama işaretlerini yerinde kullanır.', 'Evet', 'Hayır', NULL);
+INSERT INTO `kazanimlar_ders_ogrenci` (`kazanimlar_ders_ogrenci_PK`, `student_FK`, `lessons_FK`, `date`) VALUES
+(1, 13, 5, '2018-05-16'),
+(2, 13, 3, '2018-05-16'),
+(3, 15, 5, '2018-05-03'),
+(4, 15, 3, '2018-05-03');
+
+-- --------------------------------------------------------
+
+--
+-- Tablo için tablo yapısı `kazanimlar_lessons`
+--
+
+CREATE TABLE `kazanimlar_lessons` (
+  `kazanim_PK` int(11) NOT NULL,
+  `kazanim` varchar(255) CHARACTER SET utf8 NOT NULL,
+  `lesson_FK` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_turkish_ci;
+
+--
+-- Tablo döküm verisi `kazanimlar_lessons`
+--
+
+INSERT INTO `kazanimlar_lessons` (`kazanim_PK`, `kazanim`, `lesson_FK`) VALUES
+(1, 'Yazı araç-gereçlerini tanır.', 3),
+(2, 'Yazı araç-gereçlerini kurallara uygun kullanır.', 3),
+(3, 'Temel çizgiler çizer.', 3),
+(4, 'Sesleri okur.', 3),
+(5, 'Sesleri yazar.', 3),
+(6, 'Heceleri okur.', 3),
+(7, 'Heceleri yazar.', 3),
+(8, 'Kelimeleri okur.', 3),
+(9, 'Kelimeleri yazar.', 3),
+(10, 'Tümceleri okur.', 3),
+(11, 'Tümceleri yazar.', 3),
+(12, 'Metin okur.', 3),
+(13, 'Metin yazar.', 3),
+(14, 'Etkili okur.', 3),
+(15, 'Okuduğu metinle ilgili neden-sonuç ilişkisi kurar.', 3),
+(16, 'Okuduğu metni anlar.', 3),
+(17, 'Olaylar arasında neden-sonuç ilişkisi kurar.', 3),
+(18, 'Okumaya istekli olur.', 3),
+(19, 'Yazım kurallarına uyar.', 3),
+(20, 'Noktalama işaretlerini yerinde kullanır.', 3),
+(21, 'Uzamsal ilişkileri ifade etmek için uygun terim kullanılır.', 5),
+(22, 'İkişer ritmik sayar', 5),
+(23, 'Üçer ritmik sayar.', 5),
+(24, 'Dörder ritmik sayar.', 5),
+(25, 'Altışar ritmik sayar.', 5),
+(26, 'Yedişer ritmik sayar.', 5),
+(27, 'Sekizer ritmik sayar.', 5),
+(28, 'Dokuzar ritmik sayar.', 5),
+(29, 'İki basamaklı doğal sayıları ayırt eder.', 5),
+(30, 'Üç ve daha fazla basamaklı doğal sayıları ayırt eder.', 5),
+(31, 'Eldesiz toplama işlemi yapar.', 5),
+(32, 'Eldeli toplama işlemi yapar.', 5),
+(33, 'Toplama işlemi yaparak problem çözer.', 5),
+(34, 'Onluk bozma gerektirmeyen çıkarma işlemi yapar.', 5),
+(35, 'Onluk bozma gerektiren çıkarma işlemi yapar.', 5),
+(36, 'Çıkarma işlemi yaparak problem çözer.', 5),
+(37, 'Eldesiz çarpma işlemi yapar.', 5),
+(38, 'Eldeli çarpma işlemi yapar.', 5),
+(39, 'Kısa yoldan çarpma işlemi yapar.', 5),
+(40, 'Çarpma işlemi yaparak problem çözer.', 5),
+(41, 'Kalansız bölme işlemi yapar.', 5),
+(42, 'Kalanlı bölme işlemi yapar.', 5),
+(43, 'Kısa yoldan bölme işlemi yapar.', 5),
+(44, 'Bölme işlemi yaparak problem çözer.', 5),
+(45, 'Dört işlem yaparak problem çözer.', 5),
+(46, 'Nesneleri bütün, yarım ve çeyrek olma durumuna göre ayırt.', 5),
+(47, 'Kesirlerle ilgili problem çözer.', 5),
+(48, 'Uzunluk ölçüleri arasında işlem yapar.', 5),
+(49, 'Sıvı ölçüleri arasında işlem yapar.', 5),
+(50, 'Kütle ölçüleri arasında işlem yapar.', 5),
+(51, 'Değer ölçüleri arasında işlem yapar.', 5),
+(52, 'Zaman ölçüleri arasında işlem yapar.', 5),
+(53, 'Alan ölçüleri arasında işlem yapar.', 5),
+(54, 'Geometrik şekiller arasında ilişki kurar.', 5);
+
+-- --------------------------------------------------------
+
+--
+-- Tablo için tablo yapısı `kazanimlar_matematik`
+--
+
+CREATE TABLE `kazanimlar_matematik` (
+  `kazanimlar_PK` int(11) NOT NULL,
+  `kazanimlar` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+
+--
+-- Tablo döküm verisi `kazanimlar_matematik`
+--
+
+INSERT INTO `kazanimlar_matematik` (`kazanimlar_PK`, `kazanimlar`) VALUES
+(1, 'Uzamsal ilişkileri ifade etmek için uygun terim kullanılır.'),
+(2, 'İkişer ritmik sayar'),
+(3, 'Üçer ritmik sayar.'),
+(4, 'Dörder ritmik sayar.'),
+(5, 'Altışar ritmik sayar.'),
+(6, 'Yedişer ritmik sayar.'),
+(7, 'Sekizer ritmik sayar.'),
+(8, 'Dokuzar ritmik sayar.'),
+(9, 'İki basamaklı doğal sayıları ayırt eder.'),
+(10, 'Üç ve daha fazla basamaklı doğal sayıları ayırt eder.'),
+(11, 'Eldesiz toplama işlemi yapar.'),
+(12, 'Eldeli toplama işlemi yapar.'),
+(13, 'Toplama işlemi yaparak problem çözer.'),
+(14, 'Onluk bozma gerektirmeyen çıkarma işlemi yapar.'),
+(15, 'Onluk bozma gerektiren çıkarma işlemi yapar.'),
+(16, 'Çıkarma işlemi yaparak problem çözer.'),
+(17, 'Eldesiz çarpma işlemi yapar.'),
+(18, 'Eldeli çarpma işlemi yapar.'),
+(19, 'Kısa yoldan çarpma işlemi yapar.'),
+(20, 'Çarpma işlemi yaparak problem çözer.'),
+(21, 'Kalansız bölme işlemi yapar.'),
+(22, 'Kalanlı bölme işlemi yapar.'),
+(23, 'Kısa yoldan bölme işlemi yapar.'),
+(24, 'Bölme işlemi yaparak problem çözer.'),
+(25, 'Dört işlem yaparak problem çözer.'),
+(26, 'Nesneleri bütün, yarım ve çeyrek olma durumuna göre ayırt.'),
+(27, 'Kesirlerle ilgili problem çözer.'),
+(28, 'Uzunluk ölçüleri arasında işlem yapar.'),
+(29, 'Sıvı ölçüleri arasında işlem yapar.'),
+(30, 'Kütle ölçüleri arasında işlem yapar.'),
+(31, 'Değer ölçüleri arasında işlem yapar.'),
+(32, 'Zaman ölçüleri arasında işlem yapar.'),
+(33, 'Alan ölçüleri arasında işlem yapar.'),
+(34, 'Geometrik şekiller arasında ilişki kurar.');
+
+-- --------------------------------------------------------
+
+--
+-- Tablo için tablo yapısı `kazanimlar_okuma_yazma`
+--
+
+CREATE TABLE `kazanimlar_okuma_yazma` (
+  `kazanimlar_okuma_yazma_PK` int(11) NOT NULL,
+  `kazanimlar` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Tablo döküm verisi `kazanimlar_okuma_yazma`
+--
+
+INSERT INTO `kazanimlar_okuma_yazma` (`kazanimlar_okuma_yazma_PK`, `kazanimlar`) VALUES
+(1, 'Yazı araç-gereçlerini tanır.'),
+(2, 'Yazı araç-gereçlerini kurallara uygun kullanır.'),
+(3, 'Temel çizgiler çizer.'),
+(4, 'Sesleri okur.'),
+(5, 'Sesleri yazar.'),
+(6, 'Heceleri okur.'),
+(7, 'Heceleri yazar.'),
+(8, 'Kelimeleri okur.'),
+(9, 'Kelimeleri yazar.'),
+(10, 'Tümceleri okur.'),
+(11, 'Tümceleri yazar.'),
+(12, 'Metin okur.'),
+(13, 'Metin yazar.'),
+(14, 'Etkili okur.'),
+(15, 'Okuduğu metinle ilgili neden-sonuç ilişkisi kurar.'),
+(16, 'Okuduğu metni anlar.'),
+(17, 'Olaylar arasında neden-sonuç ilişkisi kurar.'),
+(18, 'Okumaya istekli olur.'),
+(19, 'Yazım kurallarına uyar.'),
+(20, 'Noktalama işaretlerini yerinde kullanır.');
 
 -- --------------------------------------------------------
 
@@ -472,9 +668,7 @@ INSERT INTO `lessons` (`lessons_PK`, `lesson_name`, `lesson_type`) VALUES
 
 CREATE TABLE `lesson_event` (
   `lesson_event_PK` int(11) NOT NULL,
-  `student_FK` int(11) NOT NULL,
-  `personel_FK` int(11) NOT NULL,
-  `lesson_FK` int(11) NOT NULL,
+  `student_lessons_FK` int(11) NOT NULL,
   `attendance_type_FK` int(11) NOT NULL,
   `date` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_turkish_ci;
@@ -483,9 +677,10 @@ CREATE TABLE `lesson_event` (
 -- Tablo döküm verisi `lesson_event`
 --
 
-INSERT INTO `lesson_event` (`lesson_event_PK`, `student_FK`, `personel_FK`, `lesson_FK`, `attendance_type_FK`, `date`) VALUES
-(1, 13, 23, 5, 13, '2018-05-23 00:00:00'),
-(2, 13, 23, 3, 0, '2018-05-15 00:00:00');
+INSERT INTO `lesson_event` (`lesson_event_PK`, `student_lessons_FK`, `attendance_type_FK`, `date`) VALUES
+(1, 0, 0, '2018-05-23 00:00:00'),
+(2, 0, 0, '2018-05-15 00:00:00'),
+(3, 0, 0, '2018-05-15 00:00:00');
 
 -- --------------------------------------------------------
 
@@ -516,7 +711,9 @@ INSERT INTO `notes` (`note_PK`, `personel_FK`, `student_FK`, `note`, `tarih`) VA
 (8, 3, 12, 'awdawd', '2018-05-01'),
 (9, 23, 13, 'şeymanin notu', '2018-05-17'),
 (10, 24, 13, 'şeymanın diğer notu', '2018-05-08'),
-(11, 23, 13, 'şeymanın diğer notu ', '2018-05-09');
+(13, 23, 13, '2018-05-23', '2018-05-23'),
+(14, 23, 13, '2018-05-15', '2018-05-23'),
+(19, 23, 15, 'enginin notu nazmiye', '2018-05-25');
 
 -- --------------------------------------------------------
 
@@ -536,30 +733,18 @@ CREATE TABLE `odeme_bilgileri` (
 --
 
 INSERT INTO `odeme_bilgileri` (`id_aylar`, `aylar`, `ödeme`, `student_FK`) VALUES
-(1, 'OCAK', 1, 1),
-(2, 'ŞUBAT', 1, 1),
-(3, 'MART', 0, 1),
-(4, 'NİSAN', 1, 1),
-(5, 'MAYIS', 0, 1),
-(6, 'HAZİRAN', 1, 1),
-(7, 'TEMMUZ', 0, 1),
-(8, 'AĞUSTOS', 1, 1),
-(9, 'EYLÜL', 1, 1),
-(10, 'EKİM', 1, 1),
-(11, 'KASIM', 0, 1),
-(12, 'ARALIK', 1, 1),
-(38, 'OCAK', 0, 13),
-(39, 'ŞUBAT', 1, 13),
-(40, 'MART', 0, 13),
-(41, 'NİSAN', 1, 13),
-(42, 'MAYIS', 0, 13),
-(43, 'HAZİRAN', 1, 13),
-(44, 'TEMMUZ', 0, 13),
-(45, 'AĞUSTOS', 1, 13),
-(46, 'EYLÜL', 1, 13),
-(47, 'EKİM', 1, 13),
-(48, 'KASIM', 0, 13),
-(49, 'ARALIK', 1, 13);
+(1, 'OCAK', 0, 13),
+(2, 'ŞUBAT', 0, 13),
+(3, 'MART', 0, 13),
+(4, 'NİSAN', 0, 13),
+(5, 'MAYIS', 1, 13),
+(6, 'HAZİRAN', 0, 13),
+(7, 'TEMMUZ', 0, 13),
+(8, 'AĞUSTOS', 1, 13),
+(9, 'EYLÜL', 0, 13),
+(10, 'EKİM', 1, 13),
+(11, 'KASIM', 0, 13),
+(12, 'ARALIK', 1, 13);
 
 -- --------------------------------------------------------
 
@@ -646,8 +831,8 @@ CREATE TABLE `personel` (
 
 INSERT INTO `personel` (`personel_PK`, `name`, `surname`, `registration_date`, `deletion_date`, `email_address`, `tel_no`, `photo`, `status`, `personel_type_FK`, `gender_FK`) VALUES
 (23, 'Nazmiye', 'Hanım', '2018-05-05', '2018-05-29', 'enginbakir1311@gmail.com', 2345234, '../images/wallhaven-118071.png', 1, 3, 2),
-(24, 'Atıf', 'Tokar', '2018-05-05', '2018-05-05', 'enginbakir1311@gmail.com', 23423432, '../images/wallhaven-37426.jpg', 0, 2, 2),
-(25, 'Personel Adı', 'Personel Soyadı', '2018-05-06', '2018-05-22', 'enginbakir1311@gmail.com', 251231, '../images/wallhaven-511071.jpg', 1, 3, 1);
+(24, 'Atıffff', 'Tokar', '2018-05-05', '2018-05-05', 'enginbakir1311@gmail.com', 23423432, '../images/wallhaven-37426.jpg', 1, 2, 2),
+(25, 'Personel Adı', 'Personel Soyadı', '2018-05-06', '2018-05-22', 'enginbakir1311@gmail.com', 251231, '../images/wallhaven-110442.jpg', 1, 3, 2);
 
 -- --------------------------------------------------------
 
@@ -709,7 +894,9 @@ CREATE TABLE `personel_user` (
 --
 
 INSERT INTO `personel_user` (`userPersonel_PK`, `username`, `password`, `personel_FK`) VALUES
-(1, 'personel', 'personel', 23);
+(8, '4a8f195105935103d95c77204b8d4404', '4a8f195105935103d95c77204b8d4404', 23),
+(11, '182b68b5c4ddcdd81b3d54335c82027a', '06f805ad2a5449496bbcf7ec65f48576', 24),
+(12, 'e02ed20320a3d6d326d6828f24af898b', 'e02ed20320a3d6d326d6828f24af898b', 25);
 
 -- --------------------------------------------------------
 
@@ -786,6 +973,29 @@ INSERT INTO `student_diagnosis` (`id`, `student_FK`, `diagnosis_FK`) VALUES
 (422, 15, 6),
 (425, 13, 0),
 (430, 16, 0);
+
+-- --------------------------------------------------------
+
+--
+-- Tablo için tablo yapısı `student_lessons`
+--
+
+CREATE TABLE `student_lessons` (
+  `student_lessons_PK` int(11) NOT NULL,
+  `student_FK` int(11) NOT NULL,
+  `lesson_FK` int(11) NOT NULL,
+  `personel_FK` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_turkish_ci;
+
+--
+-- Tablo döküm verisi `student_lessons`
+--
+
+INSERT INTO `student_lessons` (`student_lessons_PK`, `student_FK`, `lesson_FK`, `personel_FK`) VALUES
+(1, 13, 5, 23),
+(3, 13, 3, 24),
+(4, 15, 5, 24),
+(5, 15, 3, 24);
 
 -- --------------------------------------------------------
 
@@ -902,22 +1112,45 @@ ALTER TABLE `gender`
   ADD PRIMARY KEY (`gender_PK`);
 
 --
--- Tablo için indeksler `kd_matematik`
+-- Tablo için indeksler `kazanimlar_degerlendirme`
 --
-ALTER TABLE `kd_matematik`
-  ADD PRIMARY KEY (`m_ID`);
+ALTER TABLE `kazanimlar_degerlendirme`
+  ADD PRIMARY KEY (`kazanimlar_degerlendirme_PK`),
+  ADD KEY `kazanimlar_ders_ogrenci_FK` (`kazanimlar_ders_ogrenci_FK`),
+  ADD KEY `kazanimlar_FK` (`kazanimlar_FK`);
 
 --
--- Tablo için indeksler `kd_ogrenmeyehazirlik`
+-- Tablo için indeksler `kazanimlar_degerlendirme_ogretmen`
 --
-ALTER TABLE `kd_ogrenmeyehazirlik`
-  ADD PRIMARY KEY (`oH_ID`);
+ALTER TABLE `kazanimlar_degerlendirme_ogretmen`
+  ADD PRIMARY KEY (`kazanimlar_degerlendirme_ogretmen_PK`);
 
 --
--- Tablo için indeksler `kd_okumayazma`
+-- Tablo için indeksler `kazanimlar_ders_ogrenci`
 --
-ALTER TABLE `kd_okumayazma`
-  ADD PRIMARY KEY (`oY_ID`);
+ALTER TABLE `kazanimlar_ders_ogrenci`
+  ADD PRIMARY KEY (`kazanimlar_ders_ogrenci_PK`),
+  ADD KEY `student_FK` (`student_FK`),
+  ADD KEY `lessons_FK` (`lessons_FK`);
+
+--
+-- Tablo için indeksler `kazanimlar_lessons`
+--
+ALTER TABLE `kazanimlar_lessons`
+  ADD PRIMARY KEY (`kazanim_PK`),
+  ADD KEY `lesson_FK` (`lesson_FK`);
+
+--
+-- Tablo için indeksler `kazanimlar_matematik`
+--
+ALTER TABLE `kazanimlar_matematik`
+  ADD PRIMARY KEY (`kazanimlar_PK`);
+
+--
+-- Tablo için indeksler `kazanimlar_okuma_yazma`
+--
+ALTER TABLE `kazanimlar_okuma_yazma`
+  ADD PRIMARY KEY (`kazanimlar_okuma_yazma_PK`);
 
 --
 -- Tablo için indeksler `lessons`
@@ -930,9 +1163,6 @@ ALTER TABLE `lessons`
 --
 ALTER TABLE `lesson_event`
   ADD PRIMARY KEY (`lesson_event_PK`),
-  ADD KEY `student_FK` (`student_FK`),
-  ADD KEY `personel_FK` (`personel_FK`),
-  ADD KEY `lesson_FK` (`lesson_FK`),
   ADD KEY `attendance_type_FK` (`attendance_type_FK`);
 
 --
@@ -1019,6 +1249,12 @@ ALTER TABLE `student_diagnosis`
   ADD KEY `diagnosis_FK` (`diagnosis_FK`);
 
 --
+-- Tablo için indeksler `student_lessons`
+--
+ALTER TABLE `student_lessons`
+  ADD PRIMARY KEY (`student_lessons_PK`);
+
+--
 -- Tablo için indeksler `student_transportation`
 --
 ALTER TABLE `student_transportation`
@@ -1075,7 +1311,7 @@ ALTER TABLE `degree_of_proximity`
 -- Tablo için AUTO_INCREMENT değeri `devamsızlık_takvimi`
 --
 ALTER TABLE `devamsızlık_takvimi`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=54;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=56;
 --
 -- Tablo için AUTO_INCREMENT değeri `educational_diagnosis`
 --
@@ -1085,22 +1321,42 @@ ALTER TABLE `educational_diagnosis`
 -- Tablo için AUTO_INCREMENT değeri `events`
 --
 ALTER TABLE `events`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
 --
 -- Tablo için AUTO_INCREMENT değeri `gender`
 --
 ALTER TABLE `gender`
   MODIFY `gender_PK` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 --
--- Tablo için AUTO_INCREMENT değeri `kd_ogrenmeyehazirlik`
+-- Tablo için AUTO_INCREMENT değeri `kazanimlar_degerlendirme`
 --
-ALTER TABLE `kd_ogrenmeyehazirlik`
-  MODIFY `oH_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=38;
+ALTER TABLE `kazanimlar_degerlendirme`
+  MODIFY `kazanimlar_degerlendirme_PK` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=109;
 --
--- Tablo için AUTO_INCREMENT değeri `kd_okumayazma`
+-- Tablo için AUTO_INCREMENT değeri `kazanimlar_degerlendirme_ogretmen`
 --
-ALTER TABLE `kd_okumayazma`
-  MODIFY `oY_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
+ALTER TABLE `kazanimlar_degerlendirme_ogretmen`
+  MODIFY `kazanimlar_degerlendirme_ogretmen_PK` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+--
+-- Tablo için AUTO_INCREMENT değeri `kazanimlar_ders_ogrenci`
+--
+ALTER TABLE `kazanimlar_ders_ogrenci`
+  MODIFY `kazanimlar_ders_ogrenci_PK` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+--
+-- Tablo için AUTO_INCREMENT değeri `kazanimlar_lessons`
+--
+ALTER TABLE `kazanimlar_lessons`
+  MODIFY `kazanim_PK` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=55;
+--
+-- Tablo için AUTO_INCREMENT değeri `kazanimlar_matematik`
+--
+ALTER TABLE `kazanimlar_matematik`
+  MODIFY `kazanimlar_PK` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=35;
+--
+-- Tablo için AUTO_INCREMENT değeri `kazanimlar_okuma_yazma`
+--
+ALTER TABLE `kazanimlar_okuma_yazma`
+  MODIFY `kazanimlar_okuma_yazma_PK` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 --
 -- Tablo için AUTO_INCREMENT değeri `lessons`
 --
@@ -1110,17 +1366,17 @@ ALTER TABLE `lessons`
 -- Tablo için AUTO_INCREMENT değeri `lesson_event`
 --
 ALTER TABLE `lesson_event`
-  MODIFY `lesson_event_PK` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `lesson_event_PK` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 --
 -- Tablo için AUTO_INCREMENT değeri `notes`
 --
 ALTER TABLE `notes`
-  MODIFY `note_PK` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `note_PK` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
 --
 -- Tablo için AUTO_INCREMENT değeri `odeme_bilgileri`
 --
 ALTER TABLE `odeme_bilgileri`
-  MODIFY `id_aylar` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=50;
+  MODIFY `id_aylar` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 --
 -- Tablo için AUTO_INCREMENT değeri `parent`
 --
@@ -1155,7 +1411,7 @@ ALTER TABLE `personel_types`
 -- Tablo için AUTO_INCREMENT değeri `personel_user`
 --
 ALTER TABLE `personel_user`
-  MODIFY `userPersonel_PK` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `userPersonel_PK` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 --
 -- Tablo için AUTO_INCREMENT değeri `student`
 --
@@ -1171,6 +1427,11 @@ ALTER TABLE `student_attendance`
 --
 ALTER TABLE `student_diagnosis`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=431;
+--
+-- Tablo için AUTO_INCREMENT değeri `student_lessons`
+--
+ALTER TABLE `student_lessons`
+  MODIFY `student_lessons_PK` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 --
 -- Tablo için AUTO_INCREMENT değeri `transportation`
 --

@@ -476,8 +476,8 @@ if($_SESSION['access_type'] == 'personel'){
                         $('.selected').removeClass('selected');
                         $(this).addClass("selected");
                         id = $('.id',this).html();
-                        isim =$('.isim',this).html();
-                        soyisim =$('.soyisim',this).html();
+                        isim = $('.isim',this).html();
+                        soyisim = $('.soyisim',this).html();
                         personelID = document.getElementById('personel_PK').value;
                         $.ajax({
                         	url:"load_notes.php",  
@@ -521,13 +521,11 @@ if($_SESSION['access_type'] == 'personel'){
 
                   
                   selectedRow();
-/// To Change Selected HTML Table Row Background Color END
-        //Redirect to kaba_degerlendirme 
 
 
-        $('#kabaDegerlendirme').on("click",function(){
-        	window.location="kaba_degerlendirme.php?id="+id;
-        });
+                  $('#kabaDegerlendirme').on("click",function(){
+                   window.location="kaba_degerlendirme.php?id="+id;
+                 });
         //Redirect to bep_main_page 
         $('#bepOlustur').on("click",function(){    
         	window.location = "bep_main_page.php?id="+id;
