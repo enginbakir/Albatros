@@ -565,7 +565,7 @@ if($_SESSION['access_type'] == 'personel'){
 
         $('#kabaGoruntule').on("click",function(){
         	if(id>0)
-        		window.open("http://localhost/Albatros/Personel/kaba_degerlendirme_gor.php?id="+id);
+        		window.open("http://localhost/Albatros/Personel/kaba_gor.php?id="+id);
         	else{
         		alert("Bir Öğrenci Seçiniz");
         	}
