@@ -54,8 +54,6 @@ if($_SESSION['access_type'] == "admin"){
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
 
 
-
-
 </head>
 <body class="hold-transition skin-blue sidebar-mini">
 
@@ -214,7 +212,6 @@ if($_SESSION['access_type'] == "admin"){
 													<li id="notlar" class="active"><a data-toggle="tab" href="#home">Notlar</a></li>
 													<li><a data-toggle="tab" href="#menu1">Veli Bilgileri</a></li>
 													<li><a data-toggle="tab" href="#menu2">Öğrenci Bilgileri</a></li>
-													<li><a data-toggle="tab" href="#menu3">Takvim</a></li>
 													<li><a data-toggle="tab" href="#menu4">Mail</a></li>
 												</ul>
 
@@ -222,50 +219,30 @@ if($_SESSION['access_type'] == "admin"){
 													<div id="home" class="tab-pane fade in active">
 														<div class="row">
 															<div class="col-md-12" style="margin-bottom: 10px;">
-																<table id="example23" class="table table-bordered table-hover">
-																	<thead>
-																		<tr>
-																			<th>Öğretmen</th>
-																			<th>Not</th>
-																			<th>Tarih</th>
+																<div class="scrollable">
+																	<table id="example23" class="table table-bordered table-hover table-striped table-condens formatHTML5">
+																		<thead>
+																			<tr>
+																				<th>Öğretmen</th>
+																				<th>Not</th>
+																				<th>Tarih</th>
+																			</tr>
+																		</thead>
+																		<tbody id="notes">
+																			<tr>
+																				<td>awdawd</td>
+																			</tr>
+																			<tr>
+																				<td>awdawd</td>
 																		</tr>
-																	</thead>
-																	<tbody id="notes">
-
-																	</tbody>
-																</table>
+																		</tbody>
+																	</table>
+																</div>
 															</div>
 														</div>
 													</div>
 													<div id="menu1" class="tab-pane fade">
-														<div class="row">
-															<div class="col-md-12">
-																<table id="example2" class="table table-bordered table-hover">
-																	<thead>
-																		<tr>
-																			<th>İsim</th>
-																			<th>Soyisim</th>
-																			<th>Telefon</th>
-																			<th>E-mail</th>
-																		</tr>
-																	</thead>
-																	<tbody>
-																		<tr>
-																			<td>Neriman</td>
-																			<td>Bakır</td>
-																			<td>05447895632</td>
-																			<td>neriman.bkr@yahoo.com</td>
-																		</tr>
-																		<tr>
-																			<td>Cevdet</td>
-																			<td>Bakır</td>
-																			<td>05332648511</td>
-																			<td>cevdet.bkr@yahoo.com</td>
-																		</tr>
-																	</tbody>
-																</table>
-															</div>
-														</div>
+														
 													</div>
 													<div id="menu2" class="tab-pane fade">
 														<div class="box box-primary">
@@ -288,7 +265,10 @@ if($_SESSION['access_type'] == "admin"){
 																		<b>Eğitsel Tanı</b> <a class="pull-right">Excepteur sint occaecat.</a>
 																	</li>
 																	<li class="list-group-item">
-																		<b>BEP</b> <a class="pull-right">engin_bakır.pdf</a>
+																		<b>Kaba Değerlendirme</b> <a href="" class="pull-right">görüntüle</a>
+																	</li>
+																	<li class="list-group-item">
+																		<b>BEP</b> <a href="" class="pull-right">görüntüle</a>
 																	</li>
 																	<li class="list-group-item">
 																		<b>Dönem Başlayış Tarihi</b> <a class="pull-right">18.09.2017</a>
@@ -301,9 +281,7 @@ if($_SESSION['access_type'] == "admin"){
 															<!-- /.box-body -->
 														</div>
 													</div>
-													<div id="menu3" class="tab-pane fade">
-														<p>Takvim Menüsü</p>
-													</div>
+													
 													<div id="menu4" class="tab-pane fade">
 														<div class="col-md-12">
 															<div class="box box-primary">
@@ -660,7 +638,9 @@ if($_SESSION['access_type'] == "admin"){
 	var isim; 
 	var soyisim;
 
-	$("tbody tr").click(function () {
+	
+
+	$("#tbody tr").click(function () {
 
 		$('.selected').removeClass('selected');
 		$(this).addClass("selected");
@@ -673,7 +653,7 @@ if($_SESSION['access_type'] == "admin"){
 			method:"POST",  
 			data:{id:id},  
 			success:function(data){  
-				$('#notes').html(data);  
+				$('#notes').html(data);
 			}  
 		});  
 		document.getElementById("studentInfoTitle").innerHTML = isim+" "+soyisim;
@@ -686,11 +666,19 @@ if($_SESSION['access_type'] == "admin"){
 				$("#ogrenciPhoto").attr('src', data);
 			}
 		});
+		$.ajax({
+			url:"getParentInfo.php",
+			method:"POST",
+			data:{id:id},
+			success:function(data){
+				$('#menu1').html(data);
+			}
+		});
 	});
 
 	$("#silButton").on("click",function(){
     //
-    if(id>0){
+    if(id > 0){
     	var answer = confirm("Kaydı Silmeyi Onaylıyor Musunuz ??");
     	if(answer){
     		$.ajax({
@@ -782,4 +770,6 @@ if($_SESSION['access_type'] == "admin"){
 }
 else{
 	header("location: ../index.php");
-}?>
+}
+exit();
+?>

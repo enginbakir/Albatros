@@ -77,18 +77,18 @@ try {
 		else{
 			$_SESSION['successErr'] = "Ekleme Başarısız";
 			$conn -> rollBack(); 
-		header("location: ../Personel/kaba_degerlendirme.php?id=".$studentID);
+			header("location: ../Personel/kaba_degerlendirme.php?id=".$studentID);
+			exit();
 		}	
 	}
 	
 
-$conn -> commit();
-$_SESSION['successErr'] = "Ekleme Başarılı";
-header("location: ../Personel/kaba_degerlendirme.php?id=".$studentID);
+	$conn -> commit();
+	$_SESSION['successErr'] = "Ekleme Başarılı";
+	header("location: ../Personel/kaba_degerlendirme.php?id=".$studentID);
 } catch (PDOException $e) {
 	$_SESSION['successErr'] = $e->getMessage();
-	echo $e->getMessage();
-	//header("location: ../Personel/kaba_degerlendirme.php?id=".$studentID);
+	header("location: ../Personel/kaba_degerlendirme.php?id=".$studentID);
 	$conn -> rollBack();
 }
 

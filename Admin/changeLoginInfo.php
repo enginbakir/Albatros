@@ -2,12 +2,15 @@
 
 try {
 
-
+	if(empty($_POST['u']) || empty($_POST['p'])){
+		echo "Üye adı ve Şifre Giriniz.";
+		exit();
+	}
+	require_once '../connectDB.php';
 	$id = $_POST['id'];
 	$u = $_POST['u'];
 	$p = $_POST['p'];
-	require_once '../connectDB.php';
-	echo "<br>".$u."<br>".$p."<br>".$id;
+	
 
 	$stmt = $conn -> prepare("SELECT username,password from personel_user where personel_FK =:Pid");
 

@@ -3,7 +3,6 @@ if($_SESSION['access_type'] == "admin"){
 	require_once '../connectDB.php';
 	$id = $_GET["id"];
 	$sql = "SELECT * FROM personel where personel_PK = $id";
-
 	$row = $conn->query($sql, PDO::FETCH_ASSOC)->fetch();
 	
 	?>  

@@ -48,7 +48,10 @@ if($_SESSION['access_type'] == "personel"){
 			border:1px solid #51bcdc;
 			font-size: 18px
 		}
+		.error {color: #FF0000; font-weight:bold;}
+		.bigfont {font-size: 20px;}
 	</style>
+
 
 </head>
 
@@ -89,7 +92,8 @@ if($_SESSION['access_type'] == "personel"){
 								<div class="panel panel-default  toggle panelMove panelRefresh" id="supr0">
 									<!-- Start .panel -->
 									<div class="panel-heading">
-										<h4 class="panel-title">Kaba Değerlendirme Formu <?php echo $_SESSION['successErr']; ?></h4>
+										<h4 class="panel-title">Kaba Değerlendirme Formu </h4>
+										<span class="error bigfont"><?php echo $_SESSION['successErr']; ?></span>
 									</div>
 
 									<div class="panel-body pt0 pb0">
@@ -249,7 +253,10 @@ if($_SESSION['access_type'] == "personel"){
 											<!--form-group 4 -->
 											<div class="form-group">
 												<div class="row">
-													<label class="col-md-2 control-label" for="">Değerlendiren:</label>
+													<label class="col-md-2 control-label" for="">Değerlendiren: 
+														<span class="error bigfont"><?php echo "*"; ?></span>
+													</label>
+													
 													<div class="col-md-3">
 														<div class=" input-group">
 															<select id="framework1" name="framework1[]" multiple class="form-control" >
@@ -280,7 +287,9 @@ if($_SESSION['access_type'] == "personel"){
 											<div class="form-group">
 												<div class="row">
 
-													<label class="col-md-2 control-label" for="">Değerlendirme Tarihi:</label>
+													<label class="col-md-2 control-label" for="">Değerlendirme Tarihi:
+														<span class="error bigfont"><?php echo "*"; ?></span>
+													</label>
 													<div class="col-md-3">
 														<div class=" input-group" >
 															<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
@@ -296,7 +305,9 @@ if($_SESSION['access_type'] == "personel"){
 											<div class="form-group">
 												<div class="row">
 
-													<label class="col-md-2 control-label" for="">Dersler:</label>
+													<label class="col-md-2 control-label" for="">Dersler:
+														<span class="error bigfont"><?php echo "*"; ?></span>
+													</label>
 													<div class="col-md-3">
 														<div class=" input-group">
 															<select id="framework" name="framework[]" multiple class="form-control" >
@@ -325,7 +336,7 @@ if($_SESSION['access_type'] == "personel"){
 
 										</div>
 									</div>
-									<i class="renk">*</i> ile işaretli alanların doldurulması zorunludur!
+									<span class="error">* ile işaretli alanların doldurulması zorunludur!</span>
 									<span style="color:Red;font-weight:bold;"></span>
 								</div>                  
 								<input name="submit" id="degerlendir" value="Değerlendirme" class="btn btn-success mr5 mb10">
@@ -522,6 +533,7 @@ if($_SESSION['access_type'] == "personel"){
 else{
 	header("location: ../index.php");
 }
+unset($_SESSION['successErr']);
 $conn = null;
 exit();
 ?>

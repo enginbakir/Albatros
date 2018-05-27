@@ -540,10 +540,9 @@ if($_SESSION['access_type'] == "admin"){
 				url:"changeLoginInfo.php",
 				method:"POST",
 				data :{id:id,u:u,p:p},
-				success:function(data){
-					alert(u);
-					alert(p);
-					document.getElementById("error").innerHTML = data;
+				success:function(data){ 
+					alert(data);
+					//document.getElementById("error").innerHTML = data;
 				}
 			});
 		}
