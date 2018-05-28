@@ -1,5 +1,6 @@
 <?php 
-
+date_default_timezone_set("Europe/Istanbul");
+$currentDate = date("Y-m-d");
 session_start();
 if($_SESSION['access_type'] == 'personel'){
 
@@ -11,6 +12,9 @@ if($_SESSION['access_type'] == 'personel'){
 	}
 	$fileName = "";
 	$pdf;
+
+
+
 	try {
 
 		require_once '../connectDB.php';
@@ -39,6 +43,9 @@ if($_SESSION['access_type'] == 'personel'){
 		}
 
 		$pdf->Output('F',$fileName);
+		$pdf->Output();
+
+		echo "Dosya Kaydedildi. Dosya Adı Formatı:/Kaba/İsim_Soyisim_DeğerlendirmeTarihi_Kaba_Değerlendirme.pdf/";
 
 	} catch (Exception $e) {
 		echo $e->getMessage();
@@ -91,12 +98,12 @@ function writeKazanimlarHeader($pdf){
 
 }
 function writeKazanimlar($pdf,$conn,$value){
-
+	global $currentDate;
 	global $studentID;
 	global $fileName;
 	if($value['lessons_PK'] == 5){
-		$fileName = iconv('utf-8','ISO-8859-9', "..//Kaba/".$value['name']."_".$value['surname']."_"."Kaba_Değerlendirme.pdf");
-		//echo $FN;
+		$fileName = iconv('utf-8','ISO-8859-9', "..//Kaba/".$value['name']."_".$value['surname']."_".$currentDate."_"."Kaba_Değerlendirme.pdf");
+
 		$sql = "SELECT KD.durum,KM.kazanimlar FROM kazanimlar_matematik KM,kazanimlar_degerlendirme KD,kazanimlar_ders_ogrenci KDO where KD.kazanimlar_FK = KM.kazanimlar_PK AND KDO.student_FK = '$studentID' AND KDO.kazanimlar_ders_ogrenci_PK = KD.kazanimlar_ders_ogrenci_FK";
 
 		$retval = $conn->query($sql,PDO::FETCH_ASSOC);
@@ -180,10 +187,5 @@ function writeKazanimlar($pdf,$conn,$value){
 	$pdf->ln();
 	$pdf->ln();
 }
-
-
-
-
-
 
 ?>

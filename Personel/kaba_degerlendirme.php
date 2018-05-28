@@ -323,7 +323,7 @@ if($_SESSION['access_type'] == "personel"){
 
 																catch(PDOException $e){
 																	echo "Connection failed: " . $e->getMessage();
-
+																	exit();
 																}
 																?>
 															</select>
@@ -355,11 +355,10 @@ if($_SESSION['access_type'] == "personel"){
   	<!--Kaba değerlendirme tablo animasyonu html i -->
 
   	<div class="col-lg-16">
-  		<div class="panel panel-default  toggle panelMove panelRefresh">
-  			<div class="panel-body">
-  				<div class="col-lg-16">
-  					<!--OKUMA YAZMA starting -->
-  					<div id="kazanimlar" class="accordion collapse in" style="padding-bottom: 5px">
+  		<div class='panel panel-default  toggle panelMove panelRefresh'>
+  			<div class='panel-body'>
+  				<div class='col-lg-16'>
+  					<div id='kazanimlar' class='accordion collapse in' style='padding-bottom: 5px'>
 
   					</div>
 

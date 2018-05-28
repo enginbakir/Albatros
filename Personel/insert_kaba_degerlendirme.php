@@ -1,18 +1,15 @@
 <?php 
+
+
 session_start();
+
 $studentID = $_POST['studentID'];
+
 echo $studentID;
 $dersler_id = $_POST['framework'];
 $komisyon_id = $_POST['framework1'];
 
 
-echo "<br>";
-echo "<br>";
-
-print_r($_POST);
-
-echo "<br>";
-echo "<br>";
 $tarih = $_POST['degerlendirmeTarihi'];
 
 try {
@@ -60,7 +57,7 @@ try {
 				echo "<br>";
 				while (isset($_POST[$okuma_id])) {
 					echo $_POST[$okuma_id]." ";
-					
+
 					$retval3 = $stmt3 -> execute(array(':lastID' => $lastID, ':kazanimlar' => $j, ':durum' =>$_POST[$okuma_id],':aciklama' => ""));
 					if($retval3 == false){
 						$_SESSION['successErr'] = "Ekleme Başarısız";
@@ -72,7 +69,7 @@ try {
 					$okuma_id = "okuma".$j;
 				}
 			}
-			
+
 		}
 		else{
 			$_SESSION['successErr'] = "Ekleme Başarısız";
@@ -81,7 +78,7 @@ try {
 			exit();
 		}	
 	}
-	
+
 
 	$conn -> commit();
 	$_SESSION['successErr'] = "Ekleme Başarılı";

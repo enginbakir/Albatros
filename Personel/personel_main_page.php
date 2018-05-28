@@ -144,16 +144,16 @@ if($_SESSION['access_type'] == 'personel'){
   																if(isset($_POST['surname']) && !empty($_POST['surname']))
   																	$surname = $_POST['surname'];                       
   																if(isset($name) && isset($surname)){
-  																	$sql = "SELECT * FROM student where personel_FK = '$personelID' AND name='".$name."' and surname='".$surname."';";
+  																	$sql = "SELECT * FROM student where status = 1 AND personel_FK = '$personelID' AND name='".$name."' and surname='".$surname."';";
   																}
   																if(isset($name) && !isset($surname)){
-  																	$sql = "SELECT * FROM student where personel_FK = '$personelID' AND name like '%".$name."%';";
+  																	$sql = "SELECT * FROM student where status = 1 AND personel_FK = '$personelID' AND name like '%".$name."%';";
   																}
   																if(!isset($name) && isset($surname)){
-  																	$sql = "SELECT * from student where personel_FK = '$personelID' AND surname like '%".$surname."%';";
+  																	$sql = "SELECT * from student where status = 1 AND personel_FK = '$personelID' AND surname like '%".$surname."%';";
   																}
   																if (!isset($name) && !isset($surname)) {
-  																	$sql = "SELECT * FROM student where personel_FK = '$personelID'";
+  																	$sql = "SELECT * FROM student where status = 1 AND personel_FK = '$personelID'";
   																}
   																unset($_POST['firstname']);
   																unset($_POST['surname']);
@@ -307,19 +307,21 @@ if($_SESSION['access_type'] == 'personel'){
   															<h3 class="profile-username text-center">Engin Bakır</h3>
   															<ul class="list-group list-group-unbordered">
   																<li class="list-group-item">
-  																	<b>TC</b> <a class="pull-right">20154895748</a>
+  																	<b>TC</b> <a class="pull-right">0</a>
   																</li>
   																<li class="list-group-item">
-  																	<b>Adres</b> <a class="pull-right">Lorem ipsum dolor sit amet, consectetur.</a>
+  																	<b>Adres</b> <a class="pull-right"></a>
   																</li>
   																<li class="list-group-item">
-  																	<b>Ulaşım</b> <a class="pull-right">Servis</a>
+  																	<b>Ulaşım</b> <a class="pull-right"></a>
   																</li>
   																<li class="list-group-item">
-  																	<b>Eğitsel Tanı</b> <a class="pull-right">Excepteur sint occaecat.</a>
+  																	<b>Eğitsel Tanı</b> <a class="pull-right"></a>
   																</li>
   																<li class="list-group-item">
-  																	<b>Kaba Değerlendirme</b> <button id="kabaGoruntule" class="btn btn-primary pull-right" >görüntüle</button>
+  																	<b>Kaba Değerlendirme</b>   
+                                    <button id="kabaSil" class="btn btn-primary pull-right" >Sil</button>
+                                    <button id="kabaGoruntule" class="btn btn-primary pull-right" >görüntüle</button>
   																</li>
   																<li class="list-group-item">
   																	<b>BEP</b> <a id="bepGoruntule" class="btn btn-primary pull-right">görüntüle</a>

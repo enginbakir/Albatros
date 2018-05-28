@@ -1,8 +1,40 @@
 <?php 
 error_reporting(0);
+session_start();
+require_once '../connectDB.php';
+if(isset($_POST['id'])){
+	$studentID = $_POST['id'];
+}else{
+	echo "Bir Öğrenci Seçiniz";
+	exit();
+}
+$bool = false;
+try {
+	$savedLessons = "<span class='error'>";
+
+	foreach ($_POST["dersler_id"] as $key => $value) {
+		# code...
+		$sql = "SELECT L.lesson_name,KDO.lessons_FK FROM kazanimlar_ders_ogrenci KDO,lessons L where student_FK = '$studentID' AND KDO.lessons_FK = '$value' AND l.lessons_PK = '$value';";
+		$retval = $conn -> query($sql,PDO::FETCH_ASSOC)->fetch();
+		if($retval['lessons_FK'] == $value){
+			$bool = true;
+			$savedLessons .= $retval['lesson_name'];
+			$savedLessons .=" dersinin Kaba değerlendirmesi mevcuttur.<br>";
+		}
+	}
+	$savedLessons .= "</span>";
+	if($bool == true){
+		echo $savedLessons;
+		exit();
+	}
+} catch (Exception $e) {
+	echo $e->getMessage();
+}
+
+
+
 try {
 	$output = null; 
-	require_once '../connectDB.php';
 
 	if ($_SERVER["REQUEST_METHOD"] == "POST"){
 		
@@ -37,7 +69,6 @@ try {
 					";
 				}
 			}*/
-
 			$sql = $conn -> query("SELECT * FROM lessons where lessons_PK = '$row'",PDO::FETCH_ASSOC)->fetch();
 
 			$output .="<input type='text' id='degerlendirmeGoster' value='ÖZEL ÖĞRENME GÜÇLÜĞÜ DESTEK EĞİTİM PROGRAMI &gt;&gt; ".$sql['lesson_name']."' class='accordion_mt' readonly ></input>
