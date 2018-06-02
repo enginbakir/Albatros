@@ -20,8 +20,6 @@ if($_SESSION['access_type'] == "personel"){
     <!-- Tell the browser to be responsive to screen width -->
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
 
-
-
     <!-- seymanın ekledikleri multi-select-input -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-3-typeahead/4.0.2/bootstrap3-typeahead.min.js"></script>  
@@ -36,7 +34,7 @@ if($_SESSION['access_type'] == "personel"){
     <!-- En son derlenmiş ve minimize edilmiş JavaScript -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <!--accordion için END-->
-
+    <link rel="stylesheet" href="../dist/css/accordion.css"> 
     <!-- seymanın ekledikleri son-->
 
 
@@ -73,6 +71,8 @@ if($_SESSION['access_type'] == "personel"){
       border: 1px solid #51bcdc;
       font-size:18px 
     }
+    .error {color: #FF0000; font-weight:bold;}
+    .bigfont {font-size: 20px;}
   </style>
 
 </head>
@@ -267,30 +267,31 @@ if($_SESSION['access_type'] == "personel"){
     <!--form-group 4 -->
     <div class="form-group">
       <div class="row">
-       <label class="col-md-2 control-label" for="">Bep Komisyonu:</label>
-       <div class="col-md-3">
-        <div class=" input-group">
-         <select id="framework1" name="framework1[]" multiple class="form-control" >
-          <?php
-          try{
-            $query = $conn->query("SELECT `name`, `surname` FROM `personel`", PDO::FETCH_ASSOC);
-            if ( $query->rowCount()) {
-              foreach( $query as $row ){
-               echo "<option value=".$row['name']." ".$row['surname'] .">".$row['name']." ".$row['surname'] ."</option>" ;
+       <label class="col-md-2 control-label" for="">Bep Komisyonu:
+        <span class="error bigfont">*</span></label>
+        <div class="col-md-3">
+          <div class=" input-group">
+           <select id="framework1" name="framework1[]" multiple class="form-control" >
+            <?php
+            try{
+              $query = $conn->query("SELECT `name`, `surname` FROM `personel`", PDO::FETCH_ASSOC);
+              if ( $query->rowCount()) {
+                foreach( $query as $row ){
+                 echo "<option value=".$row['name']." ".$row['surname'] .">".$row['name']." ".$row['surname'] ."</option>" ;
+               }
              }
            }
-         }
 
-         catch(PDOException $e){
-          echo "Connection failed: " . $e->getMessage();
+           catch(PDOException $e){
+            echo "Connection failed: " . $e->getMessage();
 
-        }
+          }
 
-        ?>
-      </select>
+          ?>
+        </select>
+      </div>
     </div>
   </div>
-</div>
 </div>
 <!-- form-group 4 END-->
 
@@ -298,15 +299,17 @@ if($_SESSION['access_type'] == "personel"){
 <div class="form-group">
   <div class="row">
 
-   <label class="col-md-2 control-label" for="">Değerlendirme Tarihi:</label>
-   <div class="col-md-3">
-    <div class=" input-group" >
-     <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-     <input name="degerlendirmeTarihi" class="form-control"  type="date" data-date-inline-picker="false" data-date-open-on-focus="false"/>
-   </div>
- </div>
+   <label class="col-md-2 control-label" for="">Değerlendirme Tarihi:
+     <span class="error bigfont">*</span></label>
 
-</div>
+     <div class="col-md-3">
+      <div class=" input-group" >
+       <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+       <input id="degerlendirmeTarihi" class="form-control"  type="date" data-date-inline-picker="false" data-date-open-on-focus="false"/>
+     </div>
+   </div>
+
+ </div>
 </div>
 <!-- form-group 5 END-->
 
@@ -314,31 +317,33 @@ if($_SESSION['access_type'] == "personel"){
 <div class="form-group">
   <div class="row">
 
-   <label class="col-md-2 control-label" for="">Dersler</label>
-   <div class="col-md-3">
-    <div class=" input-group">
+    <label class="col-md-2 control-label" for="">Dersler:
+      <span class="error bigfont">*</span>
+    </label>
+    <div class="col-md-3">
+      <div class=" input-group">
 
 
 
-     <select id="framework" name="framework[]" multiple class="form-control" >
-      <?php
-      try{
-        $query = $conn->query("SELECT * FROM lessons L, lesson_event E WHERE E.student_FK ='{$id}' AND L.lessons_PK = E.lesson_FK", PDO::FETCH_ASSOC);
-        if ( $query->rowCount()) {
-          foreach( $query as $row ){
-           echo "<option id = 'dersler' value=".$row['lessons_PK'].">".$row['lesson_name']."</option>" ;
-         }
-       }
-     }
+       <select id="framework" name="framework[]" multiple class="form-control" >
+        <?php
+        try{
+          $query = $conn->query("SELECT lessons_PK, lesson_name FROM student S, student_lessons SL, lessons L WHERE S.student_PK ='$id' AND SL.student_FK = S.student_PK AND L.lessons_PK = SL.lesson_FK", PDO::FETCH_ASSOC);
+          if ( $query != false) {
+            foreach( $query as $row ){
+              echo "<option value=".$row['lessons_PK'].">".$row['lesson_name']."</option>" ;
+            }
+          }
+        }
 
-     catch(PDOException $e){
-      echo "Connection failed: " . $e->getMessage();
-
-    }
-    ?>
-  </select>
-</div>
-</div>
+        catch(PDOException $e){
+          echo "Connection failed: " . $e->getMessage();
+          exit();
+        }
+        ?>
+      </select>
+    </div>
+  </div>
 
 </div>
 </div>
@@ -347,126 +352,35 @@ if($_SESSION['access_type'] == "personel"){
 </div>
 </div>
 
-<i class="renk">*</i> ile işaretli alanların doldurulması zorunludur!
+<span class="error">* ile işaretli alanların doldurulması zorunludur!</span>
+<span style="color:Red;font-weight:bold;"></span>
 </div>
-<input type="submit" name="submit" id="bepOluştur" value="BEP Oluştur" class="btn btn-success mr5 mb10">
+<input name="submit" id="bepOluştur" value="BEP Oluştur" class="btn btn-success mr5 mb10">
 
 </div>
-<!-- .panel-1 END-->
 
-<!-- Start .panel-2 -->
-<div class="col-lg-16 " >
-  <div class="panel panel-default  toggle panelMove panelRefresh" id="supr2">
-   <div class="panel-body">
-    <div class="col-lg-16">
-     <div class="tabs mb20">
+<!-- BEP Oluştur butonunun altının Başı -->
+<div id="sectionBEP" class="col-lg-16">
+ <div id='kazanimlar' style='padding-bottom: 5px'>
 
-      <ul id="myTab" class="nav nav-tabs">
-       <li class="active">
-        <a href="#home1" data-toggle="tab" aria-expanded="true"><b>BİREYSEL EĞİTİM DEĞERLENDİRMELERİ</b></a>
-      </li>
-      <li class="">
-        <a href="#profile1" data-toggle="tab" aria-expanded="false"><b>EĞİTSEL PERFORMANSLAR</b></a>
-      </li>
-    </ul>
-
-    <div id="myTabContent2" class="tab-content">
-
-     <!-- home1  START-->
-     <div class="tab-pane fade active in" id="home1">
-      <div class="panel-group" id="accordion">
-       <!-- panel 1.grup START-->
-       <div class="row">
-        <div class="col-md-12">
-         <button class="accordion2" data-toggle="collapse" data-target="#demo" data-parent="#accordion">ÖZEL ÖĞRENME GÜÇLÜĞÜ DESTEK EĞİTİM PROGRAMI &gt;&gt; OKUMA YAZMAqeqe</button>
-         <div id="demo" class="collapse">
-          <div class="panel panel-default">
-           <div class="panel-body">
-
-            <table class="table table-striped table-hover table-bordered">
-             <thead class="blue-grey lighten-4">
-              <tr>
-               <th>KAZANIMLAR</th>
-               <th>BİLDİRİMLER</th>
-               <th>YÖNTEM/TEKNİK</th>
-               <th>ARAÇ/GEREÇ</th>
-               <th>EĞİTİM BAŞLANGIÇ</th>
-               <th>EĞİTİM EĞİTİM BİTİŞ</th>
-             </tr>
-           </thead>
-           <tbody>
-            <tr scope="row1">
-             <td rowspan="4">Rakamları okur ve yazar.</td>
-             <td>Rakamları okur ve yazar.</td>
-             <td rowspan="4">$50</td>
-             <td rowspan="4">$50</td>
-             <td rowspan="4">$50</td>
-             <td rowspan="4">$50</td>
-           </tr>
-           <tr scope="row2">
-             <td>Sayı kavramını bili.</td>
-           </tr>
-           <tr scope="row3">
-             <td>Ritmik sayar.</td>
-           </tr>
-         </tbody>
-       </table>
-
-     </div>
-   </div>
  </div>
-</div>
-</div>
-<!-- panel 1.grup END-->
 
-<!-- panel 2.grup START-->
-<div class="row">
-  <div class="col-md-12">
-   <button data-toggle="collapse" data-target="#demo1" data-parent="#accordion">ÖZEL ÖĞRENME GÜÇLÜĞÜ DESTEK EĞİTİM PROGRAMI &gt;&gt; OKUMA YAZMAqeqe</button>
-   <div id="demo1" class="collapse">
-    <div class="panel panel-default">
-     <div class="panel-body">Lorem ipsum dolor sit amet, consectetur adipisicing elit,
-      sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
-      minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
-      commodo consequat.
-    </div>
-  </div>
 </div>
-</div>
-</div>
-<!-- panel 2.grup END-->
+
+
+
+
+
+
+
+
+<!-- BEP Oluştur butonunun altının sonu -->
+
 
 </div>
 
 </div>
-<!-- home1  END-->
 
-<!-- profile1  START-->
-<div class="tab-pane fade" id="profile1">
-
- <!-- panel 1.grup START-->
-
- <!-- panel 1.grup END-->
-
-</div>
-<!-- profile1  END-->
-</div>
-
-</div>
-</div>
-</div>
-</div>
-</div>
-<!-- .panel-2 END-->
-<a class="btn btn-success mr5 mb10" title="Yazdır"><i class="glyphicon glyphicon-print">&nbsp;<span class="spanfont">Yazdır</span>&nbsp;</i></a>
-<a class="btn btn-success mr5 mb10" title="Sil"><i class="glyphicon glyphicon-remove">&nbsp;<span class="spanfont">Sil</span>&nbsp;</i></a>
-<a class="btn btn-success mr5 mb10" title="Kaydet"><i class="glyphicon glyphicon-save">&nbsp;<span class="spanfont">Kaydet</span>&nbsp;</i></a>
-</div>
-<!--ContentPlaceHolder1_pnlgenel END-->
-
-<div class="control-sidebar-bg"></div>
-</div>
-<!--Content wrapper END-->
 
 </form>
 <!-- FORM END-->
@@ -501,28 +415,29 @@ if($_SESSION['access_type'] == "personel"){
   });
 
   $('#bepOluştur').on('click', function(){
+
+    var degerlendirmeTarihi = document.getElementById('degerlendirmeTarihi').value;
+
     var id = document.getElementById('studentID').value;
-    var form_data = $('#framework').val();
+    var ders_id = document.getElementById('framework').value;
+    var kom_id = document.getElementById('framework1').value;
+    var dersler_id = $('#framework').val();
+    var komisyon_id =  $('#framework1').val();
 
-
-    $.ajax({
-     url:"bep_verileri_cek.php",
-     method:"POST",
-     data:{framework:form_data,id:id},
-     success:function(data)
-     {
-
-      $('#framework option:selected').each(function(){
-        $(this).prop('selected', false);
-      });
-      $('#framework').multiselect('refresh');
-      
+    if(!id || !ders_id || !kom_id || !degerlendirmeTarihi){
+      alert("*'lı Yerleri Doldurunuz!!");
     }
-
-
-  });
-
-
+    else{
+      $.ajax({
+        url:"bep_verileri_cek.php",
+        method:"POST",
+        data:{dersler_id:dersler_id,komisyon_id:komisyon_id,id:id},
+        success:function(data)
+        {
+          $("#kazanimlar").html(data);
+        }
+      });
+    }
   });
 
 });

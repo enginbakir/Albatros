@@ -1,6 +1,7 @@
  
 <?php 
 session_start();
+ob_start();
 if($_SESSION['access_type'] == "admin"){ 
 	require_once "../connectDB.php";
 	?>
@@ -52,7 +53,10 @@ if($_SESSION['access_type'] == "admin"){
 
 <!-- Google Font -->
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
-
+<style>
+.error {color: #FF0000; font-weight:bold;}
+.bigfont {font-size: 20px;}
+</style>
 
 </head>
 <body class="hold-transition skin-blue sidebar-mini">
@@ -212,7 +216,8 @@ if($_SESSION['access_type'] == "admin"){
 													<li id="notlar" class="active"><a data-toggle="tab" href="#home">Notlar</a></li>
 													<li><a data-toggle="tab" href="#menu1">Veli Bilgileri</a></li>
 													<li><a data-toggle="tab" href="#menu2">Öğrenci Bilgileri</a></li>
-													<li><a data-toggle="tab" href="#menu4">Mail</a></li>
+													<li><a data-toggle="tab" href="#menu3">Dersler</a></li>
+
 												</ul>
 
 												<div class="tab-content">
@@ -229,12 +234,7 @@ if($_SESSION['access_type'] == "admin"){
 																			</tr>
 																		</thead>
 																		<tbody id="notes">
-																			<tr>
-																				<td>awdawd</td>
-																			</tr>
-																			<tr>
-																				<td>awdawd</td>
-																		</tr>
+
 																		</tbody>
 																	</table>
 																</div>
@@ -282,122 +282,38 @@ if($_SESSION['access_type'] == "admin"){
 														</div>
 													</div>
 													
-													<div id="menu4" class="tab-pane fade">
-														<div class="col-md-12">
-															<div class="box box-primary">
-																<div class="box-header with-border"><h3 class="box-title">Compose New Message</h3></div>
-																<!-- /.box-header -->
-																<div class="box-body">
-																	<div class="form-group"><input class="form-control" placeholder="To: neriman_bkr@yahoo.com"></div>
-																	<div class="form-group"><input class="form-control" placeholder="Subject:"></div>
-																	<div class="form-group">
-																		<ul class="wysihtml5-toolbar" style="">
-																			<li class="dropdown">
-																				<a class="btn btn-default dropdown-toggle " data-toggle="dropdown">
-																					<span class="glyphicon glyphicon-font"></span>
-																					<span class="current-font">Normal text</span>
-																					<b class="caret"></b>
-																				</a>
-																				<ul class="dropdown-menu">
-																					<li><a data-wysihtml5-command="formatBlock" data-wysihtml5-command-value="p" tabindex="-1" href="javascript:;" unselectable="on">Normal text</a></li>
-																					<li><a data-wysihtml5-command="formatBlock" data-wysihtml5-command-value="h1" tabindex="-1" href="javascript:;" unselectable="on">Heading 1</a></li>
-																					<li><a data-wysihtml5-command="formatBlock" data-wysihtml5-command-value="h2" tabindex="-1" href="javascript:;" unselectable="on">Heading 2</a></li>
-																					<li><a data-wysihtml5-command="formatBlock" data-wysihtml5-command-value="h3" tabindex="-1" href="javascript:;" unselectable="on">Heading 3</a></li>
-																					<li><a data-wysihtml5-command="formatBlock" data-wysihtml5-command-value="h4" tabindex="-1" href="javascript:;" unselectable="on">Heading 4</a></li>
-																					<li><a data-wysihtml5-command="formatBlock" data-wysihtml5-command-value="h5" tabindex="-1" href="javascript:;" unselectable="on">Heading 5</a></li>
-																					<li><a data-wysihtml5-command="formatBlock" data-wysihtml5-command-value="h6" tabindex="-1" href="javascript:;" unselectable="on">Heading 6</a></li>
-																				</ul>
-																			</li>
+													<div id="menu3" class="tab-pane fade">
+														<br>
+														<div class="row">
+															<div class="col-md-12" id="dersler">
+																<table class="table table-bordered table-hover table-condens ">
+																	<thead>
+																		<tr>
+																			<th>Dersler</th>
+																		</tr>
+																	</thead>
+																	<tbody id="lessonsList">
 
-																			<li>
-																				<div class="btn-group">
-																					<a class="btn  btn-default" data-wysihtml5-command="bold" title="CTRL+B" tabindex="-1" href="javascript:;" unselectable="on">B</a>
-																					<a class="btn  btn-default" data-wysihtml5-command="italic" title="CTRL+I" tabindex="-1" href="javascript:;" unselectable="on">I</a>
-																					<a class="btn  btn-default" data-wysihtml5-command="underline" title="CTRL+U" tabindex="-1" href="javascript:;" unselectable="on">U</a>
-																					<a class="btn  btn-default" data-wysihtml5-command="small" title="CTRL+S" tabindex="-1" href="javascript:;" unselectable="on">S</a>
-																				</div>
-																			</li>
-
-																			<li>
-																				<div class="bootstrap-wysihtml5-insert-link-modal modal fade" data-wysihtml5-dialog="createLink">
-																					<div class="modal-dialog ">
-																						<div class="modal-content">
-																							<div class="modal-header">
-																								<a class="close" data-dismiss="modal">×</a>
-																								<h3>Insert link</h3>
-																							</div>
-																							<div class="modal-body">
-																								<div class="form-group">
-																									<input value="http://" class="bootstrap-wysihtml5-insert-link-url form-control" data-wysihtml5-dialog-field="href">
-																								</div> 
-																								<div class="checkbox">
-																									<label> 
-																										<input type="checkbox" class="bootstrap-wysihtml5-insert-link-target" checked="">Open link in new window
-																									</label>
-																								</div>
-																							</div>
-																							<div class="modal-footer">
-																								<a class="btn btn-default" data-dismiss="modal" data-wysihtml5-dialog-action="cancel" href="#">Cancel</a>
-																								<a href="#" class="btn btn-primary" data-dismiss="modal" data-wysihtml5-dialog-action="save">Insert link</a>
-																							</div>
-																						</div>
-																					</div>
-																				</div>
-																				<a class="btn  btn-default" data-wysihtml5-command="createLink" title="Insert link" tabindex="-1" href="javascript:;" unselectable="on">
-																					<span class="glyphicon glyphicon-share"></span>
-																				</a>
-																			</li>
-
-																			<li>
-																				<div class="bootstrap-wysihtml5-insert-image-modal modal fade" data-wysihtml5-dialog="insertImage">
-																					<div class="modal-dialog ">
-																						<div class="modal-content">
-																							<div class="modal-header">
-																								<a class="close" data-dismiss="modal">×</a>
-																								<h3>Insert image</h3>
-																							</div>
-																							<div class="modal-body">
-																								<div class="form-group">
-																									<input value="http://" class="bootstrap-wysihtml5-insert-image-url form-control" data-wysihtml5-dialog-field="src">
-																								</div> 
-																							</div>
-																							<div class="modal-footer">
-																								<a class="btn btn-default" data-dismiss="modal" data-wysihtml5-dialog-action="cancel" href="#">Cancel</a>
-																								<a class="btn btn-primary" data-dismiss="modal" data-wysihtml5-dialog-action="save" href="#">Insert image</a>
-																							</div>
-																						</div>
-																					</div>
-																				</div>
-																				<a class="btn  btn-default" data-wysihtml5-command="insertImage" title="Insert image" tabindex="-1" href="javascript:;" unselectable="on">
-																					<span class="glyphicon glyphicon-picture"></span>
-																				</a>
-																			</li>
-																		</ul>
-																		<textarea id="compose-textarea" class="form-control" style="height: 200px;"></textarea>
-																		<iframe class="wysihtml5-sandbox" security="restricted" allowtransparency="true" frameborder="0" width="0" height="0" marginwidth="0" marginheight="0" style="display: block; background-color: rgb(255, 255, 255); border-collapse: separate; border-color: rgb(210, 214, 222); border-style: solid; border-width: 1px; clear: none; float: none; margin: 0px; outline: rgb(85, 85, 85) none 0px; outline-offset: 0px; padding: 6px 12px; position: static; top: auto; left: auto; right: auto; bottom: auto; z-index: auto; vertical-align: baseline; text-align: start; box-sizing: border-box; box-shadow: none; border-radius: 0px; width: 100%; height: 100px; display:none;"></iframe>
-																	</div>
-																	<div class="form-group">
-																		<div class="btn btn-default btn-file">
-																			<i class="fa fa-paperclip"></i> Attachment
-																			<input type="file" name="attachment">
-																		</div>
-																		<p class="help-block">Max. 32MB</p>
-																	</div>
-																</div>
-																<!-- /.box-body -->
-																<div class="box-footer">
-																	<div class="pull-right">
-																		<button type="button" class="btn btn-default"><i class="fa fa-pencil"></i> Draft</button>
-																		<button type="submit" class="btn btn-primary"><i class="fa fa-envelope-o"></i> Send</button>
-																	</div>
-																	<button type="reset" class="btn btn-default"><i class="fa fa-times"></i> Discard</button>
-																</div>
-																<!-- /.box-footer -->
+																	</tbody>
+																</table>
 															</div>
-															<!-- /. box -->
 														</div>
+														<div class="row">
+															<div class="col-md-6">
+																<select id="dersSelect" class="fancy-select form-control fancified" >
+																	<option value="3">Okuma/Yazma - Türkçe</option>
+																	<option value="5">Matematik</option> 
+																	<option value="4">Öğrenmeye Hazırlık</option> 
+																</select>
+															</div>
 
+														</div>
+														<br>
+														<input id="dersEkle" value="Yeni Ders Ekle" class="col-md-3 btn btn-primary">
+														<input id="dersSil" value="Ders Sil" class="col-md-3 btn btn-primary">
+														<div id="message"><span class="error">Ders Eklemek veya Silmek İçin Bir Seçin</span></div>
 													</div>
+													
 
 												</div>
 
@@ -407,9 +323,7 @@ if($_SESSION['access_type'] == "admin"){
 
 									</div>
 								</div>
-
 								<!-- END OF RIGHT PAGE -->
-
 							</div>
 						</section>
 
@@ -423,10 +337,6 @@ if($_SESSION['access_type'] == "admin"){
 				</div>
 
 				<div>
-
-					<!-- Scripts Start-->
-
-					<!-- jQuery 3 -->
 
 					<script src="../bower_components/jquery/dist/jquery.min.js"></script>
 					<!-- jQuery UI 1.11.4 -->
@@ -468,308 +378,131 @@ if($_SESSION['access_type'] == "admin"){
 					<script src="../dist/js/pages/dashboard.js"></script>
 					<!-- AdminLTE for demo purposes -->
 					<script src="../dist/js/demo.js"></script>
-					<!-- Page specific script -->
+					<!-- Page specific script -->				
+
+					<script type="text/javascript">
+						var id = -1;
+						var isim; 
+						var soyisim;
+
+						$("#tbody tr").click(function () {
+
+							$('.selected').removeClass('selected');
+							$(this).addClass("selected");
+							id = $('.id',this).text();
+							isim = $('.isim',this).text();
+							soyisim = $('.soyisim',this).text();
+
+							$.ajax({  
+								url:"load_notes.php",  
+								method:"POST",  
+								data:{id:id},  
+								success:function(data){  
+									$('#notes').html(data);
+								}  
+							});  
+							document.getElementById("studentInfoTitle").innerHTML = isim+" "+soyisim;
+
+							$.ajax({
+								url:"getStudentInfo.php",
+								method:"POST",
+								data :{id:id},
+								success:function(data){
+									$("#ogrenciPhoto").attr('src', data);
+								}
+							});
+							$.ajax({
+								url:"getParentInfo.php",
+								method:"POST",
+								data:{id:id},
+								success:function(data){
+									$('#menu1').html(data);
+								}
+							});
+							$.ajax({
+								url:"studentLessons.php",
+								method:"POST",
+								data:{id:id},
+								success:function(data){
+									$('#lessonsList').html(data);
+								}
+							});
+						});
+
+						$("#silButton").on("click",function(){
+
+							if(id > 0){
+								var answer = confirm("Kaydı Silmeyi Onaylıyor Musunuz ??");
+								if(answer){
+									$.ajax({
+										type:"POST",
+										url:"deleteStudent.php",
+										data:{id:id,isim:isim},
+										success:function(data){
+											alert(data);
+											location.reload();
+										}
+									});
+								}
+								else {
+									return false;
+								}
+							}
+							if(id < 0)
+								alert("Bir Kayıt Seçin!!!");
+						});
+
+						$('#duzenle').on("click",function(){
+							if(id > 0)
+								window.location = "ogrenci_duzenle.php?id="+id;
+							else
+								alert("Bir Öğrenci Seçin");
+						});
+						$('#dersSil').on("click",function(){
+							if(id > 0){
+								var dersID =  $('#dersSelect').val();
+								$.ajax({
+									url:"studentLessons.php",
+									method:"POST",
+									data:{deleteID:id,dersID:dersID},
+									success:function(data){
+										$('#message').html(data);
+									}
+								});
+							}
+							else
+								alert("Bir Öğrenci Seçin");
+						});
+						$('#dersEkle').on("click",function(){
+							var dersID =  $('#dersSelect').val();
+							$.ajax({
+								url:"studentLessons.php",
+								method:"POST",
+								data:{insertID:id,dersID:dersID},
+								success:function(data){
+									$('#message').html(data);
+								}
+							});
+						});
+
+					</script>
 
 					<script>
+						$( function() {
+							$( "#datepicker" ).datepicker();
+						} );
+					</script>
 
-						$(function () {
+				</div>
+				<!-- Scripts End-->
+			</body>
+			</html>
 
-    /* initialize the external events
-    -----------------------------------------------------------------*/
-    function init_events(ele) {
-    	ele.each(function () {
-
-        // create an Event Object (http://arshaw.com/fullcalendar/docs/event_data/Event_Object/)
-        // it doesn't need to have a start or end
-        var eventObject = {
-          title: $.trim($(this).text()) // use the element's text as the event title
-      }
-
-        // store the Event Object in the DOM element so we can get to it later
-        $(this).data('eventObject', eventObject)
-
-        // make the event draggable using jQuery UI
-        $(this).draggable({
-        	zIndex        : 1070,
-          revert        : true, // will cause the event to go back to its
-          revertDuration: 0  //  original position after the drag
-      })
-
-    })
-    }
-
-    init_events($('#external-events div.external-event'))
-
-    /* initialize the calendar
-    -----------------------------------------------------------------*/
-    //Date for the calendar events (dummy data)
-    var date = new Date()
-    var d    = date.getDate(),
-    m    = date.getMonth(),
-    y    = date.getFullYear()
-    $('#calendar').fullCalendar({
-    	header    : {
-    		left  : 'prev,next today',
-    		center: 'title',
-    		right : 'month,agendaWeek,agendaDay'
-    	},
-    	buttonText: {
-    		today: 'today',
-    		month: 'month',
-    		week : 'week',
-    		day  : 'day'
-    	},
-      //Random default events
-      events    : [
-      {
-      	title          : 'All Day Event',
-      	start          : new Date(y, m, 1),
-          backgroundColor: '#f56954', //red
-          borderColor    : '#f56954' //red
-      },
-      {
-      	title          : 'Long Event',
-      	start          : new Date(y, m, d - 5),
-      	end            : new Date(y, m, d - 2),
-          backgroundColor: '#f39c12', //yellow
-          borderColor    : '#f39c12' //yellow
-      },
-      {
-      	title          : 'Meeting',
-      	start          : new Date(y, m, d, 10, 30),
-      	allDay         : false,
-          backgroundColor: '#0073b7', //Blue
-          borderColor    : '#0073b7' //Blue
-      },
-      {
-      	title          : 'Lunch',
-      	start          : new Date(y, m, d, 12, 0),
-      	end            : new Date(y, m, d, 14, 0),
-      	allDay         : false,
-          backgroundColor: '#00c0ef', //Info (aqua)
-          borderColor    : '#00c0ef' //Info (aqua)
-      },
-      {
-      	title          : 'Birthday Party',
-      	start          : new Date(y, m, d + 1, 19, 0),
-      	end            : new Date(y, m, d + 1, 22, 30),
-      	allDay         : false,
-          backgroundColor: '#00a65a', //Success (green)
-          borderColor    : '#00a65a' //Success (green)
-      },
-      {
-      	title          : 'Click for Google',
-      	start          : new Date(y, m, 28),
-      	end            : new Date(y, m, 29),
-      	url            : 'http://google.com/',
-          backgroundColor: '#3c8dbc', //Primary (light-blue)
-          borderColor    : '#3c8dbc' //Primary (light-blue)
-      }
-      ],
-      editable  : true,
-      droppable : true, // this allows things to be dropped onto the calendar !!!
-      drop      : function (date, allDay) { // this function is called when something is dropped
-
-        // retrieve the dropped element's stored Event Object
-        var originalEventObject = $(this).data('eventObject')
-
-        // we need to copy it, so that multiple events don't have a reference to the same object
-        var copiedEventObject = $.extend({}, originalEventObject)
-
-        // assign it the date that was reported
-        copiedEventObject.start           = date
-        copiedEventObject.allDay          = allDay
-        copiedEventObject.backgroundColor = $(this).css('background-color')
-        copiedEventObject.borderColor     = $(this).css('border-color')
-
-        // render the event on the calendar
-        // the last `true` argument determines if the event "sticks" (http://arshaw.com/fullcalendar/docs/event_rendering/renderEvent/)
-        $('#calendar').fullCalendar('renderEvent', copiedEventObject, true)
-
-        // is the "remove after drop" checkbox checked?
-        if ($('#drop-remove').is(':checked')) {
-          // if so, remove the element from the "Draggable Events" list
-          $(this).remove()
-      }
-
-  }
-})
-
-    /* ADDING EVENTS */
-    var currColor = '#3c8dbc' //Red by default
-    //Color chooser button
-    var colorChooser = $('#color-chooser-btn')
-    $('#color-chooser > li > a').click(function (e) {
-    	e.preventDefault()
-      //Save color
-      currColor = $(this).css('color')
-      //Add color effect to button
-      $('#add-new-event').css({ 'background-color': currColor, 'border-color': currColor })
-  })
-    $('#add-new-event').click(function (e) {
-    	e.preventDefault()
-      //Get value and make sure it is not null
-      var val = $('#new-event').val()
-      if (val.length == 0) {
-      	return
-      }
-
-      //Create events
-      var event = $('<div />')
-      event.css({
-      	'background-color': currColor,
-      	'border-color'    : currColor,
-      	'color'           : '#fff'
-      }).addClass('external-event')
-      event.html(val)
-      $('#external-events').prepend(event)
-
-      //Add draggable funtionality
-      init_events(event)
-
-      //Remove event from text input
-      $('#new-event').val('')
-  })
-})
-</script>
-
-<script type="text/javascript">
-	var id = -1;
-	var isim; 
-	var soyisim;
-
-	
-
-	$("#tbody tr").click(function () {
-
-		$('.selected').removeClass('selected');
-		$(this).addClass("selected");
-		id = $('.id',this).text();
-		isim = $('.isim',this).text();
-		soyisim = $('.soyisim',this).text();
-
-		$.ajax({  
-			url:"load_notes.php",  
-			method:"POST",  
-			data:{id:id},  
-			success:function(data){  
-				$('#notes').html(data);
-			}  
-		});  
-		document.getElementById("studentInfoTitle").innerHTML = isim+" "+soyisim;
-
-		$.ajax({
-			url:"getStudentInfo.php",
-			method:"POST",
-			data :{id:id},
-			success:function(data){
-				$("#ogrenciPhoto").attr('src', data);
-			}
-		});
-		$.ajax({
-			url:"getParentInfo.php",
-			method:"POST",
-			data:{id:id},
-			success:function(data){
-				$('#menu1').html(data);
-			}
-		});
-	});
-
-	$("#silButton").on("click",function(){
-    //
-    if(id > 0){
-    	var answer = confirm("Kaydı Silmeyi Onaylıyor Musunuz ??");
-    	if(answer){
-    		$.ajax({
-    			type:"POST",
-    			url:"deleteStudent.php",
-    			data:{id:id,isim:isim},
-    			success:function(data){
-    				alert(data);
-    				location.reload();
-    			}
-    		});
-    	}
-    	else {
-    		return false;
-    	}
-    }
-    if(id < 0)
-    	alert("Bir Kayıt Seçin!!!");
-});
-
-
-
-	$('#duzenle').on("click",function(){
-		if(id>0)
-			window.location = "ogrenci_duzenle.php?id="+id;
-		else
-			alert("Bir Öğrenci Seçin");
-	});
-
-
-</script>
-
-<script>
-	$( function() {
-		$( "#datepicker" ).datepicker();
-	} );
-</script>
-
-<!--
-  var path = "/index.php";
-  var params;
-  var method;
-  var name,surname;
-  
-  $(document).ready(function(){
-    $("#searchStudent").on("click",function(){
-
-      alert(document.getElementById("adi").value);
-      if(!empty(document.getElementById("adi").value) && !empty(document.getElementById("soyadi").value))
-        params = {name: document.getElementById("adi").value,surname:document.getElementById("soyadi").value};
-      else if (!empty(document.getElementById("adi").value) && empty(document.getElementById("soyadi").value))
-        params = {name: document.getElementById("adi").value};
-      else if (empty(document.getElementById("adi").value) && !empty(document.getElementById("soyadi").value))
-        params = {surname: document.getElementById("soyadi").value};
-      else 
-        params = null;
-
-      if(params != null){
-
-      }
-
-      method = method || "post";
-      var form = document.createElement("form");
-      form.setAttribute("method", method);
-      form.setAttribute("action", path);
-
-      for(var key in params) {
-        if(params.hasOwnProperty(key)) {
-          var hiddenField = document.createElement("input");
-          hiddenField.setAttribute("type", "hidden");
-          hiddenField.setAttribute("name", key);
-          hiddenField.setAttribute("value", params[key]);
-
-          form.appendChild(hiddenField);
-        }
-      }
-
-      document.body.appendChild(form);
-      form.submit();
-    });
-}); -->
-
-</div>
-<!-- Scripts End-->
-</body>
-</html>
-
-<?php 
-}
-else{
-	header("location: ../index.php");
-}
-exit();
-?>
+			<?php 
+		}
+		else{
+			header("location: ../index.php");
+		}
+		ob_end_flush();
+		exit();
+		?>

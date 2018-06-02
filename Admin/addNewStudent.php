@@ -1,11 +1,11 @@
-<!-- PHP CHECKING INPUTS -->
-
 <?php 
-session_start();
 
+/*<!-- PHP CHECKING INPUTS -->*/
+
+session_start();
+ob_start();
 
 require_once "../connectDB.php";
-
 
 date_default_timezone_set("Europe/Istanbul");
 $currentDate = date("Y-m-d");
@@ -22,7 +22,6 @@ $donemBitisTarihi;
 $parentName = $parentSurname = $parentTCNumber = $parentYakinlik = $parentSabitTel = $parentCepTel = $parentEmailAdress = $parentAdress = $parentIsAdress = $aciklama = $proximity = null;
 $parentNameErr = $parentSurnameErr = $parentTCNumberErr = null;
 $parentLastID = null;
-
 
 
 $filePath = "";
@@ -287,6 +286,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
 /// END OF REQUEST IF CODE BLOCK  ///
 	}
 	else{
+		$_SESSION["errorMessage"] = "Bilgileri Kontrol Ediniz!!!";
 		header("Location: ogrenci_ekle.php");
 	}
 
@@ -314,7 +314,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
 		if($retval === false){
 			$_SESSION["errorMessage"] = "Student Bilgilerini Kontrol Ediniz!!!<br> Ekleme Hatası: <br>";
 			header("Location: ogrenci_ekle.php");
-			exit();
+			
 		}
 		else{	
 			if($studentLastID > 0){
@@ -332,14 +332,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
 				unlink($target_file);
 				$_SESSION["errorMessage"] = "Student Bilgilerini Kontrol Ediniz!!! last id awd  ";
 				header("Location: ogrenci_ekle.php");
-				exit();
+				
 			}
 		}
 	}
 	catch(Exception $e) { 
 		$_SESSION["errorMessage"] = "Student Bilgilerini Kontrol Ediniz!!!<br> Error: <br>".$e->getMessage();
 		header("Location: ogrenci_ekle.php"); 
-		exit();
+		
 	}
 }
 
@@ -358,19 +358,19 @@ function runParentQuery(){
 	}catch(Exception $e) { 
 		deleteQueries();
 		$_SESSION["errorMessage"] = "Veli Bilgilerini Kontrol Ediniz!!!<br> Error: <br>".$e->getMessage();
-		hheader("Location: ogrenci_ekle.php"); 
-		exit();
+		header("Location: ogrenci_ekle.php"); 
+		
 	}
 	if($retval === false){
 		deleteQueries();
 		$_SESSION["errorMessage"] = "Veli Bilgilerini Kontrol Ediniz!!!";
 		header("Location: ogrenci_ekle.php"); 
-		exit();
+		
 	}
 	else{
 		$_SESSION["errorMessage"] = "Ekleme Başarıyla Tamamlandı!!!";
 		header("Location: ogrenci_ekle.php"); 
-		exit();
+		
 	}
 
 
@@ -388,11 +388,11 @@ function deleteQueries(){
 		unlink($target_file);
 		$_SESSION["errorMessage"] = "Veri Tabanı Hatası !!";
 		header("Location: ogrenci_ekle.php");
-		exit();
+		
 	}catch(Exception $e) { 
 		$_SESSION["errorMessage"] = "Veri Tabanı Hatası !!".$e->getMessage();
-		hheader("Location: ogrenci_ekle.php"); 
-		exit();
+		header("Location: ogrenci_ekle.php"); 
+		
 	}
 }
 
@@ -418,6 +418,9 @@ function isTcKimlik($tc){
 	return true;  
 }  
 
+if(ob_end_flush()){
+	echo "ob end flush is true";
+}
 ?>
 
 <!-- PHP CHECKING INPUTS -->

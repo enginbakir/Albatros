@@ -44,10 +44,6 @@ if($_SESSION['access_type'] == "personel"){
 
 		<!-- Tablo cizgileri için css yazdım. -->
 		<style>
-		.table-bordered>tbody>tr>td, .table-bordered>tbody>tr>th{
-			border:1px solid #51bcdc;
-			font-size: 18px
-		}
 		.error {color: #FF0000; font-weight:bold;}
 		.bigfont {font-size: 20px;}
 	</style>
@@ -254,7 +250,7 @@ if($_SESSION['access_type'] == "personel"){
 											<div class="form-group">
 												<div class="row">
 													<label class="col-md-2 control-label" for="">Değerlendiren: 
-														<span class="error bigfont"><?php echo "*"; ?></span>
+														<span class="error bigfont">*</span>
 													</label>
 													
 													<div class="col-md-3">
@@ -288,7 +284,7 @@ if($_SESSION['access_type'] == "personel"){
 												<div class="row">
 
 													<label class="col-md-2 control-label" for="">Değerlendirme Tarihi:
-														<span class="error bigfont"><?php echo "*"; ?></span>
+														<span class="error bigfont">*</span>
 													</label>
 													<div class="col-md-3">
 														<div class=" input-group" >
@@ -306,7 +302,7 @@ if($_SESSION['access_type'] == "personel"){
 												<div class="row">
 
 													<label class="col-md-2 control-label" for="">Dersler:
-														<span class="error bigfont"><?php echo "*"; ?></span>
+														<span class="error bigfont">*</span>
 													</label>
 													<div class="col-md-3">
 														<div class=" input-group">
@@ -355,25 +351,15 @@ if($_SESSION['access_type'] == "personel"){
   	<!--Kaba değerlendirme tablo animasyonu html i -->
 
   	<div class="col-lg-16">
-  		<div class='panel panel-default  toggle panelMove panelRefresh'>
+  		<div class='panel panel-default toggle panelMove panelRefresh'>
   			<div class='panel-body'>
-  				<div class='col-lg-16'>
-  					<div id='kazanimlar' class='accordion collapse in' style='padding-bottom: 5px'>
-
-  					</div>
-
-  					<!--OKUMA YAZMA ending -->
+  				<div id='kazanimlar' class='accordion collapse in' style='padding-bottom: 5px'>
 
   				</div>
 
   			</div>
 
   		</div>
-  		<!-- End .panel -->
-  		<!-- <button type="submit" id="kaydet" class="btn btn-success mr5 mb10" title="Kaydet"><i class="glyphicon glyphicon-ok">&nbsp;<span class="spanfont">Kaydet</span></i></button>
-  		<a id="sil" class="btn btn-success mr5 mb10" title="Sil"><i class="glyphicon glyphicon-remove">&nbsp;<span class="spanfont">Sil</span>&nbsp;</i></a>
-  		<a id="duzenle" class="btn btn-success mr5 mb10" title="Düzenle"><i class="glyphicon glyphicon-edit">&nbsp;<span class="spanfont">Düzenle</span>&nbsp;</i></a>
-  		<a id="yazdir" class="btn btn-success mr5 mb10" title="Yazdır"><i class="glyphicon glyphicon-print">&nbsp;<span class="spanfont">Yazdır</span>&nbsp;</i></a> -->
   	</div>
 
 
@@ -398,9 +384,6 @@ if($_SESSION['access_type'] == "personel"){
 <!-- Seymanın Ekledikleri BepKomısyonu multi-select-input START-->
 <script>
 	$(document).ready(function(){
-		var id;
-		var dersler_id;
-		var myArray =[[]];
 		$('#framework').multiselect({
 			nonSelectedText: 'Ders seçiniz',
 			enableFiltering: true,
@@ -421,10 +404,10 @@ if($_SESSION['access_type'] == "personel"){
 
 		$('#degerlendir').on('click', function(){
 			var degerlendirmeTarihi = document.getElementById('degerlendirmeTarihi').value;
-			id = document.getElementById('studentID').value;
+			var id = document.getElementById('studentID').value;
 			var ders_id = document.getElementById('framework').value;
 			var kom_id = document.getElementById('framework1').value;
-			dersler_id = $('#framework').val();
+			var dersler_id = $('#framework').val();
 			var komisyon_id =  $('#framework1').val();
 			
 			if(!id || !ders_id || !kom_id || !degerlendirmeTarihi){
@@ -442,87 +425,6 @@ if($_SESSION['access_type'] == "personel"){
 				});
 			}
 		});
-		$('#sil, #duzenle, #yazdir').on('click', function(){
-
-			var degerlendirmeGoster = $('#degerlendirmeGoster').val();		
-			if(!degerlendirmeGoster){
-				alert("Değerlendirme Yapınız!!");
-			}
-
-		});
-
-		/*
-		$('#kaydet').on('click', function(){
-			var degerlendirmeGoster = $('#degerlendirmeGoster').val();		
-			var kazanimlar_mat_PK;
-			var kazanimlar_oku_PK;
-			
-			if(!degerlendirmeGoster){
-				alert("Değerlendirme Yapınız!!");
-			}else{
-				
-				$.ajax({
-
-					url:"kaba_degerlendirme_number_cek.php",
-					method:"POST",
-					data:{dersler_id:dersler_id},
-					dataType: 'json',
-					cache:false,
-					success:function(data){
-						
-						kazanimlar_mat_PK = data.value1;
-						kazanimlar_oku_PK = data.value2;
-
-						alert("kazanimlar_mat_PK :"+kazanimlar_mat_PK.length);
-						alert("kazanimlar_oku_PK :"+kazanimlar_oku_PK.length);
-
-					}
-				}).done(function(){
-					var myArray =[[]];
-					for (var i = 0; i < dersler_id.length; i++) {
-						for (var j = kazanimlar_mat_PK.length - 1; j >= 0; j--) {
-							if(dersler_id[i] == 5){		
-								myArray[[5][j]]= document.getElementById('5' + kazanimlar_mat_PK[j]).value;
-								//alert( document.getElementById('5' + kazanimlar_mat_PK[j]).value);
-								//alert("myArray : "+myArray[[5][j]]);
-							}	
-						}
-						for (var j = kazanimlar_oku_PK.length - 1; j >= 0; j--) {
-							if(dersler_id[i] == 3){
-								myArray[[3][j]] = document.getElementById('3' + kazanimlar_oku_PK[j]).value;
-								//alert(document.getElementById('3' + kazanimlar_oku_PK[j]).value);
-								//alert("myArray : "+myArray[[3][j]]);
-							}
-						}
-						
-						alert("myArray : "+myArray[[3][1]]);
-						alert("3 : 1 "+myArray[[3][1]]);
-						alert("3 : 2 "+myArray[[3][2]]);
-						alert("3 : 3 "+myArray[[3][3]]);
-						alert("3 : 4 "+myArray[[3][4]]);
-						alert("3 : 5 "+myArray[[3][5]]);
-						alert("5 : 1 "+myArray[[5][1]]);
-						alert("5 : 2 "+myArray[[5][2]]);
-						alert("5 : 3 "+myArray[[5][3]]);
-						alert("5 : 4 "+myArray[[5][4]]);
-						alert("5 : 5 "+myArray[[5][5]]);
-						
-						$.ajax({
-							url:"kaba_degerlendirme_veri_insert.php",
-							method:"POST",
-							data:{dersler_id:dersler_id},
-							dataType:'json',
-							cache:false,
-							success:function(data){
-								alert(data.value3);
-							}
-						});
-						
-					}
-				});
-				
-			}
-		});*/
 	});
 </script>
 

@@ -4,8 +4,6 @@
 session_start();
 
 $studentID = $_POST['studentID'];
-
-echo $studentID;
 $dersler_id = $_POST['framework'];
 $komisyon_id = $_POST['framework1'];
 

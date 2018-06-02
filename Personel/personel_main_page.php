@@ -319,15 +319,15 @@ if($_SESSION['access_type'] == 'personel'){
   																	<b>Eğitsel Tanı</b> <a class="pull-right"></a>
   																</li>
   																<li class="list-group-item">
-  																	<b>Kaba Değerlendirme</b>   
+  																	<b>Kaba Değerlendirme</b>
                                     <button id="kabaSil" class="btn btn-primary pull-right" >Sil</button>
-                                    <button id="kabaGoruntule" class="btn btn-primary pull-right" >görüntüle</button>
+                                    <button id="kabaGoruntule" class="btn btn-primary pull-right" >Görüntüle</button>
   																</li>
   																<li class="list-group-item">
-  																	<b>BEP</b> <a id="bepGoruntule" class="btn btn-primary pull-right">görüntüle</a>
+  																	<b>BEP</b> <a id="bepGoruntule" class="btn btn-primary pull-right">Görüntüle</a>
   																</li>
   																<li class="list-group-item">
-  																	<b>Dönem Başlayış Tarihi</b> <a class="pull-right">18.09.2017</a>
+  																	<b>Dönem Başlayış Tarihi</b><a class="pull-right">18.09.2017</a>
   																</li>
   																<li class="list-group-item">
   																	<b>Dönem Bitiş Tarihi</b> <a class="pull-right">07.06.2018</a>
