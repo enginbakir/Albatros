@@ -18,6 +18,7 @@ require_once "../connectDB.php";
 	<link rel="stylesheet" href="../bower_components/Ionicons/css/ionicons.min.css">
 	<!-- Theme style -->
 	<link rel="stylesheet" href="../dist/css/AdminLTE.min.css">
+	<link rel="stylesheet" href="../dist/css/jquery.lwMultiSelect.css">
   <!-- AdminLTE Skins. Choose a skin from the css/skins
   	folder instead of downloading all of them to reduce the load. -->
   	<link rel="stylesheet" href="../dist/css/skins/_all-skins.min.css">
@@ -32,7 +33,6 @@ require_once "../connectDB.php";
   	<!-- bootstrap wysihtml5 - text editor -->
   	<link rel="stylesheet" href="../plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css">
 
-
   	<!-- Google Font -->
   	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
   	<!-- jQuery 3 -->
@@ -41,7 +41,7 @@ require_once "../connectDB.php";
   	<script src="../bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
   	<!-- AdminLTE App -->
   	<script src="../dist/js/adminlte.min.js"></script>
-
+  	<script src="../dist/js/jquery.lwMultiSelect.js"></script>
 
   	<style>
 
@@ -361,12 +361,6 @@ require_once "../connectDB.php";
 																		echo "baglantı yok!";
 																	}
 
-																	// if ($counter >= 8 ) {
-																	// 	echo '<script language="javascript">';
-																	// 	echo 'alert("Öğrencinin Devamsızlık hakkı dolmuştur.")';
-																	// 	echo '</script>';
-																	// }
-
 
 																	?>
 																	
@@ -378,52 +372,16 @@ require_once "../connectDB.php";
 												</div>
 												<!-- Page-DEVAMSIZLIK BİLGİLERİ END -->
 
-												<!-- Page- ÖDEME BİLGİLERİ START -->
-
-
-												<?php
-												include('process.php');
-												$newobj = new processing();
-												?>
-
+												<!-- Page-ÖĞRENCİ BİLGİLERİ START -->
 												<div id="menu4" class="tab-pane fade">
-													<div class="row">
-														<div class="col-md-12">
-															<table border="1" class="table table-bordered table-hover">
-																<thead>
-																	<tr>
-																		<th>ID</th>
-																		<th>AYLAR</th>
-																		<th>ÖDEMEBİLGİSİ</th>
-																		<th>SEÇ</th>
-																	</tr>
-																</thead>
-																<?php echo $newobj->display();?>
-															</table>
-															<script>
-																$(document).ready(function(){
-																	$(".selectstatus").change(function(){
-																		var statusname = $(this).val();                  
-																		var getid = $(this).attr("status-id");                  
-																		$.ajax({
-																			type:'POST',
-																			url:'ajax.php',
-																			data:{statusname:statusname,getid
-																				:getid},
-																				success:function(result){
-																					location.reload();
-																					$("#display").html(result);
-																					alert(result);
-
-																				}
-																			});
-																	});
-																});
-															</script>
-														</div>
+													<div class="form-group">
+														<div id="payment_info">
+															<!-- .............. PAYMENT_PAGE.PHP ................ -->
+														</div>														
 													</div>
 												</div>
-												<!-- Page-ÖDEME BİLGİLERİ END -->
+
+												<!-- Page-ÖĞRENCİ BİLGİLERİ END -->
 
 											</div>
 										</div>
@@ -470,15 +428,87 @@ require_once "../connectDB.php";
                         id = $('.id',this).html();
                         isim =$('.isim',this).html();
                         soyisim =$('.soyisim',this).html();
+
                         $.ajax({  
-                        	url:"load_notes.php",  
-                        	method:"GET",  
-                        	data:{id:id},  
+                        	url:"payment_page.php",  
+                        	method:"POST",  
+                        	data:{id:id},
                         	success:function(data){ 
-                        		
-                        		$('#notes').html(data);  
+                        		$('#payment_info').html(data);  
+
+                        		$('#date_odeme').lwMultiSelect();
+
+                        		$('.action').change(function(){
+                        			if($(this).val() != '')
+                        			{
+                        				var action = $(this).attr("id");
+                        				var query = $(this).val();
+                        				var student_id = $('#student_id').val();
+                        				var result = '';
+                        				if(action == 'aylar')
+                        				{
+                        					result = 'date_odeme';
+                        				}
+                        				$.ajax({
+                        					url:'payment_fetch.php',
+                        					method:"POST",
+                        					data:{action:action, query:query,student_id:student_id},
+                        					success:function(data)
+                        					{
+
+                        						$('#'+result).html(data);
+                        						if(result == 'date_odeme')
+                        						{
+                        							$('#date_odeme').data('plugin_lwMultiSelect').updateList();
+                        						}
+                        					}
+                        				})
+                        			}
+                        		});
+
+                        		$('#insert_data').on('submit', function(event){
+                        			console.log('edildi');
+                        			event.preventDefault();
+                        			if($('#aylar').val() == '')
+                        			{
+                        				alert("Lütfen bir ay seçiniz!");
+                        				return false;
+                        			}
+                        			else if($('#date_odeme').val() == '')
+                        			{
+                        				alert("Lütfen gün seçiniz!");
+                        				return false;
+                        			}
+                        			else
+                        			{
+                        				$('#hidden_date_odeme').val($('#date_odeme').val());
+                        				var dates = $('#hidden_date_odeme').val().split(',');
+                        				var aylar = $('#aylar').val();
+                        				var odeme_bilgisi = $('#odeme_bilgisi').val();
+                        				var form_data = $('#insert_data').serialize();
+                        				$.ajax({
+                        					url:"payment_insert.php",
+                        					method:"POST",
+                        					data:{odeme_bilgisi:odeme_bilgisi,aylar:aylar,dates:dates,id:id},
+                        					success:function(data)
+                        					{
+                        						if(data == 'done')
+                        						{
+                        							$('#date_odeme').html('');
+                        							$('#date_odeme').data('plugin_lwMultiSelect').updateList();
+                        							$('#date_odeme').data('plugin_lwMultiSelect').removeAll();
+                        							$('#insert_data')[0].reset();
+                        							alert('Data Inserted');
+                        						}
+                        					}
+                        				});
+                        			}
+                        		});
+
+
                         	}  
                         });  
+
                         document.getElementById("studentInfoTitle").innerHTML = isim+" "+soyisim+" Bilgileri";
                     };
                 }

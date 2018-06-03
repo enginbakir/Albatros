@@ -305,11 +305,10 @@ require_once "../connectDB.php";
                             <label class="col-lg-yeni3 col-md-1 control-label" for=""></label>
                             <div class="col-lg-10 col-md-9" style="padding-left: 110px;">
                               <br><br>
-                              <button type="button" class="col-lg-yeni16 col-md-3 btn btn-success mr5 mb10" onclick="myFunction()"><i class="fa fa-folder"></i>Değerlendir</button>
+                              <button type="button" class="col-lg-yeni16 col-md-3 btn btn-success mr5 mb10" onclick="myFunction()"><i class="fa fa-folder"></i> Değerlendir</button>
                               <br><br>                             
                             </div>
                           </div>
-                          <!-- End .form-group 6 -->
 
                         </div>
                       </div>
@@ -321,198 +320,83 @@ require_once "../connectDB.php";
                   </form>
 
                   <!-- End .panel -->
-                  <a class="btn btn-success mr5 mb10" title="Kaydet"><i class="glyphicon glyphicon-ok">&nbsp;<span class="spanfont">Kaydet</span></i></a>
+<!--                   <a class="btn btn-success mr5 mb10" title="Kaydet"><i class="glyphicon glyphicon-ok">&nbsp;<span class="spanfont">Kaydet</span></i></a>
                   <a class="btn btn-success mr5 mb10" title="Sil"><i class="glyphicon glyphicon-remove">&nbsp;<span class="spanfont">Sil</span>&nbsp;</i></a>
                   <a class="btn btn-success mr5 mb10" title="Düzenle"><i class="glyphicon glyphicon-edit">&nbsp;<span class="spanfont">Düzenle</span>&nbsp;</i></a>
-                  <a class="btn btn-success mr5 mb10" title="Yazdır"><i class="glyphicon glyphicon-print">&nbsp;<span class="spanfont">Yazdır</span>&nbsp;</i></a>
+                  <a class="btn btn-success mr5 mb10" title="Yazdır"><i class="glyphicon glyphicon-print">&nbsp;<span class="spanfont">Yazdır</span>&nbsp;</i></a> -->
                 </div>
 
                 <!-- First col-md-16 ending -->
 
-                <!--Kaba değerlendirme tablo animasyonu html i -->
+                <!--TESTİNG for Toggle starting -->
 
-                <div class="col-lg-16">
-                  <div class="panel panel-default  toggle panelMove panelRefresh">
-                    <div class="panel-body" id="toggle_deneme">
-                      <div class="col-lg-16">
-                        <!--OKUMA YAZMA starting -->
-                        <div class="accordion collapse in" style="padding-bottom: 5px">
-                          <button class="accordion_mt">ÖZEL ÖĞRENME GÜÇLÜĞÜ DESTEK EĞİTİM PROGRAMI &gt;&gt; OKUMA YAZMA</button>
-                          <div class="panel_mt">  
-                            <div class="accordion1Content">
-                              <table class="table table-striped table-bordered table-hover" cellspacing="0" rules="all" border="1" style="border-collapse:collapse;">
-                                <tbody>
-                                  <tr>
-                                    <th>KAZANIMLAR</th>
-                                    <th>EVET</th>
-                                    <th>HAYIR</th>
-                                    <th>ACIKLAMA</th>
-                                  </tr>
+                <?php
+                include('kazanim_insert.php');
+                $newobj = new processing();
+                ?>
 
-                                  <?php
-                                  
-                                  $datam = mysqli_query($conn,"SELECT * FROM kazanımlar ORDER BY kazanım_name ASC");
-                                  while($write = mysqli_fetch_array($datam, MYSQL_ASSOC)){ ?>
-                                  <tr>
-                                    <td>
-                                      <?php echo $write['kazanım_name']; ?>
-                                    </td>
-                                    <td>
-                                      <?php echo $write['evet']; ?>
-                                    </td> 
-                                    <td>
-                                      <?php echo $write['hayır']; ?>
-                                    </td> 
-                                    <td>
-                                      <?php echo $write['acıklama']; ?>
-                                    </td>  
-                                  </tr>
-                                  <?php } ?> 
-                                </tbody>
-                              </table>
-                            </div>          
-                          </div>
-                        </div>
-                        <!--OKUMA YAZMA ending -->
+                <div class="accordion collapse in" style="padding-bottom: 5px">
+                  <button class="accordion_mt">ÖZEL ÖĞRENME GÜÇLÜĞÜ DESTEK EĞİTİM PROGRAMI &gt;&gt; DENEME</button>
+                  <div class="panel_mt">  
+                    <div class="accordion1Content">
 
-                        <!--ÖĞRENMEYE HAZIRLIK starting -->
-                        <div class="accordion collapse in" style="padding-bottom: 5px">
-                          <button class="accordion_mt">ÖZEL ÖĞRENME GÜÇLÜĞÜ DESTEK EĞİTİM PROGRAMI &gt;&gt; ÖĞRENMEYE HAZIRLIK</button>
-                          <div class="panel_mt">  
-                            <div class="accordion1Content">
-                              <table class="table table-striped table-bordered table-hover" cellspacing="0" rules="all" border="1" style="border-collapse:collapse;">
-                                <tbody>
-                                  <tr>
-                                    <th>KAZANIMLAR</th>
-                                    <th>EVET</th>
-                                    <th>HAYIR</th>
-                                    <th>ACIKLAMA</th>
-                                  </tr>
-
-                                  <?php
-                                  $datam = mysqli_query($conn,"SELECT * FROM ogrenmeye_hazirlik ORDER BY kazanımlar_o ASC");
-                                  while($write = mysqli_fetch_array($datam, MYSQL_ASSOC)){ ?>
-                                  <tr>
-                                    <td>
-                                      <?php echo $write['kazanımlar_o']; ?>
-                                    </td>
-                                    <td>
-                                      <?php echo $write['evet_o']; ?>
-                                    </td> 
-                                    <td>
-                                      <?php echo $write['hayir_o']; ?>
-                                    </td> 
-                                    <td>
-                                      <?php echo $write['aciklama_o']; ?>
-                                    </td>  
-                                  </tr>
-                                  <?php } ?> 
-                                </tbody>
-                              </table>
-                            </div>          
-                          </div>
-                        </div>
-                        <!--ÖĞRENMEYE HAZIRLIK ending -->
-
-                        <!--MATEMATİK starting -->
-                        <div class="accordion collapse in" style="padding-bottom: 5px">
-                          <button class="accordion_mt">ÖZEL ÖĞRENME GÜÇLÜĞÜ DESTEK EĞİTİM PROGRAMI &gt;&gt; MATEMATİK</button>
-                          <div class="panel_mt">  
-                            <div class="accordion1Content">
-                              <table class="table table-striped table-bordered table-hover" cellspacing="0" rules="all" border="1" style="border-collapse:collapse;">
-                                <tbody>
-                                  <tr>
-                                    <th>KAZANIMLAR</th>
-                                    <th>EVET</th>
-                                    <th>HAYIR</th>
-                                    <th>ACIKLAMA</th>
-                                  </tr>
-
-                                  <?php
-                                  $datam = mysqli_query($conn,"SELECT * FROM mathematics ORDER BY mathematic_id ASC");
-                                  while($write = mysqli_fetch_array($datam, MYSQL_ASSOC)){ ?>
-                                  <tr>
-                                    <td>
-                                      <?php echo $write['mathematic']; ?>
-                                    </td>
-                                    <td>
-                                      <?php echo $write['evet_m']; ?>
-                                    </td> 
-                                    <td>
-                                      <?php echo $write['hayir_m']; ?>
-                                    </td> 
-                                    <td>
-                                      <?php echo $write['aciklama_m']; ?>
-                                    </td>  
-                                  </tr>
-                                  <?php } ?> 
-                                </tbody>
-                              </table>
-                            </div>          
-                          </div>
-                        </div>
-                        <!--MATEMATİK ending -->
-
-                        <!--TESTİNG for Toggle starting -->
-                        <div class="accordion collapse in" style="padding-bottom: 5px">
-                          <button class="accordion_mt">ÖZEL ÖĞRENME GÜÇLÜĞÜ DESTEK EĞİTİM PROGRAMI &gt;&gt; DENEME</button>
-                          <div class="panel_mt">  
-                            <div class="accordion1Content">
-
-                              <form action="addNewDegerlendirme.php" method="POST">
-                                <table class="table table-striped table-bordered table-hover" cellspacing="0" rules="all" border="1" style="border-collapse:collapse;">
-                                  <tbody>
-                                    <tr>
-                                      <th>KAZANIMLAR</th>
-                                      <th>EVET</th>
-                                      <th>HAYIR</th>
-                                      <th>ACIKLAMA</th>
-                                    </tr>
-
-                                    <?php
-                                    
-                                    $datam = mysqli_query($conn,"SELECT * FROM deneme ORDER BY deneme_id ASC");
-                                    while($write = mysqli_fetch_array($datam, MYSQL_ASSOC)){ ?>
-                                    <tr>
-                                      <td>
-                                        <?php echo $write['deneme_name']; ?>
-                                      </td>
-                                      <td>
-                                        <input type="text" name="evet_d">
-                                      </td> 
-                                      <td>
-                                        <input type="text" name="hayir_d">
-                                      </td> 
-                                      <td>
-                                        <input type="text" name="aciklama_d" placeholder="Açıklama giriniz.">
-                                      </td>  
-                                    </tr>
-                                    <?php } ?> 
-                                  </tbody>
-                                </table>
-                              </form>
-
-                            </div>          
-                          </div>
-                        </div>
-
-                        <!--TESTİNG for Toggle ending -->
+                      <form >
+                        <table class="table table-striped table-bordered table-hover" cellspacing="0" rules="all" border="1" style="border-collapse:collapse;">
+                          <tr>
+                            <th>ID</th>
+                            <th>Kazanımlar</th>
+                            <th>Durum</th>
+                            <th>SEÇ- E/H</th>
+                          </tr>
+                          <?php echo $newobj->display();?>
+                        </table>
+                        <br>
+                        <button type="submit" id="button_deneme" class="btn btn-success btn-sm  mr5 mb10" onclick="Reload()"><i class="glyphicon glyphicon-ok"></i> Kaydet</button>
+                        <button type="submit" id="button_deneme" class="btn btn-success btn-sm  mr5 mb10" onclick="Reload()"><i class="glyphicon glyphicon-remove"></i> Sil</button>
+                        <button type="submit" id="button_deneme" class="btn btn-success btn-sm  mr5 mb10" onclick="Reload()"><i class="glyphicon glyphicon-edit"></i> Düzenle</button>
+                        <button type="submit" id="button_deneme" class="btn btn-success btn-sm  mr5 mb10" onclick="Reload()"><i class="glyphicon glyphicon-print"></i> Yazdır</button>                        
+                        <script>
 
 
-                        <label class="col-lg-yeni3 col-md-1 control-label" for=""></label>
-                        <div class="col-lg-10 col-md-9">
-                          <br>
-                          <button type="button" class="col-lg-yeni16 col-md-2 btn btn-success btn-sm  mr5 mb10" onclick="myFunction()"><i class="fa fa-folder"></i>KAZANIM EKLE</button>
-                          <br>                             
-                        </div>
+                          $(document).ready(function(){
+                            $(".selectstatus").change(function(){
+                             var statusname = $(this).val();                  
+                             var getid = $(this).attr("status-id");                  
+                             $.ajax({
+                              type:'POST',
+                              url:'ajax2.php',
+                              data:{statusname:statusname,getid
+                                :getid},
+                                success:function(result){
+                                 // location.reload();
+                                 $("#display").html(result);
 
-                      </div>
-                    </div>
+                               }
+                             });
+                           });
+                          });
+
+                          function Reload() {
+                            location.reload();
+                          }
+                        </script>
+
+
+                      </form>
+
+                    </div>          
                   </div>
                 </div>
 
+                <!--TESTİNG for Toggle ending -->
+
               </div>
             </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
 
   <!-- Add the sidebar's background. This div must be placed
     immediately after the control sidebar -->

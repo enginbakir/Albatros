@@ -20,13 +20,12 @@
         </a>
       </li>
       <li>
-        <li>
-          <a href="calendar.php">
-            <i class="fa fa-calendar"></i>
-            <span style="font-size: 17px">Takvim</span>
-          </a>
-        </li>
-      </ul>
-    </section>
-    <!-- /.sidebar -->
-  </aside>
+        <a href="calendar.php">
+          <i class="fa fa-calendar"></i>
+          <span style="font-size: 17px">Takvim</span>
+        </a>
+      </li>
+    </ul>
+  </section>
+  <!-- /.sidebar -->
+</aside>
