@@ -4,20 +4,24 @@
  // echo $_POST['dates'][0]." boşluk ".$_POST['dates'][1];
  // echo "<br>".$_POST['odeme_bilgisi'];
 
+$personel_id = 23;
+// $personel_id = $_POST['personel_id'];
+
 try {	
 	if(isset($_POST['aylar']))
 	{
 		require_once('database_connection.php');
-		$query = "INSERT INTO odeme_data (aylar, date_odeme, o_bilgisi, student_FK) VALUES(:aylar, :date_odeme, :o_bilgisi, :student_id)";
+		$query = "INSERT INTO odeme_data (aylar, date_odeme, o_bilgisi, student_FK, personel_FK) VALUES(:aylar, :date_odeme, :o_bilgisi, :student_id, :personel_id)";
 		$statement = $connect->prepare($query);
 		foreach ($_POST['dates'] as $row) {
-			# code...	
+	
 			$result = $statement->execute(
 				array(
 					':aylar'		=>	$_POST['aylar'],
 					':date_odeme'	=>	$row,
 					':o_bilgisi'	=>	$_POST['odeme_bilgisi'],
-					':student_id'	=>	$_POST['id']
+					':student_id'	=>	$_POST['id'],
+					':personel_id'	=>	$personel_id
 				)
 			);
 		}

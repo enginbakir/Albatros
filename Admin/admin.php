@@ -1,3 +1,6 @@
+<?php 
+require_once "database_connection.php";
+?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -11,7 +14,7 @@
   <!-- Font Awesome -->
   <link rel="stylesheet" href="../bower_components/font-awesome/css/font-awesome.min.css">
   <!-- Ionicons -->
-  <link rel="stylesheet" href="../bower_components/Ionicons/css/ionicons.m../in.css">
+  <link rel="stylesheet" href="../bower_components/Ionicons/css/ionicons.min.css">
   <!-- Theme style -->
   <link rel="stylesheet" href="../dist/css/AdminLTE.min.css">
   <!-- AdminLTE Skins. Choose a skin from the css/skins
@@ -51,238 +54,331 @@
       <!-- Main content -->
       <section class="content">
         <!-- Small boxes (Stat box) -->
-
-        <!-- /.row -->
-        <!-- Main row -->
         <div class="row">
-          <!-- Left col -->
-          <section class="col-lg-8 connectedSortable">
-            <!-- Custom tabs (Charts with tabs)-->
-            <div class="nav-tabs-custom">
-              <!-- Tabs within a box -->
-              <ul class="nav nav-tabs pull-right">
-                <li class="active"><a href="#revenue-chart" data-toggle="tab">A</a></li>
-                <li><a href="#sales-chart" data-toggle="tab">D</a></li>
-                <li class="pull-left header"><i class="fa fa-inbox"></i> Sistem Kullanım Grafiği</li>
-              </ul>
-              <div class="tab-content no-padding">
-                <!-- Morris chart - Sales -->
-                <div class="chart tab-pane active" id="revenue-chart" style="position: relative; height: 300px;"></div>
-                <div class="chart tab-pane" id="sales-chart" style="position: relative; height: 300px;"></div>
+          <div class="col-lg-3 col-xs-6">
+            <!-- small box -->
+            <div class="small-box bg-aqua">
+              <div class="inner">
+                <h3> 
+
+                  <?php
+                  $sql = "SELECT COUNT(admin_PK) AS a_count FROM admin";
+                  $statement=$connect->prepare($sql);
+                  $statement->execute();
+                  while($row=$statement->fetch()) {
+                    echo $row['a_count'];
+                  }
+                  ?>
+
+                </h3>
+                <p style="font-size: 25px"><b>ADMİN</b></p>
+              </div>
+              <div class="icon">
+                <i class="ion ion-stats-bars"></i>
+              </div>
+              <a href="#" class="small-box-footer"><i class="fa fa-minus"></i></a>
+            </div>
+          </div>
+          <!-- ./col -->
+          <div class="col-lg-3 col-xs-6">
+            <!-- small box -->
+            <div class="small-box bg-green">
+              <div class="inner">
+                <h3>
+                  <?php
+                  $sql = "SELECT COUNT(student_PK) AS s_count FROM student";
+                  $statement=$connect->prepare($sql);
+                  $statement->execute();
+                  while($row=$statement->fetch()) {
+                    echo $row['s_count'];
+                  }
+                  ?>
+                </h3>
+                <p style="font-size: 25px"><b>STUDENT</b></p>
+              </div>
+              <div class="icon">
+                <i class="ion ion-university"></i>
+              </div>
+              <a href="../Personel/personel_main_page.php" class="small-box-footer">Daha fazla bilgi  <i class="fa fa-arrow-circle-right"></i></a>
+            </div>
+          </div>
+          <!-- ./col -->
+          <div class="col-lg-3 col-xs-6">
+            <!-- small box -->
+            <div class="small-box bg-yellow">
+              <div class="inner">
+                <h3>
+                  <?php
+                  $sql = "SELECT COUNT(personel_PK) AS p_count FROM personel";
+                  $statement=$connect->prepare($sql);
+                  $statement->execute();
+                  while($row=$statement->fetch()) {
+                    echo $row['p_count'];
+                  }
+                  ?>
+                </h3>
+                <p style="font-size: 25px"><b>PERSONEL</b></p>
+              </div>
+              <div class="icon">
+                <i class="ion ion-person-stalker"></i>
+              </div>
+              <a href="../Personel/personel_main_page.php" class="small-box-footer">Daha fazla bilgi <i class="fa fa-arrow-circle-right"></i></a>
+            </div>
+          </div>
+          <!-- ./col -->
+          <div class="col-lg-3 col-xs-6">
+            <!-- small box -->
+            <div class="small-box bg-red">
+              <div class="inner">
+                <h3>
+                  <?php
+                  $sql_p = "SELECT COUNT(personel_PK) AS p_count FROM personel";
+                  $statement=$connect->prepare($sql_p);
+                  $statement->execute();
+                  while($row=$statement->fetch()) {
+                    $p_count = $row['p_count'];
+                    $sql_s = "SELECT COUNT(student_PK) AS s_count FROM student";
+                    $statement=$connect->prepare($sql_s);
+                    $statement->execute();
+                    while($row=$statement->fetch()) {
+                     $s_count = $row['s_count'];
+                     $sql_a = "SELECT COUNT(admin_PK) AS a_count FROM admin";
+                     $statement=$connect->prepare($sql_a);
+                     $statement->execute();
+                     while($row=$statement->fetch()) {
+                      $a_count = $row['a_count'];                      
+                      $total= $s_count + $p_count + $a_count;
+                      echo $total;
+                    }
+
+                  }
+                }
+                ?>
+              </h3>
+              <p style="font-size: 25px"><b>TOTAL MEMBERS</b></p>
+            </div>
+            <div class="icon">
+              <i class="ion ion-ios-people"></i>
+            </div>
+            <a  class="small-box-footer"> <i class="fa fa-minus"></i></a>
+          </div>
+        </div>
+        <!-- ./col -->
+      </div>
+      <!-- /.row -->
+      <!-- Main row -->
+      <div class="row">
+        <!-- Left col -->
+        <section class="col-lg-8 connectedSortable">
+          <!-- Custom tabs (Charts with tabs)-->
+          <div class="nav-tabs-custom">
+            <!-- Tabs within a box -->
+            <ul class="nav nav-tabs pull-right">
+              <li class="active"><a href="#revenue-chart" data-toggle="tab">A</a></li>
+              <li><a href="#sales-chart" data-toggle="tab">D</a></li>
+              <li class="pull-left header"><i class="fa fa-inbox"></i> Sistem Kullanım Grafiği</li>
+            </ul>
+            <div class="tab-content no-padding">
+              <!-- Morris chart - Sales -->
+              <div class="chart tab-pane active" id="revenue-chart" style="position: relative; height: 300px;"></div>
+              <div class="chart tab-pane" id="sales-chart" style="position: relative; height: 300px;"></div>
+            </div>
+          </div>
+          <!-- /.nav-tabs-custom -->
+
+
+          <!-- quick email widget -->
+          <div class="box box-info">
+            <div class="box-header">
+              <i class="fa fa-envelope"></i>
+
+              <h3 class="box-title">Email</h3>
+              <!-- tools box -->
+              <div class="pull-right box-tools">
+                <button type="button" class="btn btn-info btn-sm" data-widget="remove" data-toggle="tooltip"
+                title="Remove">
+                <i class="fa fa-times"></i></button>
+              </div>
+              <!-- /. tools -->
+            </div>
+            <div class="box-body">
+              <form action="#" method="post">
+                <div class="form-group">
+                  <input type="email" class="form-control" name="emailto" placeholder="Email to:">
+                </div>
+                <div class="form-group">
+                  <input type="text" class="form-control" name="subject" placeholder="Subject">
+                </div>
+                <div>
+                  <textarea class="textarea" placeholder="Message"
+                  style="width: 100%; height: 125px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;"></textarea>
+                </div>
+              </form>
+            </div>
+            <div class="box-footer clearfix">
+              <button type="button" class="pull-right btn btn-default" id="sendEmail">Gönder
+                <i class="fa fa-arrow-circle-right"></i></button>
               </div>
             </div>
-            <!-- /.nav-tabs-custom -->
 
-
-            <!-- quick email widget -->
-            <div class="box box-info">
-              <div class="box-header">
-                <i class="fa fa-envelope"></i>
-
-                <h3 class="box-title">Email</h3>
-                <!-- tools box -->
-                <div class="pull-right box-tools">
-                  <button type="button" class="btn btn-info btn-sm" data-widget="remove" data-toggle="tooltip"
-                  title="Remove">
-                  <i class="fa fa-times"></i></button>
-                </div>
-                <!-- /. tools -->
-              </div>
-              <div class="box-body">
-                <form action="#" method="post">
-                  <div class="form-group">
-                    <input type="email" class="form-control" name="emailto" placeholder="Email to:">
-                  </div>
-                  <div class="form-group">
-                    <input type="text" class="form-control" name="subject" placeholder="Subject">
-                  </div>
-                  <div>
-                    <textarea class="textarea" placeholder="Message"
-                    style="width: 100%; height: 125px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;"></textarea>
-                  </div>
-                </form>
-              </div>
-              <div class="box-footer clearfix">
-                <button type="button" class="pull-right btn btn-default" id="sendEmail">Gönder
-                  <i class="fa fa-arrow-circle-right"></i></button>
-                </div>
-              </div>
-
-
-            </section>
-            <!-- /.Left col -->
-            <!-- right col (We are only adding the ID to make the widgets sortable)-->
-
-
-            <section class="col-lg-4 connectedSortable">
-
-              <!-- TO DO List -->
-              <div class="box box-primary">
-                <div class="box-header">
-                  <i class="ion ion-clipboard"></i>
-
-                  <h3 class="box-title">BİLDİRİMLER</h3>
-
-                </div>
-                <!-- /.box-header -->
-                <div class="box-body">
-                  <!-- See dist/js/pages/dashboard.js to activate the todoList plugin -->
-                  <ul class="todo-list">
-                    <li>
-                      <!-- todo text -->
-                      <span class="text"> <i class="fa fa-users text-red"></i> 1 Yeni üye sisteme katıldı.</span>
-                      <!-- Emphasis label -->
-                      <small class="label label-danger"><i class="fa fa-clock-o"></i> 2 mins</small>
-                      <!-- General tools such as edit or delete-->
-                      <div class="tools">
-                        <i class="fa fa-edit"></i>
-                        <i class="fa fa-trash-o"></i>
-                      </div>
-                    </li>
-                    <li>
-                      <span class="text"> <i class="fa fa-users text-aqua"></i> Bugün 5 Yeni üye sisteme katıldı.</span>
-                      <small class="label label-info"><i class="fa fa-clock-o"></i> 4 hours</small>
-                      <div class="tools">
-                        <i class="fa fa-edit"></i>
-                        <i class="fa fa-trash-o"></i>
-                      </div>
-                    </li>
-                    <li>
-                      <span class="text"> <i class="fa fa-warning text-yellow"></i> Sayfada yer almayan problemlerine neden olabilecek açıklamalar burada.</span>
-                      <small class="label label-warning"><i class="fa fa-clock-o"></i> 1 minutes</small>
-                      <div class="tools">
-                        <i class="fa fa-edit"></i>
-                        <i class="fa fa-trash-o"></i>
-                      </div>
-                    </li>
-                    <li>
-                        <!-- <span class="handle">
-                          <i class="fa fa-ellipsis-v"></i>
-                          <i class="fa fa-ellipsis-v"></i>
-                        </span> -->
-                        <span class="text"> <i class="fa fa-users text-red"></i> 5 Yeni üye sisteme katıldı.</span>
-                        <small class="label label-success"><i class="fa fa-clock-o"></i> 3 hour</small>
-                        <div class="tools">
-                          <i class="fa fa-edit"></i>
-                          <i class="fa fa-trash-o"></i>
-                        </div>
-                      </li>
-                      <li>
-                        <!-- <span class="handle">
-                          <i class="fa fa-ellipsis-v"></i>
-                          <i class="fa fa-ellipsis-v"></i>
-                        </span> -->
-                        <span class="text"> <i class="fa fa-user text-red"></i> Profilini güncelleme zamanı.</span>
-                        <small class="label label-primary"><i class="fa fa-clock-o"></i> 1 week</small>
-                        <div class="tools">
-                          <i class="fa fa-edit"></i>
-                          <i class="fa fa-trash-o"></i>
-                        </div>
-                      </li>
-                      <li>
-                        <!-- <span class="handle">
-                          <i class="fa fa-ellipsis-v"></i>
-                          <i class="fa fa-ellipsis-v"></i>
-                        </span> -->
-                        <span class="text"> Tasarım problemlerin kontrol et.</span>
-                        <small class="label label-default"><i class="fa fa-clock-o"></i> 50 minutes</small>
-                        <div class="tools">
-                          <i class="fa fa-edit"></i>
-                          <i class="fa fa-trash-o"></i>
-                        </div>
-                      </li>
-                    </ul>
-                  </div>
-                  <!-- /.box-body -->
-
-                </div>
-                <!-- /.box -->
-
-
-
-                <!-- Calendar -->
-                <div class="box box-solid bg-green-gradient">
-                  <div class="box-header">
-                    <i class="fa fa-calendar"></i>
-
-                    <h3 class="box-title">TAKVİM</h3>
-                    <!-- tools box -->
-                    <div class="pull-right box-tools">
-                      <!-- button with a dropdown -->
-                      <div class="btn-group">
-                        
-                        
-                      </div>
-                      <button type="button" class="btn btn-success btn-sm" data-widget="collapse"><i class="fa fa-minus"></i>
-                      </button>
-                      <button type="button" class="btn btn-success btn-sm" data-widget="remove"><i class="fa fa-times"></i>
-                      </button>
-                    </div>
-                    <!-- /. tools -->
-                  </div>
-                  <!-- /.box-header -->
-                  <div class="box-body no-padding">
-                    <!--The calendar -->
-                    <div id="calendar" style="width: 100%"></div>
-                  </div>
-                  <!-- /.box-body -->
-                  <div class="box-footer text-black">
-                    <div class="row">
-                      <div class="col-sm-6">
-                        <!-- Progress bars -->
-                        <div class="clearfix">
-                          <span class="pull-left">Login</span>
-                          <small class="pull-right">90%</small>
-                        </div>
-                        <div class="progress xs">
-                          <div class="progress-bar progress-bar-green" style="width: 90%;"></div>
-                        </div>
-
-                        <div class="clearfix">
-                          <span class="pull-left">Personel</span>
-                          <small class="pull-right">70%</small>
-                        </div>
-                        <div class="progress xs">
-                          <div class="progress-bar progress-bar-green" style="width: 70%;"></div>
-                        </div>
-                      </div>
-                      <!-- /.col -->
-                      <div class="col-sm-6">
-                        <div class="clearfix">
-                          <span class="pull-left">Notlar</span>
-                          <small class="pull-right">60%</small>
-                        </div>
-                        <div class="progress xs">
-                          <div class="progress-bar progress-bar-green" style="width: 60%;"></div>
-                        </div>
-
-                        <div class="clearfix">
-                          <span class="pull-left">Öğrenci</span>
-                          <small class="pull-right">40%</small>
-                        </div>
-                        <div class="progress xs">
-                          <div class="progress-bar progress-bar-green" style="width: 40%;"></div>
-                        </div>
-                      </div>
-                      <!-- /.col -->
-                    </div>
-                    <!-- /.row -->
-                  </div>
-                </div>
-                <!-- /.box -->
-
-              </section>
-
-
-
-              <!-- right col -->
-            </div>
-            <!-- /.row (main row) -->
 
           </section>
-          <!-- /.content -->
-        </div>
-        <!-- /.content-wrapper -->
+          <!-- /.Left col -->
+          <!-- right col (We are only adding the ID to make the widgets sortable)-->
+
+          <?php
+          include("functions.php");
+          ?>
+
+          <section class="col-lg-4 connectedSortable">
+
+            <!-- TO DO List -->
+            <div class="box box-primary">
+              <div class="box-header">
+                <i class="ion ion-clipboard"></i>
+
+                <h3 class="box-title">BİLDİRİMLER
+                  <?php
+                  $query = "SELECT * from `notifications` where `status` = 'unread' order by `date` DESC";
+                  if(count(fetchAll($query))>0){
+                    ?>
+                    <small class="label label-warning" style=" margin-left: 10px"><i class="fa fa-clock-o"></i> <?php echo count(fetchAll($query)); ?></small>
+                    <?php
+                  }
+                  ?>
+                </h3>
+
+              </div>
+              <!-- /.box-header -->
+              <div class="box-body">
+                <!-- See dist/js/pages/dashboard.js to activate the todoList plugin -->
+                <ul class="todo-list">
+                  <?php
+                  $query = "SELECT * from `notifications` order by `date` DESC";
+
+                  if(count(fetchAll($query))>0){
+
+                   foreach(fetchAll($query) as $i){
+                    ?>
+                    <li>
+                      <a style =" <?php 
+                      if($i['status']=='unread'){ 
+                        echo "font-weight:bold;";
+                         }else{
+                          echo "color: red;";
+                         } ?> " class="dropdown-item" href="view.php?id=<?php echo $i['id'] ?>">
+                        <i><?php echo date('F j, Y, g:i a',strtotime($i['date'])) ?></i> <br/>
+                        <span class="text"> <i class="fa fa-address-book text-red"></i>  
+                          <?php 
+                          if($i['type']=='comment'){
+                            echo "Someone commented on your post.";
+                          }else if($i['type']=='like'){
+                            echo ucfirst($i['name'])." liked your post.";
+                          }
+
+                          ?>
+                        </span>
+                      </a>
+                    </li>
+                    <!-- <div class="dropdown-divider"></div> -->
+                    <?php
+                  } //for
+                }else //if
+                echo "No Records yet.";
+                ?>
+
+              </ul>
+            </div>
+            <!-- /.box-body -->
+
+          </div>
+          <!-- /.box -->
+
+
+
+          <!-- Calendar -->
+          <div class="box box-solid bg-green-gradient">
+            <div class="box-header">
+              <i class="fa fa-calendar"></i>
+
+              <h3 class="box-title">TAKVİM</h3>
+              <!-- tools box -->
+              <div class="pull-right box-tools">
+                <!-- button with a dropdown -->
+                <div class="btn-group">
+
+
+                </div>
+                <button type="button" class="btn btn-success btn-sm" data-widget="collapse"><i class="fa fa-minus"></i>
+                </button>
+                <button type="button" class="btn btn-success btn-sm" data-widget="remove"><i class="fa fa-times"></i>
+                </button>
+              </div>
+              <!-- /. tools -->
+            </div>
+            <!-- /.box-header -->
+            <div class="box-body no-padding">
+              <!--The calendar -->
+              <div id="calendar" style="width: 100%"></div>
+            </div>
+            <!-- /.box-body -->
+            <div class="box-footer text-black">
+              <div class="row">
+                <div class="col-sm-6">
+                  <!-- Progress bars -->
+                  <div class="clearfix">
+                    <span class="pull-left">Login</span>
+                    <small class="pull-right">90%</small>
+                  </div>
+                  <div class="progress xs">
+                    <div class="progress-bar progress-bar-green" style="width: 90%;"></div>
+                  </div>
+
+                  <div class="clearfix">
+                    <span class="pull-left">Personel</span>
+                    <small class="pull-right">70%</small>
+                  </div>
+                  <div class="progress xs">
+                    <div class="progress-bar progress-bar-green" style="width: 70%;"></div>
+                  </div>
+                </div>
+                <!-- /.col -->
+                <div class="col-sm-6">
+                  <div class="clearfix">
+                    <span class="pull-left">Notlar</span>
+                    <small class="pull-right">60%</small>
+                  </div>
+                  <div class="progress xs">
+                    <div class="progress-bar progress-bar-green" style="width: 60%;"></div>
+                  </div>
+
+                  <div class="clearfix">
+                    <span class="pull-left">Öğrenci</span>
+                    <small class="pull-right">40%</small>
+                  </div>
+                  <div class="progress xs">
+                    <div class="progress-bar progress-bar-green" style="width: 40%;"></div>
+                  </div>
+                </div>
+                <!-- /.col -->
+              </div>
+              <!-- /.row -->
+            </div>
+          </div>
+          <!-- /.box -->
+
+        </section>
+
+
+
+        <!-- right col -->
+      </div>
+      <!-- /.row (main row) -->
+
+    </section>
+    <!-- /.content -->
+  </div>
+  <!-- /.content-wrapper -->
 
 
   <!-- Add the sidebar's background. This div must be placed
@@ -290,6 +386,9 @@
    <div class="control-sidebar-bg"></div>
  </div>
  <!-- ./wrapper -->
+
+ <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+ <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
 
  <!-- jQuery 3 -->
  <script src="../bower_components/jquery/dist/jquery.min.js"></script>

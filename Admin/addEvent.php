@@ -15,7 +15,7 @@ if (isset($_POST['title']) && isset($_POST['start']) && isset($_POST['end']) && 
 
 	//personel_FK post edilmesi gerek!!!!!!!!!!!!!!
 	//Şuan default atama yapıldı.
-	$personel_FK = 23;
+	$personel_FK = 2;
 
 	$sql = "INSERT INTO events(title, student_FK, personel_FK, start, end, color) values ('$title','$student_FK','$personel_FK','$start', '$end', '$color')";
 	

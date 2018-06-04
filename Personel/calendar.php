@@ -1,19 +1,33 @@
 <?php
+
+session_start();
+// require_once('../connectDB.php');
 require_once('bdd.php');
+// try{
+//   $req = $conn->prepare($sql);
+//   $req->execute();
+//   $id = $_SESSION['access_id'];
+//   $access_id = $_SESSION['access_id'];
+//   $events = $req->fetchAll();
+// }
+// catch(PDOException $e){
+//   echo "Connection failed: " . $e->getMessage();
 
+// }
 
-$sql = "SELECT id, title, start, end, color FROM events ";
+$personel_id =23;
+$sql = "SELECT id, title, start, end, color FROM events WHERE personel_FK = $personel_id ";
 
 $req = $bdd->prepare($sql);
 $req->execute();
 
 $events = $req->fetchAll();
 
-
+$personel_id =23;
 
 $ogrenciler = '';
 
-$query = "SELECT student_PK,name,surname FROM student GROUP BY name ORDER BY student_PK";
+$query = "SELECT student_PK,name,surname FROM student WHERE personel_FK = $personel_id GROUP BY name ORDER BY student_PK";
 
 $statement = $bdd->prepare($query);
 
@@ -118,6 +132,7 @@ foreach($result as $row)
                           <div class="form-group">
                             <label for="title" class="col-sm-2 control-label">Öğrenci: </label>
                             <div class="col-sm-10">
+                              <?php echo '<input type="text" name="personel_id" id="personel_id" style="display: none;" value = '.$personel_id.'>';  ?>
                               <select name="title" class="form-control action" id="title">
                                 <option disabled="disabled" selected="selected">Öğrencileri Seçiniz...</option>
                                 <?php echo $ogrenciler; ?>
@@ -287,7 +302,7 @@ foreach($result as $row)
         $('#ModalAdd #end').val(moment(end).format('YYYY-MM-DD HH:mm:ss'));
         $('#ModalAdd').modal('show');
       },
-      eventRender: function(event, element) {
+      eventRender: function(event, element) { // etkinlik oluştur.
         element.bind('dblclick', function() {
           $('#ModalEdit #id').val(event.id);
           $('#ModalEdit #title').val(event.title);
@@ -295,12 +310,12 @@ foreach($result as $row)
           $('#ModalEdit').modal('show');
         });
       },
-      eventDrop: function(event, delta, revertFunc) { // si changement de position
+      eventDrop: function(event, delta, revertFunc) { // position değiştiğinde
 
         edit(event);
 
       },
-      eventResize: function(event,dayDelta,minuteDelta,revertFunc) { // si changement de longueur
+      eventResize: function(event,dayDelta,minuteDelta,revertFunc) { // Length değiştiğinde
 
         edit(event);
 

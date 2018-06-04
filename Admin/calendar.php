@@ -1,3 +1,15 @@
+<?php
+require_once('bdd.php');
+
+
+$sql = "SELECT id, title, start, end, color FROM event_admin ";
+
+$req = $bdd->prepare($sql);
+$req->execute();
+
+$events = $req->fetchAll();
+?>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -21,18 +33,13 @@
    folder instead of downloading all of them to reduce the load. -->
    <link rel="stylesheet" href="../dist/css/skins/_all-skins.min.css">
 
-   <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-   <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-  <!--[if lt IE 9]>
-  <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
-  <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-<![endif]-->
 
-<!-- Google Font -->
-<link rel="stylesheet"
-href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
-</head>
-<body class="hold-transition skin-blue sidebar-mini">
+
+   <!-- Google Font -->
+   <link rel="stylesheet"
+   href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
+ </head>
+ <body class="hold-transition skin-blue sidebar-mini">
   <div class="wrapper">
 
     <!-- Left side column. contains the logo and sidebar -->
@@ -42,79 +49,157 @@ href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,30
 
     <!-- Content Wrapper. Contains page content -->
     <div class="content-wrapper">
-
+      <!-- Content Header (Page header) -->
+      <section class="content-header">
+        <h1>
+          <small>
+            <ol class="breadcrumb">
+              <li><a href="#"><i class="fa fa-dashboard"></i> Anasayfa</a></li>
+              <li><a href="#">Öğrenci Bilgileri</a></li>
+              <li class="active">Merve Tunçel</li>
+            </ol>
+          </small>
+        </h1>
+      </section>
 
       <!-- Main content -->
       <section class="content">
         <div class="row">
-          <div class="col-md-3">
-            <div class="box box-solid">
-              <div class="box-header with-border">
-                <h4 class="box-title">DERSLER</h4>
-              </div>
-              <div class="box-body">
-                <!-- the events -->
-                <div id="external-events">
-                  <div class="external-event bg-green">GRUP - MATEMATİK</div>
-                  <div class="external-event bg-yellow">GRUP - OKUMA YAZMA</div>
-                  <div class="external-event bg-aqua">GRUP - ÖĞRENMEYE HAZIRLIK</div>
-                  <div class="external-event bg-light-blue">Merve - Öğrenmeye Hazırlık</div>
-                  <div class="external-event bg-red">Şeyma - Okuma Yazma</div>
-                  <div class="checkbox">
-                    <label for="drop-remove">
-                      <input type="checkbox" id="drop-remove">
-                      SİL
-                    </label>
-                  </div>
-                </div>
-              </div>
-              <!-- /.box-body -->
-            </div>
-            <!-- /. box -->
-            <div class="box box-solid">
-              <div class="box-header with-border">
-                <h3 class="box-title">OLUŞTUR</h3>
-              </div>
-              <div class="box-body">
-                <div class="btn-group" style="width: 100%; margin-bottom: 10px;">
-                  <!--<button type="button" id="color-chooser-btn" class="btn btn-info btn-block dropdown-toggle" data-toggle="dropdown">Color <span class="caret"></span></button>-->
-                  <ul class="fc-color-picker" id="color-chooser">
-                    <li><a class="text-aqua" href="#"><i class="fa fa-square"></i></a></li>
-                    <li><a class="text-blue" href="#"><i class="fa fa-square"></i></a></li>
-                    <li><a class="text-light-blue" href="#"><i class="fa fa-square"></i></a></li>
-                    <li><a class="text-teal" href="#"><i class="fa fa-square"></i></a></li>
-                    <li><a class="text-yellow" href="#"><i class="fa fa-square"></i></a></li>
-                    <li><a class="text-orange" href="#"><i class="fa fa-square"></i></a></li>
-                    <li><a class="text-green" href="#"><i class="fa fa-square"></i></a></li>
-                    <li><a class="text-lime" href="#"><i class="fa fa-square"></i></a></li>
-                    <li><a class="text-red" href="#"><i class="fa fa-square"></i></a></li>
-                    <li><a class="text-purple" href="#"><i class="fa fa-square"></i></a></li>
-                    <li><a class="text-fuchsia" href="#"><i class="fa fa-square"></i></a></li>
-                    <li><a class="text-muted" href="#"><i class="fa fa-square"></i></a></li>
-                    <li><a class="text-navy" href="#"><i class="fa fa-square"></i></a></li>
-                  </ul>
-                </div>
-                <!-- /btn-group -->
-                <div class="input-group">
-                  <input id="new-event" type="text" class="form-control" placeholder="Event Title">
-
-                  <div class="input-group-btn">
-                    <button id="add-new-event" type="button" class="btn btn-primary btn-flat">Ekle</button>
-                  </div>
-                  <!-- /btn-group -->
-                </div>
-                <!-- /input-group -->
-              </div>
-            </div>
-          </div>
-          <!-- /.col -->
-          <div class="col-md-9">
+          <div class="col-md-12">
             <div class="box box-primary">
-              <div class="box-body no-padding">
-                <!-- THE CALENDAR -->
-                <div id="calendar"></div>
+
+              <!-- Page Content -->
+              <div class="container">
+
+                <div class="row">
+                  <div class="col-lg-12 text-center">
+                    <div id="calendar" class="col-centered">
+                    </div>
+                  </div>
+
+                </div>
+                <!-- /.row -->
+
+                <!-- Modal -->
+                <div class="modal fade" id="ModalAdd" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                  <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+
+
+                      <!-- addEvent.php Post edilirken PERSONEL_FK da POST edilmeli !!!!! -->
+
+
+                      <form class="form-horizontal" method="POST" action="addEvent.php">
+                        <!-- <input type="text" name="student_PK" value="" style="display: none;"> -->
+                        <div class="modal-header">
+                          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                          <h4 class="modal-title" id="myModalLabel">Ekle</h4>
+                        </div>
+                        <div class="modal-body">
+
+                          <div class="form-group">
+                            <label for="title" class="col-sm-2 control-label">Etkinlik: </label>
+                            <div class="col-sm-10">
+                              <input type="text" name="title" class="form-control" id="title" placeholder="Title">
+                            </div>
+                          </div>
+                          <div class="form-group">
+                            <label for="color" class="col-sm-2 control-label">Renk: </label>
+                            <div class="col-sm-10">
+                              <select name="color" class="form-control" id="color">
+                                <option value="">Seçiniz...</option>
+                                <option style="color:#0071c5;" value="#0071c5">&#9724; Lacivert</option>
+                                <option style="color:#40E0D0;" value="#40E0D0">&#9724; Turkuaz</option>
+                                <option style="color:#008000;" value="#008000">&#9724; Yeşil</option>             
+                                <option style="color:#FFD700;" value="#FFD700">&#9724; Sarı</option>
+                                <option style="color:#FF8C00;" value="#FF8C00">&#9724; Turuncu</option>
+                                <option style="color:#FF0000;" value="#FF0000">&#9724; Kırmızı</option>
+                                <option style="color:#000;" value="#000">&#9724; Siyah</option>
+                              </select>
+                            </div>
+                          </div>
+                          <div class="form-group">
+                            <label for="start" class="col-sm-3 control-label">Başlangıç Tarihi: </label>
+                            <div class="col-sm-9">
+                              <input type="text" name="start" class="form-control" id="start" readonly>
+                            </div>
+                          </div>
+                          <div class="form-group">
+                            <label for="end" class="col-sm-3 control-label">Bitiş Tarihi: </label>
+                            <div class="col-sm-9">
+                              <input type="text" name="end" class="form-control" id="end" readonly>
+                            </div>
+                          </div>
+
+                        </div>
+                        <div class="modal-footer">
+                          <button type="button" class="btn btn-default" data-dismiss="modal">Kapat</button>
+                          <button type="submit" class="btn btn-primary">Kaydet</button>
+                        </div>
+                      </form>
+                    </div>
+                  </div>
+                </div>
+
+
+
+                <!-- Modal -->
+                <div class="modal fade" id="ModalEdit" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                  <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                      <form class="form-horizontal" method="POST" action="editEventTitle.php">
+                        <div class="modal-header">
+                          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                          <h4 class="modal-title" id="myModalLabel">Güncelle</h4>
+                        </div>
+                        <div class="modal-body">
+
+                          <div class="form-group">
+                            <label for="title" class="col-sm-2 control-label">Etkinlik:</label>
+                            <div class="col-sm-10">
+                              <input type="text" name="title" class="form-control" id="title" placeholder="Title">
+                            </div>
+                          </div>
+                          <div class="form-group">
+                            <label for="color" class="col-sm-2 control-label">Renk: </label>
+                            <div class="col-sm-10">
+                              <select name="color" class="form-control" id="color">
+                                <option value="">Seçiniz...</option>
+                                <option style="color:#0071c5;" value="#0071c5">&#9724; Lacivert</option>
+                                <option style="color:#40E0D0;" value="#40E0D0">&#9724; Turkuaz</option>
+                                <option style="color:#008000;" value="#008000">&#9724; Yeşil</option>             
+                                <option style="color:#FFD700;" value="#FFD700">&#9724; Sarı</option>
+                                <option style="color:#FF8C00;" value="#FF8C00">&#9724; Turuncu</option>
+                                <option style="color:#FF0000;" value="#FF0000">&#9724; Kırmızı</option>
+                                <option style="color:#000;" value="#000">&#9724; Siyah</option>
+
+                              </select>
+                            </div>
+                          </div>
+                          <div class="form-group"> 
+                            <div class="col-sm-offset-2 col-sm-10">
+                              <div class="checkbox">
+                                <label class="text-danger"><input type="checkbox"  name="delete">Sil</label>
+                              </div>
+                            </div>
+                          </div>
+
+                          <input type="hidden" name="id" class="form-control" id="id">
+
+
+                        </div>
+                        <div class="modal-footer">
+                          <button type="button" class="btn btn-default" data-dismiss="modal">Kapat</button>
+                          <button type="submit" class="btn btn-primary">Değişiklikleri Kaydet</button>
+                        </div>
+                      </form>
+                    </div>
+                  </div>
+                </div>
+
               </div>
-              <!-- /.box-body -->
+              <!-- /.container -->
+
             </div>
             <!-- /. box -->
           </div>
@@ -126,7 +211,7 @@ href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,30
     </div>
     <!-- /.content-wrapper -->
 
-<!-- calenderdan aldım !!!!!!!!!!!-->
+    <!-- calenderdan aldım !!!!!!!!!!!-->
 
   <!-- Add the sidebar's background. This div must be placed
    immediately after the control sidebar -->
@@ -152,159 +237,112 @@ href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,30
  <script src="../bower_components/moment/moment.js"></script>
  <script src="../bower_components/fullcalendar/dist/fullcalendar.min.js"></script>
  <!-- Page specific script -->
+
+
  <script>
-  $(function () {
 
-    /* initialize the external events
-    -----------------------------------------------------------------*/
-    function init_events(ele) {
-      ele.each(function () {
+  $(document).ready(function() {
 
-        // create an Event Object (http://arshaw.com/fullcalendar/docs/event_data/Event_Object/)
-        // it doesn't need to have a start or end
-        var eventObject = {
-          title: $.trim($(this).text()) // use the element's text as the event title
+    var date = new Date();
+    var d    = date.getDate();
+    m    = date.getMonth();
+    y    = date.getFullYear();
+
+    $('#calendar').fullCalendar({
+      header: {
+        left: 'prev,next today',
+        center: 'title',
+        right: 'month,agendaWeek,agendaDay'
+        // 'month,basicWeek,basicDay'
+      },
+      defaultDate: new Date(y, m, d),
+      editable: true,
+      eventLimit: true, // allow "more" link when too many events
+      selectable: true,
+      selectHelper: true,
+      select: function(start, end) {
+
+        $('#ModalAdd #start').val(moment(start).format('YYYY-MM-DD HH:mm:ss'));
+        $('#ModalAdd #end').val(moment(end).format('YYYY-MM-DD HH:mm:ss'));
+        $('#ModalAdd').modal('show');
+      },
+      eventRender: function(event, element) {
+        element.bind('dblclick', function() {
+          $('#ModalEdit #id').val(event.id);
+          $('#ModalEdit #title').val(event.title);
+          $('#ModalEdit #color').val(event.color);
+          $('#ModalEdit').modal('show');
+        });
+      },
+      eventDrop: function(event, delta, revertFunc) { // si changement de position
+
+        edit(event);
+
+      },
+      eventResize: function(event,dayDelta,minuteDelta,revertFunc) { // si changement de longueur
+
+        edit(event);
+
+      },
+      events: [
+      <?php foreach($events as $event): 
+
+        $start = explode(" ", $event['start']);
+        $end = explode(" ", $event['end']);
+        if($start[1] == '00:00:00'){
+          $start = $start[0];
+        }else{
+          $start = $event['start'];
         }
+        if($end[1] == '00:00:00'){
+          $end = $end[0];
+        }else{
+          $end = $event['end'];
+        }
+        ?>
+        {
+          id: '<?php echo $event['id']; ?>',
+          title: '<?php echo $event['title']; ?>',
+          start: '<?php echo $start; ?>',
+          end: '<?php echo $end; ?>',
+          color: '<?php echo $event['color']; ?>',
+        },
+      <?php endforeach; ?>
+      ]
+    });
 
-        // store the Event Object in the DOM element so we can get to it later
-        $(this).data('eventObject', eventObject)
+    function edit(event){
+      start = event.start.format('YYYY-MM-DD HH:mm:ss');
+      if(event.end){
+        end = event.end.format('YYYY-MM-DD HH:mm:ss');
+      }else{
+        end = start;
+      }
 
-        // make the event draggable using jQuery UI
-        $(this).draggable({
-          zIndex        : 1070, //?
-          revert        : true, // will cause the event to go back to its
-          revertDuration: 0  //  original position after the drag
-        })
+      id =  event.id;
 
-      })
+      Event = [];
+      Event[0] = id;
+      Event[1] = start;
+      Event[2] = end;
+
+      $.ajax({
+       url: 'editEventDate.php',
+       type: "POST",
+       data: {Event:Event},
+       success: function(rep) {
+        if(rep == 'OK'){
+          alert('Kayıt edildi.');
+        }else{
+          alert('Kaydedilemedi! , Lütfen tekrar deneyin.'); 
+        }
+      }
+    });
     }
 
-    init_events($('#external-events div.external-event'))
+  });
 
-    /* initialize the calendar
-    -----------------------------------------------------------------*/
-    //Date for the calendar events (dummy data)
-    var date = new Date()
-    var d    = date.getDate(),
-    m    = date.getMonth(),
-    y    = date.getFullYear()
-    $('#calendar').fullCalendar({
-      header    : {
-        left  : 'prev,next today',
-        center: 'title',
-        right : 'month,agendaWeek,agendaDay'
-      },
-      buttonText: {
-        today: 'today',
-        month: 'month',
-        week : 'week',
-        day  : 'day'
-      },
-      //Random default events
-      events    : [
-      {
-        title          : 'Şeyma - Okuma Yazma',
-        start          : new Date(y, m, 1),
-          backgroundColor: '#f56954', //red
-          borderColor    : '#f56954' //red
-        },
-        {
-          title          : 'GRUP - OKUMA YAZMA',
-          start          : new Date(y, m, d - 4),
-          end            : new Date(y, m, d - 2),
-          backgroundColor: '#f39c12', //yellow
-          borderColor    : '#f39c12' //yellow
-        },
-        {
-          title          : 'Merve - Öğrenmeye Hazırlık',
-          start          : new Date(y, m, d, 10, 30),
-          allDay         : false,
-          backgroundColor: '#0073b7', //Blue
-          borderColor    : '#0073b7' //Blue
-        },
-        {
-          title          : 'GRUP - ÖĞRENMEYE HAZIRLIK',
-          start          : new Date(y, m, d, 12, 0),
-          end            : new Date(y, m, d, 14, 0),
-          allDay         : false,
-          backgroundColor: '#00c0ef', //Info (aqua)
-          borderColor    : '#00c0ef' //Info (aqua)
-        },
-        {
-          title          : 'GRUP - MATEMATİK',
-          start          : new Date(y, m, d + 1, 19, 0),
-          end            : new Date(y, m, d + 1, 22, 30),
-          allDay         : false,
-          backgroundColor: '#00a65a', //Success (green)
-          borderColor    : '#00a65a' //Success (green)
-        },
-
-        ],
-        editable  : true,
-      droppable : true, // this allows things to be dropped onto the calendar !!!
-      drop      : function (date, allDay) { // this function is called when something is dropped
-
-        // retrieve the dropped element's stored Event Object
-        var originalEventObject = $(this).data('eventObject')
-
-        // we need to copy it, so that multiple events don't have a reference to the same object
-        var copiedEventObject = $.extend({}, originalEventObject)
-
-        // assign it the date that was reported
-        copiedEventObject.start           = date
-        copiedEventObject.allDay          = allDay
-        copiedEventObject.backgroundColor = $(this).css('background-color')
-        copiedEventObject.borderColor     = $(this).css('border-color')
-
-        // render the event on the calendar
-        // the last `true` argument determines if the event "sticks" (http://arshaw.com/fullcalendar/docs/event_rendering/renderEvent/)
-        $('#calendar').fullCalendar('renderEvent', copiedEventObject, true)
-
-        // is the "remove after drop" checkbox checked?
-        if ($('#drop-remove').is(':checked')) {
-          // if so, remove the element from the "Draggable Events" list
-          $(this).remove()
-        }
-
-      }
-    })
-
-    /* ADDING EVENTS */
-    var currColor = '#3c8dbc' //Red by default
-    //Color chooser button
-    var colorChooser = $('#color-chooser-btn')
-    $('#color-chooser > li > a').click(function (e) {
-      e.preventDefault()
-      //Save color
-      currColor = $(this).css('color')
-      //Add color effect to button
-      $('#add-new-event').css({ 'background-color': currColor, 'border-color': currColor })
-    })
-    $('#add-new-event').click(function (e) {
-      e.preventDefault()
-      //Get value and make sure it is not null
-      var val = $('#new-event').val()
-      if (val.length == 0) {
-        return
-      }
-
-      //Create events
-      var event = $('<div />')
-      event.css({
-        'background-color': currColor,
-        'border-color'    : currColor,
-        'color'           : '#fff'
-      }).addClass('external-event')
-      event.html(val)
-      $('#external-events').prepend(event)
-
-      //Add draggable funtionality
-      init_events(event)
-
-      //Remove event from text input
-      $('#new-event').val('')
-    })
-  })
 </script>
+
 </body>
 </html>
