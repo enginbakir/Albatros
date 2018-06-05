@@ -5,7 +5,7 @@ session_start();
 if($_SESSION['access_type'] == "personel"){ 
 
   require_once "../connectDB.php";
-  $id = $_GET['id'];
+  $studentID = $_GET['id'];
   $access_id = $_SESSION['access_id'];
 
   ?>
@@ -92,18 +92,15 @@ if($_SESSION['access_type'] == "personel"){
     </section>
     <!-- Formu yazacağımız ikinci alan -->
     <section class="content" >
-
-
       <!-- FORM -->
-      <form id="BEPForm" method="post" >
-        <input type="text" id="studentID" name="studentID" style="display: none" <?php echo " value = ".$id." " ?>>
-        <!--Content wrapper-->
-        <div class="contentwrapper" > 
 
-          <!--ContentPlaceHolder1_pnlgenel-->
-          <div id="ContentPlaceHolder1_pnlgenel">
-
-           <!-- Start .panel-1 -->
+      <!--Content wrapper-->
+      <div class="contentwrapper" > 
+        <!--ContentPlaceHolder1_pnlgenel-->
+        <div id="ContentPlaceHolder1_pnlgenel">
+         <!-- Start .panel-1 -->
+         <form action="bep_gor.php" method="POST" enctype="multipart/form-data">
+           <input type="text" id="studentID" name="studentID" style="display: none" <?php echo " value = ".$studentID." " ?>>
            <div class="col-lg-16 " >
             <div class="panel panel-default  toggle panelMove panelRefresh" id="supr0">
 
@@ -124,7 +121,7 @@ if($_SESSION['access_type'] == "personel"){
                   <?php 
 
                   try{
-                    $query = $conn->query("SELECT name FROM `student` WHERE `student_PK`='{$id}'");
+                    $query = $conn->query("SELECT name FROM `student` WHERE `student_PK`='{$studentID}'");
                     $row=$query->fetch(PDO::FETCH_ASSOC);
                     echo "value=".$row['name']."";
                   }
@@ -142,7 +139,7 @@ if($_SESSION['access_type'] == "personel"){
                   <input name="studentSurname" type="text" maxlength="64" class="form-control" readonly
                   <?php 
                   try{
-                    $query = $conn->query("SELECT surname FROM `student` WHERE `student_PK`='{$id}'");
+                    $query = $conn->query("SELECT surname FROM `student` WHERE `student_PK`='{$studentID}'");
                     $row=$query->fetch(PDO::FETCH_ASSOC);
                     echo "value=".$row['surname']."";
                   }
@@ -170,7 +167,7 @@ if($_SESSION['access_type'] == "personel"){
                 <?php 
 
                 try{
-                  $query = $conn->query("SELECT tc_no FROM `student` WHERE `student_PK`='{$id}'");
+                  $query = $conn->query("SELECT tc_no FROM `student` WHERE `student_PK`='{$studentID}'");
                   $row=$query->fetch(PDO::FETCH_ASSOC);
                   echo " value=".$row['tc_no']." ";
                 }
@@ -189,7 +186,7 @@ if($_SESSION['access_type'] == "personel"){
                 <?php 
 
                 try{
-                  $query = $conn->query("SELECT class FROM `student` WHERE `student_PK`='{$id}'");
+                  $query = $conn->query("SELECT class FROM `student` WHERE `student_PK`='{$studentID}'");
                   $row=$query->fetch(PDO::FETCH_ASSOC);
                   echo " value=".$row['class']." ";
                 }
@@ -221,7 +218,7 @@ if($_SESSION['access_type'] == "personel"){
                <?php 
 
                try{
-                $query = $conn->query("SELECT registration_date FROM `student` WHERE `student_PK`='{$id}'");
+                $query = $conn->query("SELECT registration_date FROM `student` WHERE `student_PK`='{$studentID}'");
                 $row=$query->fetch(PDO::FETCH_ASSOC);
                 echo " value=".$row['registration_date']." ";
               }
@@ -245,7 +242,7 @@ if($_SESSION['access_type'] == "personel"){
              <?php 
 
              try{
-              $query = $conn->query("SELECT deletion_date FROM `student` WHERE `student_PK`='{$id}'");
+              $query = $conn->query("SELECT deletion_date FROM `student` WHERE `student_PK`='{$studentID}'");
               $row=$query->fetch(PDO::FETCH_ASSOC);
               echo " value=".$row['deletion_date']." ";
             }
@@ -328,7 +325,7 @@ if($_SESSION['access_type'] == "personel"){
        <select id="framework" name="framework[]" multiple class="form-control" >
         <?php
         try{
-          $query = $conn->query("SELECT lessons_PK, lesson_name FROM student S, student_lessons SL, lessons L WHERE S.student_PK ='$id' AND SL.student_FK = S.student_PK AND L.lessons_PK = SL.lesson_FK", PDO::FETCH_ASSOC);
+          $query = $conn->query("SELECT lessons_PK, lesson_name FROM student S, student_lessons SL, lessons L WHERE S.student_PK ='$studentID' AND SL.student_FK = S.student_PK AND L.lessons_PK = SL.lesson_FK", PDO::FETCH_ASSOC);
           if ( $query != false) {
             foreach( $query as $row ){
               echo "<option value=".$row['lessons_PK'].">".$row['lesson_name']."</option>" ;
@@ -355,10 +352,14 @@ if($_SESSION['access_type'] == "personel"){
 <span class="error">* ile işaretli alanların doldurulması zorunludur!</span>
 <span style="color:Red;font-weight:bold;"></span>
 </div>
-<input name="submit" id="bepOluştur" value="BEP Oluştur" class="btn btn-success mr5 mb10">
 
 </div>
 
+
+<button type='submit' id='kaydet' class='btn btn-success mr5 mb10'>Bep Oluştur</button>
+
+</form>
+<!-- FORM END-->
 <!-- BEP Oluştur butonunun altının Başı -->
 <div id="sectionBEP" class="col-lg-16">
  <div id='kazanimlar' style='padding-bottom: 5px'>
@@ -367,23 +368,13 @@ if($_SESSION['access_type'] == "personel"){
 
 </div>
 
-
-
-
-
-
-
-
 <!-- BEP Oluştur butonunun altının sonu -->
 
-
 </div>
 
 </div>
 
 
-</form>
-<!-- FORM END-->
 
 </section><!-- Formu yazacağımız ikinci alan son -->
 
@@ -410,10 +401,12 @@ if($_SESSION['access_type'] == "personel"){
     buttonWidth:'400px'
   });
 
+/*
   $('#BEPForm').on('submit', function(event){
     event.preventDefault();
   });
-
+*/
+  /*
   $('#bepOluştur').on('click', function(){
 
     var degerlendirmeTarihi = document.getElementById('degerlendirmeTarihi').value;
@@ -439,6 +432,7 @@ if($_SESSION['access_type'] == "personel"){
       });
     }
   });
+  */
 
 });
 

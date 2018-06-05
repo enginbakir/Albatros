@@ -1,19 +1,45 @@
 <?php
 
 session_start();
-require_once('../connectDB.php');
-$sql = "SELECT id, title, start, end, color FROM events ";
-try{
-  $req = $conn->prepare($sql);
-  $req->execute();
-  $id = $_SESSION['access_id'];
-  $access_id = $_SESSION['access_id'];
-  $events = $req->fetchAll();
-}
-catch(PDOException $e){
-  echo "Connection failed: " . $e->getMessage();
+// require_once('../connectDB.php');
+require_once '../connectDB.php';
+// try{
+//   $req = $conn->prepare($sql);
+//   $req->execute();
+//   $id = $_SESSION['access_id'];
+//   $access_id = $_SESSION['access_id'];
+//   $events = $req->fetchAll();
+// }
+// catch(PDOException $e){
+//   echo "Connection failed: " . $e->getMessage();
 
+// }
+
+$personel_id =23;
+$sql = "SELECT id, title, start, end, color FROM events WHERE personel_FK = $personel_id ";
+
+$req = $conn->prepare($sql);
+$req->execute();
+
+$events = $req->fetchAll();
+
+$personel_id =23;
+
+$ogrenciler = '';
+
+$query = "SELECT student_PK,name,surname FROM student WHERE personel_FK = $personel_id GROUP BY name ORDER BY student_PK";
+
+$statement = $conn->prepare($query);
+
+$statement->execute();
+
+$result = $statement->fetchAll();
+
+foreach($result as $row)
+{
+  $ogrenciler .= '<option value="'.$row["student_PK"].'-'.$row["name"].' '.$row["surname"].'">'.$row["student_PK"].'-'.$row["name"].' '.$row["surname"].'</option>';
 }
+
 ?>
 
 <!DOCTYPE html>
@@ -38,6 +64,7 @@ catch(PDOException $e){
   <!-- AdminLTE Skins. Choose a skin from the css/skins
    folder instead of downloading all of them to reduce the load. -->
    <link rel="stylesheet" href="../dist/css/skins/_all-skins.min.css">
+
 
 
    <!-- Google Font -->
@@ -89,8 +116,13 @@ catch(PDOException $e){
                 <div class="modal fade" id="ModalAdd" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
                   <div class="modal-dialog" role="document">
                     <div class="modal-content">
-                      <form class="form-horizontal" method="POST" action="addEvent.php">
 
+
+                      <!-- addEvent.php Post edilirken PERSONEL_FK da POST edilmeli !!!!! -->
+
+
+                      <form class="form-horizontal" method="POST" action="addEvent.php">
+                        <!-- <input type="text" name="student_PK" value="" style="display: none;"> -->
                         <div class="modal-header">
                           <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                           <h4 class="modal-title" id="myModalLabel">Ekle</h4>
@@ -100,7 +132,11 @@ catch(PDOException $e){
                           <div class="form-group">
                             <label for="title" class="col-sm-2 control-label">Öğrenci: </label>
                             <div class="col-sm-10">
-                              <input type="text" name="title" class="form-control" id="title" placeholder="Adı, Soyadı">
+                              <?php echo '<input type="text" name="personel_id" id="personel_id" style="display: none;" value = '.$personel_id.'>';  ?>
+                              <select name="title" class="form-control action" id="title">
+                                <option disabled="disabled" selected="selected">Öğrencileri Seçiniz...</option>
+                                <?php echo $ogrenciler; ?>
+                              </select>
                             </div>
                           </div>
                           <div class="form-group">
@@ -115,19 +151,18 @@ catch(PDOException $e){
                                 <option style="color:#FF8C00;" value="#FF8C00">&#9724; Turuncu</option>
                                 <option style="color:#FF0000;" value="#FF0000">&#9724; Kırmızı</option>
                                 <option style="color:#000;" value="#000">&#9724; Siyah</option>
-
                               </select>
                             </div>
                           </div>
                           <div class="form-group">
-                            <label for="start" class="col-sm-2 control-label">Başlangıç Tarihi: </label>
-                            <div class="col-sm-10">
+                            <label for="start" class="col-sm-3 control-label">Başlangıç Tarihi: </label>
+                            <div class="col-sm-9">
                               <input type="text" name="start" class="form-control" id="start" readonly>
                             </div>
                           </div>
                           <div class="form-group">
-                            <label for="end" class="col-sm-2 control-label">Bitiş Tarihi: </label>
-                            <div class="col-sm-10">
+                            <label for="end" class="col-sm-3 control-label">Bitiş Tarihi: </label>
+                            <div class="col-sm-9">
                               <input type="text" name="end" class="form-control" id="end" readonly>
                             </div>
                           </div>
@@ -173,7 +208,6 @@ catch(PDOException $e){
                                 <option style="color:#FF8C00;" value="#FF8C00">&#9724; Turuncu</option>
                                 <option style="color:#FF0000;" value="#FF0000">&#9724; Kırmızı</option>
                                 <option style="color:#000;" value="#000">&#9724; Siyah</option>
-
                               </select>
                             </div>
                           </div>
@@ -267,7 +301,7 @@ catch(PDOException $e){
         $('#ModalAdd #end').val(moment(end).format('YYYY-MM-DD HH:mm:ss'));
         $('#ModalAdd').modal('show');
       },
-      eventRender: function(event, element) {
+      eventRender: function(event, element) { // etkinlik oluştur.
         element.bind('dblclick', function() {
           $('#ModalEdit #id').val(event.id);
           $('#ModalEdit #title').val(event.title);
@@ -275,39 +309,39 @@ catch(PDOException $e){
           $('#ModalEdit').modal('show');
         });
       },
-      eventDrop: function(event, delta, revertFunc) { // si changement de position
+      eventDrop: function(event, delta, revertFunc) { // position değiştiğinde
 
         edit(event);
 
       },
-      eventResize: function(event,dayDelta,minuteDelta,revertFunc) { // si changement de longueur
+      eventResize: function(event,dayDelta,minuteDelta,revertFunc) { // Length değiştiğinde
 
         edit(event);
 
       },
       events: [
       <?php foreach($events as $event): 
-      
-      $start = explode(" ", $event['start']);
-      $end = explode(" ", $event['end']);
-      if($start[1] == '00:00:00'){
-        $start = $start[0];
-      }else{
-        $start = $event['start'];
-      }
-      if($end[1] == '00:00:00'){
-        $end = $end[0];
-      }else{
-        $end = $event['end'];
-      }
-      ?>
-      {
-        id: '<?php echo $event['id']; ?>',
-        title: '<?php echo $event['title']; ?>',
-        start: '<?php echo $start; ?>',
-        end: '<?php echo $end; ?>',
-        color: '<?php echo $event['color']; ?>',
-      },
+
+        $start = explode(" ", $event['start']);
+        $end = explode(" ", $event['end']);
+        if($start[1] == '00:00:00'){
+          $start = $start[0];
+        }else{
+          $start = $event['start'];
+        }
+        if($end[1] == '00:00:00'){
+          $end = $end[0];
+        }else{
+          $end = $event['end'];
+        }
+        ?>
+        {
+          id: '<?php echo $event['id']; ?>',
+          title: '<?php echo $event['title']; ?>',
+          start: '<?php echo $start; ?>',
+          end: '<?php echo $end; ?>',
+          color: '<?php echo $event['color']; ?>',
+        },
       <?php endforeach; ?>
       ]
     });

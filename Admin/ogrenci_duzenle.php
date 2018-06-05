@@ -174,12 +174,12 @@ if($_SESSION['access_type'] == "admin"){
 														echo '<select name="gender" id="Cinsiyet" class="fancy-select form-control fancified" >';
 
 														if($row['gender_FK'] == "1"){
-															echo '<option value = "KIZ">KIZ</option>';
-															echo '<option value = "ERKEK">ERKEK</option>';
+															echo '<option value = "1">KIZ</option>';
+															echo '<option value = "2">ERKEK</option>';
 														}
 														else{
-															echo '<option value = "ERKEK">ERKEK</option>';
-															echo '<option value = "KIZ">KIZ</option>';
+															echo '<option value = "2">ERKEK</option>';
+															echo '<option value = "1">KIZ</option>';
 														}
 
 														echo '</select>';

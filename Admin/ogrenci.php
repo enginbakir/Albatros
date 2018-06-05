@@ -248,7 +248,7 @@ if($_SESSION['access_type'] == "admin"){
 														<div class="box box-primary">
 															<div class="box-body box-profile">
 
-																<img id = "ogrenciPhoto" class="profile-user-img img-responsive img-circle" src="../dist/img/avatar5.png" alt="User profile picture">
+																<img id = "ogrenciPhoto" class="profile-user-img img-responsive img-circle" src="" alt="User profile picture">
 
 																<h3 class="profile-username text-center">Engin Bakır</h3>
 																<ul class="list-group list-group-unbordered">

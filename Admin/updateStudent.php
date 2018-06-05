@@ -105,7 +105,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
 
 // Check if image file is a actual image or fake image
 
+	$gender = $_POST['gender'];
 	if(strlen($target_file) < 11){
+		if($gender == 1){
+			$target_file = "../dist/img/avatar2.png";
+		}
+		else{
+			$target_file = "../dist/img/avatar5.png";
+		}
+
+		echo $target_file."<br>".$gender."<br>";
 	}
 	else{
 		if(isset($_POST["fileToUpload"])) {
@@ -143,12 +152,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
 	}
 //// FOTOĞRAF KONTROLÜ BURADAN YUKARIYA /////
 
-	if(!empty($_POST["gender"])){
-		if($_POST["gender"] == "Kız")
-			$gender = 1;
-		else
-			$gender = 2;
-	}
 	if(!empty($_POST["ogretmen"])){
 		$personel_FK = $_POST["ogretmen"];
 		$_SESSION["personelERR"] = $personel_FK;
@@ -267,14 +270,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
 		if(!empty($_POST["Aciklama"]))
 			$aciklama = $_POST["Aciklama"];
 
-
-
 /// VELİ KONTROLLERİ BURADAN YUKARIYA ///
 
-
-
 		if($bool){
-			echo "bool is true<br>";
+		
 			runStudentQuery();
 		}
 		else{
@@ -285,7 +284,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
 /// END OF REQUEST IF CODE BLOCK  ///
 	}
 	else{
-	//header("Location: ogrenci_duzenle.php");
+	header("Location: ogrenci_duzenle.php");
 	}
 
 	function runStudentQuery(){

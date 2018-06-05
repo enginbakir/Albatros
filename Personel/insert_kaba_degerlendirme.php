@@ -1,13 +1,10 @@
 <?php 
 
-
 session_start();
 
 $studentID = $_POST['studentID'];
 $dersler_id = $_POST['framework'];
 $komisyon_id = $_POST['framework1'];
-
-
 $tarih = $_POST['degerlendirmeTarihi'];
 
 try {
@@ -78,13 +75,37 @@ try {
 	}
 
 
-	$conn -> commit();
+	if($conn -> commit()){
+		//	writePDF($_POST['framework'],$conn,$studentID);
+	}
+
 	$_SESSION['successErr'] = "Ekleme Başarılı";
 	header("location: ../Personel/kaba_degerlendirme.php?id=".$studentID);
 } catch (PDOException $e) {
 	$_SESSION['successErr'] = $e->getMessage();
 	header("location: ../Personel/kaba_degerlendirme.php?id=".$studentID);
 	$conn -> rollBack();
+}
+function writePDF($dersler,$conn,$studentID){
+
+	try {
+		require_once '../PDF/fpdf.php';
+		require_once 'kaba_kaydet.php';
+		$pdf = new FPDF();
+		pdfHeader($pdf);
+		writeStudentInfo($pdf,$conn,$studentID);
+		writeKazanimlarHeader($pdf);
+		foreach ($dersler as $key => $value) {
+			# code...
+			writeKazanimlar($pdf,$conn,$value,$studentID);
+		}
+		
+		$filename = iconv('utf-8','ISO-8859-9', "../Kaba/KabaDeğerlendirme_".$studentID.".pdf");
+		$pdf->Output('F',$filename);
+
+	} catch (Exception $e) {
+		echo $e->getMessage();
+	}
 }
 
 $conn = null;

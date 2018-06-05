@@ -181,8 +181,8 @@ if($_SESSION['access_type'] == "admin"){
                             <div class="col-md-3">    
                               <div class="fancy-select">
                                 <select name="gender" id="Cinsiyet" class="fancy-select form-control fancified" >
-                                  <option value="Erkek">Erkek</option>
-                                  <option value="Kız">Kız</option> 
+                                  <option value="2">Erkek</option>
+                                  <option value="1">Kız</option> 
                                 </select>
                               </div> 
                             </div>

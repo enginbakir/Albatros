@@ -109,9 +109,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
 	$fileErrors = array();
 
 // Check if image file is a actual image or fake image
+	$gender = $_POST['gender'];
+	if(strlen($target_file) < 11){
+		if($gender == 1){
+			$target_file = "../dist/img/avatar2.png";
+		}
+		else{
+			$target_file = "../dist/img/avatar5.png";
+		}
 
-	if(strlen($target_file) < 11)
-		$target_file = "../images/avatar5.png";
+		echo $target_file."<br>".$gender."<br>";
+	}
 	else{
 		if(isset($_POST["fileToUpload"])) {
 			$check = getimagesize($_FILES["fileToUpload"]["tmp_name"]);
@@ -149,14 +157,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
 	}
 //// FOTOĞRAF KONTROLÜ BURADAN YUKARIYA /////
 
-
-
-	if(!empty($_POST["gender"])){
-		if($_POST["gender"] == "Kız")
-			$gender = 1;
-		else
-			$gender = 2;
-	}
 	if(!empty($_POST["ogretmen"])){
 		$personel_FK = $_POST["ogretmen"];
 		$_SESSION["personelERR"] = $personel_FK;
@@ -273,6 +273,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
 
 
 		if($bool){
+
 			runStudentQuery();
 		}
 		else{
@@ -300,127 +301,124 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
 		global $class,$donemBitisTarihi,$donemBaslangicTarihi,$rapor_no,$studentSurname,$studentName,$TCNumber,$currentDate,$rehberlikMerkezi,$gender,$birthday,$target_file,$personel_FK;
 		global $studentLastID;
 
-	if(strlen($target_file) < 11)
-		$target_file = "../images/avatar5.png";
-	echo $target_file;
-	
-	$sqlStudentQuery = "INSERT INTO `student`(`tc_no`, `name`, `surname`, `class`, `rapor_no`, `birthday`, `photo`, `registration_date`, `rehberlik_merkezi`,`term_start_date`, `term_finish_date`,`status`,`gender_FK`, `personel_FK`) VALUES  
-	('$TCNumber','$studentName','$studentSurname','$class','$rapor_no','$birthday','$target_file','$currentDate','$rehberlikMerkezi','$donemBaslangicTarihi','$donemBitisTarihi','1','$gender','$personel_FK')";
 
-	try{
-		$retval = $conn->query($sqlStudentQuery);
-		$studentLastID = $conn -> lastInsertId();	
+		$sqlStudentQuery = "INSERT INTO `student`(`tc_no`, `name`, `surname`, `class`, `rapor_no`, `birthday`, `photo`, `registration_date`, `rehberlik_merkezi`,`term_start_date`, `term_finish_date`,`status`,`gender_FK`, `personel_FK`) VALUES  
+		('$TCNumber','$studentName','$studentSurname','$class','$rapor_no','$birthday','$target_file','$currentDate','$rehberlikMerkezi','$donemBaslangicTarihi','$donemBitisTarihi','1','$gender','$personel_FK')";
 
-		if($retval === false){
-			$_SESSION["errorMessage"] = "Student Bilgilerini Kontrol Ediniz!!!<br> Ekleme Hatası: <br>";
-			header("Location: ogrenci_ekle.php");
-			
-		}
-		else{	
-			if($studentLastID > 0){
-				foreach ($educationalDiagnosis as $key ) {
-					$value = (int) $key;
-					$sql = "INSERT INTO `student_diagnosis`(`student_FK`, `diagnosis_FK`) VALUES (:student_FK,:diagnosis_FK)";
-					$stmt = $conn-> prepare($sql);
-					$stmt -> bindParam(':student_FK',$studentLastID);
-					$stmt -> bindParam(':diagnosis_FK',$value);
-					$stmt -> execute();
-				}
-				runParentQuery();
-			}	
-			else{
-				unlink($target_file);
-				$_SESSION["errorMessage"] = "Student Bilgilerini Kontrol Ediniz!!! last id awd  ";
+		try{
+			$retval = $conn->query($sqlStudentQuery);
+			$studentLastID = $conn -> lastInsertId();	
+
+			if($retval === false){
+				$_SESSION["errorMessage"] = "Student Bilgilerini Kontrol Ediniz!!!<br> Ekleme Hatası: <br>";
 				header("Location: ogrenci_ekle.php");
-				
+
+			}
+			else{	
+				if($studentLastID > 0){
+					foreach ($educationalDiagnosis as $key ) {
+						$value = (int) $key;
+						$sql = "INSERT INTO `student_diagnosis`(`student_FK`, `diagnosis_FK`) VALUES (:student_FK,:diagnosis_FK)";
+						$stmt = $conn-> prepare($sql);
+						$stmt -> bindParam(':student_FK',$studentLastID);
+						$stmt -> bindParam(':diagnosis_FK',$value);
+						$stmt -> execute();
+					}
+					runParentQuery();
+				}	
+				else{
+					unlink($target_file);
+					$_SESSION["errorMessage"] = "Student Bilgilerini Kontrol Ediniz!!! last id awd  ";
+					header("Location: ogrenci_ekle.php");
+
+				}
 			}
 		}
-	}
-	catch(Exception $e) { 
-		$_SESSION["errorMessage"] = "Student Bilgilerini Kontrol Ediniz!!!<br> Error: <br>".$e->getMessage();
-		header("Location: ogrenci_ekle.php"); 
-		
-	}
-}
+		catch(Exception $e) { 
+			$_SESSION["errorMessage"] = "Student Bilgilerini Kontrol Ediniz!!!<br> Error: <br>".$e->getMessage();
+			header("Location: ogrenci_ekle.php"); 
 
-function runParentQuery(){
-	global $parentLastID;
-	global $conn,$parentCepTel,$parentSabitTel,$parentTCNumber,$parentName,$parentSurname,$parentAdress,$parentIsAdress,$aciklama,$parentEmailAdress,$proximity;
-	global $studentLastID;
-	global $bool;
-
-	$sqlParentQuery = "INSERT INTO `parent`(`tel_no`, `sabit_tel`, `tc_no`, `name`, `surname`, `adress`, `work_adress`, `description`, `email_adress`, `degree_of_proximity_FK`, `student_FK`) VALUES ('$parentCepTel','$parentSabitTel','$parentTCNumber','$parentName','$parentSurname','$parentAdress','$parentIsAdress','$aciklama','$parentEmailAdress','$proximity','$studentLastID')";
-
-
-	try{
-		$retval = $conn->exec($sqlParentQuery);
-
-	}catch(Exception $e) { 
-		deleteQueries();
-		$_SESSION["errorMessage"] = "Veli Bilgilerini Kontrol Ediniz!!!<br> Error: <br>".$e->getMessage();
-		header("Location: ogrenci_ekle.php"); 
-		
-	}
-	if($retval === false){
-		deleteQueries();
-		$_SESSION["errorMessage"] = "Veli Bilgilerini Kontrol Ediniz!!!";
-		header("Location: ogrenci_ekle.php"); 
-		
-	}
-	else{
-		$_SESSION["errorMessage"] = "Ekleme Başarıyla Tamamlandı!!!";
-		header("Location: ogrenci_ekle.php"); 
-		
+		}
 	}
 
+	function runParentQuery(){
+		global $parentLastID;
+		global $conn,$parentCepTel,$parentSabitTel,$parentTCNumber,$parentName,$parentSurname,$parentAdress,$parentIsAdress,$aciklama,$parentEmailAdress,$proximity;
+		global $studentLastID;
+		global $bool;
 
-}
-function deleteQueries(){
-	global $target_file;
-	global $studentLastID;
-	global $conn;
-	$sqlDeleteStudentQuery = "DELETE from student where student_PK='$studentLastID'";
-	$sqlDeleteDiagnosisQuery = "DELETE FROM `student_diagnosis` WHERE student_FK ='$studentLastID'";
+		$sqlParentQuery = "INSERT INTO `parent`(`tel_no`, `sabit_tel`, `tc_no`, `name`, `surname`, `adress`, `work_adress`, `description`, `email_adress`, `degree_of_proximity_FK`, `student_FK`) VALUES ('$parentCepTel','$parentSabitTel','$parentTCNumber','$parentName','$parentSurname','$parentAdress','$parentIsAdress','$aciklama','$parentEmailAdress','$proximity','$studentLastID')";
 
-	try{
-		$retval = $conn->exec($sqlDeleteStudentQuery);
-		$retval = $conn->exec($sqlDeleteDiagnosisQuery);
-		unlink($target_file);
-		$_SESSION["errorMessage"] = "Veri Tabanı Hatası !!";
-		header("Location: ogrenci_ekle.php");
-		
-	}catch(Exception $e) { 
-		$_SESSION["errorMessage"] = "Veri Tabanı Hatası !!".$e->getMessage();
-		header("Location: ogrenci_ekle.php"); 
-		
+
+		try{
+			$retval = $conn->exec($sqlParentQuery);
+
+		}catch(Exception $e) { 
+			deleteQueries();
+			$_SESSION["errorMessage"] = "Veli Bilgilerini Kontrol Ediniz!!!<br> Error: <br>".$e->getMessage();
+			header("Location: ogrenci_ekle.php"); 
+
+		}
+		if($retval === false){
+			deleteQueries();
+			$_SESSION["errorMessage"] = "Veli Bilgilerini Kontrol Ediniz!!!";
+			header("Location: ogrenci_ekle.php"); 
+
+		}
+		else{
+			$_SESSION["errorMessage"] = "Ekleme Başarıyla Tamamlandı!!!";
+			header("Location: ogrenci_ekle.php"); 
+
+		}
+
+
 	}
-}
+	function deleteQueries(){
+		global $target_file;
+		global $studentLastID;
+		global $conn;
+		$sqlDeleteStudentQuery = "DELETE from student where student_PK='$studentLastID'";
+		$sqlDeleteDiagnosisQuery = "DELETE FROM `student_diagnosis` WHERE student_FK ='$studentLastID'";
+
+		try{
+			$retval = $conn->exec($sqlDeleteStudentQuery);
+			$retval = $conn->exec($sqlDeleteDiagnosisQuery);
+			unlink($target_file);
+			$_SESSION["errorMessage"] = "Veri Tabanı Hatası !!";
+			header("Location: ogrenci_ekle.php");
+
+		}catch(Exception $e) { 
+			$_SESSION["errorMessage"] = "Veri Tabanı Hatası !!".$e->getMessage();
+			header("Location: ogrenci_ekle.php"); 
+
+		}
+	}
 
 
-function test_input($data) {
-	$data = trim($data);
-	$data = stripslashes($data);
-	$data = htmlspecialchars($data);
-	return $data;
-}
+	function test_input($data) {
+		$data = trim($data);
+		$data = stripslashes($data);
+		$data = htmlspecialchars($data);
+		return $data;
+	}
 
-function isTcKimlik($tc){  
-	if(strlen($tc) < 11){ return false; }  
-	if($tc[0] == '0'){ return false; }  
-	$plus = ($tc[0] + $tc[2] + $tc[4] + $tc[6] + $tc[8]) * 7;  
-	$minus = $plus - ($tc[1] + $tc[3] + $tc[5] + $tc[7]);  
-	$mod = $minus % 10;  
-	if($mod != $tc[9]){ return false; }  
-	$all = '';  
-	for($i = 0 ; $i < 10 ; $i++){ $all += $tc[$i]; }  
-		if($all % 10 != $tc[10]){ return false; }  
+	function isTcKimlik($tc){  
+		if(strlen($tc) < 11){ return false; }  
+		if($tc[0] == '0'){ return false; }  
+		$plus = ($tc[0] + $tc[2] + $tc[4] + $tc[6] + $tc[8]) * 7;  
+		$minus = $plus - ($tc[1] + $tc[3] + $tc[5] + $tc[7]);  
+		$mod = $minus % 10;  
+		if($mod != $tc[9]){ return false; }  
+		$all = '';  
+		for($i = 0 ; $i < 10 ; $i++){ $all += $tc[$i]; }  
+			if($all % 10 != $tc[10]){ return false; }  
 
-	return true;  
-}  
+		return true;  
+	}  
 
-if(ob_end_flush()){
-	echo "ob end flush is true";
-}
-?>
+	if(ob_end_flush()){
+		echo "ob end flush is true";
+	}
+	?>
 
 <!-- PHP CHECKING INPUTS -->

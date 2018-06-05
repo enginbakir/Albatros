@@ -1,6 +1,6 @@
 <?php
 
-require_once('bdd.php');
+require_once '../connectDB.php';
 
 if (isset($_POST['Event'][0]) && isset($_POST['Event'][1]) && isset($_POST['Event'][2])){
 	
@@ -12,9 +12,9 @@ if (isset($_POST['Event'][0]) && isset($_POST['Event'][1]) && isset($_POST['Even
 	$sql = "UPDATE events SET  start = '$start', end = '$end' WHERE id = $id ";
 
 	
-	$query = $bdd->prepare( $sql );
+	$query = $conn->prepare( $sql );
 	if ($query == false) {
-	 print_r($bdd->errorInfo());
+	 print_r($conn->errorInfo());
 	 die ('Erreur prepare');
 	}
 	$sth = $query->execute();

@@ -33,20 +33,45 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
 		$row = $stmt -> fetch(PDO::FETCH_ASSOC);
 		if($row > 0){
 
-			if($user_type == "admin"){
+		if($user_type == "admin"){
+				
+				$query = $conn->prepare("INSERT INTO admin_log SELECT null, CURRENT_TIMESTAMP , :logoutime, :userAdminPK FROM admin_user  WHERE userAdmin_PK=:userAdminPK");
+				$insert = $query->execute(array(
+					"logoutime" => "0000.00.00 00:00:00",
+					"userAdminPK"=>$row['userAdmin_PK'],
+				));
+				$q = $conn->query("SELECT AdminLog_PK FROM admin_log L, admin_user U WHERE L.userAdmin_FK = U.userAdmin_PK AND U.userAdmin_PK =".$row['userAdmin_PK']." ORDER BY AdminLog_PK  DESC LIMIT 1")->fetch(PDO::FETCH_ASSOC);
+
+				$_SESSION['adminLogPK'] = $q['AdminLog_PK'];
 				$_SESSION['access_type'] = $user_type;
 				$_SESSION['access_id'] = $row['userAdmin_PK'];
 				header("location: ../Admin/admin.php");
 			}
 			else if($user_type == "personel"){
+				$query = $conn->prepare("INSERT INTO personel_log SELECT null, CURRENT_TIMESTAMP , :logoutime, :userPersonelPK FROM personel_user  WHERE userPersonel_PK=:userPersonelPK");
+				$insert = $query->execute(array(
+					"logoutime" => "0000.00.00 00:00:00",
+					"userPersonelPK"=>$row['userPersonel_PK'],
+				));
+				$q = $conn->query("SELECT PersonelLog_PK FROM personel_log L, personel_user U WHERE L.userPersonel_FK=U.userPersonel_PK AND U.userPersonel_PK =".$row['userPersonel_PK']." ORDER BY PersonelLog_PK DESC LIMIT 1")->fetch(PDO::FETCH_ASSOC);
+
+				$_SESSION['personelLogPK'] = $q['PersonelLog_PK'];
 				$_SESSION['access_type'] = $user_type;
 				$_SESSION['access_id'] = $row['userPersonel_PK'];
 				header("location: ../Personel/personel_main_page.php");
 			}
-			else if($user_type == "parent"){
+			else if($user_type == "parent"){ 
+				$query = $conn->prepare("INSERT INTO parent_log SELECT null, CURRENT_TIMESTAMP , :logoutime, :userParentPK FROM parent_user  WHERE userParent_PK=:userParentPK");
+				$insert = $query->execute(array(
+					"logoutime" => "0000.00.00 00:00:00",
+					"userParentPK"=>$row['userParent_PK'],
+				));
+				$q = $conn->query("SELECT ParentLog_PK FROM parent_log L, parent_user U WHERE L.userParent_FK=U.userParent_PK AND U.userParent_PK =".$row['userParent_PK']." ORDER BY ParentLog_PK DESC LIMIT 1")->fetch(PDO::FETCH_ASSOC);
+
+				$_SESSION['parentLogPK'] = $q['ParentLog_PK'];
 				$_SESSION['access_type'] = $user_type;
 				$_SESSION['access_id'] = $row['userParent_PK'];
-				header("location: ../Parent/parent.php");
+				header("location: ../Parent/parent_main_page.php");
 			}
 			else {
 				$_SESSION['login_error'] = "Kullanıcı Türü Seçiniz!!!";

@@ -66,7 +66,7 @@ try {
 
 		foreach($_POST['dersler_id'] as $row){
 
-			$sql = "SELECT * FROM kazanimlar_ders_ogrenci KDO, lessons L WHERE KDO.student_FK = 15 AND L.lessons_PK = KDO.lessons_FK AND KDO.lessons_FK = '$row'";
+			$sql = "SELECT * FROM kazanimlar_ders_ogrenci KDO, lessons L WHERE KDO.student_FK = '$studentID' AND L.lessons_PK = KDO.lessons_FK AND KDO.lessons_FK = '$row'";
 			$retval = $conn -> query($sql,PDO::FETCH_ASSOC)->fetch();
 			if($row == 4){
 				$Lessons = "Öğrenmeye Hazırlık";
@@ -94,25 +94,31 @@ try {
 			<tr>
 			";
 			if($row == 5){ /// matematik
-				//$sql = "SELECT KD.durum, KD.kazanimlar_FK, KD.kazanimlar_ders_ogrenci_FK, KM.kazanimlar FROM kazanimlar_degerlendirme KD, kazanimlar_matematik KM WHERE KD.kazanimlar_ders_ogrenci_FK = ".$retval['kazanimlar_ders_ogrenci_PK']." AND KD.durum = 0 AND KM.kazanimlar_PK = KD.kazanimlar_FK;";
-				
+				$k = 1;
+				$counter = "123";
 				$sql = "SELECT KD.durum, KD.kazanimlar_FK, KD.kazanimlar_ders_ogrenci_FK, KM.kazanimlar,AM.bildirim FROM altkazanimlar_matematik AM, kazanimlar_degerlendirme KD,kazanimlar_matematik KM WHERE KD.kazanimlar_ders_ogrenci_FK = ".$retval['kazanimlar_ders_ogrenci_PK']." AND KD.durum = 0 AND KM.kazanimlar_PK = KD.kazanimlar_FK AND KD.kazanimlar_FK = AM.kazanimlar_FK AND AM.lesson_FK = '$row'";
 				$result = $conn -> query($sql,PDO::FETCH_ASSOC);
 				foreach ($result as $key => $value) {
-					if($counter != $value['kazanimlar'])
-						$i = 1;
-					$counter = $value['kazanimlar'];
+					if($counter != $value['kazanimlar']){
+						$counter = $value['kazanimlar'];
+						$k=1;
+					}
+					else{
+						$counter = "";
+					}
+					
+
 					$output .= "
-					<td >".$value['kazanimlar']."</td>
-					<td >".$i.". ".$value['bildirim']."</td>
+					<td >".$counter."</td>
+					<td >".$k.". ".$value['bildirim']."</td>
 					<td ></td>
 					<td ></td>
 					<td ></td>
 					<td ></td>
 					</tr>
 					";
-					$i++;
-
+					$k++;
+					$counter = $value['kazanimlar'];
 				}
 
 			}
@@ -121,23 +127,29 @@ try {
 
 
 			if($row == 3){ // OKUMA YAZMA / TÜRKÇE
-
+				$k = 1;
+				$counter = "123";
 				$sql = "SELECT KD.durum, KD.kazanimlar_FK, KD.kazanimlar_ders_ogrenci_FK, KM.kazanimlar,AOY.bildirim FROM altkazanimlar_okuma_yazma AOY,kazanimlar_degerlendirme KD,kazanimlar_okuma_yazma KM WHERE KD.kazanimlar_ders_ogrenci_FK = ".$retval['kazanimlar_ders_ogrenci_PK']." AND KD.durum = 0 AND KM.kazanimlar_okuma_yazma_PK = KD.kazanimlar_FK AND KD.kazanimlar_FK = AOY.kazanimlar_FK AND AOY.lesson_FK = '$row'";
 				$result = $conn -> query($sql,PDO::FETCH_ASSOC);
 				foreach ($result as $key => $value) {
-					if($counter != $value['kazanimlar'])
-						$i = 1;
-					$counter = $value['kazanimlar'];
+					if($counter != $value['kazanimlar']){
+						$counter = $value['kazanimlar'];
+						$k=1;
+					}
+					else{
+						$counter = "";
+					}
 					$output .= "
-					<td>".$value['kazanimlar']."</td>
-					<td>".$i.". ".$value['bildirim']."</td>
+					<td>".$counter."</td>
+					<td>".$k.". ".$value['bildirim']."</td>
 					<td></td>
 					<td></td>
 					<td></td>
 					<td></td>
 					</tr>
 					";
-					$i++;
+					$k++;
+					$counter = $value['kazanimlar'];
 				}
 				
 			}
@@ -157,13 +169,6 @@ try {
 	echo $e->getMessage();
 	
 }
-
-
-
-
-
-
-
 
 $output .="
 
