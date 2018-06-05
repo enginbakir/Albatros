@@ -15,7 +15,7 @@ require_once('bdd.php');
 
 // }
 
-$personel_id =23;
+$personel_id = 23;
 $sql = "SELECT id, title, start, end, color FROM events WHERE personel_FK = $personel_id ";
 
 $req = $bdd->prepare($sql);

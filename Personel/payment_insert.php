@@ -1,8 +1,4 @@
 <?php
-//insert.php
- // echo $_POST['aylar']."<br>";
- // echo $_POST['dates'][0]." boşluk ".$_POST['dates'][1];
- // echo "<br>".$_POST['odeme_bilgisi'];
 
 $personel_id = 23;
 // $personel_id = $_POST['personel_id'];
@@ -41,12 +37,6 @@ try {
 }
 $connect = null;
 exit();
-
-
-$parts = $_POST['hidden_date_odeme'].split(',');
-for ($i = 0; $i <= sizeof($parts) ; $i++) {
-    echo $parts[$i];
-} 
 
 
 ?>

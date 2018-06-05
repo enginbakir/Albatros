@@ -452,6 +452,7 @@ require_once "../connectDB.php";
                         				var action = $(this).attr("id");
                         				var query = $(this).val();
                         				var student_id = $('#student_id').val();
+                        				var student_id = $('#student_id').val();
                         				var result = '';
                         				if(action == 'aylar')
                         				{
@@ -507,6 +508,7 @@ require_once "../connectDB.php";
                         							$('#date_odeme').data('plugin_lwMultiSelect').removeAll();
                         							$('#insert_data')[0].reset();
                         							alert('Data Inserted');
+                        							location.reload();
                         						}
                         					}
                         				});
