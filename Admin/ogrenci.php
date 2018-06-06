@@ -3,7 +3,7 @@ session_start();
 ob_start();
 if($_SESSION['access_type'] == "admin"){ 
 	require_once "../connectDB.php";
-          $access_id = $_SESSION['access_id'];
+	$access_id = $_SESSION['access_id'];
 
 	?>
 	<!DOCTYPE html>
@@ -218,6 +218,8 @@ if($_SESSION['access_type'] == "admin"){
 													<li><a data-toggle="tab" href="#menu1">Veli Bilgileri</a></li>
 													<li><a data-toggle="tab" href="#menu2">Öğrenci Bilgileri</a></li>
 													<li><a data-toggle="tab" href="#menu3">Dersler</a></li>
+													<li><a data-toggle="tab" href="#menu4">Giriş Bilgileri</a></li>
+
 
 												</ul>
 
@@ -286,7 +288,34 @@ if($_SESSION['access_type'] == "admin"){
 														<input id="dersSil" value="Ders Sil" class="col-md-3 btn btn-primary">
 														
 													</div>
-													
+													<div id="menu4" class="tab-pane fade">
+														<div class="col-md-12">
+															<div class="box-body box-profile">
+																<div class="row">
+																	<div class="form-group">
+																		<div class="row">
+																			<label class="col-md-4 control-label" for="">Yeni Üye Adı:</label>
+																			<div class="col-md-8">
+																				<div class="input-group">
+																					<input id="username" class="form-control" type="text" data-date-inline-picker="false" data-date-open-on-focus="false" placeholder="Yeni Üye Adı" >
+																				</div>
+																			</div>
+																		</div>
+																		<div class="row">
+																			<label class="col-md-4 control-label" for="">Yeni Şifre:</label>
+																			<div class="col-md-8">
+																				<div class="input-group">
+																					<input id="password" class="form-control" type="password" data-date-inline-picker="false" data-date-open-on-focus="false" placeholder="Yeni Şifre">
+																				</div>
+																			</div>
+																		</div>
+																	</div>
+																	<input type="button" class="btn btn-primary" id="loginInfoChange" value="Değiştir">
+																	<span id="error"></span>
+																</div>
+															</div>
+														</div>
+													</div>
 
 												</div>
 
@@ -357,6 +386,7 @@ if($_SESSION['access_type'] == "admin"){
 						var id = -1;
 						var isim; 
 						var soyisim;
+						var durum;
 
 						$("#tbody tr").click(function () {
 
@@ -365,7 +395,7 @@ if($_SESSION['access_type'] == "admin"){
 							id = $('.id',this).text();
 							isim = $('.isim',this).text();
 							soyisim = $('.soyisim',this).text();
-
+							durum =$('.durum',this).text();
 							$.ajax({  
 								url:"load_notes.php",  
 								method:"POST",  
@@ -403,8 +433,10 @@ if($_SESSION['access_type'] == "admin"){
 						});
 
 						$("#silButton").on("click",function(){
-
-							if(id > 0){
+							if(durum == "Silindi"){
+								alert("Bu öğrenci daha önceden silinmiştir.");
+							}
+							else if(id > 0 && durum == "Kayıtlı"){
 								var answer = confirm("Kaydı Silmeyi Onaylıyor Musunuz ??");
 								if(answer){
 									$.ajax({
@@ -421,12 +453,15 @@ if($_SESSION['access_type'] == "admin"){
 									return false;
 								}
 							}
-							if(id < 0)
+							else
 								alert("Bir Kayıt Seçin!!!");
 						});
 
 						$('#duzenle').on("click",function(){
-							if(id > 0)
+							if(durum == "Silindi"){
+								alert("Bu öğrenci önceden silinmiştir. Üzerinde düzenleme yapılamaz.");
+							}
+							else if(id>0 && durum == "Kayıtlı")
 								window.location = "ogrenci_duzenle.php?id="+id;
 							else
 								alert("Bir Öğrenci Seçin");
@@ -456,6 +491,23 @@ if($_SESSION['access_type'] == "admin"){
 									$('#message').html(data);
 								}
 							});
+						});	
+						$('#loginInfoChange').on("click",function(){
+							var u = document.getElementById("username").value;
+							var p = document.getElementById("password").value;
+							if(id > 0){
+								$.ajax({
+									url:"changeStudentLoginInfo.php",
+									method:"POST",
+									data :{id:id,u:u,p:p},
+									success:function(data){ 
+										alert(data);
+									}
+								});
+							}
+							else{
+								alert("Personel Seçiniz");
+							}
 						});
 
 					</script>

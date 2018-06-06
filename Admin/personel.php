@@ -242,32 +242,31 @@ if($_SESSION['access_type'] == "admin"){
 										<div id="loginInfo" class="tab-pane fade">
 											<div class="col-md-12">
 												<div class="box-body box-profile">
-														<div class="row">
-															<div class="form-group">
-																<div class="row">
-																	<label class="col-md-4 control-label" for="">Yeni Üye Adı:</label>
-																	<div class="col-md-8">
-																		<div class="input-group">
-																			<input id="username" class="form-control" type="text" data-date-inline-picker="false" data-date-open-on-focus="false" placeholder="Yeni Üye Adı" >
-																		</div>
-																	</div>
-																</div>
-																<div class="row">
-																	<label class="col-md-4 control-label" for="">Yeni Şifre:</label>
-																	<div class="col-md-8">
-																		<div class="input-group">
-																			<input id="password" class="form-control" type="password" data-date-inline-picker="false" data-date-open-on-focus="false"  placeholder="Yeni Şifre">
-																		</div>
+													<div class="row">
+														<div class="form-group">
+															<div class="row">
+																<label class="col-md-4 control-label" for="">Yeni Üye Adı:</label>
+																<div class="col-md-8">
+																	<div class="input-group">
+																		<input id="username" class="form-control" type="text" data-date-inline-picker="false" data-date-open-on-focus="false" placeholder="Yeni Üye Adı" >
 																	</div>
 																</div>
 															</div>
-															<input type="button" class="btn btn-primary" id="loginInfoChange" value="Değiştir">
-															<span id="error"></span>
+															<div class="row">
+																<label class="col-md-4 control-label" for="">Yeni Şifre:</label>
+																<div class="col-md-8">
+																	<div class="input-group">
+																		<input id="password" class="form-control" type="password" data-date-inline-picker="false" data-date-open-on-focus="false"  placeholder="Yeni Şifre">
+																	</div>
+																</div>
+															</div>
 														</div>
+														<input type="button" class="btn btn-primary" id="loginInfoChange" value="Değiştir">
+														<span id="error"></span>
 													</div>
 												</div>
-												<!-- /.box-body -->
 											</div>
+											<!-- /.box-body -->
 										</div>
 									</div>
 								</div>
@@ -275,155 +274,162 @@ if($_SESSION['access_type'] == "admin"){
 						</div>
 					</div>
 				</div>
+			</div>
 
-			</section>
-		</div>
+		</section>
 	</div>
+</div>
 
-	<!-- ./wrapper -->
+<!-- ./wrapper -->
 
 
 
-	<div>
-		<!-- Scripts Start-->
+<div>
+	<!-- Scripts Start-->
 
-		<!-- jQuery 3 -->
-		<script src="../bower_components/jquery/dist/jquery.min.js"></script>
-		<!-- jQuery UI 1.11.4 -->
-		<script src="../bower_components/jquery-ui/jquery-ui.min.js"></script>
-		<!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
-		<script>
-			$.widget.bridge('uibutton', $.ui.button);
-		</script>
-		<!-- Bootstrap 3.3.7 -->
-		<script src="../bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
-		<!-- Calendar :)) -->
-		<script src="../bower_components\fullcalendar\dist\fullcalendar.min.js"></script>
-		<script src="../bower_components\fullcalendar\dist\fullcalendar.js"></script>
-		<script src="../bower_components\moment\moment.js"></script>
-		<!-- Morris.js charts -->
-		<script src="../bower_components/raphael/raphael.min.js"></script>
-		<script src="../bower_components/morris.js/morris.min.js"></script>
-		<!-- Sparkline -->
-		<script src="../bower_components/jquery-sparkline/dist/jquery.sparkline.min.js"></script>
-		<!-- jvectormap -->
-		<script src="../plugins/jvectormap/jquery-jvectormap-1.2.2.min.js"></script>
-		<script src="../plugins/jvectormap/jquery-jvectormap-world-mill-en.js"></script>
-		<!-- jQuery Knob Chart -->
-		<script src="../bower_components/jquery-knob/dist/jquery.knob.min.js"></script>
-		<!-- daterangepicker -->
-		<script src="../bower_components/moment/min/moment.min.js"></script>
-		<script src="../bower_components/bootstrap-daterangepicker/daterangepicker.js"></script>
-		<!-- datepicker -->
-		<script src="../bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
-		<!-- Bootstrap WYSIHTML5 -->
-		<script src="../plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js"></script>
-		<!-- Slimscroll -->
-		<script src="../bower_components/jquery-slimscroll/jquery.slimscroll.min.js"></script>
-		<!-- FastClick -->
-		<script src="../bower_components/fastclick/lib/fastclick.js"></script>
-		<!-- AdminLTE App -->
-		<script src="../dist/js/adminlte.min.js"></script>
-		<!-- AdminLTE dashboard demo (This is only for demo purposes) -->
-		<script src="../dist/js/pages/dashboard.js"></script>
-		<!-- AdminLTE for demo purposes -->
-		<script src="../dist/js/demo.js"></script>
-		<!-- Page specific script -->
-<script>
+	<!-- jQuery 3 -->
+	<script src="../bower_components/jquery/dist/jquery.min.js"></script>
+	<!-- jQuery UI 1.11.4 -->
+	<script src="../bower_components/jquery-ui/jquery-ui.min.js"></script>
+	<!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
+	<script>
+		$.widget.bridge('uibutton', $.ui.button);
+	</script>
+	<!-- Bootstrap 3.3.7 -->
+	<script src="../bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+	<!-- Calendar :)) -->
+	<script src="../bower_components\fullcalendar\dist\fullcalendar.min.js"></script>
+	<script src="../bower_components\fullcalendar\dist\fullcalendar.js"></script>
+	<script src="../bower_components\moment\moment.js"></script>
+	<!-- Morris.js charts -->
+	<script src="../bower_components/raphael/raphael.min.js"></script>
+	<script src="../bower_components/morris.js/morris.min.js"></script>
+	<!-- Sparkline -->
+	<script src="../bower_components/jquery-sparkline/dist/jquery.sparkline.min.js"></script>
+	<!-- jvectormap -->
+	<script src="../plugins/jvectormap/jquery-jvectormap-1.2.2.min.js"></script>
+	<script src="../plugins/jvectormap/jquery-jvectormap-world-mill-en.js"></script>
+	<!-- jQuery Knob Chart -->
+	<script src="../bower_components/jquery-knob/dist/jquery.knob.min.js"></script>
+	<!-- daterangepicker -->
+	<script src="../bower_components/moment/min/moment.min.js"></script>
+	<script src="../bower_components/bootstrap-daterangepicker/daterangepicker.js"></script>
+	<!-- datepicker -->
+	<script src="../bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
+	<!-- Bootstrap WYSIHTML5 -->
+	<script src="../plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js"></script>
+	<!-- Slimscroll -->
+	<script src="../bower_components/jquery-slimscroll/jquery.slimscroll.min.js"></script>
+	<!-- FastClick -->
+	<script src="../bower_components/fastclick/lib/fastclick.js"></script>
+	<!-- AdminLTE App -->
+	<script src="../dist/js/adminlte.min.js"></script>
+	<!-- AdminLTE dashboard demo (This is only for demo purposes) -->
+	<script src="../dist/js/pages/dashboard.js"></script>
+	<!-- AdminLTE for demo purposes -->
+	<script src="../dist/js/demo.js"></script>
+	<!-- Page specific script -->
+	<script>
 
-	var date;
-	$("#calendar").on("click",function(){
-		alert("alert");
-	});
-
-	$("#showDate").on("click",function(){
-		date = $("#selectedDate").val();
-		alert(date);
-	});
-
-</script>
-
-<script type="text/javascript">
-	var id = -1;
-	var isim; 
-	var soyisim;
-
-	$("#tbody tr").click(function () {
-		$('.selected').removeClass('selected');
-		$(this).addClass("selected");
-		id = $('.id',this).text();
-		isim = $('.isim',this).text();
-		soyisim = $('.soyisim',this).text();
-
-		$.ajax({
-			url:"getPersonelInfo.php",
-			method:"POST",
-			data :{id:id},
-			success:function(data){
-				document.getElementById("home").innerHTML = data;
-			}
+		var date;
+		$("#calendar").on("click",function(){
+			alert("alert");
 		});
-		document.getElementById("personelInfoTitle").innerHTML = isim+" "+soyisim;
-	});
 
-	$('#loginInfoChange').on("click",function(){
-		var u = document.getElementById("username").value;
-		var p = document.getElementById("password").value;
-		if(id > 0){
+		$("#showDate").on("click",function(){
+			date = $("#selectedDate").val();
+			alert(date);
+		});
+
+	</script>
+
+	<script type="text/javascript">
+		var id = -1;
+		var isim; 
+		var soyisim;
+		var durum;
+
+		$("#tbody tr").click(function () {
+			$('.selected').removeClass('selected');
+			$(this).addClass("selected");
+			id = $('.id',this).text();
+			isim = $('.isim',this).text();
+			soyisim = $('.soyisim',this).text();
+			durum =$('.durum',this).text();
 			$.ajax({
-				url:"changeLoginInfo.php",
+				url:"getPersonelInfo.php",
 				method:"POST",
-				data :{id:id,u:u,p:p},
-				success:function(data){ 
-					alert(data);
-					//document.getElementById("error").innerHTML = data;
+				data :{id:id},
+				success:function(data){
+					document.getElementById("home").innerHTML = data;
 				}
 			});
-		}
-		else{
-			alert("Personel Seçiniz");
-		}
-	});
+			document.getElementById("personelInfoTitle").innerHTML = isim+" "+soyisim;
+		});
 
-	$('#duzenle').on("click",function(){
-		if(id>0)
-			window.location = "personel_duzenle.php?id="+id;
-		else
-			alert("Bir Personel Seçin");
-	});
-
-
-
-	$("#silButton").on("click",function(){
-
-		if(id > 0){
-			var answer = confirm("Kaydı Silmeyi Onaylıyor Musunuz ??");
-			if(answer){
+		$('#loginInfoChange').on("click",function(){
+			var u = document.getElementById("username").value;
+			var p = document.getElementById("password").value;
+			if(id > 0){
 				$.ajax({
-					type:"POST",
-					url:"deletePersonel.php",
-					data:{id:id,isim:isim},
-					success:function(data){
+					url:"changePersonelLoginInfo.php",
+					method:"POST",
+					data :{id:id,u:u,p:p},
+					success:function(data){ 
 						alert(data);
-						location.reload();
 					}
 				});
 			}
-			else {
-				return false;
+			else{
+				alert("Personel Seçiniz");
 			}
-		}
-		if(id < 0)
-			alert("Bir Kayıt Seçin!!!");
-	});
+		});
 
-	
+		$('#duzenle').on("click",function(){
+			if(durum == "Silindi"){
+				alert("Bu öğrenci önceden silinmiştir. Üzerinde düzenleme yapılamaz.");
+			}
+			else if(id>0 && durum == "Kayıtlı")
+				window.location = "personel_duzenle.php?id="+id;
+			else
+				alert("Bir Personel Seçin");
+		});
 
 
-	$("#notlar").on("click",function(){
 
-	})
-</script>
+		$("#silButton").on("click",function(){
+			if(durum == "Silindi"){
+				alert("Bu öğrenci önceden silinmiştir.");
+			}
+
+			else if(id > 0 && durum == "Kayıtlı"){
+				var answer = confirm("Kaydı Silmeyi Onaylıyor Musunuz ??");
+				if(answer){
+					$.ajax({
+						type:"POST",
+						url:"deletePersonel.php",
+						data:{id:id,isim:isim},
+						success:function(data){
+							alert(data);
+							location.reload();
+						}
+					});
+				}
+				else {
+					return false;
+				}
+			}
+			else
+				alert("Bir Kayıt Seçin!!!");
+		});
+
+
+
+
+		$("#notlar").on("click",function(){
+
+		})
+	</script>
 
 </div>
 </body>

@@ -2,9 +2,8 @@
 
 session_start();
 if($_SESSION['access_type'] == 'parent'){
-  require_once "../connectDB.php";
+    require_once "../connectDB.php";
   $id = $_SESSION['access_id'];
-
   ?>
   <!DOCTYPE html>
   <html>
