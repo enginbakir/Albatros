@@ -1,22 +1,20 @@
 <?php
 
 session_start();
-ob_start();
-require_once '../connectDB.php';
+require_once('../connectDB.php');
 // echo $_POST['title'];
 if (isset($_POST['title']) && isset($_POST['start']) && isset($_POST['end']) && isset($_POST['color'])){
 	
-	$student = $_POST['title'];
-	$array = explode("-",$student);
-	$student_FK = $array[0];
-	$title = $array[1];
+	$title = $_POST['title'];
 	$start = $_POST['start'];
 	$end = $_POST['end'];
 	$color = $_POST['color'];
 
-	$personel_FK = $_POST['personel_id'];
+	//admin_FK post edilmesi gerek!!!!!!!!!!!!!!
+	//Şuan default atama yapıldı.
+	$admin_id = $_SESSION['adminPK'];
 
-	$sql = "INSERT INTO events(title, student_FK, personel_FK, start, end, color) values ('$title','$student_FK','$personel_FK','$start', '$end', '$color')";
+	$sql = "INSERT INTO event_admin(title, admin_FK, start, end, color) values ('$title','$admin_id','$start', '$end', '$color')";
 	
 	echo $sql;
 	
@@ -33,7 +31,8 @@ if (isset($_POST['title']) && isset($_POST['start']) && isset($_POST['end']) && 
 
 }
 header('Location: '.$_SERVER['HTTP_REFERER']);
+
+
 $conn = null;
-ob_end_flush();
-exit();
+exit();	
 ?>

@@ -45,6 +45,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
 				$_SESSION['adminLogPK'] = $q['AdminLog_PK'];
 				$_SESSION['access_type'] = $user_type;
 				$_SESSION['access_id'] = $row['userAdmin_PK'];
+				$_SESSION['adminPK'] = $row['admin_FK'];
 				header("location: ../Admin/admin.php");
 			}
 			else if($user_type == "personel"){
@@ -58,6 +59,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
 				$_SESSION['personelLogPK'] = $q['PersonelLog_PK'];
 				$_SESSION['access_type'] = $user_type;
 				$_SESSION['access_id'] = $row['userPersonel_PK'];
+				$_SESSION['personelPK'] = $row['personel_FK'];
 				header("location: ../Personel/personel_main_page.php");
 			}
 			else if($user_type == "parent"){ 

@@ -1,15 +1,14 @@
 <?php 
-
 session_start();
 if($_SESSION['access_type'] == 'personel'){
 
-	try{
-		require_once "../connectDB.php";
-		$id = $_SESSION['access_id'];
-		$access_id = $_SESSION['access_id'];
-		$sql = "SELECT * FROM personel_user where userPersonel_PK = '$id'";
-		$result = $conn->query($sql, PDO::FETCH_ASSOC)->fetch();
-		$personelID = $result['personel_FK'];		
+  try{
+    require_once "../connectDB.php";
+    $id = $_SESSION['access_id'];
+    $access_id = $_SESSION['access_id'];
+    $sql = "SELECT * FROM personel_user where userPersonel_PK = '$id'";
+    $result = $conn->query($sql, PDO::FETCH_ASSOC)->fetch();
+    $personelID = $result['personel_FK'];   
     if(isset($_SESSION['errorMessage'])){
       $errorMessage = $_SESSION['errorMessage'];
       unset($_SESSION['errorMessage']);
@@ -69,11 +68,12 @@ if($_SESSION['access_type'] == 'personel'){
    <input id="personel_PK" type="text" style="display: none" <?php echo " value = '".$personelID."'"; 
    echo $personelID;
    ?> >
+
    <div class="wrapper">
     <!--Main Page Header -->
-    <?php include 'header.php'; ?>
+    <?php require_once 'header.php'; ?>
     <!-- Left side column. contains the logo and sidebar -->
-    <?php include 'personelPageSidebar.php'; ?>
+    <?php require_once 'personelPageSidebar.php'; ?>
     <!-- Content Wrapper. Contains page content -->
     <div class="content-wrapper">
      <!-- Content Header (Page header) -->
@@ -185,7 +185,7 @@ if($_SESSION['access_type'] == 'personel'){
    </table>
  </div>
 </div>
-</div>										 	
+</div>                      
 </div>
 <!--Content wrapper END-->
 
@@ -265,10 +265,11 @@ if($_SESSION['access_type'] == 'personel'){
 
 <!-- Page-VELİ BİLGİLERİ START -->
 <div id="menu1" class="tab-pane fade">
-  <li >
-    <a class='pull-left error bigfont'>Bir Öğrenci Seçin</a>
-  </li>
-</ul>
+  <ul>
+    <li >
+      <a class='pull-left error bigfont'>Bir Öğrenci Seçin</a>
+    </li>
+  </ul>
 </div>
 
 <!-- Page-ÖĞRENCİ BİLGİLERİ START -->
@@ -326,7 +327,6 @@ if($_SESSION['access_type'] == 'personel'){
 
 <!-- Page-ÖĞRENCİ BİLGİLERİ END -->
 
-
 <!-- Page-DEVAMSIZLIK BİLGİLERİ START -->
 
 <div id="menu3" class="tab-pane fade">
@@ -380,14 +380,14 @@ if($_SESSION['access_type'] == 'personel'){
     </div>                            
   </div>
 </div>
-
+<!-- tab content aşağıda -->
+</div>
 <!-- Page-ÖDEME BİLGİLERİ END -->
 </div>
 </div>
 </div>
 </div>
 <!-- BOX Kişi Bilgi Tablosu END-->
-</div>
 </div>
 </div>
 </div>
@@ -398,263 +398,249 @@ if($_SESSION['access_type'] == 'personel'){
 
 <script>
   $(document).ready(function(){
-   $('#framework').multiselect({
-    nonSelectedText: 'Ders seçiniz',
-    enableFiltering: true,
-    enableCaseInsensitiveFiltering: true,
-    buttonWidth:'400px'
-  });
-   $('#framework1').multiselect({
-    nonSelectedText: 'Ders Seçiniz',
-    enableFiltering: true,
-    enableCaseInsensitiveFiltering: true,
-    buttonWidth:'400px'
-  });
+   selectedRow();
 
    var personelID;
    var id;
 
+   function selectedRow(){
+    var index,isim,soyisim;
+    var table = document.getElementById("öğrenciVeriTableID");
+    for(var i = 1; i < table.rows.length; i++){
+      table.rows[i].onclick = function(){
 
-			/// To Change Selected HTML Table Row Background Color START
-			function selectedRow(){
-				var index,isim,soyisim;
-				var table = document.getElementById("öğrenciVeriTableID");
-				for(var i = 1; i < table.rows.length; i++)
-				{
-					table.rows[i].onclick = function()
-					{
-                         // remove the background from the previous selected row
-                         if(typeof index !== "undefined"){
-                         	table.rows[index].classList.toggle("selected");
-                         }
-                        // get the selected row index
-                        index = this.rowIndex;
-                        // add class selected to the row
-                        $('.selected').removeClass('selected');
-                        $(this).addClass("selected");
-                        id = $('.id',this).html();
-                        personelID = document.getElementById('personel_PK').value;
+       if(typeof index !== "undefined"){
+        table.rows[index].classList.toggle("selected");
+      }
 
-                        $.ajax({
-                          url:"getStudentInfo.php",
-                          method:"POST",
-                          data :{id:id},
-                          success:function(data){
-                         //  $("#ogrenciPhoto").attr('src', data);
-                       }
-                     });
-                        $.ajax({  
-                          url:"payment_page.php",  
-                          method:"POST",  
-                          data:{id:id},
-                          success:function(data){ 
-                            $('#payment_info').html(data);  
+      index = this.rowIndex;
 
-                            $('#date_odeme').lwMultiSelect();
+      $('.selected').removeClass('selected');
+      $(this).addClass("selected");
+      id = $('.id',this).html();
+      var isim = $('.isim',this).html();
+      var soyisim = $('.soyisim',this).html();
+      personelID = document.getElementById('personel_PK').value;
+      document.getElementById("studentInfoTitle").innerHTML = isim+" "+soyisim+" Bilgileri";
+      $.ajax({
+        url:"getStudentInfo.php",
+        method:"POST",
+        data :{id:id},
+        success:function(data){
 
-                            $('.action').change(function(){
-                              if($(this).val() != '')
-                              {
-                                var action = $(this).attr("id");
-                                var query = $(this).val();
-                                var student_id = $('#student_id').val();
-                                var result = '';
-                                if(action == 'aylar')
-                                {
-                                  result = 'date_odeme';
-                                }
-                                $.ajax({
-                                  url:'payment_fetch.php',
-                                  method:"POST",
-                                  data:{action:action, query:query,student_id:student_id},
-                                  success:function(data)
-                                  {
+        }
+      });
+      $.ajax({
+        url:"payment_page.php",  
+        method:"POST",  
+        data:{id:id},
+        success:function(data){ 
+          $('#payment_info').html(data);  
 
-                                    $('#'+result).html(data);
-                                    if(result == 'date_odeme')
-                                    {
-                                      $('#date_odeme').data('plugin_lwMultiSelect').updateList();
-                                    }
-                                  }
-                                })
-                              }
-                            });
+          $('#date_odeme').lwMultiSelect();
 
-                            $('#insert_data').on('submit', function(event){
-                              console.log('edildi');
-                              event.preventDefault();
-                              if($('#aylar').val() == '')
-                              {
-                                alert("Lütfen bir ay seçiniz!");
-                                return false;
-                              }
-                              else if($('#date_odeme').val() == '')
-                              {
-                                alert("Lütfen gün seçiniz!");
-                                return false;
-                              }
-                              else
-                              {
-                                $('#hidden_date_odeme').val($('#date_odeme').val());
-                                var dates = $('#hidden_date_odeme').val().split(',');
-                                var aylar = $('#aylar').val();
-                                var odeme_bilgisi = $('#odeme_bilgisi').val();
-                                var form_data = $('#insert_data').serialize();
-                                $.ajax({
-                                  url:"payment_insert.php",
-                                  method:"POST",
-                                  data:{odeme_bilgisi:odeme_bilgisi,aylar:aylar,dates:dates,id:id,personelID:personelID},
-                                  success:function(data)
-                                  {
-                                    if(data == 'done')
-                                    {
-                                      $('#date_odeme').html('');
-                                      $('#date_odeme').data('plugin_lwMultiSelect').updateList();
-                                      $('#date_odeme').data('plugin_lwMultiSelect').removeAll();
-                                      $('#insert_data')[0].reset();
-                                      alert('Data Inserted');
-                                    }
-                                  }
-                                });
-                              }
-                            });
+          $('.action').change(function(){
+            if($(this).val() != ''){
+              var action = $(this).attr("id");
+              var query = $(this).val();
+              var student_id = $('#student_id').val();
+              var result = '';
+              if(action == 'aylar'){
+                result = 'date_odeme';
+              }
+              $.ajax({
+                url:'payment_fetch.php',
+                method:"POST",
+                data:{action:action, query:query,student_id:student_id},
+                success:function(data){
 
-
-                          }  
-                        });  
-
-                        $.ajax({
-                        	url:"load_notes.php",  
-                        	method:"POST", 
-                        	data:{id:id,personelID:personelID}, 
-                        	dataType: 'json',
-                        	cache:false, 
-                        	success:function(data){ 
-                        		$('#notes').html(data.value1);  
-                        		$('#deleteDiv').html(data.value2);
-                        	}  
-                        });  
-                        document.getElementById("studentInfoTitle").innerHTML = isim+" "+soyisim+" Bilgileri";
-                        document.getElementById("studentID").value = id;
-                        $.ajax({  
-                        	url:"load_attendance.php",  
-                        	method:"POST",  
-                        	data:{id:id},
-                        	success:function(data){ 
-                        		$('#devamsizlikListesi').html(data);  
-                        	}  
-                        }); 
-                        $.ajax({
-                        	url:"process.php",
-                        	method:"POST",
-                        	data:{id:id},
-                        	success:function(data){
-                        		$('#odemeBody').html(data);
-                        	}
-                        });
-                        $.ajax({
-                          url:"getParentInfo.php",
-                          method:"POST",
-                          data:{id:id},
-                          success:function(data){
-                            $('#menu1').html(data);
-                          }
-                        });
-                        $.ajax({
-                        	url:"getStudentInfo.php",
-                        	method:"POST",
-                        	data:{id:id},
-                        	success:function(data){
-                        		
-                        	}
-                        });
-                      };
-                    }
+                  $('#'+result).html(data);
+                  if(result == 'date_odeme'){
+                    $('#date_odeme').data('plugin_lwMultiSelect').updateList();
                   }
-                  
-                  selectedRow();
-
-                  $('#kabaDegerlendirme').on("click",function(){
-                   window.location="kaba_degerlendirme.php?id="+id;
-                 });
-                  $('#bepOlustur').on("click",function(){  
-                    if(id>0){  
-                     window.location = "bep_main_page.php?id="+id;
-                   }
-                   else{
-                    alert ("Bir Öğrenci Seçiniz!!");
-                  }
-                });
-                  $('#insertnote').on("click",function(){
-                   var note = $("#studentNote").val();
-                   $.ajax({
-                    url:"insertnote.php",
-                    method:"POST",
-                    data:{id:id,note:note,personelID:personelID}, 
-                    success:function(data){
-                     alert(data);
-
-                   }
-                 });
-                 });
-                  $("#button2").click(function(){
-                   var tarih = $("#devamsizlikTarihi").val();
-                   var aciklama = $("#devamsizlikAciklama").val();
-                   $.ajax({
-                    url:'insert.php',
-                    method:'POST',
-                    data:{
-                     tarih:tarih,
-                     aciklama:aciklama,
-                     id:id
-                   },
-                   success:function(data){
-                     alert(data);
-                     location.reload();
-
-                   }
-                 });
-                 });
-
-        /*
-        $('#bepGoruntule').on("click",function(){
-          var w = window.innerWidth;
-          var h = window.innerHeight;
-          var dersler_id = $('#framework').val();
-          var komisyon_id =  $('#framework1').val();
-          if(id > 0)
-            window.open("http://localhost/Albatros/Personel/openBep.php?id="+id+"&w="+w+"&h="+h);
-          else{
-            alert("Bir Öğrenci Seçiniz");
-          }
-        });
-        */
-        $('#kabaSil').on("click",function(){
-          var dersler_id = $('#framework').val();
-          $.ajax({
-            url:'kaba_sil.php',
-            method:'POST',
-            data:{dersler_id:dersler_id,id:id},
-            success:function(data){
-              alert(data);
+                }
+              })
             }
           });
-        });
+
+          $('#insert_data').on('submit', function(event){
+            console.log('edildi');
+            event.preventDefault();
+            if($('#aylar').val() == '')
+            {
+              alert("Lütfen bir ay seçiniz!");
+              return false;
+            }
+            else if($('#date_odeme').val() == '')
+            {
+              alert("Lütfen gün seçiniz!");
+              return false;
+            }
+            else
+            {
+              $('#hidden_date_odeme').val($('#date_odeme').val());
+              var dates = $('#hidden_date_odeme').val().split(',');
+              var aylar = $('#aylar').val();
+              var odeme_bilgisi = $('#odeme_bilgisi').val();
+              var form_data = $('#insert_data').serialize();
+              $.ajax({
+                url:"payment_insert.php",
+                method:"POST",
+                data:{odeme_bilgisi:odeme_bilgisi,aylar:aylar,dates:dates,id:id,personelID:personelID},
+                success:function(data)
+                {
+                  if(data == 'done')
+                  {
+                    $('#date_odeme').html('');
+                    $('#date_odeme').data('plugin_lwMultiSelect').updateList();
+                    $('#date_odeme').data('plugin_lwMultiSelect').removeAll();
+                    $('#insert_data')[0].reset();
+                    alert('Data Inserted');
+                  }
+                }
+              });
+            }
+          });
+        }  
+      });  
+
+      $.ajax({
+        url:"load_notes.php",  
+        method:"POST", 
+        data:{id:id,personelID:personelID}, 
+        dataType: 'json',
+        cache:false, 
+        success:function(data){ 
+          $('#notes').html(data.value1);  
+          $('#deleteDiv').html(data.value2);
+        }  
+      });  
+      document.getElementById("studentID").value = id;
+      $.ajax({  
+        url:"load_attendance.php",  
+        method:"POST",  
+        data:{id:id},
+        success:function(data){ 
+          $('#devamsizlikListesi').html(data);  
+        }  
+      }); 
+      $.ajax({
+        url:"process.php",
+        method:"POST",
+        data:{id:id},
+        success:function(data){
+          $('#odemeBody').html(data);
+        }
       });
+      $.ajax({
+        url:"getParentInfo.php",
+        method:"POST",
+        data:{id:id},
+        success:function(data){
+          $('#menu1').html(data);
+        }
+      });
+      $.ajax({
+        url:"getStudentInfo.php",
+        method:"POST",
+        data:{id:id},
+        success:function(data){
 
-    </script>		
+        }
+      });
+    }
+  }
+}
 
 
-  </body>
-  </html>
 
-  <?php 
-  $conn = null;
-  exit();
+
+
+
+
+});
+
+</script>  
+
+<script type="text/javascript">
+ $('#framework').multiselect({
+  nonSelectedText: 'Ders seçiniz',
+  enableFiltering: true,
+  enableCaseInsensitiveFiltering: true,
+  buttonWidth:'400px'
+});
+ $('#framework1').multiselect({
+  nonSelectedText: 'Ders Seçiniz',
+  enableFiltering: true,
+  enableCaseInsensitiveFiltering: true,
+  buttonWidth:'400px'
+});
+
+ $("#button2").click(function(){
+   var tarih = $("#devamsizlikTarihi").val();
+   var aciklama = $("#devamsizlikAciklama").val();
+   $.ajax({
+    url:'insert.php',
+    method:'POST',
+    data:{tarih:tarih,
+      aciklama:aciklama,id:id},
+      success:function(data){
+       alert(data);
+       location.reload();
+     }
+   });
+ });
+
+ $('#kabaSil').on("click",function(){
+  var dersler_id = $('#framework').val();
+  $.ajax({
+    url:'kaba_sil.php',
+    method:'POST',
+    data:{dersler_id:dersler_id,id:id},
+    success:function(data){
+      alert(data);
+    }
+  });
+});
+
+
+ $('#kabaDegerlendirme').on("click",function(){
+   window.location="kaba_degerlendirme.php?id="+id;
+ });
+ $('#bepOlustur').on("click",function(){  
+  if(id>0){  
+   window.location = "bep_main_page.php?id="+id;
+ }
+ else{
+  alert ("Bir Öğrenci Seçiniz!!");
+}
+});
+ $('#insertnote').on("click",function(){
+   var note = $("#studentNote").val();
+   $.ajax({
+    url:"insertnote.php",
+    method:"POST",
+    data:{id:id,note:note,personelID:personelID}, 
+    success:function(data){
+     alert(data);
+
+   }
+ });
+ });
+
+</script> 
+
+
+</body>
+</html>
+
+<?php 
+$conn = null;
+exit();
 }catch(Exception $e) { 
   // $_SESSION['login_error'] = $e->getMessage(); 
-	$_SESSION['login_error'] = "Veri Tabanı Hatası!!! ".$e->getMessage();
-	header("location: cikis.php");
+  $_SESSION['login_error'] = "Veri Tabanı Hatası!!! ".$e->getMessage();
+  header("location: cikis.php");
 }
 }
 else {

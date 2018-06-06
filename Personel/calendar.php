@@ -1,7 +1,5 @@
 <?php
 session_start();
-$access_id = $_SESSION['access_id'];
-
 require_once '../connectDB.php';
 // try{
 //   $req = $conn->prepare($sql);
@@ -15,7 +13,7 @@ require_once '../connectDB.php';
 
 // }
 
-$personel_id =23;
+$personel_id =$_SESSION['personelPK'];
 $sql = "SELECT id, title, start, end, color FROM events WHERE personel_FK = $personel_id ";
 
 $req = $conn->prepare($sql);
@@ -23,7 +21,6 @@ $req->execute();
 
 $events = $req->fetchAll();
 
-$personel_id =23;
 
 $ogrenciler = '';
 
@@ -367,9 +364,9 @@ foreach($result as $row)
        data: {Event:Event},
        success: function(rep) {
         if(rep == 'OK'){
-          alert('Kayıt edildi.');
+          //alert('Kayıt edildi.');
         }else{
-          alert('Kaydedilemedi! , Lütfen tekrar deneyin.'); 
+          //alert('Kaydedilemedi! , Lütfen tekrar deneyin.'); 
         }
       }
     });

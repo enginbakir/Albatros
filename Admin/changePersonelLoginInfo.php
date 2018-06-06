@@ -34,10 +34,10 @@ try {
 			$st->bindParam(':password', md5($p));
 			$st->bindParam(':id', $id);
 			if($st->execute()){
-				echo "Eklendi";
+				echo "Üye Adı ve Şifre Eklendi";
 			}
 			else{
-				echo "Ekleme Başarısız";
+				echo "Üye Adı ve Şifre Ekleme Başarısız";
 			}
 
 		}
