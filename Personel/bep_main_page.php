@@ -107,6 +107,9 @@ if($_SESSION['access_type'] == "personel"){
 
              <div class="panel-heading">
               <h4 class="panel-title">Bireysel Eğitim Planı Oluştur</h4>
+      <span class="error bigfont"><?php echo $_SESSION['BepERR']; 
+      unset($_SESSION['BepERR']);?></span>
+
             </div>
             <div class="panel-body pt0 pb0">
               <div class="form-horizontal group-border stripped">

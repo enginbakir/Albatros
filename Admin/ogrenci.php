@@ -1,11 +1,11 @@
- 
 <?php 
 session_start();
 ob_start();
 if($_SESSION['access_type'] == "admin"){ 
 	require_once "../connectDB.php";
-	?>
+          $access_id = $_SESSION['access_id'];
 
+	?>
 	<!DOCTYPE html>
 	<html>
 	<head>
@@ -118,7 +118,6 @@ if($_SESSION['access_type'] == "admin"){
 															<th>Durum</th>
 															<th>Cinsiyet</th>
 															<th>Sınıf</th>
-															<th>Devamsızlık</th>
 														</tr>
 													</thead>
 
@@ -159,10 +158,12 @@ if($_SESSION['access_type'] == "admin"){
 																	echo "<td class='durum'>Kayıtlı</td>";
 																else
 																	echo "<td class='durum'>Silindi</td>";
-																echo "<td class='gender'>Erkek</td>
-																<td class='sinif'>3</td>
-																<td>0</td>";
-
+																if($row['gender_FK'] == 1)
+																	echo "<td> KIZ </td>";
+																else	
+																	echo "<td class='gender'>Erkek</td>
+																<td class='sinif'>".$row['class']."</td>";
+																
 																echo "</tr>";
 															}
 														}
@@ -246,37 +247,8 @@ if($_SESSION['access_type'] == "admin"){
 													</div>
 													<div id="menu2" class="tab-pane fade">
 														<div class="box box-primary">
-															<div class="box-body box-profile">
-
-																<img id = "ogrenciPhoto" class="profile-user-img img-responsive img-circle" src="" alt="User profile picture">
-
-																<h3 class="profile-username text-center">Engin Bakır</h3>
-																<ul class="list-group list-group-unbordered">
-																	<li class="list-group-item">
-																		<b>TC</b> <a class="pull-right">20154895748</a>
-																	</li>
-																	<li class="list-group-item">
-																		<b>Adres</b> <a class="pull-right">Lorem ipsum dolor sit amet, consectetur.</a>
-																	</li>
-																	<li class="list-group-item">
-																		<b>Ulaşım</b> <a class="pull-right">Servis</a>
-																	</li>
-																	<li class="list-group-item">
-																		<b>Eğitsel Tanı</b> <a class="pull-right">Excepteur sint occaecat.</a>
-																	</li>
-																	<li class="list-group-item">
-																		<b>Kaba Değerlendirme</b> <a href="" class="pull-right">görüntüle</a>
-																	</li>
-																	<li class="list-group-item">
-																		<b>BEP</b> <a href="" class="pull-right">görüntüle</a>
-																	</li>
-																	<li class="list-group-item">
-																		<b>Dönem Başlayış Tarihi</b> <a class="pull-right">18.09.2017</a>
-																	</li>
-																	<li class="list-group-item">
-																		<b>Dönem Bitiş Tarihi</b> <a class="pull-right">07.06.2018</a>
-																	</li>
-																</ul>
+															<div id="studentInfo" class="box-body box-profile">
+																
 															</div>
 															<!-- /.box-body -->
 														</div>
@@ -408,7 +380,7 @@ if($_SESSION['access_type'] == "admin"){
 								method:"POST",
 								data :{id:id},
 								success:function(data){
-									$("#ogrenciPhoto").attr('src', data);
+									$("#studentInfo").html(data);
 								}
 							});
 							$.ajax({

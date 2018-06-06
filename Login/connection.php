@@ -33,7 +33,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
 		$row = $stmt -> fetch(PDO::FETCH_ASSOC);
 		if($row > 0){
 
-		if($user_type == "admin"){
+			if($user_type == "admin"){
 				
 				$query = $conn->prepare("INSERT INTO admin_log SELECT null, CURRENT_TIMESTAMP , :logoutime, :userAdminPK FROM admin_user  WHERE userAdmin_PK=:userAdminPK");
 				$insert = $query->execute(array(

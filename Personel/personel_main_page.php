@@ -82,11 +82,7 @@ if($_SESSION['access_type'] == 'personel'){
        Öğrenci Bilgileri
        <small>...........</small>
      </h1>
-     <ol class="breadcrumb">
-       <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-       <li><a href="#">Students</a></li>
-       <li class="active">Data tables</li>
-     </ol>
+
    </section>
    <!-- Content Header (Page header) END-->
 

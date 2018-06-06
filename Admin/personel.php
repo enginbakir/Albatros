@@ -204,7 +204,6 @@ if($_SESSION['access_type'] == "admin"){
 								<div class="row">
 									<ul class="nav nav-tabs">
 										<li class="active"><a data-toggle="tab" href="#home">Personel Bilgileri</a></li>
-										<li><a data-toggle="tab" href="#menu2">Takvim</a></li>
 										<li><a data-toggle="tab" href="#loginInfo">Giriş Bilgileri</a></li>
 									</ul>
 
@@ -240,19 +239,6 @@ if($_SESSION['access_type'] == "admin"){
 											</div>
 										</div>
 
-										<div id="menu2" class="tab-pane fade">
-											<div class="col-md-12">
-												<div class="box box-primary">
-													<div class="box-body no-padding">
-														<!-- THE CALENDAR -->
-
-														<div id="calendar" class="takvim calendar fc fc-unthemed fc-ltr"><input type="text" name="date" id="selectedDate" value="" style="display: none;"></div>
-														<button id="showDate" type="button" class="btn btn-primary">&nbsp;&nbsp;Show Date&nbsp;&nbsp;</button>
-														<div class="control-sidebar-bg"></div>
-													</div>
-												</div>
-											</div>
-										</div>
 										<div id="loginInfo" class="tab-pane fade">
 											<div class="col-md-12">
 												<div class="box-body box-profile">

@@ -8,11 +8,25 @@ if($_SESSION['access_type'] == 'personel'){
 		if(isset($_POST['studentID'])){
 			$studentID = $_POST['studentID'];
 		}else{
-			echo "Öğrenci Seçilmedi!!!";
+			$_SESSION['BepERR'] = "Öğrenci Seçilmedi!!!";
 			exit();
 		}
-		$dersler_id = $_POST['framework'];
-		$komisyon_id = $_POST['framework1'];
+		if(isset($_POST['framework']) && !empty($_POST['framework'])){
+			$dersler_id = $_POST['framework'];
+		}
+		else{
+			$_SESSION['BepERR'] .= "Ders Seçilmedi veya Bir Ders İçin Kaba Değerlendirme Yapılmadı";
+			header("location: bep_main_page.php");
+			exit();
+		}	
+		if(isset($_POST['framework1']) && !empty($_POST['framework1'])){
+			$komisyon_id = $_POST['framework1'];
+		}
+		else{
+			$_SESSION['BepERR'] .= "Komisyon Üyesi Seçiniz";
+			header("location: bep_main_page.php");
+			exit();
+		}	
 		$degerlendirmeTarihi = $_POST['degerlendirmeTarihi'];
 		require_once '../PDF/fpdf.php';
 		require_once '../connectDB.php';
@@ -44,7 +58,7 @@ function pdfFirstPage($pdf){
 	$pdf->Line(20,280,190,280);
 	$pdf->Line(20,20,20,280);
 	$pdf->Line(190,20,190,280);
-	$pdf->Image('../Bep/meb.jpg',80 ,40,50,50);
+	$pdf->Image('../images/meblogo.jpg',59 ,40,90,50);
 	$pdf->SetXY(98,100);
 	$turkce_icerik = iconv('utf-8', 'ISO-8859-9', "MEB");
 	$pdf->Write(5,$turkce_icerik);
@@ -273,7 +287,7 @@ function pdfSecondPage($pdf){
 }
 function pdfThirdPage($pdf){
 	$pdf->AddPage();	
-	$pdf->Image('../Bep/ataturkvecocuk.jpg',20 ,10,170,230);
+	$pdf->Image('../images/ataturkvecocuk.jpg',20 ,10,170,230);
 	$pdf->AddFont('Arial','','arial.php'); 
 	$pdf->SetFont('Arial','',15);
 	$pdf->SetXY(70,250);

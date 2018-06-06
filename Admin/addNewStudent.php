@@ -1,11 +1,13 @@
 <?php 
 
-/*<!-- PHP CHECKING INPUTS -->*/
+// <!-- PHP CHECKING INPUTS -->
 
 session_start();
-ob_start();
+
 
 require_once "../connectDB.php";
+require_once("function.php");
+
 
 date_default_timezone_set("Europe/Istanbul");
 $currentDate = date("Y-m-d");
@@ -22,6 +24,7 @@ $donemBitisTarihi;
 $parentName = $parentSurname = $parentTCNumber = $parentYakinlik = $parentSabitTel = $parentCepTel = $parentEmailAdress = $parentAdress = $parentIsAdress = $aciklama = $proximity = null;
 $parentNameErr = $parentSurnameErr = $parentTCNumberErr = null;
 $parentLastID = null;
+
 
 
 $filePath = "";
@@ -109,17 +112,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
 	$fileErrors = array();
 
 // Check if image file is a actual image or fake image
-	$gender = $_POST['gender'];
-	if(strlen($target_file) < 11){
-		if($gender == 1){
-			$target_file = "../dist/img/avatar2.png";
-		}
-		else{
-			$target_file = "../dist/img/avatar5.png";
-		}
 
-		echo $target_file."<br>".$gender."<br>";
-	}
+	if(strlen($target_file) < 11)
+		$target_file = "../images/avatar5.png";
 	else{
 		if(isset($_POST["fileToUpload"])) {
 			$check = getimagesize($_FILES["fileToUpload"]["tmp_name"]);
@@ -157,6 +152,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
 	}
 //// FOTOĞRAF KONTROLÜ BURADAN YUKARIYA /////
 
+
+
+	if(!empty($_POST["gender"])){
+		if($_POST["gender"] == "Kız")
+			$gender = 1;
+		else
+			$gender = 2;
+	}
 	if(!empty($_POST["ogretmen"])){
 		$personel_FK = $_POST["ogretmen"];
 		$_SESSION["personelERR"] = $personel_FK;
@@ -273,7 +276,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
 
 
 		if($bool){
-
 			runStudentQuery();
 		}
 		else{
@@ -287,7 +289,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
 /// END OF REQUEST IF CODE BLOCK  ///
 	}
 	else{
-		$_SESSION["errorMessage"] = "Bilgileri Kontrol Ediniz!!!";
 		header("Location: ogrenci_ekle.php");
 	}
 
@@ -301,6 +302,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
 		global $class,$donemBitisTarihi,$donemBaslangicTarihi,$rapor_no,$studentSurname,$studentName,$TCNumber,$currentDate,$rehberlikMerkezi,$gender,$birthday,$target_file,$personel_FK;
 		global $studentLastID;
 
+		if(strlen($target_file) < 11)
+			$target_file = "../images/avatar5.png";
+		echo $target_file;
 
 		$sqlStudentQuery = "INSERT INTO `student`(`tc_no`, `name`, `surname`, `class`, `rapor_no`, `birthday`, `photo`, `registration_date`, `rehberlik_merkezi`,`term_start_date`, `term_finish_date`,`status`,`gender_FK`, `personel_FK`) VALUES  
 		('$TCNumber','$studentName','$studentSurname','$class','$rapor_no','$birthday','$target_file','$currentDate','$rehberlikMerkezi','$donemBaslangicTarihi','$donemBitisTarihi','1','$gender','$personel_FK')";
@@ -312,7 +316,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
 			if($retval === false){
 				$_SESSION["errorMessage"] = "Student Bilgilerini Kontrol Ediniz!!!<br> Ekleme Hatası: <br>";
 				header("Location: ogrenci_ekle.php");
-
+				exit();
 			}
 			else{	
 				if($studentLastID > 0){
@@ -330,20 +334,21 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
 					unlink($target_file);
 					$_SESSION["errorMessage"] = "Student Bilgilerini Kontrol Ediniz!!! last id awd  ";
 					header("Location: ogrenci_ekle.php");
-
+					exit();
 				}
 			}
 		}
 		catch(Exception $e) { 
 			$_SESSION["errorMessage"] = "Student Bilgilerini Kontrol Ediniz!!!<br> Error: <br>".$e->getMessage();
 			header("Location: ogrenci_ekle.php"); 
-
+			exit();
 		}
 	}
 
 	function runParentQuery(){
 		global $parentLastID;
 		global $conn,$parentCepTel,$parentSabitTel,$parentTCNumber,$parentName,$parentSurname,$parentAdress,$parentIsAdress,$aciklama,$parentEmailAdress,$proximity;
+		global $class,$donemBitisTarihi,$donemBaslangicTarihi,$rapor_no,$studentSurname,$studentName,$TCNumber,$currentDate,$rehberlikMerkezi,$gender,$birthday,$target_file,$personel_FK;
 		global $studentLastID;
 		global $bool;
 
@@ -356,19 +361,22 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
 		}catch(Exception $e) { 
 			deleteQueries();
 			$_SESSION["errorMessage"] = "Veli Bilgilerini Kontrol Ediniz!!!<br> Error: <br>".$e->getMessage();
-			header("Location: ogrenci_ekle.php"); 
-
+			hheader("Location: ogrenci_ekle.php"); 
+			exit();
 		}
 		if($retval === false){
 			deleteQueries();
 			$_SESSION["errorMessage"] = "Veli Bilgilerini Kontrol Ediniz!!!";
 			header("Location: ogrenci_ekle.php"); 
-
+			exit();
 		}
 		else{
 			$_SESSION["errorMessage"] = "Ekleme Başarıyla Tamamlandı!!!";
+			$message = "eklendi";
+			$query ="INSERT INTO `notifications` (`id`, `name`, `surname`, `type`, `message`, `status`, `date`) VALUES (NULL, '$studentName','$studentSurname', 'student', '$message', 'unread', CURRENT_TIMESTAMP)";
+			performQuery($query);
 			header("Location: ogrenci_ekle.php"); 
-
+			exit();
 		}
 
 
@@ -386,11 +394,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
 			unlink($target_file);
 			$_SESSION["errorMessage"] = "Veri Tabanı Hatası !!";
 			header("Location: ogrenci_ekle.php");
-
+			exit();
 		}catch(Exception $e) { 
 			$_SESSION["errorMessage"] = "Veri Tabanı Hatası !!".$e->getMessage();
-			header("Location: ogrenci_ekle.php"); 
-
+			hheader("Location: ogrenci_ekle.php"); 
+			exit();
 		}
 	}
 
@@ -416,9 +424,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
 		return true;  
 	}  
 
-	if(ob_end_flush()){
-		echo "ob end flush is true";
-	}
 	?>
 
 <!-- PHP CHECKING INPUTS -->

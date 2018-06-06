@@ -1,7 +1,7 @@
 <?php
-
 session_start();
-// require_once('../connectDB.php');
+$access_id = $_SESSION['access_id'];
+
 require_once '../connectDB.php';
 // try{
 //   $req = $conn->prepare($sql);

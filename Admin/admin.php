@@ -1,8 +1,10 @@
 <?php 
 session_start();
+date_default_timezone_set("Europe/Istanbul");
 
 if($_SESSION['access_type'] == "admin"){
   require_once "../connectDB.php";
+  $access_id = $_SESSION['access_id'];
   ?>  
 
   <!DOCTYPE html>
@@ -85,8 +87,8 @@ if($_SESSION['access_type'] == "admin"){
 <body class="hold-transition skin-blue sidebar-mini">
   <div class="wrapper">
 
-    <?php include 'header.php'; ?>
-    <?php include 'sidebar.php'; ?>
+    <?php require_once 'header.php'; ?>
+    <?php require_once 'sidebar.php'; ?>
 
     <!-- Content Wrapper START-->
     <div class="content-wrapper">
@@ -141,7 +143,7 @@ if($_SESSION['access_type'] == "admin"){
               <div class="icon">
                 <i class="ion ion-university"></i>
               </div>
-              <a href="../Admin/ogrenci.php" class="small-box-footer">Daha fazla bilgi  <i class="fa fa-arrow-circle-right"></i></a>
+              <a href="../Personel/personel_main_page.php" class="small-box-footer">Daha fazla bilgi  <i class="fa fa-arrow-circle-right"></i></a>
             </div>
           </div>
           <!-- ./col -->
@@ -164,7 +166,7 @@ if($_SESSION['access_type'] == "admin"){
               <div class="icon">
                 <i class="ion ion-person-stalker"></i>
               </div>
-              <a href="../Admin/personel.php" class="small-box-footer">Daha fazla bilgi <i class="fa fa-arrow-circle-right"></i></a>
+              <a href="../Personel/personel_main_page.php" class="small-box-footer">Daha fazla bilgi <i class="fa fa-arrow-circle-right"></i></a>
             </div>
           </div>
           <!-- ./col -->
