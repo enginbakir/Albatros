@@ -1,15 +1,29 @@
 <?php session_start();
 if($_SESSION['access_type'] == "admin"){ 
 	require_once '../connectDB.php';
-	$id = $_GET["id"];
-	$sql = "SELECT * FROM student where student_PK = $id";
+	if (isset($_GET['id'])) {
+		# code...
+		$id = (int)$_GET["id"];
+	}
+	else{
+		die("Öğrenci Seçilmedi");
+	}
+	try {
+		$sql = "SELECT * FROM student where student_PK = :id";
+		$stmt = $conn->prepare($sql);
+		$stmt->bindParam(':id', $id);
+		$stmt->execute();
+		$studentRow = $stmt->fetch(PDO::FETCH_ASSOC);
+	//$studentRow = $conn->query($sql, PDO::FETCH_ASSOC)->fetch();
+		$veliQuery = "SELECT * from parent where student_FK = :id";
+		$velistmt = $conn->prepare($veliQuery);
+		$velistmt->execute(array(':id' => $id));
+		$veliRow = $velistmt ->fetch(PDO::FETCH_ASSOC);
 
-	$row = $conn->query($sql, PDO::FETCH_ASSOC)->fetch();
+	//$veliRow = $conn->query($veliQuery,PDO::FETCH_ASSOC)->fetch();
 
-	$veliQuery = "SELECT * from parent where student_FK = $id";
-	$veliRow = $conn->query($veliQuery,PDO::FETCH_ASSOC)->fetch();
-	if($veliRow === false) {
-		die('Could not get data: ');
+	} catch (Exception $e) {
+		die($e->getMessage());
 	}
 	
 	?>  
@@ -28,8 +42,6 @@ if($_SESSION['access_type'] == "admin"){
 		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
 		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/0.9.13/css/bootstrap-multiselect.css" />
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/0.9.13/js/bootstrap-multiselect.js"></script>
-
-
 
 		<!-- Import google fonts - Heading first/ text second -->
 		<link href="http://fonts.googleapis.com/css?family=Droid+Sans:400,700" rel="stylesheet" type="text/css">
@@ -67,23 +79,21 @@ if($_SESSION['access_type'] == "admin"){
   	<link rel="stylesheet" href="../bower_components\fullcalendar\dist\fullcalendar.print.min.css" media="print">
   	<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
   	<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-  <!--[if lt IE 9]>/albatros/
-  <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
-  <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-<![endif]-->
 
-<!-- Google Font -->
-<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
-<style>
-.error {color: #FF0000; font-weight:bold;}
-.bigfont {font-size: 20px;}
-</style>
+  	<!-- Google Font -->
+  	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
+  	<style>
+  	.error {color: #FF0000; font-weight:bold;}
+  	.bigfont {font-size: 20px;}
+  </style>
 </head>
 <body class="hold-transition skin-blue sidebar-mini">
+
+
 	<div class="wrapper">
-		<?php include 'header.php'; ?>
+		<?php require_once 'header.php'; ?>
 		<!-- Left side column. contains the logo and sidebar -->
-		<?php include 'sidebar.php'; ?>
+		<?php require_once 'sidebar.php'; ?>
 		<!-- Content Wrapper. Contains page content -->
 		<div class="content-wrapper">
 			<section class="content-header">
@@ -91,11 +101,7 @@ if($_SESSION['access_type'] == "admin"){
 					Öğrenci Düzenle
 					<small>...........</small>
 				</h1>
-				<ol class="breadcrumb">
-					<li><a href="admin.php"><i class="fa fa-dashboard"></i> Anasayfa</a></li>
-					<li><a href="ogrenci.php">Öğrenciler</a></li>
-					<li class="active">Düzenle</li>
-				</ol>
+
 			</section>
 			<section class="content">
 				<div class="row">
@@ -103,12 +109,12 @@ if($_SESSION['access_type'] == "admin"){
 
 						<!--  FORM   -->
 
-						<form id="updateStudentForm" action="updateStudent.php" method="post" enctype="multipart/form-data">
+						<form id="updateStudentForm" action="updateStudent.php" method="POST" enctype="multipart/form-data">
 
 							<!--  FORM  -->
 
 							<!-- this input will be used to post student_PK to updateStudent.php page -->
-							<input name="student_PK" type="text" maxlength="11" class="form-control" placeholder="Sabit Telefon" style="display: none" <?php echo " value = '".$row["student_PK"]."'"; ?> >
+							<input name="student_PK" type="text" maxlength="11" class="form-control" placeholder="Sabit Telefon" style="display: none" <?php echo " value = '".$studentRow["student_PK"]."'"; ?> >
 							<!-- this input will be used to post student_PK to updateStudent.php page -->
 							
 							<div class="panel panel-default  toggle panelMove panelRefresh" id="supr0">
@@ -131,7 +137,7 @@ if($_SESSION['access_type'] == "admin"){
 													<div class="input-group">
 														<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
 														<span class="error"><?php echo $_SESSION["donemBaslangicTarihi"]; ?></span>
-														<input name="donemBaslangicTarihi" class="form-control" type="date" data-date-inline-picker="false" data-date-open-on-focus="false" value = <?php echo $row['term_start_date']; ?> >
+														<input name="donemBaslangicTarihi" class="form-control" type="date" data-date-inline-picker="false" data-date-open-on-focus="false" value = <?php echo $studentRow['term_start_date']; ?> >
 													</div>
 												</div>
 												<label class="col-md-2 control-label" for="">Dönem Bitiş Tarihi:</label>
@@ -139,7 +145,7 @@ if($_SESSION['access_type'] == "admin"){
 													<div class="input-group">
 														<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
 														<span class="error"><?php echo $_SESSION["donemBitisTarihi"]; ?></span>
-														<input name="donemBitisTarihi" class="form-control"  type="date" data-date-inline-picker="false" data-date-open-on-focus="false" value = <?php echo $row['term_finish_date']; ?> >
+														<input name="donemBitisTarihi" class="form-control"  type="date" data-date-inline-picker="false" data-date-open-on-focus="false" value = <?php echo $studentRow['term_finish_date']; ?> >
 													</div>
 												</div>
 											</div>
@@ -151,12 +157,12 @@ if($_SESSION['access_type'] == "admin"){
 											<div class="row">
 												<label class="col-md-2 control-label"><i class="renk">&nbsp;</i>Adı:</label>
 												<div class="col-md-3">
-													<input name="studentName" type="text" maxlength="64" id="ContentPlaceHolder1_txtAdi" class="form-control" placeholder="Öğrenci Adı"  <?php echo " value = '".$row['name']."'"; ?> />
+													<input name="studentName" type="text" maxlength="64" id="ContentPlaceHolder1_txtAdi" class="form-control" placeholder="Öğrenci Adı"  <?php echo " value = '".$studentRow['name']."'"; ?> />
 													<span class="error">* <?php echo $_SESSION["nameErr"];?></span>
 												</div>
 												<label class="col-md-2 control-label"><i class="renk">&nbsp;</i>Soyadı:</label>
 												<div class="col-md-3">
-													<input name="studentSurname" type="text" maxlength="64" id="ContentPlaceHolder1_txtSoyadi" class="form-control" placeholder="Öğrenci Soyadı"<?php echo " value = '".$row['surname']."'"; ?> />
+													<input name="studentSurname" type="text" maxlength="64" id="ContentPlaceHolder1_txtSoyadi" class="form-control" placeholder="Öğrenci Soyadı"<?php echo " value = '".$studentRow['surname']."'"; ?> />
 													<span class="error">* <?php echo $_SESSION["surNameErr"];?></span>
 												</div>
 											</div>
@@ -173,7 +179,7 @@ if($_SESSION['access_type'] == "admin"){
 														<?php 
 														echo '<select name="gender" id="Cinsiyet" class="fancy-select form-control fancified" >';
 
-														if($row['gender_FK'] == "1"){
+														if($studentRow['gender_FK'] == "1"){
 															echo '<option value = "1">KIZ</option>';
 															echo '<option value = "2">ERKEK</option>';
 														}
@@ -189,7 +195,8 @@ if($_SESSION['access_type'] == "admin"){
 												</div>
 												<label class="col-md-2 control-label">T.C. No:</label>
 												<div class="col-md-3">
-													<input name="TCNumber" type="text" maxlength="11" id="ContentPlaceHolder1_txtTC" class="form-control" placeholder="T.C. Kimlik No" value = <?php echo $row['tc_no']; ?>>
+													
+													<input name="TCNumber" type="text" maxlength="11" id="parentTCNumber" class="form-control" placeholder="TC Kimlik No" <?php echo " value = '".$studentRow['tc_no']."'" ?>>
 													<span class="error"><?php echo $_SESSION["TCNumberErr"];?></span>
 												</div>                          
 											</div>
@@ -203,11 +210,11 @@ if($_SESSION['access_type'] == "admin"){
 											<div class="row">
 												<label class="col-md-2 control-label">Sınıfı:</label>
 												<div class="col-md-3">
-													<input name="studentClass" type="text" maxlength="8" id="ContentPlaceHolder1_txtSinif" class="form-control" placeholder="Sınıfı" value = <?php echo $row['class']; ?>>
+													<input name="studentClass" type="text" maxlength="8" id="ContentPlaceHolder1_txtSinif" class="form-control" placeholder="Sınıfı" value = <?php echo $studentRow['class']; ?>>
 												</div>
 												<label class="col-md-2 control-label">Rapor No:</label>
 												<div class="col-md-3">
-													<input name="studentRapor" type="text" maxlength="16" id="ContentPlaceHolder1_txtRapor" class="form-control" placeholder="Rapor No" value = <?php echo $row['rapor_no']; ?>>
+													<input name="studentRapor" type="text" maxlength="16" id="ContentPlaceHolder1_txtRapor" class="form-control" placeholder="Rapor No" value = <?php echo $studentRow['rapor_no']; ?>>
 												</div>
 											</div>
 										</div>
@@ -220,13 +227,13 @@ if($_SESSION['access_type'] == "admin"){
 												<div class="col-md-3">
 													<div class=" input-group">
 														<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-														<input name="studentBirthDay" class="form-control"  type="date" data-date-inline-picker="false" data-date-open-on-focus="false" value = <?php echo $row['birthday']; ?>>
+														<input name="studentBirthDay" class="form-control"  type="date" data-date-inline-picker="false" data-date-open-on-focus="false" value = <?php echo $studentRow['birthday']; ?>>
 													</div>
 												</div>
 												<label class="col-md-2 control-label" for="">Kayıt Tarihi:</label>
 												<div class="col-md-3">
 													<div class=" input-group">
-														<input name="registrationDate" type="text" maxlength="10" id="registrationDate" class="form-control" placeholder="yyyy-aa-gg" readonly value = <?php echo $row['registration_date']; ?> >
+														<input name="registrationDate" type="text" maxlength="10" id="registrationDate" class="form-control" placeholder="yyyy-aa-gg" readonly value = <?php echo $studentRow['registration_date']; ?> >
 													</div> 
 												</div>
 											</div>
@@ -251,7 +258,7 @@ if($_SESSION['access_type'] == "admin"){
 												</span>
 
 												<input type="file" name="fileToUpload" class="btn btn-default btn-file" >
-												<img id = "ogrenciPhoto" class="profile-user-img img-responsive img-circle" src=<?php echo $row['photo']; ?> alt="User profile picture">
+												<img id = "ogrenciPhoto" class="profile-user-img img-responsive img-circle" src=<?php echo $studentRow['photo']; ?> alt="User profile picture">
 											</div>
 											<label class="col-md-2 control-label" for="">Ulaşım:</label>
 											<div class="col-md-3">
@@ -270,7 +277,7 @@ if($_SESSION['access_type'] == "admin"){
 											<label class="col-md-2 control-label" for="">Reh. Araş. Merkezi:</label>
 											<div class="col-md-3">
 
-												<input name="rehberlikMerkezi" type="text" maxlength="255" id="ContentPlaceHolder1_txtMerkezi" class="form-control" <?php echo " value = '".$row['rehberlik_merkezi']."'"; ?> >
+												<input name="rehberlikMerkezi" type="text" maxlength="255" id="ContentPlaceHolder1_txtMerkezi" class="form-control" <?php echo " value = '".$studentRow['rehberlik_merkezi']."'"; ?> >
 
 											</div>
 
@@ -311,8 +318,8 @@ if($_SESSION['access_type'] == "admin"){
 														$sql = "SELECT * FROM personel";
 
 														echo '<select id="ogretmen" name="ogretmen" class="fancy-select form-control fancified" >';
-														foreach ($conn->query($sql) as $row) {
-															echo "<option value='".$row['personel_PK']."'>".$row['personel_PK']." ".$row['name']."</option>";
+														foreach ($conn->query($sql) as $studentRow) {
+															echo "<option value='".$studentRow['personel_PK']."'>".$studentRow['personel_PK']." ".$studentRow['name']."</option>";
 														}
 														echo "</select>";
 

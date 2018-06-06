@@ -255,6 +255,7 @@ if($_SESSION['access_type'] == "admin"){
 													</div>
 													
 													<div id="menu3" class="tab-pane fade">
+														<div id="message"><span class="error">Ders Eklemek veya Silmek İçin Öğrenci Seçin</span></div>
 														<br>
 														<div class="row">
 															<div class="col-md-12" id="dersler">
@@ -283,7 +284,7 @@ if($_SESSION['access_type'] == "admin"){
 														<br>
 														<input id="dersEkle" value="Yeni Ders Ekle" class="col-md-3 btn btn-primary">
 														<input id="dersSil" value="Ders Sil" class="col-md-3 btn btn-primary">
-														<div id="message"><span class="error">Ders Eklemek veya Silmek İçin Bir Seçin</span></div>
+														
 													</div>
 													
 

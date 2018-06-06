@@ -143,7 +143,7 @@ if($_SESSION['access_type'] == "admin"){
               <div class="icon">
                 <i class="ion ion-university"></i>
               </div>
-              <a href="../Personel/personel_main_page.php" class="small-box-footer">Daha fazla bilgi  <i class="fa fa-arrow-circle-right"></i></a>
+              <a href="../Admin/ogrenci.php" class="small-box-footer">Daha fazla bilgi  <i class="fa fa-arrow-circle-right"></i></a>
             </div>
           </div>
           <!-- ./col -->
@@ -166,7 +166,7 @@ if($_SESSION['access_type'] == "admin"){
               <div class="icon">
                 <i class="ion ion-person-stalker"></i>
               </div>
-              <a href="../Personel/personel_main_page.php" class="small-box-footer">Daha fazla bilgi <i class="fa fa-arrow-circle-right"></i></a>
+              <a href="../Admin/personel.php" class="small-box-footer">Daha fazla bilgi <i class="fa fa-arrow-circle-right"></i></a>
             </div>
           </div>
           <!-- ./col -->

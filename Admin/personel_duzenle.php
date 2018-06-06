@@ -2,8 +2,8 @@
 if($_SESSION['access_type'] == "admin"){ 
 	require_once '../connectDB.php';
 	$id = $_GET["id"];
-	$sql = "SELECT * FROM personel where personel_PK = $id";
-	$row = $conn->query($sql, PDO::FETCH_ASSOC)->fetch();
+	$sql = "SELECT * FROM personel where personel_PK = '$id'";
+	$personelRow = $conn->query($sql, PDO::FETCH_ASSOC)->fetch();
 	
 	?>  
 
@@ -98,7 +98,7 @@ if($_SESSION['access_type'] == "admin"){
           <div class="col-md-12">
             <!-- FORM -->
             <form id="updatePersonelForm" action="updatePersonel.php" method="post" enctype="multipart/form-data">
-            	<input name="personel_PK" type="text" maxlength="11" class="form-control" style="display: none" <?php echo " value = '".$row["personel_PK"]."'"; ?> >
+            	<input name="personel_PK" type="text" maxlength="11" class="form-control" style="display: none" <?php echo " value = '".$personelRow["personel_PK"]."'"; ?> >
             	
 							<!-- this input wi
               <!-- FORM -->
@@ -129,13 +129,13 @@ if($_SESSION['access_type'] == "admin"){
                         <label class="col-md-2 control-label"><i class="renk">&nbsp;</i>Adı:</label>
 
                         <div class="col-md-3">
-                          <input name="personelName" type="text" maxlength="64" id="" class="form-control" placeholder="Personel Adı" <?php echo " value = '".$row["name"]."'"; ?>>
+                          <input name="personelName" type="text" maxlength="64" id="" class="form-control" placeholder="Personel Adı" <?php echo " value = '".$personelRow["name"]."'"; ?>>
                           <span class="error">* <?php echo $_SESSION["nameErr"];?></span>
                         </div>
 
                         <label class="col-md-2 control-label"><i class="renk">&nbsp;</i>Soyadı:</label>
                         <div class="col-md-3">
-                          <input name="personelSurname" type="text" maxlength="64" id="" class="form-control" placeholder="Personel Soyadı" <?php echo " value = '".$row["surname"]."'"; ?>>
+                          <input name="personelSurname" type="text" maxlength="64" id="" class="form-control" placeholder="Personel Soyadı" <?php echo " value = '".$personelRow["surname"]."'"; ?>>
                           <span class="error">* <?php echo $_SESSION["surNameErr"];?></span>
                         </div>
 
@@ -192,7 +192,7 @@ if($_SESSION['access_type'] == "admin"){
 
                       <label class="col-md-2 control-label">Telefon:</label>
                       <div class="col-md-3">
-                        <input name="personelTelefon" type="text" maxlength="16" id="personelTelefon" class="form-control" placeholder="Telefon" <?php echo " value = '".$row["tel_no"]."'"; ?>>
+                        <input name="personelTelefon" type="text" maxlength="16" id="personelTelefon" class="form-control" placeholder="Telefon" <?php echo " value = '".$personelRow["tel_no"]."'"; ?>>
                         <span id="ContentPlaceHolder1_RegularExpressionValidator2" style="color:Red;font-weight:bold;visibility:hidden;">Lütfen Geçerli Bir Numara Giriniz</span>
                       </div>
                     </div>
@@ -212,11 +212,11 @@ if($_SESSION['access_type'] == "admin"){
                         ?>
                       </span>
                       <input type="file" name="fileToUpload" id="fileToUpload" class="btn btn-default btn-file">
-                      <img id = "personelPhoto" class="profile-user-img img-responsive img-circle" src=<?php echo $row['photo']; ?> alt="User profile picture">
+                      <img id = "personelPhoto" class="profile-user-img img-responsive img-circle" src=<?php echo $personelRow['photo']; ?> alt="User profile picture">
                     </div>
                     <label class="col-md-2 control-label" for="">Email Adresi:</label>
                     <div class="col-md-3">
-                      <input name="personelEmailAdresi" type="text" maxlength="255" id="personelEmailAdresi" class="form-control" placeholder="Email Adresi" <?php echo " value = '".$row["email_address"]."'"; ?>>
+                      <input name="personelEmailAdresi" type="text" maxlength="255" id="personelEmailAdresi" class="form-control" placeholder="Email Adresi" <?php echo " value = '".$personelRow["email_address"]."'"; ?>>
                     </div>
                   </div>
 
@@ -234,7 +234,7 @@ if($_SESSION['access_type'] == "admin"){
                     <div class="col-md-3">
                      <div class=" input-group">
                        <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-                       <input name="personelAyrilisTarihi" type="date" id="ayrilisTarihi" class="form-control" placeholder="gg.AA.yyyy" <?php echo " value = '".$row["deletion_date"]."'"; ?>>
+                       <input name="personelAyrilisTarihi" type="date" id="ayrilisTarihi" class="form-control" placeholder="gg.AA.yyyy" <?php echo " value = '".$personelRow["deletion_date"]."'"; ?>>
                      </div>
                    </div>
                  </div>

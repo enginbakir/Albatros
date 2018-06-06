@@ -84,16 +84,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
 				}
 			}
 			catch (Exception $e) { 
-  // $_SESSION['login_error'] = $e->getMessage(); 
 				echo "diagnosis hata<br>";
 				echo $e->getMessage();
 			}
-			 /*
-			$result = mysqli_query($conn,$query);
-			$row = mysqli_fetch_array($result,MYSQL_ASSOC);
-			$educationalDiagnosis [$counter] = $row['diagnosis_PK'];
-			$counter ++; 
-			*/
+
 		}
 	}
 	else{
@@ -354,7 +348,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
 
 		$sqlParentQuery = "INSERT INTO `parent`(`tel_no`, `sabit_tel`, `tc_no`, `name`, `surname`, `adress`, `work_adress`, `description`, `email_adress`, `degree_of_proximity_FK`, `student_FK`) VALUES ('$parentCepTel','$parentSabitTel','$parentTCNumber','$parentName','$parentSurname','$parentAdress','$parentIsAdress','$aciklama','$parentEmailAdress','$proximity','$studentLastID')";
 
-
 		try{
 			$retval = $conn->exec($sqlParentQuery);
 
@@ -379,7 +372,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
 			exit();
 		}
 
-
 	}
 	function deleteQueries(){
 		global $target_file;
@@ -401,7 +393,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
 			exit();
 		}
 	}
-
 
 	function test_input($data) {
 		$data = trim($data);
