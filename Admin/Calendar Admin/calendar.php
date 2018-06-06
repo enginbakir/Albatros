@@ -1,8 +1,8 @@
 <?php
 require_once('bdd.php');
 
-
-$sql = "SELECT id, title, start, end, color FROM event_admin ";
+$admin_id = 1;
+$sql = "SELECT id, title, start, end, color FROM event_admin WHERE admin_FK = $admin_id";
 
 $req = $bdd->prepare($sql);
 $req->execute();
