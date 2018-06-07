@@ -60,8 +60,8 @@ $events = $req->fetchAll();
           <small>
             <ol class="breadcrumb">
               <li><a href="#"><i class="fa fa-dashboard"></i> Anasayfa</a></li>
-              <li><a href="#">Öğrenci Bilgileri</a></li>
-              <li class="active">Merve Tunçel</li>
+              <li><a href="#">Admin Bilgileri</a></li>
+              <li class="active">Engin Bakır</li>
             </ol>
           </small>
         </h1>
@@ -74,7 +74,7 @@ $events = $req->fetchAll();
             <div class="box box-primary">
 
               <!-- Page Content -->
-              <div class="container">
+              <div class="">
 
                 <div class="row">
                   <div class="col-lg-12 text-center">

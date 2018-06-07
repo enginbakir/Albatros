@@ -61,26 +61,7 @@ if(isset($_POST["id"]))
 	$conn = null;
 }
 
-$output = "
-<li class='list-group-item'>
-<b>Ulaşım</b> <a class='pull-right'>Servis</a>
-</li>
-<li class='list-group-item'>
-<b>Eğitsel Tanı</b> <a class='pull-right'>Excepteur sint occaecat.</a>
-</li>
-<li class='list-group-item'>
-<b>Kaba Değerlendirme</b> <a href='' class='pull-right'>görüntüle</a>
-</li>
-<li class='list-group-item'>
-<b>BEP</b> <a href='' class='pull-right'>görüntüle</a>
-</li>
-<li class='list-group-item'>
-<b>Dönem Başlayış Tarihi</b> <a class='pull-right'>18.09.2017</a>
-</li>
-<li class='list-group-item'>
-<b>Dönem Bitiş Tarihi</b> <a class='pull-right'>07.06.2018</a>
-</li>
-</ul>";
+
 
 exit();
 ?>

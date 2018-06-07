@@ -73,7 +73,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
 				$_SESSION['parentLogPK'] = $q['ParentLog_PK'];
 				$_SESSION['access_type'] = $user_type;
 				$_SESSION['access_id'] = $row['userParent_PK'];
-				header("location: ../Parent/parent_main_page.php");
+				$_SESSION['parentPK'] = $row['parent_FK'];
+				header("location: ../Parent/ogrenci_bilgileri.php");
 			}
 			else {
 				$_SESSION['login_error'] = "Kullanıcı Türü Seçiniz!!!";

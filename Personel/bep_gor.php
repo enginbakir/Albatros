@@ -2,9 +2,9 @@
 $studentID;
 session_start();
 if($_SESSION['access_type'] == 'personel'){
-
 	try {
-
+		require_once '../PDF/fpdf.php';
+		require_once '../connectDB.php';
 		if(isset($_POST['studentID'])){
 			$studentID = $_POST['studentID'];
 		}else{
@@ -16,7 +16,7 @@ if($_SESSION['access_type'] == 'personel'){
 		}
 		else{
 			$_SESSION['BepERR'] .= "Ders Seçilmedi veya Bir Ders İçin Kaba Değerlendirme Yapılmadı";
-			header("location: bep_main_page.php");
+			header("location: bep_main_page.php?id=".$studentID);
 			exit();
 		}	
 		if(isset($_POST['framework1']) && !empty($_POST['framework1'])){
@@ -24,24 +24,48 @@ if($_SESSION['access_type'] == 'personel'){
 		}
 		else{
 			$_SESSION['BepERR'] .= "Komisyon Üyesi Seçiniz";
-			header("location: bep_main_page.php");
+			header("location: bep_main_page.php?id=".$studentID);
 			exit();
 		}	
-		$degerlendirmeTarihi = $_POST['degerlendirmeTarihi'];
-		require_once '../PDF/fpdf.php';
-		require_once '../connectDB.php';
-		$pdf = new FPDF();
-		$pdf->SetAutoPageBreak(true, 1);
-		
-		pdfFirstPage($pdf);
-		pdfSecondPage($pdf);
-		pdfThirdPage($pdf);
-		pdfFourthPage($pdf,$studentID,$conn,$dersler_id,$komisyon_id,$degerlendirmeTarihi);
-		pdfBepPage($pdf,$studentID,$conn,$dersler_id);
 
-		$pdf->Output();
+		$bool = true;
+		foreach ($dersler_id as $key => $value) {
+			# code...
+			$sql = "SELECT L.lesson_name,KDO.lessons_FK FROM kazanimlar_ders_ogrenci KDO,lessons L where student_FK = '$studentID' AND KDO.lessons_FK = '$value' AND l.lessons_PK = '$value';";
+			$sonuc = $conn -> query($sql,PDO::FETCH_ASSOC)->fetch();
+			if($sonuc['lessons_FK'] == $value){
+				$bool = false;
+				$savedLessons .= $sonuc['lesson_name'];
+				$savedLessons .=" dersinin Kaba değerlendirmesi haricinde kaba değerlendirme yapılmadı.<br>";
+			}
+		}
+		if($bool != false){
+			$_SESSION['BepERR'] = $savedLessons;
+			header("location: bep_main_page.php?id=".$studentID);
+			exit();
+		}
+		else{
+
+			$degerlendirmeTarihi = $_POST['degerlendirmeTarihi'];
+			require_once '../PDF/fpdf.php';
+			require_once '../connectDB.php';
+			$pdf = new FPDF();
+			$pdf->SetAutoPageBreak(true, 1);
+
+			pdfFirstPage($pdf);
+			pdfSecondPage($pdf);
+			pdfThirdPage($pdf);
+			pdfFourthPage($pdf,$studentID,$conn,$dersler_id,$komisyon_id,$degerlendirmeTarihi);
+			pdfBepPage($pdf,$studentID,$conn,$dersler_id);
+
+			$pdf->Output();
+		}
+
 	} catch (Exception $e) {
-		echo $e->getMessage();
+		$_SESSION['BepERR'] = "Seçili Derslerin Kayıtlı Olduğunda Emin Olunuz!!";
+		header("location: bep_main_page.php?id=".$studentID);
+		exit();
+		
 	}
 }
 else{
@@ -97,7 +121,7 @@ function pdfSecondPage($pdf){
 	$pdf->Line(5,292,205,292);
 	$pdf->Line(5,5,5,292);
 	$pdf->Line(205,252,205,292);
-	
+
 	$pdf->SetXY(5,5);
 	$turkce_icerik = iconv('utf-8','ISO-8859-9', "BEP TOPLANTISI");
 	$pdf->Cell(200,7.5,$turkce_icerik,'TR',1,'C'); 	//// BELOW
@@ -365,7 +389,12 @@ function pdfFourthPage($pdf,$studentID,$conn,$dersler_id,$komisyon_id,$degerlend
 	foreach ($dersler_id as $key => $value) {
 		# code...
 		if($value == 5){
-			$sql = "SELECT KD.durum,KM.kazanimlar_PK,KM.kazanimlar FROM kazanimlar_degerlendirme KD,kazanimlar_ders_ogrenci KDO,kazanimlar_matematik KM WHERE KM.kazanimlar_PK = KD.kazanimlar_FK AND KD.durum = 0 AND  KDO.student_FK = '$studentID' AND KDO.lessons_FK = '$value'";
+
+			$sql = "SELECT DISTINCT kazanimlar_ders_ogrenci_PK FROM kazanimlar_ders_ogrenci KDO WHERE student_FK = '$studentID' AND lessons_FK = '$value'";
+			$result = $conn -> query($sql,PDO::FETCH_ASSOC)->fetch();
+			$kazanimlar_ders_ogrenci_PK = $result['kazanimlar_ders_ogrenci_PK'];
+			$sql = "SELECT DISTINCT KD.durum,KM.kazanimlar_PK, KM.kazanimlar FROM kazanimlar_degerlendirme KD,kazanimlar_matematik KM WHERE KD.kazanimlar_ders_ogrenci_FK = '$kazanimlar_ders_ogrenci_PK' AND KM.kazanimlar_PK = KD.kazanimlar_FK AND KD.durum = 1";
+			//$sql = "SELECT DISTINCT KD.durum,KM.kazanimlar_PK,KM.kazanimlar FROM kazanimlar_degerlendirme KD,kazanimlar_ders_ogrenci KDO,kazanimlar_matematik KM WHERE KM.kazanimlar_PK=KD.kazanimlar_FK AND KM.kazanimlar_PK = KD.kazanimlar_FK AND KD.durum = 1 AND  KDO.student_FK = '$studentID' AND KDO.lessons_FK = '$value'";
 			$retval = $conn -> query($sql,PDO::FETCH_ASSOC);
 			foreach ($retval as $key => $value) {
 			# code...
@@ -375,7 +404,10 @@ function pdfFourthPage($pdf,$studentID,$conn,$dersler_id,$komisyon_id,$degerlend
 			}
 		}
 		if($value == 3){
-			$sql = "SELECT KD.durum,KOY.kazanimlar_okuma_yazma_PK,KOY.kazanimlar FROM kazanimlar_degerlendirme KD,kazanimlar_ders_ogrenci KDO,kazanimlar_okuma_yazma KOY WHERE KOY.kazanimlar_okuma_yazma_PK = KD.kazanimlar_FK AND KD.durum = 0 AND  KDO.student_FK = '$studentID' AND KDO.lessons_FK = '$value'";
+			$sql = "SELECT DISTINCT kazanimlar_ders_ogrenci_PK FROM kazanimlar_ders_ogrenci KDO WHERE student_FK = '$studentID' AND lessons_FK = '$value'";
+			$result = $conn -> query($sql,PDO::FETCH_ASSOC)->fetch();
+			$kazanimlar_ders_ogrenci_PK = $result['kazanimlar_ders_ogrenci_PK'];
+			$sql = "SELECT DISTINCT KD.durum,KOY.kazanimlar_okuma_yazma_PK,KOY.kazanimlar FROM kazanimlar_degerlendirme KD,kazanimlar_okuma_yazma KOY WHERE KD.kazanimlar_ders_ogrenci_FK = '$kazanimlar_ders_ogrenci_PK' AND KOY.kazanimlar_okuma_yazma_PK = KD.kazanimlar_FK AND KD.durum = 1";
 			$retval = $conn -> query($sql,PDO::FETCH_ASSOC);
 			foreach ($retval as $key => $value) {
 			# code...
@@ -536,7 +568,9 @@ function pdfBepPage($pdf,$studentID,$conn,$dersler_id){
 				$counter = "123";
 				$Y = 30;
 				$currentY;
-				$sql = "SELECT KD.durum, KD.kazanimlar_FK, KD.kazanimlar_ders_ogrenci_FK, KM.kazanimlar,AOY.bildirim FROM altkazanimlar_okuma_yazma AOY, kazanimlar_degerlendirme KD,kazanimlar_matematik KM WHERE KD.kazanimlar_ders_ogrenci_FK = ".$retval['kazanimlar_ders_ogrenci_PK']." AND KD.durum = 0 AND KM.kazanimlar_PK = KD.kazanimlar_FK AND KD.kazanimlar_FK = AOY.kazanimlar_FK AND AOY.lesson_FK = '$row'";
+				$sql = "SELECT KD.durum, KD.kazanimlar_FK, KD.kazanimlar_ders_ogrenci_FK, KM.kazanimlar,AM.bildirim FROM altkazanimlar_matematik AM, kazanimlar_degerlendirme KD,kazanimlar_matematik KM WHERE KD.kazanimlar_ders_ogrenci_FK = ".$retval['kazanimlar_ders_ogrenci_PK']." AND KD.durum = 0 AND KM.kazanimlar_PK = KD.kazanimlar_FK AND KD.kazanimlar_FK = AM.kazanimlar_FK AND AM.lesson_FK = '$row'";
+
+				$sql = "SELECT KD.durum, KD.kazanimlar_FK, KD.kazanimlar_ders_ogrenci_FK,KOY.kazanimlar,AOY.bildirim FROM altkazanimlar_okuma_yazma AOY, kazanimlar_degerlendirme KD,kazanimlar_okuma_yazma KOY WHERE KD.kazanimlar_ders_ogrenci_FK = ".$retval['kazanimlar_ders_ogrenci_PK']." AND KD.durum = 0 AND KOY.kazanimlar_okuma_yazma_PK = KD.kazanimlar_FK AND KD.kazanimlar_FK = AOY.kazanimlar_FK AND AOY.lesson_FK = '$row'";
 				$result = $conn -> query($sql,PDO::FETCH_ASSOC);
 				$distance = 0;
 				foreach ($result as $key => $value) {

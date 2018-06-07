@@ -3,7 +3,14 @@
 session_start();
 if($_SESSION['access_type'] == 'parent'){
   require_once "../connectDB.php";
-  $id = $_SESSION['access_id'];
+  $parentID = $_SESSION['parentPK'];
+  $sql = "SELECT student_FK FROM parent WHERE parent_PK = '$parentID'";
+  $retval = $conn ->query($sql,PDO::FETCH_ASSOC)->fetch();
+  $studentID = $retval['student_FK'];
+
+  $sql = "SELECT note,name,surname,tarih FROM notes N,personel P WHERE student_FK = '$studentID' AND N.personel_FK = P.personel_PK";
+  $result = $conn ->query($sql,PDO::FETCH_ASSOC);
+
 
   ?>
   <!DOCTYPE html>
@@ -51,17 +58,80 @@ if($_SESSION['access_type'] == 'parent'){
 
   </head>
   <body class="hold-transition skin-blue sidebar-mini">
+    <div class="wrapper">
+      <!-- Left side column. contains the logo and sidebar -->
+      <?php include 'header.php'; ?>
+      <!-- Left side column. contains the logo and sidebar -->
+      <?php include 'parentPageSidebar.php'; ?>
 
-    <!-- Left side column. contains the logo and sidebar -->
-    <?php include 'header.php'; ?>
-    <!-- Left side column. contains the logo and sidebar -->
-    <?php include 'parentPageSidebar.php'; ?>
+      <div class="content-wrapper">
 
 
-  </body>
-  </html>
+       <section class="content">
 
-  <?php 
+         <!-- Main row -->
+         <div class="row">
+
+          <div class="box box-primary">
+
+            <!-- box-header START-->
+            <div class="box-header">
+              <i class="ion ion-ios-folder"></i>
+
+              <h3 class="box-title"><b>NOTLAR</b></h3>
+
+            </div>
+            <!-- box-header END-->
+
+            <!-- box-body START-->
+            <div class="box-body">
+              <div class="row">
+                <div class="col-md-12 form-group">
+                <div class="scrollable">
+                 <table id="example23" class="table table-bordered table-hover table-striped table-condens formatHTML5">
+                  <thead>
+                   <tr>
+                    <th>Öğretmen</th>
+                    <th>Tarih</th>
+                    <th>Not</th>
+                  </tr>
+                </thead>
+                <tbody id="notes">
+
+                  <?php 
+                  foreach ($result as $key => $value) {
+                    # code...
+                  }
+                  echo "<tr>";
+                  echo "<td>".$value['name']." ".$value['surname']."</td>";
+                  echo "<td>".$value['tarih']."</td>";
+                  echo "<td>".$value['note']."</td>";
+                  echo "</tr>";
+
+                  ?>
+
+                  <tr>
+                    <td></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+
+      </div>
+    </div>
+  </div>
+
+</section>
+</div>
+</div>
+</body>
+</html>
+
+<?php 
 }
 else{
  header("location: ../index.php");

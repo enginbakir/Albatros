@@ -93,8 +93,6 @@ if($_SESSION['access_type'] == "admin"){
     <!-- Content Wrapper START-->
     <div class="content-wrapper">
 
-      <!-- Main content START-->
-      <section class="content">
        <!-- Main content -->
        <section class="content">
         <!-- Small boxes (Stat box) -->
@@ -375,7 +373,7 @@ if($_SESSION['access_type'] == "admin"){
                   echo "font-weight:bold;";
                 }else{
                   echo "color: red;";
-                } ?> " class="dropdown-item" href="view.php?id=<?php echo $i['id'] ?>">
+                } ?> " class="dropdown-item" href="view1.php?id=<?php echo $i['id'] ?>">
                 <i><?php echo date('F j, Y, g:i a',strtotime($i['date'])) ?></i> <br/>
                 <span class="text"> <i class="fa fa-address-book text-red"></i>  
                   <?php 

@@ -7,7 +7,7 @@ try {
 	{
 		require_once '../connectDB.php';
 		$query = "INSERT INTO odeme_data (aylar, date_odeme, o_bilgisi, student_FK, personel_FK) VALUES(:aylar, :date_odeme, :o_bilgisi, :student_id, :personel_id)";
-		$statement = $connect->prepare($query);
+		$statement = $conn->prepare($query);
 		foreach ($_POST['dates'] as $row) {
 
 			$result = $statement->execute(
@@ -34,7 +34,7 @@ try {
 }catch (PDOException $e) {
 	echo $e->getMessage();
 }
-$connect = null;
+$conn = null;
 exit();
 
 ?>

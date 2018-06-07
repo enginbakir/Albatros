@@ -2,8 +2,15 @@
 
 session_start();
 if($_SESSION['access_type'] == 'parent'){
-    require_once "../connectDB.php";
-  $id = $_SESSION['access_id'];
+  require_once "../connectDB.php";
+  $parentID = $_SESSION['parentPK'];
+  $sql = "SELECT student_FK FROM parent WHERE parent_PK = '$parentID'";
+  $retval = $conn ->query($sql,PDO::FETCH_ASSOC)->fetch();
+  $studentID = $retval['student_FK'];
+
+  $sql = "SELECT note,name,surname,tarih FROM notes N,personel P WHERE student_FK = '$studentID' AND N.personel_FK = P.personel_PK";
+  $result = $conn ->query($sql,PDO::FETCH_ASSOC);
+
   ?>
   <!DOCTYPE html>
   <html>
@@ -50,17 +57,74 @@ if($_SESSION['access_type'] == 'parent'){
 
   </head>
   <body class="hold-transition skin-blue sidebar-mini">
+    <div class="wrapper">
+     <!-- Left side column. contains the logo and sidebar -->
+     <?php require_once 'header.php'; ?>
+     <!-- Left side column. contains the logo and sidebar -->
+     <?php require_once 'parentPageSidebar.php'; ?>
 
-    <!-- Left side column. contains the logo and sidebar -->
-    <?php include 'header.php'; ?>
-    <!-- Left side column. contains the logo and sidebar -->
-    <?php include 'parentPageSidebar.php'; ?>
+     <div class="content-wrapper">
+       <section class="content">
+        <div class="row">
+          <div class="box box-primary">
+            <div class="box-header">
+              <i class="ion ion-ios-folder"></i>
+              <h3 class="box-title"><b>VELİ BİLGİLERİ</b></h3>
+            </div>
+            <div class="box-body">
+              <div class="row">
+                <div class="col-md-12 form-group">
+                  <div class="box box-primary">
+                    <div id="veliInfo" class="box-body box-profile">  
+                     <?php 
+                     $output = "";
+                     $sql = "SELECT * FROM parent where student_FK = '$studentID'";
+                     $result = $conn->query($sql,PDO::FETCH_ASSOC)->fetch();   
+                     $output = "
+                     <ul class='list-group list-group-unbordered'>
+                     <li class='list-group-item'>
+                     <b>İsim</b> <a class='pull-right'>".$result['name']."</a>
+                     </li>
+                     <li class='list-group-item'>
+                     <b>Soyisim</b> <a class='pull-right'>".$result['surname']."</a>
+                     </li>
+                     <li class='list-group-item'>
+                     <b>TC NO</b> <a class='pull-right'>".$result['tc_no']."</a>
+                     </li>
+                     <li class='list-group-item'>
+                     <b>Telefon</b> <a class='pull-right'>".$result['tel_no']."</a>
+                     </li>
+                     <li class='list-group-item'>
+                     <b>Sabit Telefon</b> <a class='pull-right'>".$result['sabit_tel']."</a>
+                     </li>
+                     <li class='list-group-item'>
+                     <b>Adres</b> <a class='pull-right'>".$result['adress']."</a>
+                     </li>
+                     <li class='list-group-item'>
+                     <b>İş Adresi</b> <a  class='pull-right'>".$result['work_adress']."</a>
+                     </li>
+                     <li class='list-group-item'>
+                     <b>E-Posta Adresi</b> <a  class='pull-right'>".$result['email_adress']."</a>
+                     </li>
+                     </ul>"; 
+                     echo $output;?> 
+                   </div>
+                 </div>
+               </div>
+             </div>
+           </div>
+         </div>
+       </div>
+     </section>
+   </div>
+ </div>
 
 
-  </body>
-  </html>
 
-  <?php 
+</body>
+</html>
+
+<?php 
 }
 else{
  header("location: ../index.php");

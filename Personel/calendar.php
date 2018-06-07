@@ -1,18 +1,8 @@
 <?php
 session_start();
 require_once '../connectDB.php';
-// try{
-//   $req = $conn->prepare($sql);
-//   $req->execute();
-//   $id = $_SESSION['access_id'];
-//   $access_id = $_SESSION['access_id'];
-//   $events = $req->fetchAll();
-// }
-// catch(PDOException $e){
-//   echo "Connection failed: " . $e->getMessage();
 
-// }
-
+$access_id = $_SESSION['access_id'];
 $personel_id =$_SESSION['personelPK'];
 $sql = "SELECT id, title, start, end, color FROM events WHERE personel_FK = $personel_id ";
 
@@ -61,21 +51,17 @@ foreach($result as $row)
   <!-- AdminLTE Skins. Choose a skin from the css/skins
    folder instead of downloading all of them to reduce the load. -->
    <link rel="stylesheet" href="../dist/css/skins/_all-skins.min.css">
-
-
-
    <!-- Google Font -->
    <link rel="stylesheet"
    href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
  </head>
  <body class="hold-transition skin-blue sidebar-mini">
+
   <div class="wrapper">
-
     <!-- Left side column. contains the logo and sidebar -->
-    <?php include 'header.php'; ?>
+    <?php require_once 'header.php'; ?>
     <!-- Left side column. contains the logo and sidebar -->
-    <?php include 'personelPageSidebar.php'; ?>
-
+    <?php require_once 'personelPageSidebar.php'; ?>
     <!-- Content Wrapper. Contains page content -->
     <div class="content-wrapper">
       <!-- Content Header (Page header) -->
@@ -98,14 +84,13 @@ foreach($result as $row)
             <div class="box box-primary">
 
               <!-- Page Content -->
-              <div class="container">
+              <div class="">
 
                 <div class="row">
                   <div class="col-lg-12 text-center">
                     <div id="calendar" class="col-centered">
                     </div>
                   </div>
-
                 </div>
                 <!-- /.row -->
 
@@ -114,16 +99,15 @@ foreach($result as $row)
                   <div class="modal-dialog" role="document">
                     <div class="modal-content">
 
-
-                      <!-- addEvent.php Post edilirken PERSONEL_FK da POST edilmeli !!!!! -->
-
+                      <!-- addEvent.php Post edilirken  -->
 
                       <form class="form-horizontal" method="POST" action="addEvent.php">
-                        <!-- <input type="text" name="student_PK" value="" style="display: none;"> -->
+
                         <div class="modal-header">
                           <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                           <h4 class="modal-title" id="myModalLabel">Ekle</h4>
                         </div>
+
                         <div class="modal-body">
 
                           <div class="form-group">
@@ -136,6 +120,7 @@ foreach($result as $row)
                               </select>
                             </div>
                           </div>
+
                           <div class="form-group">
                             <label for="color" class="col-sm-2 control-label">Renk: </label>
                             <div class="col-sm-10">
@@ -151,12 +136,14 @@ foreach($result as $row)
                               </select>
                             </div>
                           </div>
+
                           <div class="form-group">
                             <label for="start" class="col-sm-3 control-label">Başlangıç Tarihi: </label>
                             <div class="col-sm-9">
                               <input type="text" name="start" class="form-control" id="start" readonly>
                             </div>
                           </div>
+
                           <div class="form-group">
                             <label for="end" class="col-sm-3 control-label">Bitiş Tarihi: </label>
                             <div class="col-sm-9">
@@ -165,11 +152,13 @@ foreach($result as $row)
                           </div>
 
                         </div>
+
                         <div class="modal-footer">
                           <button type="button" class="btn btn-default" data-dismiss="modal">Kapat</button>
                           <button type="submit" class="btn btn-primary">Kaydet</button>
                         </div>
                       </form>
+
                     </div>
                   </div>
                 </div>
@@ -242,8 +231,6 @@ foreach($result as $row)
       <!-- /.content -->
     </div>
     <!-- /.content-wrapper -->
-
-    <!-- calenderdan aldım !!!!!!!!!!!-->
 
   <!-- Add the sidebar's background. This div must be placed
    immediately after the control sidebar -->
@@ -319,26 +306,26 @@ foreach($result as $row)
       events: [
       <?php foreach($events as $event): 
 
-        $start = explode(" ", $event['start']);
-        $end = explode(" ", $event['end']);
-        if($start[1] == '00:00:00'){
-          $start = $start[0];
-        }else{
-          $start = $event['start'];
-        }
-        if($end[1] == '00:00:00'){
-          $end = $end[0];
-        }else{
-          $end = $event['end'];
-        }
-        ?>
-        {
-          id: '<?php echo $event['id']; ?>',
-          title: '<?php echo $event['title']; ?>',
-          start: '<?php echo $start; ?>',
-          end: '<?php echo $end; ?>',
-          color: '<?php echo $event['color']; ?>',
-        },
+      $start = explode(" ", $event['start']);
+      $end = explode(" ", $event['end']);
+      if($start[1] == '00:00:00'){
+        $start = $start[0];
+      }else{
+        $start = $event['start'];
+      }
+      if($end[1] == '00:00:00'){
+        $end = $end[0];
+      }else{
+        $end = $event['end'];
+      }
+      ?>
+      {
+        id: '<?php echo $event['id']; ?>',
+        title: '<?php echo $event['title']; ?>',
+        start: '<?php echo $start; ?>',
+        end: '<?php echo $end; ?>',
+        color: '<?php echo $event['color']; ?>',
+      },
       <?php endforeach; ?>
       ]
     });

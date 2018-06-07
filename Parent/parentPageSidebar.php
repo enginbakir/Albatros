@@ -5,13 +5,13 @@
     <!-- Sidebar user panel -->
     <div class="user-panel">
       <div class="pull-left image">
-        <img src="../dist/img/avatar3.png" class="img-circle" alt="User Image" style="max-width: 50px ">
+        <img src="../images/avatar5.png" class="img-circle" alt="User Image" style="max-width: 50px ">
       </div>
       <div class="pull-left info">
         <br/><p><?php 
 
         try{
-          $query = $conn->query("SELECT P.name, P.surname FROM parent_user U, parent P WHERE U.userParent_PK = $id AND U.parent_FK = P.parent_PK", PDO::FETCH_ASSOC);
+          $query = $conn->query("SELECT name, surname FROM  parent WHERE parent_PK = $parentID", PDO::FETCH_ASSOC);
 
           if ( $query->rowCount()) {
            foreach( $query as $row ){
@@ -48,12 +48,7 @@
         <span style="font-size: 17px">Notlar</span>
       </a>
     </li>
-    <li>
-      <a href="takvim.php">
-        <i class="fa fa-calendar"></i>
-        <span style="font-size: 17px">Takvim</span>
-      </a>
-    </li>
+ 
 
   </ul>
 </section>

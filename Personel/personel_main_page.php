@@ -1,7 +1,6 @@
 <?php 
 session_start();
 if($_SESSION['access_type'] == 'personel'){
-
   try{
     require_once "../connectDB.php";
     $id = $_SESSION['access_id'];
@@ -275,30 +274,11 @@ if($_SESSION['access_type'] == 'personel'){
 <!-- Page-ÖĞRENCİ BİLGİLERİ START -->
 <div id="menu2" class="tab-pane fade">
  <div class="box box-primary">
-  <div class="box-body box-profile">
-   <img class="profile-user-img img-responsive img-circle" src="dist/img/avatar5.png" alt="User profile picture">
-   <h3 class="profile-username text-center">Engin Bakır</h3>
-   <ul class="list-group list-group-unbordered">
-    <li class="list-group-item">
-     <b>TC</b> <a class="pull-right">0</a>
-   </li>
-   <li class="list-group-item">
-     <b>Adres</b> <a class="pull-right"></a>
-   </li>
-   <li class="list-group-item">
-     <b>Ulaşım</b> <a class="pull-right"></a>
-   </li>
-   <li class="list-group-item">
-     <b>Eğitsel Tanı</b> <a class="pull-right"></a>
-   </li>
+  <div id="studentInfo" class="box-body box-profile">
 
-   <li class="list-group-item">
-     <b>Dönem Başlayış Tarihi</b><a class="pull-right">18.09.2017</a>
-   </li>
-   <li class="list-group-item">
-     <b>Dönem Bitiş Tarihi</b> <a class="pull-right">07.06.2018</a>
-   </li>
-   <li class="list-group-item">
+  </div>
+
+  <li class="list-group-item">
     <b>Kaba Değerlendirme</b>
     <form action="kaba_gor.php" method="POST" enctype="multipart/form-data">
       <input type="text" id="studentID" name="studentID" style="display: none;">
@@ -320,8 +300,6 @@ if($_SESSION['access_type'] == 'personel'){
      </div>
    </form>
  </li>
-</ul>
-</div>
 </div>
 </div>
 
@@ -451,7 +429,7 @@ if($_SESSION['access_type'] == 'personel'){
               $.ajax({
                 url:'payment_fetch.php',
                 method:"POST",
-                data:{action:action, query:query,student_id:student_id},
+                data:{action:action, query:query,student_id:student_id,personelID:personelID},
                 success:function(data){
 
                   $('#'+result).html(data);
@@ -503,7 +481,14 @@ if($_SESSION['access_type'] == 'personel'){
           });
         }  
       });  
-
+      $.ajax({
+        url:"getStudentInfo.php",
+        method:"POST",
+        data :{id:id},
+        success:function(data){
+          $("#studentInfo").html(data);
+        }
+      });
       $.ajax({
         url:"load_notes.php",  
         method:"POST", 
@@ -540,58 +525,42 @@ if($_SESSION['access_type'] == 'personel'){
           $('#menu1').html(data);
         }
       });
-      $.ajax({
-        url:"getStudentInfo.php",
-        method:"POST",
-        data:{id:id},
-        success:function(data){
 
-        }
-      });
     }
   }
 }
 
 
 
-
-
-
-
-});
-
-</script>  
-
-<script type="text/javascript">
- $('#framework').multiselect({
+$('#framework').multiselect({
   nonSelectedText: 'Ders seçiniz',
   enableFiltering: true,
   enableCaseInsensitiveFiltering: true,
   buttonWidth:'400px'
 });
- $('#framework1').multiselect({
+$('#framework1').multiselect({
   nonSelectedText: 'Ders Seçiniz',
   enableFiltering: true,
   enableCaseInsensitiveFiltering: true,
   buttonWidth:'400px'
 });
 
- $("#button2").click(function(){
-   var tarih = $("#devamsizlikTarihi").val();
-   var aciklama = $("#devamsizlikAciklama").val();
-   $.ajax({
-    url:'insert.php',
-    method:'POST',
-    data:{tarih:tarih,
-      aciklama:aciklama,id:id},
-      success:function(data){
-       alert(data);
-       location.reload();
-     }
-   });
+$("#button2").click(function(){
+ var tarih = $("#devamsizlikTarihi").val();
+ var aciklama = $("#devamsizlikAciklama").val();
+ $.ajax({
+  url:'insert.php',
+  method:'POST',
+  data:{tarih:tarih,
+    aciklama:aciklama,id:id},
+    success:function(data){
+     alert(data);
+     location.reload();
+   }
  });
+});
 
- $('#kabaSil').on("click",function(){
+$('#kabaSil').on("click",function(){
   var dersler_id = $('#framework').val();
   $.ajax({
     url:'kaba_sil.php',
@@ -604,10 +573,10 @@ if($_SESSION['access_type'] == 'personel'){
 });
 
 
- $('#kabaDegerlendirme').on("click",function(){
-   window.location="kaba_degerlendirme.php?id="+id;
- });
- $('#bepOlustur').on("click",function(){  
+$('#kabaDegerlendirme').on("click",function(){
+  window.location.replace("kaba_degerlendirme.php?id="+id);
+});
+$('#bepOlustur').on("click",function(){  
   if(id>0){  
    window.location = "bep_main_page.php?id="+id;
  }
@@ -615,18 +584,22 @@ if($_SESSION['access_type'] == 'personel'){
   alert ("Bir Öğrenci Seçiniz!!");
 }
 });
- $('#insertnote').on("click",function(){
-   var note = $("#studentNote").val();
-   $.ajax({
-    url:"insertnote.php",
-    method:"POST",
-    data:{id:id,note:note,personelID:personelID}, 
-    success:function(data){
-     alert(data);
+$('#insertnote').on("click",function(){
+ var note = $("#studentNote").val();
+ $.ajax({
+  url:"insertnote.php",
+  method:"POST",
+  data:{id:id,note:note,personelID:personelID}, 
+  success:function(data){
+   alert(data);
 
-   }
- });
- });
+ }
+});
+});
+
+});
+
+
 
 </script> 
 
