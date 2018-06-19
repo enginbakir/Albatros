@@ -66,15 +66,6 @@ foreach($result as $row)
     <div class="content-wrapper">
       <!-- Content Header (Page header) -->
       <section class="content-header">
-        <h1>
-          <small>
-            <ol class="breadcrumb">
-              <li><a href="#"><i class="fa fa-dashboard"></i> Anasayfa</a></li>
-              <li><a href="#">Öğrenci Bilgileri</a></li>
-              <li class="active">Merve Tunçel</li>
-            </ol>
-          </small>
-        </h1>
       </section>
 
       <!-- Main content -->

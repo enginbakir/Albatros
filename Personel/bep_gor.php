@@ -77,7 +77,7 @@ function pdfFirstPage($pdf){
 	$pdf->AddPage();	
 	$pdf->AddFont('Arial','','arial.php'); 
 	$pdf->SetFont('Arial','',15);
-	$pdf->SetLineWidth(0.5);
+	$pdf->SetLineWidth(0.1);
 	$pdf->Line(20,20,190,20);
 	$pdf->Line(20,280,190,280);
 	$pdf->Line(20,20,20,280);
@@ -117,7 +117,7 @@ function pdfSecondPage($pdf){
 	$pdf->AddPage();	
 	$pdf->AddFont('Arial','','arial.php'); 
 	$pdf->SetFont('Arial','B',13);
-	$pdf->SetLineWidth(0.3);
+	$pdf->SetLineWidth(0.1);
 	$pdf->Line(5,292,205,292);
 	$pdf->Line(5,5,5,292);
 	$pdf->Line(205,252,205,292);
@@ -255,7 +255,7 @@ function pdfSecondPage($pdf){
 	$pdf->SetX(5);
 	$pdf->Cell(100,7.5,"",'TR',0,'L');
 	$turkce_icerik = iconv('utf-8',"ISO-8859-9", "Öğrencinin Gelişimi ile İlgili");
-	$pdf->Cell(45,7.5,$turkce_icerik,'T',0,'L');										
+	$pdf->Cell(45,7.5,$turkce_icerik,1,0,'L');										
 	$turkce_icerik = iconv('utf-8',"ISO-8859-9", "Aile Ne Sıklıkla Bilgilendirilecek?");
 	$pdf->Cell(55,7.5,$turkce_icerik,'TR',1,'L');										//// BELOW
 	$pdf->SetX(5);
@@ -376,7 +376,7 @@ function pdfFourthPage($pdf,$studentID,$conn,$dersler_id,$komisyon_id,$degerlend
 	$turkce_icerik = iconv('utf-8','ISO-8859-9', "EĞİTSEL PERFORMANSLAR*");
 	$pdf->Cell(190,7.5,$turkce_icerik,0,0,'C'); 				
 			/// Eğitsel Performanslar Buraya
-	$pdf->SetLineWidth(0.3);
+	$pdf->SetLineWidth(0.1);
 	$pdf->Line(10,92,200,92);
 	$pdf->Line(10,100,200,100);
 	$pdf->Line(10,92,10,280);
@@ -436,16 +436,7 @@ function pdfBepPage($pdf,$studentID,$conn,$dersler_id){
 			}
 			$title = "";
 			$pdf->SetX(10);
-			$pdf->Line(5,10,205,10);
 			$pdf->Line(5,15,205,15);
-			$pdf->Line(5,10,5,290);
-			$pdf->Line(5,290,205,290);
-			$pdf->Line(205,10,205,290);
-			$pdf->Line(55,10,55,290);
-			$pdf->Line(105,10,105,290);
-			$pdf->Line(130,10,130,290);
-			$pdf->Line(155,10,155,290);
-			$pdf->Line(180,10,180,290);
 			$pdf->ln();
 			$turkce_icerik = iconv('utf-8', 'ISO-8859-9', "Matematik");
 			$pdf->Write(5,$turkce_icerik);
@@ -455,22 +446,22 @@ function pdfBepPage($pdf,$studentID,$conn,$dersler_id){
 
 			$pdf->SetXY(5,20);
 			$turkce_icerik = iconv('utf-8','ISO-8859-9', "Uzun Dönemli Hedefler ve Ölçütler (Kazanimlar)");
-			$pdf->MultiCell(50,4,$turkce_icerik,'T','C'); 
+			$pdf->MultiCell(50,4,$turkce_icerik,0,'C'); 
 			$pdf->SetXY(55,20);
 			$turkce_icerik = iconv('utf-8','ISO-8859-9', "Yöntem & Teknikler ve Ölçütler (Bildirimler)");
-			$pdf->MultiCell(50,4,$turkce_icerik,'T','C'); 	
+			$pdf->MultiCell(50,4,$turkce_icerik,0,'C'); 	
 			$pdf->SetXY(105,20);
 			$turkce_icerik = iconv('utf-8','ISO-8859-9', "Yöntem & Teknikler");
-			$pdf->MultiCell(25,4,$turkce_icerik,'T','C'); 	
+			$pdf->MultiCell(25,4,$turkce_icerik,0,'C'); 	
 			$pdf->SetXY(130,20);
 			$turkce_icerik = iconv('utf-8','ISO-8859-9', "Araç & Gereçler");
-			$pdf->MultiCell(25,4,$turkce_icerik,'T','C'); 	
+			$pdf->MultiCell(25,4,$turkce_icerik,0,'C'); 	
 			$pdf->SetXY(155,20);
 			$turkce_icerik = iconv('utf-8','ISO-8859-9', "Eğitim Başlangıç");
-			$pdf->MultiCell(25,4,$turkce_icerik,'T','C'); 	
+			$pdf->MultiCell(25,4,$turkce_icerik,0,'C'); 	
 			$pdf->SetXY(180,20);
 			$turkce_icerik = iconv('utf-8','ISO-8859-9', "Eğitim Bitiş");
-			$pdf->MultiCell(25,4,$turkce_icerik,'T','C'); 	
+			$pdf->MultiCell(25,4,$turkce_icerik,0,'C'); 	
 			$pdf->SetFont('Arial','',9);
 			$k = 1;
 			$counter = "123";
@@ -480,6 +471,20 @@ function pdfBepPage($pdf,$studentID,$conn,$dersler_id){
 			$result = $conn -> query($sql,PDO::FETCH_ASSOC);
 			$distance = 0;
 			foreach ($result as $key => $value) {
+				$pagenumber = 4;
+				if($pagenumber < $pdf->PageNo()){
+					$pdf->Line(5,10,205,10);
+					
+					$pdf->Line(5,10,5,290);
+					$pdf->Line(5,290,205,290);
+					$pdf->Line(205,10,205,290);
+					$pdf->Line(55,10,55,290);
+					$pdf->Line(105,10,105,290);
+					$pdf->Line(130,10,130,290);
+					$pdf->Line(155,10,155,290);
+					$pdf->Line(180,10,180,290);
+					$pagenumber = $pdf->PageNo();
+				}
 				$Y+=$distance;
 				$pdf->SetXY(5,$Y);
 				if($counter != $value['kazanimlar']){
@@ -491,14 +496,12 @@ function pdfBepPage($pdf,$studentID,$conn,$dersler_id){
 					$counter = "";
 				}
 
-				
-
 				$turkce_icerik = iconv('utf-8','ISO-8859-9', $counter);
 				$pdf->MultiCell(50,4,$turkce_icerik,'','L'); 
 				$pdf->SetXY(55,$Y);
 				$currentY = $pdf->GetY();
 				$turkce_icerik = iconv('utf-8','ISO-8859-9', $k.". ".$value['bildirim']);
-				$pdf->MultiCell(50,4,$turkce_icerik,'T','L'); 	
+				$pdf->MultiCell(50,4,$turkce_icerik,1,'L'); 	
 				$currentY = $pdf->GetY();
 				$pdf->SetXY(105,$Y);
 				$distance = $currentY - $Y;
@@ -527,17 +530,6 @@ function pdfBepPage($pdf,$studentID,$conn,$dersler_id){
 				}
 				$title = "";
 				$pdf->SetX(10);
-				$pdf->Line(5,10,205,10);
-				$pdf->Line(5,15,205,15);
-				$pdf->Line(5,10,5,290);
-				$pdf->Line(5,290,205,290);
-				$pdf->Line(205,10,205,290);
-
-				$pdf->Line(55,10,55,290);
-				$pdf->Line(105,10,105,290);
-				$pdf->Line(130,10,130,290);
-				$pdf->Line(155,10,155,290);
-				$pdf->Line(180,10,180,290);
 				$pdf->ln();
 				$turkce_icerik = iconv('utf-8', 'ISO-8859-9', "Okuma Yazma/Türkçe");
 				$pdf->Write(5,$turkce_icerik);
@@ -550,19 +542,19 @@ function pdfBepPage($pdf,$studentID,$conn,$dersler_id){
 				$pdf->MultiCell(50,4,$turkce_icerik,'TR','C'); 
 				$pdf->SetXY(55,20);
 				$turkce_icerik = iconv('utf-8','ISO-8859-9', "Yöntem & Teknikler ve Ölçütler (Bildirimler)");
-				$pdf->MultiCell(50,4,$turkce_icerik,'T','C'); 	
+				$pdf->MultiCell(50,4,$turkce_icerik,0,'C'); 	
 				$pdf->SetXY(105,20);
 				$turkce_icerik = iconv('utf-8','ISO-8859-9', "Yöntem & Teknikler");
-				$pdf->MultiCell(25,4,$turkce_icerik,'T','C'); 	
+				$pdf->MultiCell(25,4,$turkce_icerik,0,'C'); 	
 				$pdf->SetXY(130,20);
 				$turkce_icerik = iconv('utf-8','ISO-8859-9', "Araç & Gereçler");
-				$pdf->MultiCell(25,4,$turkce_icerik,'T','C'); 	
+				$pdf->MultiCell(25,4,$turkce_icerik,0,'C'); 	
 				$pdf->SetXY(155,20);
 				$turkce_icerik = iconv('utf-8','ISO-8859-9', "Eğitim Başlangıç");
-				$pdf->MultiCell(25,4,$turkce_icerik,'T','C'); 	
+				$pdf->MultiCell(25,4,$turkce_icerik,0,'C'); 	
 				$pdf->SetXY(180,20);
 				$turkce_icerik = iconv('utf-8','ISO-8859-9', "Eğitim Bitiş");
-				$pdf->MultiCell(25,4,$turkce_icerik,'T','C'); 	
+				$pdf->MultiCell(25,4,$turkce_icerik,0,'C'); 	
 				$pdf->SetFont('Arial','',9);
 				$k = 1;
 				$counter = "123";
@@ -574,6 +566,19 @@ function pdfBepPage($pdf,$studentID,$conn,$dersler_id){
 				$result = $conn -> query($sql,PDO::FETCH_ASSOC);
 				$distance = 0;
 				foreach ($result as $key => $value) {
+					$pagenumber = 4;
+					if($pagenumber < $pdf->PageNo()){
+						$pdf->Line(5,10,205,10);
+						$pdf->Line(5,10,5,290);
+						$pdf->Line(5,290,205,290);
+						$pdf->Line(205,10,205,290);
+						$pdf->Line(55,10,55,290);
+						$pdf->Line(105,10,105,290);
+						$pdf->Line(130,10,130,290);
+						$pdf->Line(155,10,155,290);
+						$pdf->Line(180,10,180,290);
+						$pagenumber = $pdf->PageNo();
+					}
 					$Y+=$distance;
 					$pdf->SetXY(5,$Y);
 					if($counter != $value['kazanimlar']){
@@ -591,7 +596,7 @@ function pdfBepPage($pdf,$studentID,$conn,$dersler_id){
 					$pdf->SetXY(55,$Y);
 					$currentY = $pdf->GetY();
 					$turkce_icerik = iconv('utf-8','ISO-8859-9', $k.". ".$value['bildirim']);
-					$pdf->MultiCell(50,4,$turkce_icerik,'T','L'); 	
+					$pdf->MultiCell(50,4,$turkce_icerik,1,'L'); 	
 					$currentY = $pdf->GetY();
 					$pdf->SetXY(105,$Y);
 					$distance = $currentY - $Y;

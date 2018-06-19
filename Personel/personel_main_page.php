@@ -330,6 +330,7 @@ if($_SESSION['access_type'] == 'personel'){
 </div>
 
 <br>
+<div class="scrollable">
 <table border="1" class="table table-bordered table-hover">
  <thead>
   <tr>
@@ -343,6 +344,7 @@ if($_SESSION['access_type'] == 'personel'){
 
 </tbody>
 </table>
+</div>
 </div>
 <!-- End .form-group 1 -->
 </div>

@@ -74,11 +74,7 @@ if($_SESSION['access_type'] == "admin"){
 					Öğrenci Bilgileri
 					<small>...........</small>
 				</h1>
-				<ol class="breadcrumb">
-					<li><a href="admin_home.php"><i class="fa fa-dashboard"></i> Anasayfa</a></li>
-					<li><a href="ogrenci.php">Öğrenciler</a></li>
-					<li class="active"></li>
-				</ol>
+				
 			</section>
 
 			<!-- Main content class="col-md-3" style="font-size: 5px; font-weight: bold; font-family: Arial, Helvetica, sans-serif;"-->

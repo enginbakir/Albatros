@@ -96,11 +96,6 @@ if($_SESSION['access_type'] == "admin"){
           <?php echo $_SESSION["personelERR"]; ?>
           <small>...........</small>
         </h1>
-        <ol class="breadcrumb">
-          <li><a href="admin_home.php"><i class="fa fa-dashboard"></i>Ana Sayfa</a></li>
-          <li><a href="ogrenci.php">Öğrenci</a></li>
-          <li class="active">Ekle</li>
-        </ol>
       </section>
 
       <!-- Main content class="col-md-3" style="font-size: 5px; font-weight: bold; font-family: Arial, Helvetica, sans-serif;"-->
@@ -255,13 +250,30 @@ if($_SESSION['access_type'] == "admin"){
 
                             <input type="file" name="fileToUpload" id="fileToUpload" class="btn btn-default btn-file">
                           </div>
-                          <label class="col-md-2 control-label" for="">Ulaşım:</label>
-                          <div class="col-md-3">
-                            <select name="transportation" id="transportation" class="fancy-select form-control fancified" >
-                              <option value="Servis">Servis</option>
-                              <option value="Veli">Veli</option> 
-                              <option value="Diğer">Diğer</option>
-                            </select>
+                          <div class="row">
+                            <label class="col-md-2 control-label" >Öğretmen Seç:</label>
+                            <div class="col-md-3">
+                              <div class="form-group">                                                   
+                                <?php 
+
+
+                                try{ 
+                                  $sql = "SELECT * FROM personel";
+                                  echo '<select id="ogretmen" name="ogretmen" class="fancy-select form-control fancified" >';
+
+                                  foreach ($conn->query($sql) as $row) {
+                                    echo "<option value='".$row['personel_PK']."'>".$row['personel_PK']." ".$row['name']."</option>";
+                                  }
+                                  echo "</select>";          
+                                }
+                                catch(Exception $e) { 
+                                  echo "Öğretmen Listeleme Hatası :".$e->getMessage();
+                                }
+
+                                ?>
+
+                              </div>
+                            </div>
                           </div>
                         </div>
 
@@ -301,35 +313,7 @@ if($_SESSION['access_type'] == "admin"){
                           </div>
                         </div>
                       </div>
-                      <div class="form-group">
-                        <div class="row">
-                          <label class="col-md-2 control-label" for="">Öğretmen Seç:</label>
-                          <div class="col-md-3">
-                            <div class="form-group">                                                   
-                              <?php 
-
-
-                              try{ 
-                                $sql = "SELECT * FROM personel";
-                                echo '<select id="ogretmen" name="ogretmen" class="fancy-select form-control fancified" >';
-
-                                foreach ($conn->query($sql) as $row) {
-                                  echo "<option value='".$row['personel_PK']."'>".$row['personel_PK']." ".$row['name']."</option>";
-                                }
-                                echo "</select>";          
-                              }
-                              catch(Exception $e) { 
-                                echo "Öğretmen Listeleme Hatası :".$e->getMessage();
-                              }
-
-                              ?>
-
-                            </div>
-                          </div>
-                          <label class="col-md-2 control-label" for=""></label>
-                          <div class="col-md-3"></div>
-                        </div>
-                      </div>
+                      
                       <!-- End .form-group 6 -->
 
                     </div>
@@ -433,14 +417,6 @@ if($_SESSION['access_type'] == "admin"){
                           <input name="parentIsAdresi" type="text" maxlength="255" id="IsAdresi" class="form-control" placeholder="İş Adresi">
                         </div>
                       </div>
-                      <!-- End .form-group  -->
-                      <div class="form-group">
-                        <label class="col-md-2 control-label" for="">Açıklama:</label>
-                        <div class="col-md-8">
-                          <textarea name="Aciklama" rows="2" cols="20" id="Aciklama" class="form-control"></textarea>
-                        </div>
-                      </div>
-
                       <!-- End .form-group  -->
                     </div>
 

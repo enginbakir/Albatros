@@ -27,7 +27,7 @@ try {
 		$stmt-> execute([':Pid' => $id]);
 		$row = $stmt -> fetch(PDO::FETCH_ASSOC);
 		if($row == false){
-			echo "Sonuç Bulunamadı : ".$id;
+			echo "İlk Kayıt : ".$id." ";
 			$st = null;
 			$st = $conn -> prepare("INSERT INTO personel_user (username,password,personel_FK) VALUES (:username, :password, :id)");
 			$st->bindParam(':username', md5($u));

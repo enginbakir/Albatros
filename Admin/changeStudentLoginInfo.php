@@ -31,7 +31,7 @@ try {
 		$stmt-> execute([':Pid' => $id]);
 		$row = $stmt -> fetch(PDO::FETCH_ASSOC);
 		if($row == false){
-			echo "Sonuç Bulunamadı : ".$id;
+			echo "İlk Kayıt : ".$id." ";
 			$st = null;
 			$st = $conn -> prepare("INSERT INTO parent_user (username,password,parent_FK) VALUES (:username, :password, :id)");
 			$st->bindParam(':username', md5($u));

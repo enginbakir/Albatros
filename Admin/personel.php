@@ -75,11 +75,6 @@ if($_SESSION['access_type'] == "admin"){
 					Personel Bilgileri
 					<small>..........</small>
 				</h1>
-				<ol class="breadcrumb">
-					<li><a href="admin_home.php"><i class="fa fa-dashboard"></i> Anasayfa</a></li>
-					<li><a href="personel.php">Personeller</a></li>
-					<li class="active">Data tables</li>
-				</ol>
 			</section>
 
 			<section class="content">
@@ -209,34 +204,7 @@ if($_SESSION['access_type'] == "admin"){
 
 									<div class="tab-content">	
 										<div id="home" class="tab-pane fade in active">
-											<div class="box box-primary">
-												<div class="box-body box-profile">
-													<img class="profile-user-img img-responsive img-circle" src="../dist/img/avatar2.png" alt="User profile picture">
-
-													<h3 class="profile-username text-center">Gülben Ergül</h3>
-													<ul class="list-group list-group-unbordered">
-														<li class="list-group-item">
-															<b>TC</b> <a class="pull-right">20154895748</a>
-														</li>
-														<li class="list-group-item">
-															<b>Adres</b> <a class="pull-right">Lorem ipsum dolor sit amet, consectetur.</a>
-														</li>                  
-														<li class="list-group-item">
-															<b>Ünvan</b> <a class="pull-right">MATEMATİK ÖĞRETMENİ</a>
-														</li>
-														<li class="list-group-item">
-															<b>Mail</b> <a class="pull-right">glb_ergül@yahoo.com</a>
-														</li>
-														<li class="list-group-item">
-															<b>Kayıt Tarihi</b> <a class="pull-right">18.09.2017</a>
-														</li>
-														<li class="list-group-item">
-															<b>Ayrılış Tarihi</b> <a class="pull-right">-</a>
-														</li>													
-													</ul>
-												</div>
-												<!-- /.box-body -->
-											</div>
+											<div class="box box-primary"></div>
 										</div>
 
 										<div id="loginInfo" class="tab-pane fade">

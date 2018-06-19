@@ -21,17 +21,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
 		if($user_type == "admin"){
 			$stmt = $conn -> prepare("SELECT * FROM admin_user WHERE username = :username AND password = :password LIMIT 1;");
 		}
-		else if($user_type == "personel"){
+		if($user_type == "personel"){
 			$stmt = $conn -> prepare("SELECT * FROM personel_user, personel WHERE username = :username AND password = :password AND personel_user.personel_FK = personel.personel_PK AND status = 1 LIMIT 1;");
 		}
-		else if($user_type == "parent"){
-			$stmt = $conn -> prepare("SELECT * FROM parent_user, parent WHERE username = :username AND password = :password AND parent_user.parent_FK = parent.parent_PK AND status = 1 LIMIT 1;");
+		if($user_type == "parent"){
+			$stmt = $conn -> prepare("SELECT * FROM parent_user, parent WHERE parent_user.username = :username AND parent_user.password = :password AND parent_user.parent_FK = parent.parent_PK AND status = 1 LIMIT 1;");
 		}
 		$stmt->bindParam(':username', md5($username), PDO::PARAM_STR);
 		$stmt->bindParam(':password', md5($password), PDO::PARAM_STR);
 		$stmt->execute();
 		$row = $stmt -> fetch(PDO::FETCH_ASSOC);
-		if($row > 0){
+		if($row != false){
 
 			if($user_type == "admin"){
 				
@@ -40,7 +40,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
 					"logoutime" => "0000.00.00 00:00:00",
 					"userAdminPK"=>$row['userAdmin_PK'],
 				));
-				$q = $conn->query("SELECT AdminLog_PK FROM admin_log L, admin_user U WHERE L.userAdmin_FK = U.userAdmin_PK AND U.userAdmin_PK =".$row['userAdmin_PK']." ORDER BY AdminLog_PK  DESC LIMIT 1")->fetch(PDO::FETCH_ASSOC);
+				$q = $conn->query("SELECT AdminLog_PK FROM admin_log L, admin_user U WHERE L.userAdmin_FK = U.userAdmin_PK AND U.userAdmin_PK =".$row['userAdmin_PK']." ORDER BY AdminLog_PK DESC LIMIT 1")->fetch(PDO::FETCH_ASSOC);
 
 				$_SESSION['adminLogPK'] = $q['AdminLog_PK'];
 				$_SESSION['access_type'] = $user_type;

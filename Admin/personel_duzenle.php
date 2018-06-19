@@ -85,11 +85,6 @@ if($_SESSION['access_type'] == "admin"){
           Yeni Personel Ekle
           <small>...........</small>
         </h1>
-        <ol class="breadcrumb">
-          <li><a href="#"><i class="fa fa-dashboard"></i>Ana Sayfa</a></li>
-          <li><a href="#">Personel</a></li>
-          <li class="active">Ekle</li>
-        </ol>
       </section>
 
       <!-- Main content class="col-md-3" style="font-size: 5px; font-weight: bold; font-family: Arial, Helvetica, sans-serif;"-->

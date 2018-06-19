@@ -65,13 +65,7 @@ if($_SESSION['access_type'] == "personel"){
 			<section class="content-header">
 				<h1>
 					Kaba Değerlendirme Oluştur
-					<!-- <small>...........</small> -->
 				</h1>
-				<ol class="breadcrumb">
-					<li><a href="#"><i class="fa fa-dashboard"></i>Ana Sayfa</a></li>
-					<li><a href="#">Merve Tunçel</a></li>
-					<li class="active">Kaba Değerlendirme</li>
-				</ol>
 			</section>
 
 			
